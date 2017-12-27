@@ -3,113 +3,133 @@ inspecode:
   astyle:           ### for C++
     auto-fix: true
     thresholds:
-      num-issues: 999
+      num-issues: 661
 
   autopep8:         ### for Python
     auto-fix: true
     thresholds:
-      num-issues: 999
+      num-issues: 39  # num-files
 
   clang-format:     ### for C++
     auto-fix: true
     thresholds:
-      num-issues: 999
+      num-issues: 521
 
   cpd:              ### for C++, Python
     thresholds:
-      num-issues: 999
+      num-issues: 18
 
   cppcheck:         ### for C++
     thresholds:
-      num-issues: 999
+      num-issues: 2
 
   cpplint:          ### for C++
+    options:
+      --filter: [ -whitespace ]
     thresholds:
-      num-issues: 999
+      num-issues: 857   #  = 1095 - 238
 
   eslint:           ### for JavaScript
     auto-fix: true
     thresholds:
-      num-issues: 999
+      num-issues: 372
 
   flake8:           ### for Python
+    options:
+      --ignore: # 1448 issues, when no `--ignore`
+      - E111    # 1234 ... indentation is not a multiple of four
     thresholds:
-      num-issues: 999
+      num-issues: 214
 
   flow:             ### for JavaScript
     thresholds:
-      num-issues: 999
+      num-issues: 0
 
   grep:             ### for any-languages
     thresholds:
-      num-issues: 999
+      num-issues: 8
 
-  infer:            ### for C++
-    thresholds:
-      num-issues: 999
+  #### not work on this repository
+  #infer:            ### for C++
 
   jshint:           ### for JavaScript
+    config-file: XXXXXXXXXXX
     thresholds:
-      num-issues: 999
+      num-issues: 261   # = 5014(total) - 2911(W033) - 1240(W104) - 602(W119)
 
   misspell:         ### for any-languages
     auto-fix: true
     thresholds:
-      num-issues: 999
+      num-issues: 55
 
   npm-test:         ### for JavaScript
     thresholds:
-      num-issues: 999
+      num-issues: 1     # sh: python: not found --- BUG
 
   nsp:              ### for JavaScript
     thresholds:
-      num-issues: 999
+      num-issues: 0
 
   phpcs:            ### for JavaScript
+    options:
+      --standard: PEAR
+      --exclude:                                # 45897
+      - PEAR.Functions.FunctionCallSignature    # 23719
+      - PEAR.Functions.FunctionDeclaration      #   529
+      - PEAR.WhiteSpace.ScopeIndent             # 21352
     auto-fix: true
     thresholds:
-      num-issues: 999
+      num-issues: 297
 
   pmd:              ### for JavaScript
-    #auto-fix: true     # supports only Java
+    # cf) https://github.com/tractrix/codelift/issues/1081#issuecomment-353849015
+    auto-fix: false     # JavaScript is not supported
     thresholds:
-      num-issues: 999
+      num-issues: 999   # 1342(total), 667(GlobalVariable)
 
   prettier:         ### for JavaScript
     auto-fix: true
     thresholds:
-      num-issues: 999
+      num-issues: 208
 
   prospector:       ### for Python
+    # empty console output BUG
     thresholds:
       num-issues: 999
 
   pycodestyle:      ### for Python
+    options:
+      --ignore: # 1433 issues, when no `--ignore`
+      - E111    # 1234 ... indentation is not a multiple of four
     thresholds:
-      num-issues: 999
+      num-issues: 199
 
   pyflakes:         ### for Python
     thresholds:
-      num-issues: 999
+      num-issues: 17
 
   pylint:           ### for Python
+    options:
+      --disable:  # 2500 issues, when no `--disable`
+      - W0311     # 1846 / (bad-indentation)
     thresholds:
-      num-issues: 999
+      num-issues: 654
 
-  scan-build:       ### for C++
-    thresholds:
-      num-issues: 999
+  #### scan-build not work on this repository.
+  ##  g++: error: unrecognized command line option '-features=extensions'; did you mean '-fms-extensions'?
+  ##  make: *** [<builtin>: minidump_test.o] Error 1
+  #scan-build:       ### for C++
 
   uncrustify:       ### for C++
     auto-fix: true
     thresholds:
-      num-issues: 999
+      num-issues: 673
 
   unused:           ### for C++, JavaScript, Python
     thresholds:
-      num-issues: 999
+      num-issues: 371
 
   yapf:             ### for Python
     auto-fix: true
     thresholds:
-      num-issues: 999
+      num-issues: 39
