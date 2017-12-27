@@ -36,10 +36,10 @@ inspecode:
 
   flake8:           ### for Python
     options:
-      --ignore: # 1448 issues, when no `--ignore`
-      - E111    # 1234 ... indentation is not a multiple of four
+      --ignore:
+      - E111      # indentation is not a multiple of four
     thresholds:
-      num-issues: 214
+      num-issues: 268
 
   flow:             ### for JavaScript
     thresholds:
@@ -53,7 +53,7 @@ inspecode:
   #infer:            ### for C++
 
   jshint:           ### for JavaScript
-    config-file: XXXXXXXXXXX
+    #config-file: rocro.jshintrc
     thresholds:
       num-issues: 261   # = 5014(total) - 2911(W033) - 1240(W104) - 602(W119)
 
@@ -83,9 +83,14 @@ inspecode:
 
   pmd:              ### for JavaScript
     # cf) https://github.com/tractrix/codelift/issues/1081#issuecomment-353849015
+  - ignore: spec/fixtures/*
     auto-fix: false     # JavaScript is not supported
     thresholds:
-      num-issues: 999   # 1342(total), 667(GlobalVariable)
+      num-issues: 999
+  - input:  spec/fixtures/*
+    auto-fix: false     # JavaScript is not supported
+    thresholds:
+      num-issues: 999
 
   prettier:         ### for JavaScript
     auto-fix: true
@@ -99,10 +104,10 @@ inspecode:
 
   pycodestyle:      ### for Python
     options:
-      --ignore: # 1433 issues, when no `--ignore`
-      - E111    # 1234 ... indentation is not a multiple of four
+      --ignore:
+      - E111      # indentation is not a multiple of four
     thresholds:
-      num-issues: 199
+      num-issues: 253
 
   pyflakes:         ### for Python
     thresholds:
@@ -110,10 +115,10 @@ inspecode:
 
   pylint:           ### for Python
     options:
-      --disable:  # 2500 issues, when no `--disable`
-      - W0311     # 1846 / (bad-indentation)
+      --disable:
+      - W0311     # (bad-indentation)
     thresholds:
-      num-issues: 654
+      num-issues: 659
 
   #### scan-build not work on this repository.
   ##  g++: error: unrecognized command line option '-features=extensions'; did you mean '-fms-extensions'?
