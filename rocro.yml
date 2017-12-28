@@ -52,10 +52,11 @@ inspecode:
   #### not work on this repository
   #infer:            ### for C++
 
-  #jshint:           ### for JavaScript
-  #  #config-file: rocro.jshintrc
-  #  thresholds:
-  #    num-issues: 261   # = 5014(total) - 2911(W033) - 1240(W104) - 602(W119)
+  jshint:           ### for JavaScript
+    config-file: rocro.jshintrc
+    thresholds:
+      num-issues: 999
+      #num-issues: 261   # = 5014(total) - 2911(W033) - 1240(W104) - 602(W119)
 
   misspell:         ### for any-languages
     auto-fix: true
@@ -87,7 +88,7 @@ inspecode:
     - '**/*.min.js'
     auto-fix: false     # JavaScript is not supported
     thresholds:
-      num-issues: 999
+      num-issues: 686
 
   prettier:         ### for JavaScript
     auto-fix: true
