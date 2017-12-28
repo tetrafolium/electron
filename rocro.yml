@@ -52,10 +52,10 @@ inspecode:
   #### not work on this repository
   #infer:            ### for C++
 
-  jshint:           ### for JavaScript
-    #config-file: rocro.jshintrc
-    thresholds:
-      num-issues: 261   # = 5014(total) - 2911(W033) - 1240(W104) - 602(W119)
+  #jshint:           ### for JavaScript
+  #  #config-file: rocro.jshintrc
+  #  thresholds:
+  #    num-issues: 261   # = 5014(total) - 2911(W033) - 1240(W104) - 602(W119)
 
   misspell:         ### for any-languages
     auto-fix: true
@@ -83,11 +83,8 @@ inspecode:
 
   pmd:              ### for JavaScript
     # cf) https://github.com/tractrix/codelift/issues/1081#issuecomment-353849015
-  - ignore: spec/fixtures/*
-    auto-fix: false     # JavaScript is not supported
-    thresholds:
-      num-issues: 999
-  - input:  spec/fixtures/*
+    ignore:
+    - **/*.min.js
     auto-fix: false     # JavaScript is not supported
     thresholds:
       num-issues: 999
@@ -97,10 +94,11 @@ inspecode:
     thresholds:
       num-issues: 208
 
-  prospector:       ### for Python
-    # empty console output BUG
-    thresholds:
-      num-issues: 999
+  #### prospector
+  ####    Killed
+  #prospector:       ### for Python
+  #  thresholds:
+  #    num-issues: 999
 
   pycodestyle:      ### for Python
     options:
