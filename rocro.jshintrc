@@ -1,27 +1,5 @@
 {
-        "esversion": 6,
-        "asi"      : true,
-        "supernew" : true,
-
-        "globals": [
-                "Buffer",
-                "Event",
-                "HTMLObjectElement",
-                "MutationObserver",
-                "afterEach",
-                "beforeEach",
-                "console",
-                "describe",
-                "document",
-                "exports",
-                "global",
-                "it",
-                "module",
-                "process",
-                "require",
-                "self",
-                "window",
-                "__dirname",
-                "__filename"
-        ]
+        "esversion" : 6,
+        "asi"       : true,
+        "lastsemic" : true
 }

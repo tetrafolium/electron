@@ -132,11 +132,11 @@ inspecode:
 
   unused:           ### for C++, JavaScript, Python
     ignore:
-    - atom/**                 #  70 issues
-    - chromium_src/**         # 207 issues
-    - vendor/third_prty/**    #  64 issues
+    - atom/**
+    - chromium_src/**
+    - vendor/third_prty/**
     thresholds:
-      num-issues: 30
+      num-issues: 94
 
   yapf:             ### for Python
     auto-fix: true
