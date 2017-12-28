@@ -82,9 +82,9 @@ inspecode:
       num-issues: 297
 
   pmd:              ### for JavaScript
-    # cf) https://github.com/tractrix/codelift/issues/1081#issuecomment-353849015
+    # cf. https://github.com/tractrix/codelift/issues/1081#issuecomment-353849015
     ignore:
-    - **/*.min.js
+    - '**/*.min.js'
     auto-fix: false     # JavaScript is not supported
     thresholds:
       num-issues: 999
