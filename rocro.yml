@@ -8,42 +8,43 @@ inspecode:
   autopep8:         ### for Python
     auto-fix: true
     thresholds:
-      num-issues: 39  # num-files
+      num-issues: 40  # num-files
 
   clang-format:     ### for C++
     auto-fix: true
     thresholds:
-      num-issues: 521
+      num-issues: 697
 
   cpd:              ### for C++, Python
+    options: [ --skip-lexical-errors ]
     thresholds:
       num-issues: 18
 
   cppcheck:         ### for C++
     thresholds:
-      num-issues: 2
+      num-issues: 6
 
   cpplint:          ### for C++
     options:
       --filter: [ -whitespace ]
     thresholds:
-      num-issues: 857   #  = 1095 - 238
+      num-issues: 849
 
   eslint:           ### for JavaScript
     auto-fix: true
     thresholds:
-      num-issues: 372
+      num-issues: 368
 
   flake8:           ### for Python
     options:
       --ignore:
       - E111      # indentation is not a multiple of four
     thresholds:
-      num-issues: 268
+      num-issues: 284
 
   flow:             ### for JavaScript
     thresholds:
-      num-issues: 0
+      num-issues: 0   # found no input files
 
   grep:             ### for any-languages
     thresholds:
@@ -57,20 +58,20 @@ inspecode:
     - '**/*.min.js'
     config-file: rocro.jshintrc
     thresholds:
-      num-issues: 999
+      num-issues: 709
 
   misspell:         ### for any-languages
     auto-fix: true
     thresholds:
-      num-issues: 55
+      num-issues: 49
+
+  npm-audit:        ### for JavaScript
+    thresholds:
+      num-issues: 999
 
   npm-test:         ### for JavaScript
     thresholds:
       num-issues: 1     # sh: python: not found --- BUG
-
-  nsp:              ### for JavaScript
-    thresholds:
-      num-issues: 0
 
   phpcs:            ### for JavaScript
     options:
@@ -81,8 +82,10 @@ inspecode:
       - PEAR.WhiteSpace.ScopeIndent             # 21352
     auto-fix: true
     thresholds:
-      num-issues: 297
+      num-issues: 307
 
+  #### PMD finished with errors.
+  #### Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
   pmd:              ### for JavaScript
     # cf. https://github.com/tractrix/codelift/issues/1081#issuecomment-353849015
     ignore:
@@ -94,7 +97,7 @@ inspecode:
   prettier:         ### for JavaScript
     auto-fix: true
     thresholds:
-      num-issues: 208
+      num-issues: 474
 
   #### prospector
   ####    Killed
@@ -107,18 +110,18 @@ inspecode:
       --ignore:
       - E111      # indentation is not a multiple of four
     thresholds:
-      num-issues: 253
+      num-issues: 261
 
   pyflakes:         ### for Python
     thresholds:
-      num-issues: 17
+      num-issues: 25
 
   pylint:           ### for Python
     options:
       --disable:
       - W0311     # (bad-indentation)
     thresholds:
-      num-issues: 659
+      num-issues: 348
 
   #### scan-build not work on this repository.
   ##  g++: error: unrecognized command line option '-features=extensions'; did you mean '-fms-extensions'?
