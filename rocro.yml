@@ -1,150 +1,135 @@
+---
 inspecode:
 
-  astyle:           ### for C++
-    auto-fix: true
-    thresholds:
-      num-issues: 661
+  global:
 
-  autopep8:         ### for Python
-    auto-fix: true
-    thresholds:
-      num-issues: 40  # num-files
+  tools:
 
-  clang-format:     ### for C++
-    auto-fix: true
-    thresholds:
-      num-issues: 697
+    astyle:           ### for C++
+      auto-fix: true
+      thresholds: {num-issues: 661}
 
-  cpd:              ### for C++, Python
-    options: [ --skip-lexical-errors ]
-    thresholds:
-      num-issues: 24
+    autopep8:         ### for Python
+      auto-fix: true
+      thresholds: {num-issues: 40}    # num-files
 
-  cppcheck:         ### for C++
-    thresholds:
-      num-issues: 6
+    clang-format:     ### for C++
+      auto-fix: true
+      thresholds: {num-issues: 697}
 
-  cpplint:          ### for C++
-    options:
-      --filter: [ -whitespace ]
-    thresholds:
-      num-issues: 849
+    cpd:              ### for C++, Python
+      options: [ --skip-lexical-errors ]
+      thresholds: {num-issues: 24}
 
-  eslint:           ### for JavaScript
-    auto-fix: true
-    thresholds:
-      num-issues: 368
+    cppcheck:         ### for C++
+      thresholds: {num-issues: 6}
 
-  flake8:           ### for Python
-    options:
-      --ignore:
-      - E111      # indentation is not a multiple of four
-    thresholds:
-      num-issues: 284
+    cpplint:          ### for C++
+      options:
+        --filter: [ -whitespace ]
+      thresholds: {num-issues: 849}
 
-  flow:             ### for JavaScript
-    thresholds:
-      num-issues: 0   # found no input files
+    eslint:           ### for JavaScript
+      auto-fix: true
+      thresholds: {num-issues: 368}
 
-  grep:             ### for any-languages
-    thresholds:
-      num-issues: 8
+    flake8:           ### for Python
+      options:
+        --ignore:
+        - E111      # indentation is not a multiple of four
+      thresholds: {num-issues: 284}
 
-  #### not work on this repository
-  #infer:            ### for C++
+    flow:             ### for JavaScript
+      thresholds: {num-issues: 0}   # found no input files
 
-  jshint:           ### for JavaScript
-    ignore:
-    - '**/*.min.js'
-    config-file: rocro.jshintrc
-    thresholds:
-      num-issues: 709
+    grep:             ### for any-languages
+      thresholds: {num-issues: 8}
 
-  misspell:         ### for any-languages
-    auto-fix: true
-    thresholds:
-      num-issues: 49
+    #### not work on this repository
+    #infer:            ### for C++
 
-  npm-audit:        ### for JavaScript
-    thresholds:
-      num-issues: 999
+    jshint:           ### for JavaScript
+      ignore:
+      - '**/*.min.js'
+      config-file: rocro.jshintrc
+      thresholds: {num-issues: 709}
 
-  npm-test:         ### for JavaScript
-    thresholds:
-      num-issues: 1     # sh: python: not found --- BUG
+    misspell:         ### for any-languages
+      auto-fix: true
+      thresholds: {num-issues: 49}
 
-  phpcs:            ### for JavaScript
-    options:
-      --standard: PEAR
-      --exclude:                                # 45897
-      - PEAR.Functions.FunctionCallSignature    # 23719
-      - PEAR.Functions.FunctionDeclaration      #   529
-      - PEAR.WhiteSpace.ScopeIndent             # 21352
-    auto-fix: true
-    thresholds:
-      num-issues: 307
+    npm-audit:        ### for JavaScript
+      thresholds: {num-issues: 7}
 
-  #### PMD finished with errors.
-  #### Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
-  pmd:              ### for JavaScript
-    # cf. https://github.com/tractrix/codelift/issues/1081#issuecomment-353849015
-  - &pmd-settings
-    ignore:
-    - '**/*.min.js'
-    auto-fix: false     # JavaScript is not supported
-    thresholds:
-      num-issues: 686
-  - <<: *pmd-settings
-    machine: {cpu: 1.0}   # default is {cpu: 0.5}
+    #### npm test finished with evaluation errors.
+    #### IOError: [Errno 2] No such file or directory: '/home/rocro/src/github.com/tetrafolium/electron/vendor/node/common.gypi'
+    npm-test:         ### for JavaScript
+      thresholds: {num-issues: 1}
 
-  prettier:         ### for JavaScript
-    auto-fix: true
-    thresholds:
-      num-issues: 474
+    phpcs:            ### for JavaScript
+      options:
+        --standard: PEAR
+        --exclude:                                # 45897
+        - PEAR.Functions.FunctionCallSignature    # 23719
+        - PEAR.Functions.FunctionDeclaration      #   529
+        - PEAR.WhiteSpace.ScopeIndent             # 21352
+      auto-fix: true
+      thresholds: {num-issues: 307}
 
-  #### prospector
-  ####    Killed
-  #prospector:       ### for Python
-  #  thresholds:
-  #    num-issues: 999
+    #### PMD finished with errors.
+    #### Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+    pmd:              ### for JavaScript
+      # cf. https://github.com/tractrix/codelift/issues/1081#issuecomment-353849015
+    - &pmd-settings
+      ignore:
+      - '**/*.min.js'
+      auto-fix: false     # JavaScript is not supported
+      thresholds: {num-issues: 686}
+    - <<: *pmd-settings
+      machine: {cpu: 1.0}   # default is {cpu: 0.5}
 
-  pycodestyle:      ### for Python
-    options:
-      --ignore:
-      - E111      # indentation is not a multiple of four
-    thresholds:
-      num-issues: 261
+    prettier:         ### for JavaScript
+      auto-fix: true
+      thresholds: {num-issues: 474}
 
-  pyflakes:         ### for Python
-    thresholds:
-      num-issues: 25
+    #### prospector
+    ####    Killed
+    #prospector:       ### for Python
+    #  thresholds:
+    #    num-issues: 999
 
-  pylint:           ### for Python
-    options:
-      --disable:
-      - W0311     # (bad-indentation)
-    thresholds:
-      num-issues: 348
+    pycodestyle:      ### for Python
+      options:
+        --ignore:
+        - E111      # indentation is not a multiple of four
+      thresholds: {num-issues: 261}
 
-  #### scan-build not work on this repository.
-  ##  g++: error: unrecognized command line option '-features=extensions'; did you mean '-fms-extensions'?
-  ##  make: *** [<builtin>: minidump_test.o] Error 1
-  #scan-build:       ### for C++
+    pyflakes:         ### for Python
+      thresholds: {num-issues: 25}
 
-  uncrustify:       ### for C++
-    auto-fix: true
-    thresholds:
-      num-issues: 673
+    pylint:           ### for Python
+      options:
+        --disable:
+        - W0311     # (bad-indentation)
+      thresholds: {num-issues: 348}
 
-  unused:           ### for C++, JavaScript, Python
-    ignore:
-    - atom/**
-    - chromium_src/**
-    - vendor/third_prty/**
-    thresholds:
-      num-issues: 94
+    #### scan-build not work on this repository.
+    ##  g++: error: unrecognized command line option '-features=extensions'; did you mean '-fms-extensions'?
+    ##  make: *** [<builtin>: minidump_test.o] Error 1
+    #scan-build:       ### for C++
 
-  yapf:             ### for Python
-    auto-fix: true
-    thresholds:
-      num-issues: 39
+    uncrustify:       ### for C++
+      auto-fix: true
+      thresholds: {num-issues: 673}
+
+    unused:           ### for C++, JavaScript, Python
+      ignore:
+      - atom/**
+      - chromium_src/**
+      - vendor/third_prty/**
+      options: [ --single-occurrence, --all-likelihoods ]
+      thresholds: {num-issues: 94}
+
+    yapf:             ### for Python
+      auto-fix: true
+      thresholds: {num-issues: 39}
