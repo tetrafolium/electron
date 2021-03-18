@@ -18,7 +18,7 @@ inspecode:
   cpd:              ### for C++, Python
     options: [ --skip-lexical-errors ]
     thresholds:
-      num-issues: 18
+      num-issues: 24
 
   cppcheck:         ### for C++
     thresholds:
@@ -88,11 +88,14 @@ inspecode:
   #### Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
   pmd:              ### for JavaScript
     # cf. https://github.com/tractrix/codelift/issues/1081#issuecomment-353849015
+  - &pmd-settings
     ignore:
     - '**/*.min.js'
     auto-fix: false     # JavaScript is not supported
     thresholds:
       num-issues: 686
+  - <<: *pmd-settings
+    machine: {cpu: 1.0}   # default is {cpu: 0.5}
 
   prettier:         ### for JavaScript
     auto-fix: true
