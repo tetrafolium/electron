@@ -13,9 +13,11 @@ inspecode:
       auto-fix: true
       thresholds: {num-issues: 40}    # num-files
 
-    clang-format:     ### for C++
+    clang-format:     ### for C++, JavaScript
       auto-fix: true
       thresholds: {num-issues: 697}
+
+    # coverity:
 
     cpd:              ### for C++, Python
       options: [ --skip-lexical-errors ]
@@ -42,11 +44,19 @@ inspecode:
     flow:             ### for JavaScript
       thresholds: {num-issues: 0}   # found no input files
 
+    # fortify:
+
+    fossology:        ### for any-languages
+      thresholds: {num-issues: 999}
+
     grep:             ### for any-languages
       thresholds: {num-issues: 8}
 
     #### not work on this repository
     #infer:            ### for C++
+
+    jscpd:
+      thresholds: {num-issues: 999}
 
     jshint:           ### for JavaScript
       ignore:
@@ -57,6 +67,9 @@ inspecode:
     misspell:         ### for any-languages
       auto-fix: true
       thresholds: {num-issues: 49}
+
+    nose2:
+      thresholds: {num-issues: 999}
 
     npm-audit:        ### for JavaScript
       thresholds: {num-issues: 7}
@@ -113,6 +126,9 @@ inspecode:
         - W0311     # (bad-indentation)
       thresholds: {num-issues: 348}
 
+    pytest:
+      thresholds: {num-issues: 999}
+
     #### scan-build not work on this repository.
     ##  g++: error: unrecognized command line option '-features=extensions'; did you mean '-fms-extensions'?
     ##  make: *** [<builtin>: minidump_test.o] Error 1
@@ -121,6 +137,8 @@ inspecode:
     uncrustify:       ### for C++
       auto-fix: true
       thresholds: {num-issues: 673}
+
+    # understand:
 
     unused:           ### for C++, JavaScript, Python
       ignore:
