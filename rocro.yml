@@ -56,7 +56,7 @@ inspecode:
     #infer:            ### for C++
 
     jscpd:
-      thresholds: {num-issues: 99}
+      thresholds: {num-issues: 150}
 
     jshint:           ### for JavaScript
       ignore:
