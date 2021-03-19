@@ -42,8 +42,9 @@ app.once('ready', () => {
   let connected = false
 
   function finish () {
-    if (connected && argv.sandbox != null && argv.noSandbox != null &&
-        argv.noSandboxDevtools != null && argv.sandboxDevtools != null) {
+    if (connected && argv.sandbox != null && argv.noSandbox != null 
+        && argv.noSandboxDevtools != null && argv.sandboxDevtools != null
+    ) {
       client.once('end', () => {
         app.exit(0)
       })

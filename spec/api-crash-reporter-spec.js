@@ -12,7 +12,7 @@ const {remote} = require('electron')
 const {app, BrowserWindow, crashReporter} = remote.require('electron')
 
 describe('crashReporter module', () => {
-  if (process.mas || process.env.DISABLE_CRASH_REPORTER_TESTS) return
+  if (process.mas || process.env.DISABLE_CRASH_REPORTER_TESTS) { return
 
   let originalTempDirectory = null
   let tempDirectory = null
@@ -54,7 +54,7 @@ describe('crashReporter module', () => {
 
       it('should send minidump when renderer crashes', function (done) {
         // TODO(alexeykuzmin): Skip the test instead of marking it as passed.
-        if (process.env.APPVEYOR === 'True') return done()
+        if (process.env.APPVEYOR === 'True') { return done()
 
         this.timeout(180000)
 
@@ -74,7 +74,7 @@ describe('crashReporter module', () => {
 
       it('should send minidump when node processes crash', function (done) {
         // TODO(alexeykuzmin): Skip the test instead of marking it as passed.
-        if (process.env.APPVEYOR === 'True') return done()
+        if (process.env.APPVEYOR === 'True') { return done()
 
         this.timeout(180000)
 
@@ -103,7 +103,8 @@ describe('crashReporter module', () => {
           processType: 'browser',
           done: done
         })
-      })
+      }
+        })
 
       it('should not send minidump if uploadToServer is false', function (done) {
         this.timeout(180000)
@@ -117,18 +118,19 @@ describe('crashReporter module', () => {
           crashReporter.setUploadToServer(false)
         }
         const testDone = (uploaded) => {
-          if (uploaded) return done(new Error('Uploaded crash report'))
-          if (process.platform === 'darwin') crashReporter.setUploadToServer(true)
+          if (uploaded) { return done(new Error('Uploaded crash report'))
+          if (process.platform === 'darwin') { crashReporter.setUploadToServer(true)
           assert(fs.existsSync(dumpFile))
           done()
         }
+          }
 
         let pollInterval
         const pollDumpFile = () => {
           fs.readdir(crashesDir, (err, files) => {
-            if (err) return
+            if (err) { return
             const dumps = files.filter((file) => /\.dmp$/.test(file) && !existingDumpFiles.has(file))
-            if (!dumps.length) return
+            if (!dumps.length) { return
 
             assert.equal(1, dumps.length)
             dumpFile = path.join(crashesDir, dumps[0])
@@ -136,7 +138,8 @@ describe('crashReporter module', () => {
             // dump file should not be deleted when not uploading, so we wait
             // 1s and assert it still exists in `testDone`
             setTimeout(testDone, 1000)
-          })
+          }
+            })
         }
 
         remote.ipcMain.once('list-existing-dumps', (event) => {
@@ -165,11 +168,13 @@ describe('crashReporter module', () => {
           processType: 'renderer',
           done: testDone.bind(null, true)
         })
-      })
+      }
+          }
+            })
 
       it('should send minidump with updated extra parameters', function (done) {
         // TODO(alexeykuzmin): Skip the test instead of marking it as passed.
-        if (process.env.APPVEYOR === 'True') return done()
+        if (process.env.APPVEYOR === 'True') { return done()
 
         this.timeout(180000)
 
@@ -185,7 +190,8 @@ describe('crashReporter module', () => {
           processType: 'renderer',
           done: done
         })
-      })
+      }
+        })
     })
   }
 
@@ -403,8 +409,8 @@ const startServer = ({callback, processType, done}) => {
   let server = http.createServer((req, res) => {
     const form = new multiparty.Form()
     form.parse(req, (error, fields) => {
-      if (error) throw error
-      if (called) return
+      if (error) { throw error
+      if (called) { return
       called = true
       assert.equal(fields.prod, 'Electron')
       assert.equal(fields.ver, process.versions.electron)
@@ -427,7 +433,8 @@ const startServer = ({callback, processType, done}) => {
           done()
         }, done)
       })
-    })
+    }
+      })
   })
 
   const activeConnections = new Set()
@@ -458,6 +465,9 @@ const startServer = ({callback, processType, done}) => {
     server.close(() => {
       done()
     })
+  }
+      }
+        }
   }
 }
 

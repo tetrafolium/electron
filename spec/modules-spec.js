@@ -12,7 +12,7 @@ describe('modules support', () => {
 
   describe('third-party module', () => {
     describe('runas', () => {
-      if (!nativeModulesEnabled) return
+      if (!nativeModulesEnabled) { return
 
       it('can be required in renderer', () => {
         require('runas')
@@ -158,4 +158,5 @@ describe('modules support', () => {
       })
     })
   })
-})
+}); 
+      }

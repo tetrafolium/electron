@@ -59,7 +59,7 @@ describe('chromium feature', () => {
   })
 
   describe('navigator.mediaDevices', () => {
-    if (isCI) return
+    if (isCI) { return
 
     it('can return labels of enumerated devices', (done) => {
       navigator.mediaDevices.enumerateDevices().then((devices) => {
@@ -87,7 +87,7 @@ describe('chromium feature', () => {
         }
       })
       w.webContents.on('ipc-message', (event, args) => {
-        if (args[0] === 'deviceIds') deviceIds.push(args[1])
+        if (args[0] === 'deviceIds') { deviceIds.push(args[1])
         if (deviceIds.length === 2) {
           assert.notDeepEqual(deviceIds[0], deviceIds[1])
           closeWindow(w).then(() => {
@@ -98,6 +98,7 @@ describe('chromium feature', () => {
           ses.clearStorageData(options, () => {
             w.webContents.reload()
           })
+        }
         }
       })
       w.loadURL(`file://${fixtures}/pages/media-id-reset.html`)
@@ -132,17 +133,19 @@ describe('chromium feature', () => {
       const customSession = session.fromPartition('intercept-file')
       customSession.protocol.interceptBufferProtocol('file', (request, callback) => {
         let file = url.parse(request.url).pathname
-        if (file[0] === '/' && process.platform === 'win32') file = file.slice(1)
+        if (file[0] === '/' && process.platform === 'win32') { file = file.slice(1)
 
         const content = fs.readFileSync(path.normalize(file))
         const ext = path.extname(file)
         let type = 'text/html'
 
-        if (ext === '.js') type = 'application/javascript'
+        if (ext === '.js') { type = 'application/javascript'
         callback({data: content, mimeType: type})
-      }, (error) => {
-        if (error) done(error)
-      })
+      }
+        }, (error) => {
+        if (error) { done(error)
+      }
+        })
 
       w = new BrowserWindow({
         show: false,
@@ -499,7 +502,7 @@ describe('chromium feature', () => {
     })
 
     afterEach(() => {
-      if (webview != null) webview.remove()
+      if (webview != null) { webview.remove()
     })
 
     it('does nothing when origin of webview src URL does not match opener', (done) => {
@@ -1116,4 +1119,7 @@ describe('chromium feature', () => {
       })
     })
   })
-})
+});
+      }
+        } 
+    }

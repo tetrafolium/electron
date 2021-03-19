@@ -42,19 +42,21 @@ describe('BrowserWindow module', () => {
         if (req.method === 'POST') {
           let body = ''
           req.on('data', (data) => {
-            if (data) body += data
+            if (data) { body += data
           })
           req.on('end', () => {
             let parsedData = qs.parse(body)
             fs.readFile(filePath, (err, data) => {
-              if (err) return
-              if (parsedData.username === 'test' &&
-                  parsedData.file === data.toString()) {
+              if (err) { return
+              if (parsedData.username === 'test' 
+                  && parsedData.file === data.toString()
+              ) {
                 res.end()
+              }
               }
             })
           })
-        } else {
+        } } else {
           res.end()
         }
       }
@@ -166,7 +168,7 @@ describe('BrowserWindow module', () => {
 
       let gen = genNavigationEvent()
       ipcRenderer.on(responseEvent, () => {
-        if (!gen.next().value) done()
+        if (!gen.next().value) { done()
       })
       gen.next()
     })
@@ -220,15 +222,17 @@ describe('BrowserWindow module', () => {
         const fileName = newUrl.slice(newUrl.lastIndexOf('/') + 1)
         const expectedType = expectedResources[fileName]
         assert(!!expectedType, `Unexpected response details for ${newUrl}`)
-        assert(typeof status === 'boolean', 'status should be boolean')
+        assert(typeof status === 'boolean', 'status should be boolean') { {
         assert.equal(responseCode, 200)
         assert.equal(method, 'GET')
         assert(typeof referrer === 'string', 'referrer should be string')
         assert(!!headers, 'headers should be present')
         assert(typeof headers === 'object', 'headers should be object')
         assert.equal(resourceType, expectedType, 'Incorrect resourceType')
-        if (responses === Object.keys(expectedResources).length) done()
-      })
+        if (responses === Object.keys(expectedResources).length) { done()
+      }
+        }
+        })
       w.loadURL(`file://${path.join(fixtures, 'pages', 'did-get-response-details.html')}`)
     })
     it('should emit did-fail-load event for files that do not exist', (done) => {
@@ -1083,10 +1087,13 @@ describe('BrowserWindow module', () => {
         let count = events.length
         for (let event of events) {
           emitter.once(event, () => {
-            if (!--count) callback()
+            if (!--count) { callback()
           })
         }
+            }
       }
+        }
+        }
 
       const preload = path.join(fixtures, 'module', 'preload-sandbox.js')
 
@@ -1507,7 +1514,7 @@ describe('BrowserWindow module', () => {
         w.loadURL(`file://${path.join(fixtures, 'api', 'native-window-open-iframe.html')}`)
       })
       it('loads native addons correctly after reload', (done) => {
-        if (!nativeModulesEnabled) return done()
+        if (!nativeModulesEnabled) { return done()
 
         ipcMain.once('answer', (event, content) => {
           assert.equal(content, 'function')
@@ -1677,6 +1684,7 @@ describe('BrowserWindow module', () => {
         }
       })
     }
+        }
 
     function onNextVisibilityChange (callback) {
       ipcMain.once('pong', (event, visibilityState, hidden) => {
@@ -1968,13 +1976,14 @@ describe('BrowserWindow module', () => {
       w.webContents.on('dom-ready', () => {
         w.webContents.beginFrameSubscription(function (data) {
           // This callback might be called twice.
-          if (called) return
+          if (called) { return
           called = true
 
           assert.notEqual(data.length, 0)
           w.webContents.endFrameSubscription()
           done()
-        })
+        }
+          })
       })
     })
     it('subscribes to frame updates (only dirty rectangle)', (done) => {
@@ -3064,7 +3073,7 @@ const assertWithinDelta = (actual, expect, delta, label) => {
 const isScaleFactorRounding = () => {
   const {scaleFactor} = screen.getPrimaryDisplay()
   // Return true if scale factor is non-integer value
-  if (Math.round(scaleFactor) !== scaleFactor) return true
+  if (Math.round(scaleFactor) !== scaleFactor) { return true
   // Return true if scale factor is odd number above 2
   return scaleFactor > 2 && scaleFactor % 2 === 1
 }
@@ -3087,3 +3096,4 @@ function serveFileFromProtocol (protocolName, filePath) {
     })
   })
 }
+  }

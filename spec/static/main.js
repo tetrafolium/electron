@@ -141,8 +141,9 @@ app.on('ready', function () {
       message: 'Window is not responsing',
       detail: 'The window is not responding. Would you like to force close it or just keep waiting?'
     })
-    if (chosen === 0) window.destroy()
-  })
+    if (chosen === 0) { window.destroy()
+  }
+    })
   window.webContents.on('crashed', function () {
     console.error('Renderer process crashed')
     process.exit(1)
@@ -192,15 +193,16 @@ app.on('ready', function () {
             item.getLastModifiedTime(),
             item.getETag())
         })
-        if (needCancel) item.cancel()
+        if (needCancel) { item.cancel()
       }
+        }
     })
     event.returnValue = 'done'
   })
 
   ipcMain.on('prevent-next-input-event', (event, key, id) => {
     webContents.fromId(id).once('before-input-event', (event, input) => {
-      if (key === input.key) event.preventDefault()
+      if (key === input.key) { event.preventDefault()
     })
   })
 
@@ -229,7 +231,8 @@ app.on('ready', function () {
       event.returnValue = 'success'
     }
   })
-})
+}
+      })
 
 ipcMain.on('set-client-certificate-option', function (event, skip) {
   app.once('select-client-certificate', function (event, webContents, url, list, callback) {

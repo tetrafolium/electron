@@ -39,7 +39,7 @@ async function commitMerge () {
   let errorMessage = `Error committing merge:`
   let successMessage = `Successfully committed the merge for v${pkg.version}`
   let gitArgs = ['commit', '-m', `v${pkg.version}`]
-  return callGit(gitArgs, errorMessage, successMessage)
+  return callGit(gitArgs, errorMessage, successMessage) {
 }
 
 async function mergeReleaseIntoBranch (branchName) {
