@@ -47,9 +47,9 @@ HINSTANCE DesktopNotificationController::RegisterWndClasses() {
 
     if (!module) {
         if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
-                             GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-                             reinterpret_cast<LPCWSTR>(&RegisterWndClasses),
-                             &module)) {
+                              GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                              reinterpret_cast<LPCWSTR>(&RegisterWndClasses),
+                              &module)) {
             Toast::Register(module);
 
             WNDCLASSEX wc = { sizeof(wc) };
@@ -80,11 +80,11 @@ LRESULT CALLBACK DesktopNotificationController::WndProc(
     HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam) {
     switch (message) {
     case WM_CREATE:
-        {
-            auto& cs = reinterpret_cast<const CREATESTRUCT*&>(lparam);
-            SetWindowLongPtr(hwnd, 0, (LONG_PTR)cs->lpCreateParams);
-        }
-        break;
+    {
+        auto& cs = reinterpret_cast<const CREATESTRUCT*&>(lparam);
+        SetWindowLongPtr(hwnd, 0, (LONG_PTR)cs->lpCreateParams);
+    }
+    break;
 
     case WM_TIMER:
         if (wparam == TimerID_Animate) {
@@ -93,12 +93,12 @@ LRESULT CALLBACK DesktopNotificationController::WndProc(
         return 0;
 
     case WM_DISPLAYCHANGE:
-        {
-            auto inst = Get(hwnd);
-            inst->ClearAssets();
-            inst->AnimateAll();
-        }
-        break;
+    {
+        auto inst = Get(hwnd);
+        inst->ClearAssets();
+        inst->AnimateAll();
+    }
+    break;
 
     case WM_SETTINGCHANGE:
         if (wparam == SPI_SETWORKAREA) {
@@ -158,8 +158,14 @@ void DesktopNotificationController::InitializeFonts() {
 }
 
 void DesktopNotificationController::ClearAssets() {
-    if (caption_font_) { DeleteFont(caption_font_); caption_font_ = NULL; }
-    if (body_font_) { DeleteFont(body_font_); body_font_ = NULL; }
+    if (caption_font_) {
+        DeleteFont(caption_font_);
+        caption_font_ = NULL;
+    }
+    if (body_font_) {
+        DeleteFont(body_font_);
+        body_font_ = NULL;
+    }
 }
 
 void DesktopNotificationController::AnimateAll() {
@@ -174,7 +180,8 @@ void DesktopNotificationController::AnimateAll() {
         if (SystemParametersInfo(SPI_GETWORKAREA, 0, &work_area, 0)) {
             ScreenMetrics metrics;
             POINT origin = { work_area.right,
-                             work_area.bottom - metrics.Y(toast_margin_<int>) };
+                             work_area.bottom - metrics.Y(toast_margin_<int>)
+                           };
 
             auto hdwp =
                 BeginDeferWindowPos(static_cast<int>(instances_.size()));
@@ -217,7 +224,9 @@ void DesktopNotificationController::AnimateAll() {
             it = stable_partition(it, it2, is_alive);
 
             // purge the dead items
-            for_each(it, it2, [this](auto&& inst) { DestroyToast(inst); });
+            for_each(it, it2, [this](auto&& inst) {
+                DestroyToast(inst);
+            });
 
             if (it2 == instances_.end()) {
                 instances_.erase(it, it2);
@@ -253,7 +262,7 @@ void DesktopNotificationController::AnimateAll() {
 }
 
 DesktopNotificationController::Notification
-    DesktopNotificationController::AddNotification(
+DesktopNotificationController::AddNotification(
     std::wstring caption, std::wstring body_text, HBITMAP image) {
     NotificationLink data(this);
 
@@ -326,11 +335,11 @@ void DesktopNotificationController::CreateToast(NotificationLink&& data) {
 HWND DesktopNotificationController::GetToast(
     const NotificationData* data) const {
     auto it = find_if(instances_.cbegin(), instances_.cend(),
-        [data](auto&& inst) {
-            if (!inst.hwnd) return false;
-            auto toast = Toast::Get(inst.hwnd);
-            return data == toast->GetNotification().get();
-        });
+    [data](auto&& inst) {
+        if (!inst.hwnd) return false;
+        auto toast = Toast::Get(inst.hwnd);
+        return data == toast->GetNotification().get();
+    });
 
     return (it != instances_.cend()) ? it->hwnd : NULL;
 }

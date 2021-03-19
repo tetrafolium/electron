@@ -11,17 +11,17 @@
 namespace atom {
 
 class MenuModelAdapter : public views::MenuModelAdapter {
- public:
-  explicit MenuModelAdapter(AtomMenuModel* menu_model);
-  virtual ~MenuModelAdapter();
+public:
+    explicit MenuModelAdapter(AtomMenuModel* menu_model);
+    virtual ~MenuModelAdapter();
 
- protected:
-  bool GetAccelerator(int id, ui::Accelerator* accelerator) const override;
+protected:
+    bool GetAccelerator(int id, ui::Accelerator* accelerator) const override;
 
- private:
-  AtomMenuModel* menu_model_;
+private:
+    AtomMenuModel* menu_model_;
 
-  DISALLOW_COPY_AND_ASSIGN(MenuModelAdapter);
+    DISALLOW_COPY_AND_ASSIGN(MenuModelAdapter);
 };
 
 }  // namespace atom

@@ -14,14 +14,14 @@
 namespace brightray {
 
 std::string GetProductInternal() {
-  auto name = GetApplicationName();
-  base::RemoveChars(name, base::kWhitespaceASCII, &name);
-  return base::StringPrintf("%s/%s",
-      name.c_str(), GetApplicationVersion().c_str());
+    auto name = GetApplicationName();
+    base::RemoveChars(name, base::kWhitespaceASCII, &name);
+    return base::StringPrintf("%s/%s",
+                              name.c_str(), GetApplicationVersion().c_str());
 }
 
 std::string GetBrightrayUserAgent() {
-  return content::BuildUserAgentFromProduct(GetProductInternal());
+    return content::BuildUserAgentFromProduct(GetProductInternal());
 }
 
 ContentClient::ContentClient() {
@@ -31,31 +31,31 @@ ContentClient::~ContentClient() {
 }
 
 std::string ContentClient::GetProduct() const {
-  return GetProductInternal();
+    return GetProductInternal();
 }
 
 std::string ContentClient::GetUserAgent() const {
-  return GetBrightrayUserAgent();
+    return GetBrightrayUserAgent();
 }
 
 base::string16 ContentClient::GetLocalizedString(int message_id) const {
-  return l10n_util::GetStringUTF16(message_id);
+    return l10n_util::GetStringUTF16(message_id);
 }
 
 base::StringPiece ContentClient::GetDataResource(
     int resource_id, ui::ScaleFactor scale_factor) const {
-  return ui::ResourceBundle::GetSharedInstance().GetRawDataResourceForScale(
-      resource_id, scale_factor);
+    return ui::ResourceBundle::GetSharedInstance().GetRawDataResourceForScale(
+               resource_id, scale_factor);
 }
 
 gfx::Image& ContentClient::GetNativeImageNamed(int resource_id) const {
-  return ui::ResourceBundle::GetSharedInstance().GetNativeImageNamed(
-      resource_id);
+    return ui::ResourceBundle::GetSharedInstance().GetNativeImageNamed(
+               resource_id);
 }
 
 base::RefCountedMemory* ContentClient::GetDataResourceBytes(
     int resource_id) const {
-  return ResourceBundle::GetSharedInstance().LoadDataResourceBytes(resource_id);
+    return ResourceBundle::GetSharedInstance().LoadDataResourceBytes(resource_id);
 }
 
 }  // namespace brightray

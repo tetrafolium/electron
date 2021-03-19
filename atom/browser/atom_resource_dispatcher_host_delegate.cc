@@ -36,33 +36,33 @@ namespace atom {
 namespace {
 
 void OnOpenExternal(const GURL& escaped_url, bool allowed) {
-  if (allowed)
-    platform_util::OpenExternal(
+    if (allowed)
+        platform_util::OpenExternal(
 #if defined(OS_WIN)
-        base::UTF8ToUTF16(escaped_url.spec()),
+            base::UTF8ToUTF16(escaped_url.spec()),
 #else
-        escaped_url,
+            escaped_url,
 #endif
-        true);
+            true);
 }
 
 void HandleExternalProtocolInUI(
     const GURL& url,
     const content::ResourceRequestInfo::WebContentsGetter& web_contents_getter,
     bool has_user_gesture) {
-  content::WebContents* web_contents = web_contents_getter.Run();
-  if (!web_contents)
-    return;
+    content::WebContents* web_contents = web_contents_getter.Run();
+    if (!web_contents)
+        return;
 
-  auto permission_helper =
-      WebContentsPermissionHelper::FromWebContents(web_contents);
-  if (!permission_helper)
-    return;
+    auto permission_helper =
+        WebContentsPermissionHelper::FromWebContents(web_contents);
+    if (!permission_helper)
+        return;
 
-  GURL escaped_url(net::EscapeExternalHandlerValue(url.spec()));
-  auto callback = base::Bind(&OnOpenExternal, escaped_url);
-  permission_helper->RequestOpenExternalPermission(callback, has_user_gesture,
-                                                   url);
+    GURL escaped_url(net::EscapeExternalHandlerValue(url.spec()));
+    auto callback = base::Bind(&OnOpenExternal, escaped_url);
+    permission_helper->RequestOpenExternalPermission(callback, has_user_gesture,
+            url);
 }
 
 void OnPdfResourceIntercepted(
@@ -70,37 +70,37 @@ void OnPdfResourceIntercepted(
     int render_process_host_id,
     int render_frame_id,
     const content::ResourceRequestInfo::WebContentsGetter&
-        web_contents_getter) {
-  content::WebContents* web_contents = web_contents_getter.Run();
-  if (!web_contents)
-    return;
+    web_contents_getter) {
+    content::WebContents* web_contents = web_contents_getter.Run();
+    if (!web_contents)
+        return;
 
-  if (!WebContentsPreferences::IsPluginsEnabled(web_contents)) {
-    auto browser_context = web_contents->GetBrowserContext();
-    auto download_manager =
-        content::BrowserContext::GetDownloadManager(browser_context);
+    if (!WebContentsPreferences::IsPluginsEnabled(web_contents)) {
+        auto browser_context = web_contents->GetBrowserContext();
+        auto download_manager =
+            content::BrowserContext::GetDownloadManager(browser_context);
 
-    download_manager->DownloadUrl(
-        content::DownloadUrlParameters::CreateForWebContentsMainFrame(
-            web_contents, original_url, NO_TRAFFIC_ANNOTATION_YET));
-    return;
-  }
+        download_manager->DownloadUrl(
+            content::DownloadUrlParameters::CreateForWebContentsMainFrame(
+                web_contents, original_url, NO_TRAFFIC_ANNOTATION_YET));
+        return;
+    }
 
-  // The URL passes the original pdf resource url, that will be requested
-  // by the webui page.
-  // chrome://pdf-viewer/index.html?src=https://somepage/123.pdf
-  content::NavigationController::LoadURLParams params(GURL(base::StringPrintf(
-      "%sindex.html?%s=%s", kPdfViewerUIOrigin, kPdfPluginSrc,
-      net::EscapeUrlEncodedData(original_url.spec(), false).c_str())));
+    // The URL passes the original pdf resource url, that will be requested
+    // by the webui page.
+    // chrome://pdf-viewer/index.html?src=https://somepage/123.pdf
+    content::NavigationController::LoadURLParams params(GURL(base::StringPrintf(
+                "%sindex.html?%s=%s", kPdfViewerUIOrigin, kPdfPluginSrc,
+                net::EscapeUrlEncodedData(original_url.spec(), false).c_str())));
 
-  content::RenderFrameHost* frame_host =
-      content::RenderFrameHost::FromID(render_process_host_id, render_frame_id);
-  if (!frame_host) {
-    return;
-  }
+    content::RenderFrameHost* frame_host =
+        content::RenderFrameHost::FromID(render_process_host_id, render_frame_id);
+    if (!frame_host) {
+        return;
+    }
 
-  params.frame_tree_node_id = frame_host->GetFrameTreeNodeId();
-  web_contents->GetController().LoadURLWithParams(params);
+    params.frame_tree_node_id = frame_host->GetFrameTreeNodeId();
+    web_contents->GetController().LoadURLWithParams(params);
 }
 
 }  // namespace
@@ -110,32 +110,32 @@ AtomResourceDispatcherHostDelegate::AtomResourceDispatcherHostDelegate() {}
 bool AtomResourceDispatcherHostDelegate::HandleExternalProtocol(
     const GURL& url,
     content::ResourceRequestInfo* info) {
-  BrowserThread::PostTask(BrowserThread::UI, FROM_HERE,
-                          base::Bind(&HandleExternalProtocolInUI, url,
-                                     info->GetWebContentsGetterForRequest(),
-                                     info->HasUserGesture()));
-  return true;
+    BrowserThread::PostTask(BrowserThread::UI, FROM_HERE,
+                            base::Bind(&HandleExternalProtocolInUI, url,
+                                       info->GetWebContentsGetterForRequest(),
+                                       info->HasUserGesture()));
+    return true;
 }
 
 content::ResourceDispatcherHostLoginDelegate*
 AtomResourceDispatcherHostDelegate::CreateLoginDelegate(
     net::AuthChallengeInfo* auth_info,
     net::URLRequest* request) {
-  return new LoginHandler(auth_info, request);
+    return new LoginHandler(auth_info, request);
 }
 
 std::unique_ptr<net::ClientCertStore>
 AtomResourceDispatcherHostDelegate::CreateClientCertStore(
     content::ResourceContext* resource_context) {
 #if defined(USE_NSS_CERTS)
-  return std::unique_ptr<net::ClientCertStore>(new net::ClientCertStoreNSS(
-      net::ClientCertStoreNSS::PasswordDelegateFactory()));
+    return std::unique_ptr<net::ClientCertStore>(new net::ClientCertStoreNSS(
+                net::ClientCertStoreNSS::PasswordDelegateFactory()));
 #elif defined(OS_WIN)
-  return std::unique_ptr<net::ClientCertStore>(new net::ClientCertStoreWin());
+    return std::unique_ptr<net::ClientCertStore>(new net::ClientCertStoreWin());
 #elif defined(OS_MACOSX)
-  return std::unique_ptr<net::ClientCertStore>(new net::ClientCertStoreMac());
+    return std::unique_ptr<net::ClientCertStore>(new net::ClientCertStoreMac());
 #elif defined(USE_OPENSSL)
-  return std::unique_ptr<net::ClientCertStore>();
+    return std::unique_ptr<net::ClientCertStore>();
 #endif
 }
 
@@ -145,26 +145,26 @@ bool AtomResourceDispatcherHostDelegate::ShouldInterceptResourceAsStream(
     const std::string& mime_type,
     GURL* origin,
     std::string* payload) {
-  const content::ResourceRequestInfo* info =
-      content::ResourceRequestInfo::ForRequest(request);
+    const content::ResourceRequestInfo* info =
+        content::ResourceRequestInfo::ForRequest(request);
 
-  int render_process_host_id;
-  int render_frame_id;
-  if (!info->GetAssociatedRenderFrame(&render_process_host_id,
-                                      &render_frame_id)) {
+    int render_process_host_id;
+    int render_frame_id;
+    if (!info->GetAssociatedRenderFrame(&render_process_host_id,
+                                        &render_frame_id)) {
+        return false;
+    }
+
+    if (mime_type == "application/pdf") {
+        *origin = GURL(kPdfViewerUIOrigin);
+        content::BrowserThread::PostTask(
+            BrowserThread::UI, FROM_HERE,
+            base::Bind(&OnPdfResourceIntercepted, request->url(),
+                       render_process_host_id, render_frame_id,
+                       info->GetWebContentsGetterForRequest()));
+        return true;
+    }
     return false;
-  }
-
-  if (mime_type == "application/pdf") {
-    *origin = GURL(kPdfViewerUIOrigin);
-    content::BrowserThread::PostTask(
-        BrowserThread::UI, FROM_HERE,
-        base::Bind(&OnPdfResourceIntercepted, request->url(),
-                   render_process_host_id, render_frame_id,
-                   info->GetWebContentsGetterForRequest()));
-    return true;
-  }
-  return false;
 }
 
 }  // namespace atom

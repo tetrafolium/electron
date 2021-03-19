@@ -28,34 +28,34 @@ namespace brightray {
 // class. Any changes to per-host levels are updated when HostZoomMap calls
 // OnZoomLevelChanged.
 class ZoomLevelDelegate : public content::ZoomLevelDelegate {
- public:
-  static void RegisterPrefs(PrefRegistrySimple* pref_registry);
+public:
+    static void RegisterPrefs(PrefRegistrySimple* pref_registry);
 
-  ZoomLevelDelegate(PrefService* pref_service,
-                    const base::FilePath& partition_path);
-  ~ZoomLevelDelegate() override;
+    ZoomLevelDelegate(PrefService* pref_service,
+                      const base::FilePath& partition_path);
+    ~ZoomLevelDelegate() override;
 
-  void SetDefaultZoomLevelPref(double level);
-  double GetDefaultZoomLevelPref() const;
+    void SetDefaultZoomLevelPref(double level);
+    double GetDefaultZoomLevelPref() const;
 
-  // content::ZoomLevelDelegate:
-  void InitHostZoomMap(content::HostZoomMap* host_zoom_map) override;
+    // content::ZoomLevelDelegate:
+    void InitHostZoomMap(content::HostZoomMap* host_zoom_map) override;
 
- private:
-  void ExtractPerHostZoomLevels(
-      const base::DictionaryValue* host_zoom_dictionary);
+private:
+    void ExtractPerHostZoomLevels(
+        const base::DictionaryValue* host_zoom_dictionary);
 
-  // This is a callback function that receives notifications from HostZoomMap
-  // when per-host zoom levels change. It is used to update the per-host
-  // zoom levels (if any) managed by this class (for its associated partition).
-  void OnZoomLevelChanged(const content::HostZoomMap::ZoomLevelChange& change);
+    // This is a callback function that receives notifications from HostZoomMap
+    // when per-host zoom levels change. It is used to update the per-host
+    // zoom levels (if any) managed by this class (for its associated partition).
+    void OnZoomLevelChanged(const content::HostZoomMap::ZoomLevelChange& change);
 
-  PrefService* pref_service_;
-  content::HostZoomMap* host_zoom_map_;
-  std::unique_ptr<content::HostZoomMap::Subscription> zoom_subscription_;
-  std::string partition_key_;
+    PrefService* pref_service_;
+    content::HostZoomMap* host_zoom_map_;
+    std::unique_ptr<content::HostZoomMap::Subscription> zoom_subscription_;
+    std::string partition_key_;
 
-  DISALLOW_COPY_AND_ASSIGN(ZoomLevelDelegate);
+    DISALLOW_COPY_AND_ASSIGN(ZoomLevelDelegate);
 };
 
 }  // namespace brightray

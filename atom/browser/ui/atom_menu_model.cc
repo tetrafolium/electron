@@ -17,38 +17,38 @@ AtomMenuModel::~AtomMenuModel() {
 }
 
 void AtomMenuModel::SetRole(int index, const base::string16& role) {
-  int command_id = GetCommandIdAt(index);
-  roles_[command_id] = role;
+    int command_id = GetCommandIdAt(index);
+    roles_[command_id] = role;
 }
 
 base::string16 AtomMenuModel::GetRoleAt(int index) {
-  int command_id = GetCommandIdAt(index);
-  if (base::ContainsKey(roles_, command_id))
-    return roles_[command_id];
-  else
-    return base::string16();
+    int command_id = GetCommandIdAt(index);
+    if (base::ContainsKey(roles_, command_id))
+        return roles_[command_id];
+    else
+        return base::string16();
 }
 
 bool AtomMenuModel::GetAcceleratorAtWithParams(
     int index,
     bool use_default_accelerator,
     ui::Accelerator* accelerator) const {
-  if (delegate_) {
-    return delegate_->GetAcceleratorForCommandIdWithParams(
-        GetCommandIdAt(index), use_default_accelerator, accelerator);
-  }
-  return false;
+    if (delegate_) {
+        return delegate_->GetAcceleratorForCommandIdWithParams(
+                   GetCommandIdAt(index), use_default_accelerator, accelerator);
+    }
+    return false;
 }
 
 void AtomMenuModel::MenuWillClose() {
-  ui::SimpleMenuModel::MenuWillClose();
-  for (Observer& observer : observers_)
-    observer.MenuWillClose();
+    ui::SimpleMenuModel::MenuWillClose();
+    for (Observer& observer : observers_)
+        observer.MenuWillClose();
 }
 
 AtomMenuModel* AtomMenuModel::GetSubmenuModelAt(int index) {
-  return static_cast<AtomMenuModel*>(
-      ui::SimpleMenuModel::GetSubmenuModelAt(index));
+    return static_cast<AtomMenuModel*>(
+               ui::SimpleMenuModel::GetSubmenuModelAt(index));
 }
 
 }  // namespace atom

@@ -10,24 +10,24 @@
 namespace brightray {
 
 class NotificationDelegate {
- public:
-  // The native Notification object is destroyed.
-  virtual void NotificationDestroyed() {}
+public:
+    // The native Notification object is destroyed.
+    virtual void NotificationDestroyed() {}
 
-  // Failed to send the notification.
-  virtual void NotificationFailed() {}
+    // Failed to send the notification.
+    virtual void NotificationFailed() {}
 
-  // Notification was replied to
-  virtual void NotificationReplied(const std::string& reply) {}
-  virtual void NotificationAction(int index) {}
+    // Notification was replied to
+    virtual void NotificationReplied(const std::string& reply) {}
+    virtual void NotificationAction(int index) {}
 
-  virtual void NotificationClick() {}
-  virtual void NotificationClosed() {}
-  virtual void NotificationDisplayed() {}
+    virtual void NotificationClick() {}
+    virtual void NotificationClosed() {}
+    virtual void NotificationDisplayed() {}
 
- protected:
-  NotificationDelegate() = default;
-  ~NotificationDelegate() = default;
+protected:
+    NotificationDelegate() = default;
+    ~NotificationDelegate() = default;
 };
 
 }  // namespace brightray

@@ -22,41 +22,41 @@ template <typename T> struct DefaultSingletonTraits;
 namespace crash_reporter {
 
 class CrashReporterMac : public CrashReporter {
- public:
-  static CrashReporterMac* GetInstance();
+public:
+    static CrashReporterMac* GetInstance();
 
-  void InitBreakpad(const std::string& product_name,
-                    const std::string& version,
-                    const std::string& company_name,
-                    const std::string& submit_url,
-                    const base::FilePath& crashes_dir,
-                    bool upload_to_server,
-                    bool skip_system_crash_handler) override;
-  void SetUploadParameters() override;
-  void SetUploadToServer(bool upload_to_server) override;
-  bool GetUploadToServer() override;
-  void AddExtraParameter(const std::string& key,
-                         const std::string& value) override;
-  void RemoveExtraParameter(const std::string& key) override;
-  std::map<std::string, std::string> GetParameters() const override;
+    void InitBreakpad(const std::string& product_name,
+                      const std::string& version,
+                      const std::string& company_name,
+                      const std::string& submit_url,
+                      const base::FilePath& crashes_dir,
+                      bool upload_to_server,
+                      bool skip_system_crash_handler) override;
+    void SetUploadParameters() override;
+    void SetUploadToServer(bool upload_to_server) override;
+    bool GetUploadToServer() override;
+    void AddExtraParameter(const std::string& key,
+                           const std::string& value) override;
+    void RemoveExtraParameter(const std::string& key) override;
+    std::map<std::string, std::string> GetParameters() const override;
 
- private:
-  friend struct base::DefaultSingletonTraits<CrashReporterMac>;
+private:
+    friend struct base::DefaultSingletonTraits<CrashReporterMac>;
 
-  CrashReporterMac();
-  virtual ~CrashReporterMac();
+    CrashReporterMac();
+    virtual ~CrashReporterMac();
 
-  void SetUploadsEnabled(bool enable_uploads);
-  void SetCrashKeyValue(const base::StringPiece& key,
-                        const base::StringPiece& value);
+    void SetUploadsEnabled(bool enable_uploads);
+    void SetCrashKeyValue(const base::StringPiece& key,
+                          const base::StringPiece& value);
 
-  std::vector<UploadReportResult> GetUploadedReports(
-      const base::FilePath& crashes_dir) override;
+    std::vector<UploadReportResult> GetUploadedReports(
+        const base::FilePath& crashes_dir) override;
 
-  std::unique_ptr<crashpad::SimpleStringDictionary> simple_string_dictionary_;
-  std::unique_ptr<crashpad::CrashReportDatabase> database_;
+    std::unique_ptr<crashpad::SimpleStringDictionary> simple_string_dictionary_;
+    std::unique_ptr<crashpad::CrashReportDatabase> database_;
 
-  DISALLOW_COPY_AND_ASSIGN(CrashReporterMac);
+    DISALLOW_COPY_AND_ASSIGN(CrashReporterMac);
 };
 
 }  // namespace crash_reporter

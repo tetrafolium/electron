@@ -15,6 +15,6 @@ class KeySystemProperties;
 // Register the key systems supported by populating |key_systems_properties|.
 void AddChromeKeySystems(
     std::vector<std::unique_ptr<media::KeySystemProperties>>*
-        key_systems_properties);
+    key_systems_properties);
 
 #endif  // CHROME_RENDERER_MEDIA_CHROME_KEY_SYSTEMS_H_

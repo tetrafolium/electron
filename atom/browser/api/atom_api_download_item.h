@@ -19,48 +19,48 @@ namespace atom {
 namespace api {
 
 class DownloadItem : public mate::TrackableObject<DownloadItem>,
-                     public content::DownloadItem::Observer {
- public:
-  static mate::Handle<DownloadItem> Create(v8::Isolate* isolate,
-                                           content::DownloadItem* item);
+    public content::DownloadItem::Observer {
+public:
+    static mate::Handle<DownloadItem> Create(v8::Isolate* isolate,
+            content::DownloadItem* item);
 
-  static void BuildPrototype(v8::Isolate* isolate,
-                             v8::Local<v8::FunctionTemplate> prototype);
+    static void BuildPrototype(v8::Isolate* isolate,
+                               v8::Local<v8::FunctionTemplate> prototype);
 
-  void Pause();
-  bool IsPaused() const;
-  void Resume();
-  bool CanResume() const;
-  void Cancel();
-  int64_t GetReceivedBytes() const;
-  int64_t GetTotalBytes() const;
-  std::string GetMimeType() const;
-  bool HasUserGesture() const;
-  std::string GetFilename() const;
-  std::string GetContentDisposition() const;
-  const GURL& GetURL() const;
-  const std::vector<GURL>& GetURLChain() const;
-  content::DownloadItem::DownloadState GetState() const;
-  bool IsDone() const;
-  void SetSavePath(const base::FilePath& path);
-  base::FilePath GetSavePath() const;
-  std::string GetLastModifiedTime() const;
-  std::string GetETag() const;
-  double GetStartTime() const;
+    void Pause();
+    bool IsPaused() const;
+    void Resume();
+    bool CanResume() const;
+    void Cancel();
+    int64_t GetReceivedBytes() const;
+    int64_t GetTotalBytes() const;
+    std::string GetMimeType() const;
+    bool HasUserGesture() const;
+    std::string GetFilename() const;
+    std::string GetContentDisposition() const;
+    const GURL& GetURL() const;
+    const std::vector<GURL>& GetURLChain() const;
+    content::DownloadItem::DownloadState GetState() const;
+    bool IsDone() const;
+    void SetSavePath(const base::FilePath& path);
+    base::FilePath GetSavePath() const;
+    std::string GetLastModifiedTime() const;
+    std::string GetETag() const;
+    double GetStartTime() const;
 
- protected:
-  DownloadItem(v8::Isolate* isolate, content::DownloadItem* download_item);
-  ~DownloadItem();
+protected:
+    DownloadItem(v8::Isolate* isolate, content::DownloadItem* download_item);
+    ~DownloadItem();
 
-  // Override content::DownloadItem::Observer methods
-  void OnDownloadUpdated(content::DownloadItem* download) override;
-  void OnDownloadDestroyed(content::DownloadItem* download) override;
+    // Override content::DownloadItem::Observer methods
+    void OnDownloadUpdated(content::DownloadItem* download) override;
+    void OnDownloadDestroyed(content::DownloadItem* download) override;
 
- private:
-  base::FilePath save_path_;
-  content::DownloadItem* download_item_;
+private:
+    base::FilePath save_path_;
+    content::DownloadItem* download_item_;
 
-  DISALLOW_COPY_AND_ASSIGN(DownloadItem);
+    DISALLOW_COPY_AND_ASSIGN(DownloadItem);
 };
 
 }  // namespace api

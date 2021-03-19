@@ -12,25 +12,25 @@
 namespace atom {
 
 class WindowStateWatcher : public ui::PlatformEventObserver {
- public:
-  explicit WindowStateWatcher(NativeWindowViews* window);
-  virtual ~WindowStateWatcher();
+public:
+    explicit WindowStateWatcher(NativeWindowViews* window);
+    virtual ~WindowStateWatcher();
 
- protected:
-  // ui::PlatformEventObserver:
-  void WillProcessEvent(const ui::PlatformEvent& event) override;
-  void DidProcessEvent(const ui::PlatformEvent& event) override;
+protected:
+    // ui::PlatformEventObserver:
+    void WillProcessEvent(const ui::PlatformEvent& event) override;
+    void DidProcessEvent(const ui::PlatformEvent& event) override;
 
- private:
-  bool IsWindowStateEvent(const ui::PlatformEvent& event);
+private:
+    bool IsWindowStateEvent(const ui::PlatformEvent& event);
 
-  NativeWindowViews* window_;
-  gfx::AcceleratedWidget widget_;
+    NativeWindowViews* window_;
+    gfx::AcceleratedWidget widget_;
 
-  bool was_minimized_;
-  bool was_maximized_;
+    bool was_minimized_;
+    bool was_maximized_;
 
-  DISALLOW_COPY_AND_ASSIGN(WindowStateWatcher);
+    DISALLOW_COPY_AND_ASSIGN(WindowStateWatcher);
 };
 
 }  // namespace atom

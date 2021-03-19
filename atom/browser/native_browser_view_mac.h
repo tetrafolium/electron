@@ -15,19 +15,19 @@
 namespace atom {
 
 class NativeBrowserViewMac : public NativeBrowserView {
- public:
-  explicit NativeBrowserViewMac(
-      brightray::InspectableWebContentsView* web_contents_view);
-  ~NativeBrowserViewMac() override;
+public:
+    explicit NativeBrowserViewMac(
+        brightray::InspectableWebContentsView* web_contents_view);
+    ~NativeBrowserViewMac() override;
 
-  void SetAutoResizeFlags(uint8_t flags) override;
-  void SetBounds(const gfx::Rect& bounds) override;
-  void SetBackgroundColor(SkColor color) override;
-  void UpdateDraggableRegions(
-      const std::vector<gfx::Rect>& system_drag_exclude_areas) override;
+    void SetAutoResizeFlags(uint8_t flags) override;
+    void SetBounds(const gfx::Rect& bounds) override;
+    void SetBackgroundColor(SkColor color) override;
+    void UpdateDraggableRegions(
+        const std::vector<gfx::Rect>& system_drag_exclude_areas) override;
 
- private:
-  DISALLOW_COPY_AND_ASSIGN(NativeBrowserViewMac);
+private:
+    DISALLOW_COPY_AND_ASSIGN(NativeBrowserViewMac);
 };
 
 }  // namespace atom

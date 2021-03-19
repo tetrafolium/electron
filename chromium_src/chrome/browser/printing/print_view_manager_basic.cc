@@ -23,25 +23,25 @@ PrintViewManagerBasic::~PrintViewManagerBasic() {
 
 #if defined(OS_ANDROID)
 void PrintViewManagerBasic::RenderProcessGone(base::TerminationStatus status) {
-  PrintingContextAndroid::PdfWritingDone(file_descriptor_.fd, false);
-  file_descriptor_ = base::FileDescriptor(-1, false);
-  PrintViewManagerBase::RenderProcessGone(status);
+    PrintingContextAndroid::PdfWritingDone(file_descriptor_.fd, false);
+    file_descriptor_ = base::FileDescriptor(-1, false);
+    PrintViewManagerBase::RenderProcessGone(status);
 }
 
 void PrintViewManagerBasic::OnPrintingFailed(int cookie) {
-  PrintingContextAndroid::PdfWritingDone(file_descriptor_.fd, false);
-  file_descriptor_ = base::FileDescriptor(-1, false);
-  PrintViewManagerBase::OnPrintingFailed(cookie);
+    PrintingContextAndroid::PdfWritingDone(file_descriptor_.fd, false);
+    file_descriptor_ = base::FileDescriptor(-1, false);
+    PrintViewManagerBase::OnPrintingFailed(cookie);
 }
 
 bool PrintViewManagerBasic::OnMessageReceived(const IPC::Message& message) {
-  bool handled = true;
-  IPC_BEGIN_MESSAGE_MAP(PrintViewManagerBasic, message)
+    bool handled = true;
+    IPC_BEGIN_MESSAGE_MAP(PrintViewManagerBasic, message)
     IPC_MESSAGE_HANDLER(PrintHostMsg_PrintingFailed, OnPrintingFailed)
     IPC_MESSAGE_UNHANDLED(handled = false)
-  IPC_END_MESSAGE_MAP()
+    IPC_END_MESSAGE_MAP()
 
-  return handled ? true : PrintViewManagerBase::OnMessageReceived(message);
+    return handled ? true : PrintViewManagerBase::OnMessageReceived(message);
 }
 #endif
 

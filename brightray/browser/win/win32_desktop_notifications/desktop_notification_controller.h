@@ -10,7 +10,7 @@ namespace brightray {
 struct NotificationData;
 
 class DesktopNotificationController {
- public:
+public:
     explicit DesktopNotificationController(unsigned maximum_toasts = 3);
     ~DesktopNotificationController();
 
@@ -20,18 +20,18 @@ class DesktopNotificationController {
     void CloseNotification(Notification& notification);
 
     // Event handlers -- override to receive the events
- private:
+private:
     virtual void OnNotificationClosed(Notification& notification) {}
     virtual void OnNotificationClicked(Notification& notification) {}
     virtual void OnNotificationDismissed(Notification& notification) {}
 
- private:
+private:
     static HINSTANCE RegisterWndClasses();
     void StartAnimation();
     HFONT GetCaptionFont();
     HFONT GetBodyFont();
 
- private:
+private:
     enum TimerID {
         TimerID_Animate = 1
     };
@@ -62,7 +62,7 @@ class DesktopNotificationController {
                                     WPARAM wparam, LPARAM lparam);
     static DesktopNotificationController* Get(HWND hwnd) {
         return reinterpret_cast<DesktopNotificationController*>(
-            GetWindowLongPtr(hwnd, 0));
+                   GetWindowLongPtr(hwnd, 0));
     }
 
     DesktopNotificationController(
@@ -76,7 +76,7 @@ class DesktopNotificationController {
     HWND GetToast(const NotificationData* data) const;
     void DestroyToast(ToastInstance& inst);
 
- private:
+private:
     static constexpr const TCHAR class_name_[] =
         TEXT("DesktopNotificationController");
 
@@ -88,7 +88,7 @@ class DesktopNotificationController {
 };
 
 class DesktopNotificationController::Notification {
- public:
+public:
     Notification() = default;
     explicit Notification(const std::shared_ptr<NotificationData>& data);
 
@@ -97,7 +97,7 @@ class DesktopNotificationController::Notification {
     void Close();
     void Set(std::wstring caption, std::wstring body_text, HBITMAP image);
 
- private:
+private:
     std::shared_ptr<NotificationData> data_;
 
     friend class DesktopNotificationController;

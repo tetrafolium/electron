@@ -15,56 +15,56 @@ namespace atom {
 class MacHelper :
     public content::BrowserCompositorMacClient,
     public ui::AcceleratedWidgetMacNSView {
- public:
-  explicit MacHelper(OffScreenRenderWidgetHostView* view) : view_(view) {}
-  virtual ~MacHelper() {}
+public:
+    explicit MacHelper(OffScreenRenderWidgetHostView* view) : view_(view) {}
+    virtual ~MacHelper() {}
 
-  // content::BrowserCompositorMacClient:
-  NSView* BrowserCompositorMacGetNSView() const override {
-    // Intentionally return nil so that
-    // BrowserCompositorMac::DelegatedFrameHostDesiredSizeInDIP uses the layer
-    // size instead of the NSView size.
-    return nil;
-  }
-
-  SkColor BrowserCompositorMacGetGutterColor(SkColor color) const override {
-    // When making an element on the page fullscreen the element's background
-    // may not match the page's, so use black as the gutter color to avoid
-    // flashes of brighter colors during the transition.
-    if (view_->render_widget_host()->delegate() &&
-        view_->render_widget_host()->delegate()->IsFullscreenForCurrentTab()) {
-      return SK_ColorBLACK;
+    // content::BrowserCompositorMacClient:
+    NSView* BrowserCompositorMacGetNSView() const override {
+        // Intentionally return nil so that
+        // BrowserCompositorMac::DelegatedFrameHostDesiredSizeInDIP uses the layer
+        // size instead of the NSView size.
+        return nil;
     }
-    return color;
-  }
 
-  void BrowserCompositorMacOnBeginFrame() override {}
+    SkColor BrowserCompositorMacGetGutterColor(SkColor color) const override {
+        // When making an element on the page fullscreen the element's background
+        // may not match the page's, so use black as the gutter color to avoid
+        // flashes of brighter colors during the transition.
+        if (view_->render_widget_host()->delegate() &&
+                view_->render_widget_host()->delegate()->IsFullscreenForCurrentTab()) {
+            return SK_ColorBLACK;
+        }
+        return color;
+    }
 
-  // ui::AcceleratedWidgetMacNSView:
-  NSView* AcceleratedWidgetGetNSView() const override {
-    return [view_->window()->GetNativeWindow() contentView];
-  }
+    void BrowserCompositorMacOnBeginFrame() override {}
 
-  void AcceleratedWidgetGetVSyncParameters(
+    // ui::AcceleratedWidgetMacNSView:
+    NSView* AcceleratedWidgetGetNSView() const override {
+        return [view_->window()->GetNativeWindow() contentView];
+    }
+
+    void AcceleratedWidgetGetVSyncParameters(
         base::TimeTicks* timebase, base::TimeDelta* interval) const override {
-    *timebase = base::TimeTicks();
-    *interval = base::TimeDelta();
-  }
+        *timebase = base::TimeTicks();
+        *interval = base::TimeDelta();
+    }
 
-  void AcceleratedWidgetSwapCompleted() override {
-  }
+    void AcceleratedWidgetSwapCompleted() override {
+    }
 
- private:
-  OffScreenRenderWidgetHostView* view_;
+private:
+    OffScreenRenderWidgetHostView* view_;
 
-  DISALLOW_COPY_AND_ASSIGN(MacHelper);
+    DISALLOW_COPY_AND_ASSIGN(MacHelper);
 };
 
 ui::AcceleratedWidgetMac*
 OffScreenRenderWidgetHostView::GetAcceleratedWidgetMac() const {
-  if (browser_compositor_)
-    return browser_compositor_->GetAcceleratedWidgetMac();
-  return nullptr;
+    if (browser_compositor_)
+        return browser_compositor_->GetAcceleratedWidgetMac();
+    return nullptr;
 }
 
 void OffScreenRenderWidgetHostView::SetActive(bool active) {
@@ -74,14 +74,14 @@ void OffScreenRenderWidgetHostView::ShowDefinitionForSelection() {
 }
 
 bool OffScreenRenderWidgetHostView::SupportsSpeech() const {
-  return false;
+    return false;
 }
 
 void OffScreenRenderWidgetHostView::SpeakSelection() {
 }
 
 bool OffScreenRenderWidgetHostView::IsSpeaking() const {
-  return false;
+    return false;
 }
 
 void OffScreenRenderWidgetHostView::StopSpeaking() {
@@ -91,47 +91,47 @@ void OffScreenRenderWidgetHostView::SelectionChanged(
     const base::string16& text,
     size_t offset,
     const gfx::Range& range) {
-  if (range.is_empty() || text.empty()) {
-    selected_text_.clear();
-  } else {
-    size_t pos = range.GetMin() - offset;
-    size_t n = range.length();
+    if (range.is_empty() || text.empty()) {
+        selected_text_.clear();
+    } else {
+        size_t pos = range.GetMin() - offset;
+        size_t n = range.length();
 
-    DCHECK(pos + n <= text.length()) << "The text can not fully cover range.";
-    if (pos >= text.length()) {
-      DCHECK(false) << "The text can not cover range.";
-      return;
+        DCHECK(pos + n <= text.length()) << "The text can not fully cover range.";
+        if (pos >= text.length()) {
+            DCHECK(false) << "The text can not cover range.";
+            return;
+        }
+        selected_text_ = base::UTF16ToUTF8(text.substr(pos, n));
     }
-    selected_text_ = base::UTF16ToUTF8(text.substr(pos, n));
-  }
 
-  RenderWidgetHostViewBase::SelectionChanged(text, offset, range);
+    RenderWidgetHostViewBase::SelectionChanged(text, offset, range);
 }
 
 void OffScreenRenderWidgetHostView::CreatePlatformWidget(
     bool is_guest_view_hack) {
-  mac_helper_ = new MacHelper(this);
-  browser_compositor_.reset(new content::BrowserCompositorMac(
-      mac_helper_, mac_helper_, render_widget_host_->is_hidden(), true,
-      AllocateFrameSinkId(is_guest_view_hack)));
+    mac_helper_ = new MacHelper(this);
+    browser_compositor_.reset(new content::BrowserCompositorMac(
+                                  mac_helper_, mac_helper_, render_widget_host_->is_hidden(), true,
+                                  AllocateFrameSinkId(is_guest_view_hack)));
 }
 
 void OffScreenRenderWidgetHostView::DestroyPlatformWidget() {
-  browser_compositor_.reset();
-  delete mac_helper_;
+    browser_compositor_.reset();
+    delete mac_helper_;
 }
 
 ui::Compositor* OffScreenRenderWidgetHostView::GetCompositor() const {
-  return browser_compositor_->GetCompositor();
+    return browser_compositor_->GetCompositor();
 }
 
 ui::Layer* OffScreenRenderWidgetHostView::GetRootLayer() const {
-  return browser_compositor_->GetRootLayer();
+    return browser_compositor_->GetRootLayer();
 }
 
 content::DelegatedFrameHost*
 OffScreenRenderWidgetHostView::GetDelegatedFrameHost() const {
-  return browser_compositor_->GetDelegatedFrameHost();
+    return browser_compositor_->GetDelegatedFrameHost();
 }
 
 } // namespace atom

@@ -11,9 +11,9 @@ namespace brightray {
 
 // static
 NotificationPresenter* NotificationPresenter::Create() {
-  if (!LibnotifyNotification::Initialize())
-    return nullptr;
-  return new NotificationPresenterLinux;
+    if (!LibnotifyNotification::Initialize())
+        return nullptr;
+    return new NotificationPresenterLinux;
 }
 
 NotificationPresenterLinux::NotificationPresenterLinux() {
@@ -24,7 +24,7 @@ NotificationPresenterLinux::~NotificationPresenterLinux() {
 
 Notification* NotificationPresenterLinux::CreateNotificationObject(
     NotificationDelegate* delegate) {
-  return new LibnotifyNotification(delegate, this);
+    return new LibnotifyNotification(delegate, this);
 }
 
 }  // namespace brightray

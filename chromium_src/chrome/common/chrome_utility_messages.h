@@ -28,7 +28,7 @@
 // A vector of filters, each being a tuple containing a display string (i.e.
 // "Text Files") and a filter pattern (i.e. "*.txt").
 typedef std::vector<std::tuple<base::string16, base::string16>>
-    GetOpenFileNameFilter;
+        GetOpenFileNameFilter;
 #endif  // OS_WIN
 
 #endif  // CHROME_COMMON_CHROME_UTILITY_MESSAGES_H_
@@ -38,13 +38,13 @@ typedef std::vector<std::tuple<base::string16, base::string16>>
 
 #if defined(OS_WIN)
 IPC_STRUCT_BEGIN(ChromeUtilityMsg_GetSaveFileName_Params)
-  IPC_STRUCT_MEMBER(HWND, owner)
-  IPC_STRUCT_MEMBER(DWORD, flags)
-  IPC_STRUCT_MEMBER(GetOpenFileNameFilter, filters)
-  IPC_STRUCT_MEMBER(int, one_based_filter_index)
-  IPC_STRUCT_MEMBER(base::FilePath, suggested_filename)
-  IPC_STRUCT_MEMBER(base::FilePath, initial_directory)
-  IPC_STRUCT_MEMBER(base::string16, default_extension)
+IPC_STRUCT_MEMBER(HWND, owner)
+IPC_STRUCT_MEMBER(DWORD, flags)
+IPC_STRUCT_MEMBER(GetOpenFileNameFilter, filters)
+IPC_STRUCT_MEMBER(int, one_based_filter_index)
+IPC_STRUCT_MEMBER(base::FilePath, suggested_filename)
+IPC_STRUCT_MEMBER(base::FilePath, initial_directory)
+IPC_STRUCT_MEMBER(base::string16, default_extension)
 IPC_STRUCT_END()
 #endif  // OS_WIN
 

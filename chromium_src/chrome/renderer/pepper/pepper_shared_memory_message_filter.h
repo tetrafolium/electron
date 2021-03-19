@@ -21,26 +21,26 @@ class SerializedHandle;
 // Implements the backend for shared memory messages from a plugin process.
 class PepperSharedMemoryMessageFilter
     : public ppapi::host::InstanceMessageFilter {
- public:
-  explicit PepperSharedMemoryMessageFilter(content::RendererPpapiHost* host);
-  ~PepperSharedMemoryMessageFilter() override;
+public:
+    explicit PepperSharedMemoryMessageFilter(content::RendererPpapiHost* host);
+    ~PepperSharedMemoryMessageFilter() override;
 
-  // InstanceMessageFilter:
-  bool OnInstanceMessageReceived(const IPC::Message& msg) override;
+    // InstanceMessageFilter:
+    bool OnInstanceMessageReceived(const IPC::Message& msg) override;
 
-  bool Send(IPC::Message* msg);
+    bool Send(IPC::Message* msg);
 
- private:
-  // Message handlers.
-  void OnHostMsgCreateSharedMemory(
-      PP_Instance instance,
-      uint32_t size,
-      int* host_shm_handle_id,
-      ppapi::proxy::SerializedHandle* plugin_shm_handle);
+private:
+    // Message handlers.
+    void OnHostMsgCreateSharedMemory(
+        PP_Instance instance,
+        uint32_t size,
+        int* host_shm_handle_id,
+        ppapi::proxy::SerializedHandle* plugin_shm_handle);
 
-  content::RendererPpapiHost* host_;
+    content::RendererPpapiHost* host_;
 
-  DISALLOW_COPY_AND_ASSIGN(PepperSharedMemoryMessageFilter);
+    DISALLOW_COPY_AND_ASSIGN(PepperSharedMemoryMessageFilter);
 };
 
 #endif  // CHROME_RENDERER_PEPPER_PEPPER_SHARED_MEMORY_MESSAGE_FILTER_H_

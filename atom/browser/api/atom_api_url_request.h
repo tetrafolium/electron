@@ -92,118 +92,118 @@ namespace api {
 // reference counting.
 //
 class URLRequest : public mate::EventEmitter<URLRequest> {
- public:
-  static mate::WrappableBase* New(mate::Arguments* args);
+public:
+    static mate::WrappableBase* New(mate::Arguments* args);
 
-  static void BuildPrototype(v8::Isolate* isolate,
-                             v8::Local<v8::FunctionTemplate> prototype);
+    static void BuildPrototype(v8::Isolate* isolate,
+                               v8::Local<v8::FunctionTemplate> prototype);
 
-  // Methods for reporting events into JavaScript.
-  void OnReceivedRedirect(
-      int status_code,
-      const std::string& method,
-      const GURL& url,
-      scoped_refptr<net::HttpResponseHeaders> response_headers);
-  void OnAuthenticationRequired(
-      scoped_refptr<const net::AuthChallengeInfo> auth_info);
-  void OnResponseStarted(
-      scoped_refptr<net::HttpResponseHeaders> response_headers);
-  void OnResponseData(scoped_refptr<const net::IOBufferWithSize> data);
-  void OnResponseCompleted();
-  void OnError(const std::string& error, bool isRequestError);
+    // Methods for reporting events into JavaScript.
+    void OnReceivedRedirect(
+        int status_code,
+        const std::string& method,
+        const GURL& url,
+        scoped_refptr<net::HttpResponseHeaders> response_headers);
+    void OnAuthenticationRequired(
+        scoped_refptr<const net::AuthChallengeInfo> auth_info);
+    void OnResponseStarted(
+        scoped_refptr<net::HttpResponseHeaders> response_headers);
+    void OnResponseData(scoped_refptr<const net::IOBufferWithSize> data);
+    void OnResponseCompleted();
+    void OnError(const std::string& error, bool isRequestError);
 
- protected:
-  explicit URLRequest(v8::Isolate* isolate, v8::Local<v8::Object> wrapper);
-  ~URLRequest() override;
+protected:
+    explicit URLRequest(v8::Isolate* isolate, v8::Local<v8::Object> wrapper);
+    ~URLRequest() override;
 
- private:
-  template <typename Flags>
-  class StateBase {
-   public:
-    void SetFlag(Flags flag);
+private:
+    template <typename Flags>
+    class StateBase {
+    public:
+        void SetFlag(Flags flag);
 
-   protected:
-    explicit StateBase(Flags initialState);
-    bool operator==(Flags flag) const;
-    bool IsFlagSet(Flags flag) const;
+    protected:
+        explicit StateBase(Flags initialState);
+        bool operator==(Flags flag) const;
+        bool IsFlagSet(Flags flag) const;
 
-   private:
-    Flags state_;
-  };
+    private:
+        Flags state_;
+    };
 
-  enum class RequestStateFlags {
-    kNotStarted = 0x0,
-    kStarted = 0x1,
-    kFinished = 0x2,
-    kCanceled = 0x4,
-    kFailed = 0x8,
-    kClosed = 0x10
-  };
+    enum class RequestStateFlags {
+        kNotStarted = 0x0,
+        kStarted = 0x1,
+        kFinished = 0x2,
+        kCanceled = 0x4,
+        kFailed = 0x8,
+        kClosed = 0x10
+    };
 
-  class RequestState : public StateBase<RequestStateFlags> {
-   public:
-    RequestState();
+    class RequestState : public StateBase<RequestStateFlags> {
+    public:
+        RequestState();
+        bool NotStarted() const;
+        bool Started() const;
+        bool Finished() const;
+        bool Canceled() const;
+        bool Failed() const;
+        bool Closed() const;
+    };
+
+    enum class ResponseStateFlags {
+        kNotStarted = 0x0,
+        kStarted = 0x1,
+        kEnded = 0x2,
+        kFailed = 0x4
+    };
+
+    class ResponseState : public StateBase<ResponseStateFlags> {
+    public:
+        ResponseState();
+        bool NotStarted() const;
+        bool Started() const;
+        bool Ended() const;
+        bool Canceled() const;
+        bool Failed() const;
+        bool Closed() const;
+    };
+
     bool NotStarted() const;
-    bool Started() const;
     bool Finished() const;
     bool Canceled() const;
     bool Failed() const;
-    bool Closed() const;
-  };
+    bool Write(scoped_refptr<const net::IOBufferWithSize> buffer, bool is_last);
+    void Cancel();
+    void FollowRedirect();
+    bool SetExtraHeader(const std::string& name, const std::string& value);
+    void RemoveExtraHeader(const std::string& name);
+    void SetChunkedUpload(bool is_chunked_upload);
+    void SetLoadFlags(int flags);
 
-  enum class ResponseStateFlags {
-    kNotStarted = 0x0,
-    kStarted = 0x1,
-    kEnded = 0x2,
-    kFailed = 0x4
-  };
+    int StatusCode() const;
+    std::string StatusMessage() const;
+    net::HttpResponseHeaders* RawResponseHeaders() const;
+    uint32_t ResponseHttpVersionMajor() const;
+    uint32_t ResponseHttpVersionMinor() const;
 
-  class ResponseState : public StateBase<ResponseStateFlags> {
-   public:
-    ResponseState();
-    bool NotStarted() const;
-    bool Started() const;
-    bool Ended() const;
-    bool Canceled() const;
-    bool Failed() const;
-    bool Closed() const;
-  };
+    void Close();
+    void Pin();
+    void Unpin();
+    template <typename... Args>
+    void EmitRequestEvent(Args... args);
+    template <typename... Args>
+    void EmitResponseEvent(Args... args);
 
-  bool NotStarted() const;
-  bool Finished() const;
-  bool Canceled() const;
-  bool Failed() const;
-  bool Write(scoped_refptr<const net::IOBufferWithSize> buffer, bool is_last);
-  void Cancel();
-  void FollowRedirect();
-  bool SetExtraHeader(const std::string& name, const std::string& value);
-  void RemoveExtraHeader(const std::string& name);
-  void SetChunkedUpload(bool is_chunked_upload);
-  void SetLoadFlags(int flags);
+    scoped_refptr<AtomURLRequest> atom_request_;
+    RequestState request_state_;
+    ResponseState response_state_;
 
-  int StatusCode() const;
-  std::string StatusMessage() const;
-  net::HttpResponseHeaders* RawResponseHeaders() const;
-  uint32_t ResponseHttpVersionMajor() const;
-  uint32_t ResponseHttpVersionMinor() const;
+    // Used to implement pin/unpin.
+    v8::Global<v8::Object> wrapper_;
+    scoped_refptr<net::HttpResponseHeaders> response_headers_;
 
-  void Close();
-  void Pin();
-  void Unpin();
-  template <typename... Args>
-  void EmitRequestEvent(Args... args);
-  template <typename... Args>
-  void EmitResponseEvent(Args... args);
-
-  scoped_refptr<AtomURLRequest> atom_request_;
-  RequestState request_state_;
-  ResponseState response_state_;
-
-  // Used to implement pin/unpin.
-  v8::Global<v8::Object> wrapper_;
-  scoped_refptr<net::HttpResponseHeaders> response_headers_;
-
-  DISALLOW_COPY_AND_ASSIGN(URLRequest);
+    DISALLOW_COPY_AND_ASSIGN(URLRequest);
 };
 
 }  // namespace api

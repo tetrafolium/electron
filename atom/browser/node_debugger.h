@@ -16,16 +16,16 @@ namespace atom {
 
 // Add support for node's "--inspect" switch.
 class NodeDebugger {
- public:
-  explicit NodeDebugger(node::Environment* env);
-  ~NodeDebugger();
+public:
+    explicit NodeDebugger(node::Environment* env);
+    ~NodeDebugger();
 
-  void Start(node::NodePlatform* platform);
+    void Start(node::NodePlatform* platform);
 
- private:
-  node::Environment* env_;
+private:
+    node::Environment* env_;
 
-  DISALLOW_COPY_AND_ASSIGN(NodeDebugger);
+    DISALLOW_COPY_AND_ASSIGN(NodeDebugger);
 };
 
 }  // namespace atom

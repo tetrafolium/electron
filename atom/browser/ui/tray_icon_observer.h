@@ -16,27 +16,27 @@ class Point;
 namespace atom {
 
 class TrayIconObserver {
- public:
-  virtual void OnClicked(const gfx::Rect& bounds,
-                         const gfx::Point& location,
-                         int modifiers) {}
-  virtual void OnDoubleClicked(const gfx::Rect& bounds, int modifiers) {}
-  virtual void OnBalloonShow() {}
-  virtual void OnBalloonClicked() {}
-  virtual void OnBalloonClosed() {}
-  virtual void OnRightClicked(const gfx::Rect& bounds, int modifiers) {}
-  virtual void OnDrop() {}
-  virtual void OnDropFiles(const std::vector<std::string>& files) {}
-  virtual void OnDropText(const std::string& text) {}
-  virtual void OnDragEntered() {}
-  virtual void OnDragExited() {}
-  virtual void OnDragEnded() {}
-  virtual void OnMouseEntered(const gfx::Point& location, int modifiers) {}
-  virtual void OnMouseExited(const gfx::Point& location, int modifiers) {}
-  virtual void OnMouseMoved(const gfx::Point& location, int modifiers) {}
+public:
+    virtual void OnClicked(const gfx::Rect& bounds,
+                           const gfx::Point& location,
+                           int modifiers) {}
+    virtual void OnDoubleClicked(const gfx::Rect& bounds, int modifiers) {}
+    virtual void OnBalloonShow() {}
+    virtual void OnBalloonClicked() {}
+    virtual void OnBalloonClosed() {}
+    virtual void OnRightClicked(const gfx::Rect& bounds, int modifiers) {}
+    virtual void OnDrop() {}
+    virtual void OnDropFiles(const std::vector<std::string>& files) {}
+    virtual void OnDropText(const std::string& text) {}
+    virtual void OnDragEntered() {}
+    virtual void OnDragExited() {}
+    virtual void OnDragEnded() {}
+    virtual void OnMouseEntered(const gfx::Point& location, int modifiers) {}
+    virtual void OnMouseExited(const gfx::Point& location, int modifiers) {}
+    virtual void OnMouseMoved(const gfx::Point& location, int modifiers) {}
 
- protected:
-  virtual ~TrayIconObserver() {}
+protected:
+    virtual ~TrayIconObserver() {}
 };
 
 }  // namespace atom

@@ -15,13 +15,13 @@ EventDisabler::~EventDisabler() {
 ui::EventRewriteStatus EventDisabler::RewriteEvent(
     const ui::Event& event,
     std::unique_ptr<ui::Event>* rewritten_event) {
-  return ui::EVENT_REWRITE_DISCARD;
+    return ui::EVENT_REWRITE_DISCARD;
 }
 
 ui::EventRewriteStatus EventDisabler::NextDispatchEvent(
     const ui::Event& last_event,
     std::unique_ptr<ui::Event>* new_event) {
-  return ui::EVENT_REWRITE_CONTINUE;
+    return ui::EVENT_REWRITE_CONTINUE;
 }
 
 }  // namespace atom

@@ -17,46 +17,46 @@ class NativeWindow;
 class WindowListObserver;
 
 class WindowList {
- public:
-  typedef std::vector<NativeWindow*> WindowVector;
+public:
+    typedef std::vector<NativeWindow*> WindowVector;
 
-  static WindowVector GetWindows();
-  static bool IsEmpty();
+    static WindowVector GetWindows();
+    static bool IsEmpty();
 
-  // Adds or removes |window| from the list it is associated with.
-  static void AddWindow(NativeWindow* window);
-  static void RemoveWindow(NativeWindow* window);
+    // Adds or removes |window| from the list it is associated with.
+    static void AddWindow(NativeWindow* window);
+    static void RemoveWindow(NativeWindow* window);
 
-  // Called by window when a close is cancelled by beforeunload handler.
-  static void WindowCloseCancelled(NativeWindow* window);
+    // Called by window when a close is cancelled by beforeunload handler.
+    static void WindowCloseCancelled(NativeWindow* window);
 
-  // Adds and removes |observer| from the observer list.
-  static void AddObserver(WindowListObserver* observer);
-  static void RemoveObserver(WindowListObserver* observer);
+    // Adds and removes |observer| from the observer list.
+    static void AddObserver(WindowListObserver* observer);
+    static void RemoveObserver(WindowListObserver* observer);
 
-  // Closes all windows.
-  static void CloseAllWindows();
+    // Closes all windows.
+    static void CloseAllWindows();
 
-  // Destroy all windows.
-  static void DestroyAllWindows();
+    // Destroy all windows.
+    static void DestroyAllWindows();
 
- private:
-  static WindowList* GetInstance();
+private:
+    static WindowList* GetInstance();
 
-  WindowList();
-  ~WindowList();
+    WindowList();
+    ~WindowList();
 
-  // A vector of the windows in this list, in the order they were added.
-  WindowVector windows_;
+    // A vector of the windows in this list, in the order they were added.
+    WindowVector windows_;
 
-  // A list of observers which will be notified of every window addition and
-  // removal across all WindowLists.
-  static base::LazyInstance<base::ObserverList<WindowListObserver>>::Leaky
-      observers_;
+    // A list of observers which will be notified of every window addition and
+    // removal across all WindowLists.
+    static base::LazyInstance<base::ObserverList<WindowListObserver>>::Leaky
+            observers_;
 
-  static WindowList* instance_;
+    static WindowList* instance_;
 
-  DISALLOW_COPY_AND_ASSIGN(WindowList);
+    DISALLOW_COPY_AND_ASSIGN(WindowList);
 };
 
 }  // namespace atom

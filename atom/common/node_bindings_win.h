@@ -11,14 +11,14 @@
 namespace atom {
 
 class NodeBindingsWin : public NodeBindings {
- public:
-  explicit NodeBindingsWin(BrowserEnvironment browser_env);
-  virtual ~NodeBindingsWin();
+public:
+    explicit NodeBindingsWin(BrowserEnvironment browser_env);
+    virtual ~NodeBindingsWin();
 
- private:
-  void PollEvents() override;
+private:
+    void PollEvents() override;
 
-  DISALLOW_COPY_AND_ASSIGN(NodeBindingsWin);
+    DISALLOW_COPY_AND_ASSIGN(NodeBindingsWin);
 };
 
 }  // namespace atom

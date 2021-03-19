@@ -13,27 +13,27 @@
 namespace atom {
 
 class URLRequestStringJob : public JsAsker<net::URLRequestSimpleJob> {
- public:
-  URLRequestStringJob(net::URLRequest*, net::NetworkDelegate*);
+public:
+    URLRequestStringJob(net::URLRequest*, net::NetworkDelegate*);
 
-  // JsAsker:
-  void StartAsync(std::unique_ptr<base::Value> options) override;
+    // JsAsker:
+    void StartAsync(std::unique_ptr<base::Value> options) override;
 
-  // URLRequestJob:
-  void GetResponseInfo(net::HttpResponseInfo* info) override;
+    // URLRequestJob:
+    void GetResponseInfo(net::HttpResponseInfo* info) override;
 
-  // URLRequestSimpleJob:
-  int GetData(std::string* mime_type,
-              std::string* charset,
-              std::string* data,
-              const net::CompletionCallback& callback) const override;
+    // URLRequestSimpleJob:
+    int GetData(std::string* mime_type,
+                std::string* charset,
+                std::string* data,
+                const net::CompletionCallback& callback) const override;
 
- private:
-  std::string mime_type_;
-  std::string charset_;
-  std::string data_;
+private:
+    std::string mime_type_;
+    std::string charset_;
+    std::string data_;
 
-  DISALLOW_COPY_AND_ASSIGN(URLRequestStringJob);
+    DISALLOW_COPY_AND_ASSIGN(URLRequestStringJob);
 };
 
 }  // namespace atom

@@ -19,30 +19,30 @@ namespace atom {
 namespace api {
 
 class MenuMac : public Menu {
- protected:
-  MenuMac(v8::Isolate* isolate, v8::Local<v8::Object> wrapper);
+protected:
+    MenuMac(v8::Isolate* isolate, v8::Local<v8::Object> wrapper);
 
-  void PopupAt(Window* window, int x, int y, int positioning_item) override;
-  void PopupOnUI(const base::WeakPtr<NativeWindow>& native_window,
-                 int32_t window_id,
-                 int x,
-                 int y,
-                 int positioning_item);
-  void ClosePopupAt(int32_t window_id) override;
+    void PopupAt(Window* window, int x, int y, int positioning_item) override;
+    void PopupOnUI(const base::WeakPtr<NativeWindow>& native_window,
+                   int32_t window_id,
+                   int x,
+                   int y,
+                   int positioning_item);
+    void ClosePopupAt(int32_t window_id) override;
 
- private:
-  friend class Menu;
+private:
+    friend class Menu;
 
-  static void SendActionToFirstResponder(const std::string& action);
+    static void SendActionToFirstResponder(const std::string& action);
 
-  scoped_nsobject<AtomMenuController> menu_controller_;
+    scoped_nsobject<AtomMenuController> menu_controller_;
 
-  // window ID -> open context menu
-  std::map<int32_t, scoped_nsobject<AtomMenuController>> popup_controllers_;
+    // window ID -> open context menu
+    std::map<int32_t, scoped_nsobject<AtomMenuController>> popup_controllers_;
 
-  base::WeakPtrFactory<MenuMac> weak_factory_;
+    base::WeakPtrFactory<MenuMac> weak_factory_;
 
-  DISALLOW_COPY_AND_ASSIGN(MenuMac);
+    DISALLOW_COPY_AND_ASSIGN(MenuMac);
 };
 
 }  // namespace api

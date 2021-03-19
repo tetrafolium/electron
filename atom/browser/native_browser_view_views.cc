@@ -18,19 +18,19 @@ NativeBrowserViewViews::NativeBrowserViewViews(
 NativeBrowserViewViews::~NativeBrowserViewViews() {}
 
 void NativeBrowserViewViews::SetBounds(const gfx::Rect& bounds) {
-  auto* view = GetInspectableWebContentsView()->GetView();
-  view->SetBoundsRect(bounds);
+    auto* view = GetInspectableWebContentsView()->GetView();
+    view->SetBoundsRect(bounds);
 }
 
 void NativeBrowserViewViews::SetBackgroundColor(SkColor color) {
-  auto* view = GetInspectableWebContentsView()->GetView();
-  view->SetBackground(views::CreateSolidBackground(color));
+    auto* view = GetInspectableWebContentsView()->GetView();
+    view->SetBackground(views::CreateSolidBackground(color));
 }
 
 // static
 NativeBrowserView* NativeBrowserView::Create(
     brightray::InspectableWebContentsView* web_contents_view) {
-  return new NativeBrowserViewViews(web_contents_view);
+    return new NativeBrowserViewViews(web_contents_view);
 }
 
 }  // namespace atom

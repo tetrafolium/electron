@@ -12,14 +12,14 @@ using brightray::InspectableWebContentsViewMac;
 
 @interface BRYInspectableWebContentsView : BaseView<NSWindowDelegate> {
 @private
-  brightray::InspectableWebContentsViewMac* inspectableWebContentsView_;
+    brightray::InspectableWebContentsViewMac* inspectableWebContentsView_;
 
-  base::scoped_nsobject<NSWindow> devtools_window_;
-  BOOL devtools_visible_;
-  BOOL devtools_docked_;
-  BOOL devtools_is_first_responder_;
+    base::scoped_nsobject<NSWindow> devtools_window_;
+    BOOL devtools_visible_;
+    BOOL devtools_docked_;
+    BOOL devtools_is_first_responder_;
 
-  DevToolsContentsResizingStrategy strategy_;
+    DevToolsContentsResizingStrategy strategy_;
 }
 
 - (instancetype)initWithInspectableWebContentsViewMac:(InspectableWebContentsViewMac*)view;

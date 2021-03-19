@@ -31,64 +31,64 @@ std::unique_ptr<ResourceHost> ChromeRendererPepperHostFactory::CreateResourceHos
     PP_Resource resource,
     PP_Instance instance,
     const IPC::Message& message) {
-  DCHECK_EQ(host_->GetPpapiHost(), host);
+    DCHECK_EQ(host_->GetPpapiHost(), host);
 
-  // Make sure the plugin is giving us a valid instance for this resource.
-  if (!host_->IsValidInstance(instance))
+    // Make sure the plugin is giving us a valid instance for this resource.
+    if (!host_->IsValidInstance(instance))
+        return std::unique_ptr<ResourceHost>();
+
+    if (host_->GetPpapiHost()->permissions().HasPermission(
+                ppapi::PERMISSION_FLASH)) {
+        switch (message.type()) {
+        case PpapiHostMsg_Flash_Create::ID: {
+            return std::unique_ptr<ResourceHost>(
+                       new PepperFlashRendererHost(host_, instance, resource));
+        }
+        case PpapiHostMsg_FlashFullscreen_Create::ID: {
+            return std::unique_ptr<ResourceHost>(
+                       new PepperFlashFullscreenHost(host_, instance, resource));
+        }
+        case PpapiHostMsg_FlashMenu_Create::ID: {
+            ppapi::proxy::SerializedFlashMenu serialized_menu;
+            if (ppapi::UnpackMessage<PpapiHostMsg_FlashMenu_Create>(
+                        message, &serialized_menu)) {
+                return std::unique_ptr<ResourceHost>(new PepperFlashMenuHost(
+                        host_, instance, resource, serialized_menu));
+            }
+            break;
+        }
+        }
+    }
+
+    // TODO(raymes): PDF also needs access to the FlashFontFileHost currently.
+    // We should either rename PPB_FlashFont_File to PPB_FontFile_Private or get
+    // rid of its use in PDF if possible.
+    if (host_->GetPpapiHost()->permissions().HasPermission(
+                ppapi::PERMISSION_FLASH) ||
+            host_->GetPpapiHost()->permissions().HasPermission(
+                ppapi::PERMISSION_PRIVATE)) {
+        switch (message.type()) {
+        case PpapiHostMsg_FlashFontFile_Create::ID: {
+            ppapi::proxy::SerializedFontDescription description;
+            PP_PrivateFontCharset charset;
+            if (ppapi::UnpackMessage<PpapiHostMsg_FlashFontFile_Create>(
+                        message, &description, &charset)) {
+                return std::unique_ptr<ResourceHost>(new PepperFlashFontFileHost(
+                        host_, instance, resource, description, charset));
+            }
+            break;
+        }
+        }
+    }
+
+    if (host_->GetPpapiHost()->permissions().HasPermission(
+                ppapi::PERMISSION_PRIVATE)) {
+        switch (message.type()) {
+        case PpapiHostMsg_PDF_Create::ID: {
+            return base::MakeUnique<pdf::PepperPDFHost>(host_, instance, resource);
+        }
+        }
+    }
+
     return std::unique_ptr<ResourceHost>();
-
-  if (host_->GetPpapiHost()->permissions().HasPermission(
-          ppapi::PERMISSION_FLASH)) {
-    switch (message.type()) {
-      case PpapiHostMsg_Flash_Create::ID: {
-        return std::unique_ptr<ResourceHost>(
-            new PepperFlashRendererHost(host_, instance, resource));
-      }
-      case PpapiHostMsg_FlashFullscreen_Create::ID: {
-        return std::unique_ptr<ResourceHost>(
-            new PepperFlashFullscreenHost(host_, instance, resource));
-      }
-      case PpapiHostMsg_FlashMenu_Create::ID: {
-        ppapi::proxy::SerializedFlashMenu serialized_menu;
-        if (ppapi::UnpackMessage<PpapiHostMsg_FlashMenu_Create>(
-                message, &serialized_menu)) {
-          return std::unique_ptr<ResourceHost>(new PepperFlashMenuHost(
-              host_, instance, resource, serialized_menu));
-        }
-        break;
-      }
-    }
-  }
-
-  // TODO(raymes): PDF also needs access to the FlashFontFileHost currently.
-  // We should either rename PPB_FlashFont_File to PPB_FontFile_Private or get
-  // rid of its use in PDF if possible.
-  if (host_->GetPpapiHost()->permissions().HasPermission(
-          ppapi::PERMISSION_FLASH) ||
-      host_->GetPpapiHost()->permissions().HasPermission(
-          ppapi::PERMISSION_PRIVATE)) {
-    switch (message.type()) {
-      case PpapiHostMsg_FlashFontFile_Create::ID: {
-        ppapi::proxy::SerializedFontDescription description;
-        PP_PrivateFontCharset charset;
-        if (ppapi::UnpackMessage<PpapiHostMsg_FlashFontFile_Create>(
-                message, &description, &charset)) {
-          return std::unique_ptr<ResourceHost>(new PepperFlashFontFileHost(
-              host_, instance, resource, description, charset));
-        }
-        break;
-      }
-    }
-  }
-
-  if (host_->GetPpapiHost()->permissions().HasPermission(
-          ppapi::PERMISSION_PRIVATE)) {
-    switch (message.type()) {
-      case PpapiHostMsg_PDF_Create::ID: {
-        return base::MakeUnique<pdf::PepperPDFHost>(host_, instance, resource);
-      }
-    }
-  }
-
-  return std::unique_ptr<ResourceHost>();
 }

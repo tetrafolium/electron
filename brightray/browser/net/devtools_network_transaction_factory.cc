@@ -21,10 +21,10 @@ DevToolsNetworkTransactionFactory::DevToolsNetworkTransactionFactory(
     net::HttpNetworkSession* session)
     : controller_(controller),
       network_layer_(new net::HttpNetworkLayer(session)) {
-  std::set<std::string> headers;
-  headers.insert(
-      DevToolsNetworkTransaction::kDevToolsEmulateNetworkConditionsClientId);
-  content::ServiceWorkerContext::AddExcludedHeadersForFetchEvent(headers);
+    std::set<std::string> headers;
+    headers.insert(
+        DevToolsNetworkTransaction::kDevToolsEmulateNetworkConditionsClientId);
+    content::ServiceWorkerContext::AddExcludedHeadersForFetchEvent(headers);
 }
 
 DevToolsNetworkTransactionFactory::~DevToolsNetworkTransactionFactory() {
@@ -33,21 +33,21 @@ DevToolsNetworkTransactionFactory::~DevToolsNetworkTransactionFactory() {
 int DevToolsNetworkTransactionFactory::CreateTransaction(
     net::RequestPriority priority,
     std::unique_ptr<net::HttpTransaction>* transaction) {
-  std::unique_ptr<net::HttpTransaction> new_transaction;
-  int rv = network_layer_->CreateTransaction(priority, &new_transaction);
-  if (rv != net::OK)
-    return rv;
-  transaction->reset(
-      new DevToolsNetworkTransaction(controller_, std::move(new_transaction)));
-  return net::OK;
+    std::unique_ptr<net::HttpTransaction> new_transaction;
+    int rv = network_layer_->CreateTransaction(priority, &new_transaction);
+    if (rv != net::OK)
+        return rv;
+    transaction->reset(
+        new DevToolsNetworkTransaction(controller_, std::move(new_transaction)));
+    return net::OK;
 }
 
 net::HttpCache* DevToolsNetworkTransactionFactory::GetCache() {
-  return network_layer_->GetCache();
+    return network_layer_->GetCache();
 }
 
 net::HttpNetworkSession* DevToolsNetworkTransactionFactory::GetSession() {
-  return network_layer_->GetSession();
+    return network_layer_->GetSession();
 }
 
 }  // namespace brightray

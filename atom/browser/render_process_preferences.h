@@ -21,39 +21,39 @@ namespace atom {
 
 // Sets user preferences for render processes.
 class RenderProcessPreferences : public content::NotificationObserver {
- public:
-  using Predicate = base::Callback<bool(content::RenderProcessHost*)>;
+public:
+    using Predicate = base::Callback<bool(content::RenderProcessHost*)>;
 
-  // The |predicate| is used to determine whether to set preferences for a
-  // render process.
-  explicit RenderProcessPreferences(const Predicate& predicate);
-  virtual ~RenderProcessPreferences();
+    // The |predicate| is used to determine whether to set preferences for a
+    // render process.
+    explicit RenderProcessPreferences(const Predicate& predicate);
+    virtual ~RenderProcessPreferences();
 
-  int AddEntry(const base::DictionaryValue& entry);
-  void RemoveEntry(int id);
+    int AddEntry(const base::DictionaryValue& entry);
+    void RemoveEntry(int id);
 
- private:
-  // content::NotificationObserver:
-  void Observe(int type,
-               const content::NotificationSource& source,
-               const content::NotificationDetails& details) override;
+private:
+    // content::NotificationObserver:
+    void Observe(int type,
+                 const content::NotificationSource& source,
+                 const content::NotificationDetails& details) override;
 
-  void UpdateCache();
+    void UpdateCache();
 
-  // Manages our notification registrations.
-  content::NotificationRegistrar registrar_;
+    // Manages our notification registrations.
+    content::NotificationRegistrar registrar_;
 
-  Predicate predicate_;
+    Predicate predicate_;
 
-  int next_id_;
-  std::unordered_map<int, std::unique_ptr<base::DictionaryValue>> entries_;
+    int next_id_;
+    std::unordered_map<int, std::unique_ptr<base::DictionaryValue>> entries_;
 
-  // We need to convert the |entries_| to ListValue for multiple times, this
-  // caches is only updated when we are sending messages.
-  bool cache_needs_update_;
-  base::ListValue cached_entries_;
+    // We need to convert the |entries_| to ListValue for multiple times, this
+    // caches is only updated when we are sending messages.
+    bool cache_needs_update_;
+    base::ListValue cached_entries_;
 
-  DISALLOW_COPY_AND_ASSIGN(RenderProcessPreferences);
+    DISALLOW_COPY_AND_ASSIGN(RenderProcessPreferences);
 };
 
 }  // namespace atom

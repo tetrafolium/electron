@@ -11,14 +11,14 @@
 // Wrapper used to keep track of the lifetime of a WebContents.
 // Lives on the UI thread.
 class PrintingUIWebContentsObserver : public content::WebContentsObserver {
- public:
-  explicit PrintingUIWebContentsObserver(content::WebContents* web_contents);
+public:
+    explicit PrintingUIWebContentsObserver(content::WebContents* web_contents);
 
-  // Return the parent NativeView of the observed WebContents.
-  gfx::NativeView GetParentView();
+    // Return the parent NativeView of the observed WebContents.
+    gfx::NativeView GetParentView();
 
- private:
-  DISALLOW_COPY_AND_ASSIGN(PrintingUIWebContentsObserver);
+private:
+    DISALLOW_COPY_AND_ASSIGN(PrintingUIWebContentsObserver);
 };
 
 #endif  // CHROME_BROWSER_PRINTING_PRINTING_UI_WEB_CONTENTS_OBSERVER_H_

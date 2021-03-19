@@ -12,11 +12,11 @@ AtomDesktopNativeWidgetAura::AtomDesktopNativeWidgetAura(
 }
 
 void AtomDesktopNativeWidgetAura::Activate() {
-  // Activate can cause the focused window to be blurred so only
-  // call when the window being activated is visible. This prevents
-  // hidden windows from blurring the focused window when created.
-  if (IsVisible())
-    views::DesktopNativeWidgetAura::Activate();
+    // Activate can cause the focused window to be blurred so only
+    // call when the window being activated is visible. This prevents
+    // hidden windows from blurring the focused window when created.
+    if (IsVisible())
+        views::DesktopNativeWidgetAura::Activate();
 }
 
 }  // namespace atom

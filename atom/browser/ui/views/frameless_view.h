@@ -16,40 +16,40 @@ namespace atom {
 class NativeWindowViews;
 
 class FramelessView : public views::NonClientFrameView {
- public:
-  FramelessView();
-  virtual ~FramelessView();
+public:
+    FramelessView();
+    virtual ~FramelessView();
 
-  virtual void Init(NativeWindowViews* window, views::Widget* frame);
+    virtual void Init(NativeWindowViews* window, views::Widget* frame);
 
-  // Returns whether the |point| is on frameless window's resizing border.
-  int ResizingBorderHitTest(const gfx::Point& point);
+    // Returns whether the |point| is on frameless window's resizing border.
+    int ResizingBorderHitTest(const gfx::Point& point);
 
- protected:
-  // views::NonClientFrameView:
-  gfx::Rect GetBoundsForClientView() const override;
-  gfx::Rect GetWindowBoundsForClientBounds(
-      const gfx::Rect& client_bounds) const override;
-  int NonClientHitTest(const gfx::Point& point) override;
-  void GetWindowMask(const gfx::Size& size,
-                     gfx::Path* window_mask) override;
-  void ResetWindowControls() override;
-  void UpdateWindowIcon() override;
-  void UpdateWindowTitle() override;
-  void SizeConstraintsChanged() override;
+protected:
+    // views::NonClientFrameView:
+    gfx::Rect GetBoundsForClientView() const override;
+    gfx::Rect GetWindowBoundsForClientBounds(
+        const gfx::Rect& client_bounds) const override;
+    int NonClientHitTest(const gfx::Point& point) override;
+    void GetWindowMask(const gfx::Size& size,
+                       gfx::Path* window_mask) override;
+    void ResetWindowControls() override;
+    void UpdateWindowIcon() override;
+    void UpdateWindowTitle() override;
+    void SizeConstraintsChanged() override;
 
-  // Overridden from View:
-  gfx::Size CalculatePreferredSize() const override;
-  gfx::Size GetMinimumSize() const override;
-  gfx::Size GetMaximumSize() const override;
-  const char* GetClassName() const override;
+    // Overridden from View:
+    gfx::Size CalculatePreferredSize() const override;
+    gfx::Size GetMinimumSize() const override;
+    gfx::Size GetMaximumSize() const override;
+    const char* GetClassName() const override;
 
-  // Not owned.
-  NativeWindowViews* window_;
-  views::Widget* frame_;
+    // Not owned.
+    NativeWindowViews* window_;
+    views::Widget* frame_;
 
- private:
-  DISALLOW_COPY_AND_ASSIGN(FramelessView);
+private:
+    DISALLOW_COPY_AND_ASSIGN(FramelessView);
 };
 
 }  // namespace atom

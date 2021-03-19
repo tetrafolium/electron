@@ -23,8 +23,8 @@ static const NSTouchBarItemPriority NSTouchBarItemPriorityNormal = 0;
 static const NSTouchBarItemPriority NSTouchBarItemPriorityLow = -1000;
 
 enum NSScrubberMode {
-  NSScrubberModeFixed = 0,
-  NSScrubberModeFree
+    NSScrubberModeFixed = 0,
+    NSScrubberModeFree
 };
 
 typedef NSString* NSTouchBarItemIdentifier;
@@ -49,7 +49,7 @@ static const NSTouchBarItemIdentifier NSTouchBarItemIdentifierOtherItemsProxy =
     NS_DESIGNATED_INITIALIZER;
 
 @property(copy, nullable)
-    NSTouchBarCustomizationIdentifier customizationIdentifier;
+NSTouchBarCustomizationIdentifier customizationIdentifier;
 @property(copy) NSArray* customizationAllowedItemIdentifiers;
 @property(copy) NSArray* customizationRequiredItemIdentifiers;
 @property(copy) NSArray* defaultItemIdentifiers;
@@ -86,8 +86,8 @@ static const NSTouchBarItemIdentifier NSTouchBarItemIdentifierOtherItemsProxy =
 @interface NSGroupTouchBarItem : NSTouchBarItem
 
 + (NSGroupTouchBarItem*)groupItemWithIdentifier:
-                            (NSTouchBarItemIdentifier)identifier
-                                          items:(NSArray*)items;
+    (NSTouchBarItemIdentifier)identifier
+    items:(NSArray*)items;
 
 @property(strong) NSTouchBar* groupTouchBar;
 @property(readwrite, copy, null_resettable) NSString* customizationLabel;
@@ -98,7 +98,7 @@ static const NSTouchBarItemIdentifier NSTouchBarItemIdentifierOtherItemsProxy =
 
 @property(readwrite, strong) __kindof NSView* view;
 @property(readwrite, strong, nullable)
-    __kindof NSViewController* viewController;
+__kindof NSViewController* viewController;
 @property(readwrite, copy, null_resettable) NSString* customizationLabel;
 
 @end
@@ -144,12 +144,12 @@ static const NSTouchBarItemIdentifier NSTouchBarItemIdentifierOtherItemsProxy =
     forItemIdentifier:(NSString*)itemIdentifier;
 
 - (__kindof NSScrubberItemView*)makeItemWithIdentifier:(NSString*)itemIdentifier
-                                                 owner:(id)owner;
+    owner:(id)owner;
 - (void)reloadData;
 
 @end
 
-@interface NSScrubberFlowLayout: NSObject
+@interface NSScrubberFlowLayout : NSObject
 @end
 
 @interface NSScrubberSelectionStyle : NSObject<NSCoding>
@@ -189,8 +189,8 @@ static const NSTouchBarItemIdentifier NSTouchBarItemIdentifierOtherItemsProxy =
 
 @property(copy) NSColor* bezelColor;
 + (instancetype)buttonWithTitle:(NSString*)title
-                         target:(id)target
-                         action:(SEL)action;
+    target:(id)target
+    action:(SEL)action;
 
 @end
 
@@ -203,9 +203,9 @@ static const NSTouchBarItemIdentifier NSTouchBarItemIdentifierOtherItemsProxy =
 @interface NSSegmentedControl (TouchBarSDK)
 
 + (instancetype)segmentedControlWithLabels:(NSArray*)labels
-                              trackingMode:(NSSegmentSwitchTracking)trackingMode
-                                    target:(id)target
-                                    action:(SEL)action;
+    trackingMode:(NSSegmentSwitchTracking)trackingMode
+    target:(id)target
+    action:(SEL)action;
 
 @end
 
@@ -213,7 +213,7 @@ static const NSTouchBarItemIdentifier NSTouchBarItemIdentifierOtherItemsProxy =
 
 @optional
 - (nullable NSTouchBarItem*)touchBar:(NSTouchBar*)touchBar
-               makeItemForIdentifier:(NSTouchBarItemIdentifier)identifier;
+    makeItemForIdentifier:(NSTouchBarItemIdentifier)identifier;
 
 @end
 
@@ -228,7 +228,7 @@ static const NSTouchBarItemIdentifier NSTouchBarItemIdentifierOtherItemsProxy =
 
 - (NSInteger)numberOfItemsForScrubber:(NSScrubber*)scrubber;
 - (__kindof NSScrubberItemView*)scrubber:(NSScrubber*)scrubber
-                       viewForItemAtIndex:(NSInteger)index;
+    viewForItemAtIndex:(NSInteger)index;
 
 @end
 

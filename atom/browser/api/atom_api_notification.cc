@@ -22,26 +22,26 @@
 namespace mate {
 template<>
 struct Converter<brightray::NotificationAction> {
-  static bool FromV8(v8::Isolate* isolate, v8::Local<v8::Value> val,
-                      brightray::NotificationAction* out) {
-    mate::Dictionary dict;
-    if (!ConvertFromV8(isolate, val, &dict))
-      return false;
+    static bool FromV8(v8::Isolate* isolate, v8::Local<v8::Value> val,
+                       brightray::NotificationAction* out) {
+        mate::Dictionary dict;
+        if (!ConvertFromV8(isolate, val, &dict))
+            return false;
 
-    if (!dict.Get("type", &(out->type))) {
-      return false;
+        if (!dict.Get("type", &(out->type))) {
+            return false;
+        }
+        dict.Get("text", &(out->text));
+        return true;
     }
-    dict.Get("text", &(out->text));
-    return true;
-  }
 
-  static v8::Local<v8::Value> ToV8(v8::Isolate* isolate,
-                                    brightray::NotificationAction val) {
-    mate::Dictionary dict = mate::Dictionary::CreateEmpty(isolate);
-    dict.Set("text", val.text);
-    dict.Set("type", val.type);
-    return dict.GetHandle();
-  }
+    static v8::Local<v8::Value> ToV8(v8::Isolate* isolate,
+                                     brightray::NotificationAction val) {
+        mate::Dictionary dict = mate::Dictionary::CreateEmpty(isolate);
+        dict.Set("text", val.text);
+        dict.Set("type", val.type);
+        return dict.GetHandle();
+    }
 };
 }  // namespace mate
 
@@ -52,185 +52,185 @@ namespace api {
 Notification::Notification(v8::Isolate* isolate,
                            v8::Local<v8::Object> wrapper,
                            mate::Arguments* args) {
-  InitWith(isolate, wrapper);
+    InitWith(isolate, wrapper);
 
-  presenter_ = brightray::BrowserClient::Get()->GetNotificationPresenter();
+    presenter_ = brightray::BrowserClient::Get()->GetNotificationPresenter();
 
-  mate::Dictionary opts;
-  if (args->GetNext(&opts)) {
-    opts.Get("title", &title_);
-    opts.Get("subtitle", &subtitle_);
-    opts.Get("body", &body_);
-    has_icon_ = opts.Get("icon", &icon_);
-    if (has_icon_) {
-      opts.Get("icon", &icon_path_);
+    mate::Dictionary opts;
+    if (args->GetNext(&opts)) {
+        opts.Get("title", &title_);
+        opts.Get("subtitle", &subtitle_);
+        opts.Get("body", &body_);
+        has_icon_ = opts.Get("icon", &icon_);
+        if (has_icon_) {
+            opts.Get("icon", &icon_path_);
+        }
+        opts.Get("silent", &silent_);
+        opts.Get("replyPlaceholder", &reply_placeholder_);
+        opts.Get("hasReply", &has_reply_);
+        opts.Get("actions", &actions_);
+        opts.Get("sound", &sound_);
     }
-    opts.Get("silent", &silent_);
-    opts.Get("replyPlaceholder", &reply_placeholder_);
-    opts.Get("hasReply", &has_reply_);
-    opts.Get("actions", &actions_);
-    opts.Get("sound", &sound_);
-  }
 }
 
 Notification::~Notification() {
-  if (notification_)
-    notification_->set_delegate(nullptr);
+    if (notification_)
+        notification_->set_delegate(nullptr);
 }
 
 // static
 mate::WrappableBase* Notification::New(mate::Arguments* args) {
-  if (!Browser::Get()->is_ready()) {
-    args->ThrowError("Cannot create Notification before app is ready");
-    return nullptr;
-  }
-  return new Notification(args->isolate(), args->GetThis(), args);
+    if (!Browser::Get()->is_ready()) {
+        args->ThrowError("Cannot create Notification before app is ready");
+        return nullptr;
+    }
+    return new Notification(args->isolate(), args->GetThis(), args);
 }
 
 // Getters
 base::string16 Notification::GetTitle() const {
-  return title_;
+    return title_;
 }
 
 base::string16 Notification::GetSubtitle() const {
-  return subtitle_;
+    return subtitle_;
 }
 
 base::string16 Notification::GetBody() const {
-  return body_;
+    return body_;
 }
 
 bool Notification::GetSilent() const {
-  return silent_;
+    return silent_;
 }
 
 base::string16 Notification::GetReplyPlaceholder() const {
-  return reply_placeholder_;
+    return reply_placeholder_;
 }
 
 bool Notification::GetHasReply() const {
-  return has_reply_;
+    return has_reply_;
 }
 
 std::vector<brightray::NotificationAction> Notification::GetActions() const {
-  return actions_;
+    return actions_;
 }
 
 base::string16 Notification::GetSound() const {
-  return sound_;
+    return sound_;
 }
 
 // Setters
 void Notification::SetTitle(const base::string16& new_title) {
-  title_ = new_title;
+    title_ = new_title;
 }
 
 void Notification::SetSubtitle(const base::string16& new_subtitle) {
-  subtitle_ = new_subtitle;
+    subtitle_ = new_subtitle;
 }
 
 void Notification::SetBody(const base::string16& new_body) {
-  body_ = new_body;
+    body_ = new_body;
 }
 
 void Notification::SetSilent(bool new_silent) {
-  silent_ = new_silent;
+    silent_ = new_silent;
 }
 
 void Notification::SetReplyPlaceholder(const base::string16& new_placeholder) {
-  reply_placeholder_ = new_placeholder;
+    reply_placeholder_ = new_placeholder;
 }
 
 void Notification::SetHasReply(bool new_has_reply) {
-  has_reply_ = new_has_reply;
+    has_reply_ = new_has_reply;
 }
 
 void Notification::SetActions(
-  const std::vector<brightray::NotificationAction>& actions) {
-  actions_ = actions;
+    const std::vector<brightray::NotificationAction>& actions) {
+    actions_ = actions;
 }
 
 void Notification::SetSound(const base::string16& new_sound) {
-  sound_ = new_sound;
+    sound_ = new_sound;
 }
 
 void Notification::NotificationAction(int index) {
-  Emit("action", index);
+    Emit("action", index);
 }
 
 void Notification::NotificationClick() {
-  Emit("click");
+    Emit("click");
 }
 
 void Notification::NotificationReplied(const std::string& reply) {
-  Emit("reply", reply);
+    Emit("reply", reply);
 }
 
 void Notification::NotificationDisplayed() {
-  Emit("show");
+    Emit("show");
 }
 
 void Notification::NotificationDestroyed() {
 }
 
 void Notification::NotificationClosed() {
-  Emit("close");
+    Emit("close");
 }
 
 void Notification::Close() {
-  if (notification_) {
-    notification_->Dismiss();
-    notification_.reset();
-  }
+    if (notification_) {
+        notification_->Dismiss();
+        notification_.reset();
+    }
 }
 
 // Showing notifications
 void Notification::Show() {
-  Close();
-  if (presenter_) {
-    notification_ = presenter_->CreateNotification(this);
-    if (notification_) {
-      brightray::NotificationOptions options;
-      options.title = title_;
-      options.subtitle = subtitle_;
-      options.msg = body_;
-      options.icon_url = GURL();
-      options.icon = icon_.AsBitmap();
-      options.silent = silent_;
-      options.has_reply = has_reply_;
-      options.reply_placeholder = reply_placeholder_;
-      options.actions = actions_;
-      options.sound = sound_;
-      notification_->Show(options);
+    Close();
+    if (presenter_) {
+        notification_ = presenter_->CreateNotification(this);
+        if (notification_) {
+            brightray::NotificationOptions options;
+            options.title = title_;
+            options.subtitle = subtitle_;
+            options.msg = body_;
+            options.icon_url = GURL();
+            options.icon = icon_.AsBitmap();
+            options.silent = silent_;
+            options.has_reply = has_reply_;
+            options.reply_placeholder = reply_placeholder_;
+            options.actions = actions_;
+            options.sound = sound_;
+            notification_->Show(options);
+        }
     }
-  }
 }
 
 bool Notification::IsSupported() {
-  return !!brightray::BrowserClient::Get()->GetNotificationPresenter();
+    return !!brightray::BrowserClient::Get()->GetNotificationPresenter();
 }
 
 // static
 void Notification::BuildPrototype(v8::Isolate* isolate,
                                   v8::Local<v8::FunctionTemplate> prototype) {
-  prototype->SetClassName(mate::StringToV8(isolate, "Notification"));
-  mate::ObjectTemplateBuilder(isolate, prototype->PrototypeTemplate())
-      .MakeDestroyable()
-      .SetMethod("show", &Notification::Show)
-      .SetMethod("close", &Notification::Close)
-      .SetProperty("title", &Notification::GetTitle, &Notification::SetTitle)
-      .SetProperty("subtitle", &Notification::GetSubtitle,
-                   &Notification::SetSubtitle)
-      .SetProperty("body", &Notification::GetBody, &Notification::SetBody)
-      .SetProperty("silent", &Notification::GetSilent, &Notification::SetSilent)
-      .SetProperty("replyPlaceholder", &Notification::GetReplyPlaceholder,
-                   &Notification::SetReplyPlaceholder)
-      .SetProperty("hasReply", &Notification::GetHasReply,
-                   &Notification::SetHasReply)
-      .SetProperty("actions", &Notification::GetActions,
-                   &Notification::SetActions)
-      .SetProperty("sound", &Notification::GetSound,
-                   &Notification::SetSound);
+    prototype->SetClassName(mate::StringToV8(isolate, "Notification"));
+    mate::ObjectTemplateBuilder(isolate, prototype->PrototypeTemplate())
+    .MakeDestroyable()
+    .SetMethod("show", &Notification::Show)
+    .SetMethod("close", &Notification::Close)
+    .SetProperty("title", &Notification::GetTitle, &Notification::SetTitle)
+    .SetProperty("subtitle", &Notification::GetSubtitle,
+                 &Notification::SetSubtitle)
+    .SetProperty("body", &Notification::GetBody, &Notification::SetBody)
+    .SetProperty("silent", &Notification::GetSilent, &Notification::SetSilent)
+    .SetProperty("replyPlaceholder", &Notification::GetReplyPlaceholder,
+                 &Notification::SetReplyPlaceholder)
+    .SetProperty("hasReply", &Notification::GetHasReply,
+                 &Notification::SetHasReply)
+    .SetProperty("actions", &Notification::GetActions,
+                 &Notification::SetActions)
+    .SetProperty("sound", &Notification::GetSound,
+                 &Notification::SetSound);
 }
 
 }  // namespace api
@@ -245,14 +245,14 @@ void Initialize(v8::Local<v8::Object> exports,
                 v8::Local<v8::Value> unused,
                 v8::Local<v8::Context> context,
                 void* priv) {
-  v8::Isolate* isolate = context->GetIsolate();
-  Notification::SetConstructor(isolate, base::Bind(&Notification::New));
+    v8::Isolate* isolate = context->GetIsolate();
+    Notification::SetConstructor(isolate, base::Bind(&Notification::New));
 
-  mate::Dictionary dict(isolate, exports);
-  dict.Set("Notification",
-           Notification::GetConstructor(isolate)->GetFunction());
+    mate::Dictionary dict(isolate, exports);
+    dict.Set("Notification",
+             Notification::GetConstructor(isolate)->GetFunction());
 
-  dict.SetMethod("isSupported", &Notification::IsSupported);
+    dict.SetMethod("isSupported", &Notification::IsSupported);
 }
 
 }  // namespace

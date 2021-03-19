@@ -6,13 +6,13 @@
 #import "base/mac/scoped_nsobject.h"
 
 @interface AtomApplication : NSApplication<CrAppProtocol,
-                                           CrAppControlProtocol,
-                                           NSUserActivityDelegate> {
- @private
-  BOOL handlingSendEvent_;
-  base::scoped_nsobject<NSUserActivity> currentActivity_;
-  NSCondition* handoffLock_;
-  BOOL updateReceived_;
+    CrAppControlProtocol,
+    NSUserActivityDelegate> {
+@private
+    BOOL handlingSendEvent_;
+    base::scoped_nsobject<NSUserActivity> currentActivity_;
+    NSCondition* handoffLock_;
+    BOOL updateReceived_;
 }
 
 + (AtomApplication*)sharedApplication;
@@ -25,10 +25,10 @@
 
 - (NSUserActivity*)getCurrentActivity;
 - (void)setCurrentActivity:(NSString*)type
-              withUserInfo:(NSDictionary*)userInfo
-            withWebpageURL:(NSURL*)webpageURL;
+    withUserInfo:(NSDictionary*)userInfo
+    withWebpageURL:(NSURL*)webpageURL;
 - (void)invalidateCurrentActivity;
 - (void)updateCurrentActivity:(NSString*)type
-                 withUserInfo:(NSDictionary*)userInfo;
+    withUserInfo:(NSDictionary*)userInfo;
 
 @end
