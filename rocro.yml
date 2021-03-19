@@ -98,8 +98,9 @@ inspecode:
       - '**/*.min.js'
       auto-fix: false     # JavaScript is not supported
       thresholds: {num-issues: 686}
-    - <<: *pmd-settings
-      machine: {cpu: 1.0}   # default is {cpu: 0.5}
+      ### commented-out ... must be `{cpu: (<= 0.75)}` at inspecode.strophoid.io
+      # - <<: *pmd-settings
+      #   machine: {cpu: 1.0}   # default is {cpu: 0.5}
 
     prettier:         ### for JavaScript
       auto-fix: true
@@ -108,7 +109,7 @@ inspecode:
     #### prospector
     ####    Killed
     prospector:       ### for Python
-      thresholds: {num-issues: 999}
+      thresholds: {num-issues: 796}
 
     pycodestyle:      ### for Python
       options:
