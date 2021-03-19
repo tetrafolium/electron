@@ -24,35 +24,35 @@ struct PageSizeMargins;
 
 // Manages the print preview handling for a WebContents.
 class PrintPreviewMessageHandler
-	: public content::WebContentsObserver,
-	public content::WebContentsUserData<PrintPreviewMessageHandler> {
-public:
-~PrintPreviewMessageHandler() override;
+    : public content::WebContentsObserver,
+      public content::WebContentsUserData<PrintPreviewMessageHandler> {
+ public:
+  ~PrintPreviewMessageHandler() override;
 
-// content::WebContentsObserver implementation.
-bool OnMessageReceived(const IPC::Message& message,
-                       content::RenderFrameHost* render_frame_host) override;
+  // content::WebContentsObserver implementation.
+  bool OnMessageReceived(const IPC::Message& message,
+                         content::RenderFrameHost* render_frame_host) override;
 
-void PrintToPDF(const base::DictionaryValue& options,
-                const atom::api::WebContents::PrintToPDFCallback& callback);
+  void PrintToPDF(const base::DictionaryValue& options,
+                  const atom::api::WebContents::PrintToPDFCallback& callback);
 
-private:
-typedef std::map<int, atom::api::WebContents::PrintToPDFCallback>
-        PrintToPDFCallbackMap;
+ private:
+  typedef std::map<int, atom::api::WebContents::PrintToPDFCallback>
+      PrintToPDFCallbackMap;
 
-explicit PrintPreviewMessageHandler(content::WebContents* web_contents);
-friend class content::WebContentsUserData<PrintPreviewMessageHandler>;
+  explicit PrintPreviewMessageHandler(content::WebContents* web_contents);
+  friend class content::WebContentsUserData<PrintPreviewMessageHandler>;
 
-// Message handlers.
-void OnMetafileReadyForPrinting(
-	const PrintHostMsg_DidPreviewDocument_Params& params);
-void OnPrintPreviewFailed(int document_cookie, int request_id);
+  // Message handlers.
+  void OnMetafileReadyForPrinting(
+      const PrintHostMsg_DidPreviewDocument_Params& params);
+  void OnPrintPreviewFailed(int document_cookie, int request_id);
 
-void RunPrintToPDFCallback(int request_id, uint32_t data_size, char* data);
+  void RunPrintToPDFCallback(int request_id, uint32_t data_size, char* data);
 
-PrintToPDFCallbackMap print_to_pdf_callback_map_;
+  PrintToPDFCallbackMap print_to_pdf_callback_map_;
 
-DISALLOW_COPY_AND_ASSIGN(PrintPreviewMessageHandler);
+  DISALLOW_COPY_AND_ASSIGN(PrintPreviewMessageHandler);
 };
 
 }  // namespace printing

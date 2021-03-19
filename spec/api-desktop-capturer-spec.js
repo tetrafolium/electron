@@ -4,7 +4,7 @@ const {desktopCapturer, remote} = require('electron')
 const isCI = remote.getGlobal('isCi')
 
 describe('desktopCapturer', () => {
-  before(function () {
+  before(function() {
     if (isCI && process.platform === 'win32') {
       this.skip()
     }
@@ -15,7 +15,7 @@ describe('desktopCapturer', () => {
       types: ['window', 'screen']
     }, (error, sources) => {
       assert.equal(error, null)
-      assert.notEqual(sources.length, 0)
+  assert.notEqual(sources.length, 0)
       done()
     })
   })
@@ -33,11 +33,12 @@ describe('desktopCapturer', () => {
       callCount++
       assert.equal(error, null)
       assert.notEqual(sources.length, 0)
-      if (callCount === 2) { done()
-    }
+      if (callCount === 2) {
+        done()
+      }
 
-    desktopCapturer.getSources({types: ['window', 'screen']}, callback)
-    desktopCapturer.getSources({types: ['window', 'screen']}, callback)
+      desktopCapturer.getSources({types: ['window', 'screen']}, callback)
+      desktopCapturer.getSources({types: ['window', 'screen']}, callback)
   })
 
   it('responds to subsequest calls of different options', (done) => {
@@ -45,11 +46,12 @@ describe('desktopCapturer', () => {
     const callback = (error, sources) => {
       callCount++
       assert.equal(error, null)
-      if (callCount === 2) { done()
-    }
+      if (callCount === 2) {
+        done()
+      }
 
-    desktopCapturer.getSources({types: ['window']}, callback)
-    desktopCapturer.getSources({types: ['screen']}, callback)
+      desktopCapturer.getSources({types: ['window']}, callback)
+      desktopCapturer.getSources({types: ['screen']}, callback)
   })
 });
       } 

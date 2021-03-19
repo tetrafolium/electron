@@ -1,17 +1,17 @@
-const assert = require("assert");
-const request = require("request");
-const buildAppVeyorURL = "https://windows-ci.electronjs.org/api/builds";
-const jenkinsServer = "https://mac-ci.electronjs.org";
+const assert = require('assert');
+const request = require('request');
+const buildAppVeyorURL = 'https://windows-ci.electronjs.org/api/builds';
+const jenkinsServer = 'https://mac-ci.electronjs.org';
 
 const circleCIJobs = [
-  "electron-linux-arm",
-  "electron-linux-arm64",
-  "electron-linux-ia32",
-  "electron-linux-mips64el",
-  "electron-linux-x64",
+  'electron-linux-arm',
+  'electron-linux-arm64',
+  'electron-linux-ia32',
+  'electron-linux-mips64el',
+  'electron-linux-x64',
 ];
 
-const jenkinsJobs = ["electron-mas-x64-release", "electron-osx-x64-release"];
+const jenkinsJobs = ['electron-mas-x64-release', 'electron-osx-x64-release'];
 
 async function makeRequest(requestOptions, parseResponse) {
   return new Promise((resolve, reject) => {
@@ -26,18 +26,12 @@ async function makeRequest(requestOptions, parseResponse) {
       } else {
         if (parseResponse) {
           console.log(
-            "Error: ",
-            `(status ${res.statusCode})`,
-            err || JSON.parse(res.body),
-            requestOptions
-          );
+              'Error: ', `(status ${res.statusCode})`,
+              err || JSON.parse(res.body), requestOptions);
         } else {
           console.log(
-            "Error: ",
-            `(status ${res.statusCode})`,
-            err || res.body,
-            requestOptions
-          );
+              'Error: ', `(status ${res.statusCode})`, err || res.body,
+              requestOptions);
         }
         reject(err);
       }
@@ -46,10 +40,9 @@ async function makeRequest(requestOptions, parseResponse) {
 }
 
 async function circleCIcall(buildUrl, targetBranch, job, ghRelease) {
-  assert(process.env.CIRCLE_TOKEN, "CIRCLE_TOKEN not found in environment");
-  console.log(
-    `Triggering CircleCI to run build job: ${job} on branch: ${targetBranch} with release flag.`
-  );
+  assert(process.env.CIRCLE_TOKEN, 'CIRCLE_TOKEN not found in environment');
+  console.log(`Triggering CircleCI to run build job: ${job} on branch: ${
+      targetBranch} with release flag.`);
   let buildRequest = {
     build_parameters: {
       CIRCLE_JOB: job,
@@ -59,37 +52,36 @@ async function circleCIcall(buildUrl, targetBranch, job, ghRelease) {
   if (ghRelease) {
     buildRequest.build_parameters.ELECTRON_RELEASE = 1;
   } else {
-    buildRequest.build_parameters.RUN_RELEASE_BUILD = "true";
+    buildRequest.build_parameters.RUN_RELEASE_BUILD = 'true';
   }
 
   let circleResponse = await makeRequest(
-    {
-      method: "POST",
-      url: buildUrl,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(buildRequest),
-    },
-    true
-  ).catch((err) => {
-    console.log("Error calling CircleCI:", err);
-  });
+                           {
+                             method: 'POST',
+                             url: buildUrl,
+                             headers: {
+                               'Content-Type': 'application/json',
+                               Accept: 'application/json',
+                             },
+                             body: JSON.stringify(buildRequest),
+                           },
+                           true)
+                           .catch((err) => {
+                             console.log('Error calling CircleCI:', err);
+                           });
   console.log(`Check ${circleResponse.build_url} for status. (${job})`);
 }
 
 async function buildAppVeyor(targetBranch, ghRelease) {
-  console.log(
-    `Triggering AppVeyor to run build on branch: ${targetBranch} with release flag.`
-  );
-  assert(process.env.APPVEYOR_TOKEN, "APPVEYOR_TOKEN not found in environment");
+  console.log(`Triggering AppVeyor to run build on branch: ${
+      targetBranch} with release flag.`);
+  assert(process.env.APPVEYOR_TOKEN, 'APPVEYOR_TOKEN not found in environment');
   let environmentVariables = {};
 
   if (ghRelease) {
     environmentVariables.ELECTRON_RELEASE = 1;
   } else {
-    environmentVariables.RUN_RELEASE_BUILD = "true";
+    environmentVariables.RUN_RELEASE_BUILD = 'true';
   }
 
   const requestOpts = {
@@ -98,46 +90,47 @@ async function buildAppVeyor(targetBranch, ghRelease) {
       bearer: process.env.APPVEYOR_TOKEN,
     },
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      accountName: "AppVeyor",
-      projectSlug: "electron",
+      accountName: 'AppVeyor',
+      projectSlug: 'electron',
       branch: targetBranch,
       environmentVariables,
     }),
-    method: "POST",
+    method: 'POST',
   };
   let appVeyorResponse = await makeRequest(requestOpts, true).catch((err) => {
-    console.log("Error calling AppVeyor:", err);
+    console.log('Error calling AppVeyor:', err);
   });
-  const buildUrl = `https://windows-ci.electronjs.org/project/AppVeyor/electron/build/${appVeyorResponse.version}`;
+  const buildUrl =
+      `https://windows-ci.electronjs.org/project/AppVeyor/electron/build/${
+          appVeyorResponse.version}`;
   console.log(
-    `AppVeyor release build request successful.  Check build status at ${buildUrl}`
-  );
+      `AppVeyor release build request successful.  Check build status at ${
+          buildUrl}`);
 }
 
 function buildCircleCI(targetBranch, ghRelease, job) {
-  const circleBuildUrl = `https://circleci.com/api/v1.1/project/github/electron/electron/tree/${targetBranch}?circle-token=${process.env.CIRCLE_TOKEN}`;
+  const circleBuildUrl =
+      `https://circleci.com/api/v1.1/project/github/electron/electron/tree/${
+          targetBranch}?circle-token=${process.env.CIRCLE_TOKEN}`;
   if (job) {
     assert(circleCIJobs.includes(job), `Unknown CI job name: ${job}.`);
     circleCIcall(circleBuildUrl, targetBranch, job, ghRelease);
   } else {
-    circleCIJobs.forEach((job) =>
-      circleCIcall(circleBuildUrl, targetBranch, job, ghRelease)
-    );
+    circleCIJobs.forEach(
+        (job) => circleCIcall(circleBuildUrl, targetBranch, job, ghRelease));
   }
 }
 
 async function buildJenkins(targetBranch, ghRelease, job) {
   assert(
-    process.env.JENKINS_AUTH_TOKEN,
-    "JENKINS_AUTH_TOKEN not found in environment"
-  );
+      process.env.JENKINS_AUTH_TOKEN,
+      'JENKINS_AUTH_TOKEN not found in environment');
   assert(
-    process.env.JENKINS_BUILD_TOKEN,
-    "JENKINS_BUILD_TOKEN not found in environment"
-  );
+      process.env.JENKINS_BUILD_TOKEN,
+      'JENKINS_BUILD_TOKEN not found in environment');
   let jenkinsCrumb = await getJenkinsCrumb();
 
   if (job) {
@@ -154,7 +147,7 @@ async function callJenkins(path, requestParameters, requestHeaders) {
   let requestOptions = {
     url: `${jenkinsServer}/${path}`,
     auth: {
-      user: "build",
+      user: 'build',
       pass: process.env.JENKINS_AUTH_TOKEN,
     },
     qs: requestParameters,
@@ -169,9 +162,8 @@ async function callJenkins(path, requestParameters, requestHeaders) {
 }
 
 async function callJenkinsBuild(job, jenkinsCrumb, targetBranch, ghRelease) {
-  console.log(
-    `Triggering Jenkins to run build job: ${job} on branch: ${targetBranch} with release flag.`
-  );
+  console.log(`Triggering Jenkins to run build job: ${job} on branch: ${
+      targetBranch} with release flag.`);
   let jenkinsParams = {
     token: process.env.JENKINS_BUILD_TOKEN,
     BRANCH: targetBranch,
@@ -180,25 +172,22 @@ async function callJenkinsBuild(job, jenkinsCrumb, targetBranch, ghRelease) {
     jenkinsParams.RUN_RELEASE_BUILD = 1;
   }
   await callJenkins(
-    `job/${job}/buildWithParameters`,
-    jenkinsParams,
-    jenkinsCrumb
-  ).catch((err) => {
-    console.log(`Error calling Jenkins build`, err);
-  });
+      `job/${job}/buildWithParameters`, jenkinsParams, jenkinsCrumb)
+      .catch((err) => {
+        console.log(`Error calling Jenkins build`, err);
+      });
   let buildUrl = `${jenkinsServer}/job/${job}/lastBuild/`;
   console.log(
-    `Jenkins build request successful.  Check build status at ${buildUrl}.`
-  );
+      `Jenkins build request successful.  Check build status at ${buildUrl}.`);
 }
 
 async function getJenkinsCrumb() {
-  let crumbResponse = await callJenkins("crumbIssuer/api/xml", {
-    xpath: 'concat(//crumbRequestField,":",//crumb)',
-  }).catch((err) => {
+  let crumbResponse = await callJenkins('crumbIssuer/api/xml', {
+                        xpath: 'concat(//crumbRequestField,":",//crumb)',
+                      }).catch((err) => {
     console.log(`Error getting jenkins crumb:`, err);
   });
-  let crumbDetails = crumbResponse.split(":");
+  let crumbDetails = crumbResponse.split(':');
   let crumbHeader = {};
   crumbHeader[crumbDetails[0]] = crumbDetails[1];
   return crumbHeader;
@@ -207,15 +196,15 @@ async function getJenkinsCrumb() {
 function runRelease(targetBranch, options) {
   if (options.ci) {
     switch (options.ci) {
-      case "CircleCI": {
+      case 'CircleCI': {
         buildCircleCI(targetBranch, options.ghRelease, options.job);
         break;
       }
-      case "AppVeyor": {
+      case 'AppVeyor': {
         buildAppVeyor(targetBranch, options.ghRelease);
         break;
       }
-      case "Jenkins": {
+      case 'Jenkins': {
         buildJenkins(targetBranch, options.ghRelease, options.job);
         break;
       }
@@ -230,7 +219,7 @@ function runRelease(targetBranch, options) {
 module.exports = runRelease;
 
 if (require.main === module) {
-  const args = require("minimist")(process.argv.slice(2));
+  const args = require('minimist')(process.argv.slice(2));
   const targetBranch = args._[0];
   if (args._.length < 1) {
     console.log(`Trigger CI to build release builds of electron.

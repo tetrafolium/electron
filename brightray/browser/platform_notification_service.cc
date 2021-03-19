@@ -19,8 +19,8 @@ namespace brightray {
 namespace {
 
 void RemoveNotification(base::WeakPtr<Notification> notification) {
-	if (notification)
-		notification->Dismiss();
+  if (notification)
+    notification->Dismiss();
 }
 
 void OnWebNotificationAllowed(base::WeakPtr<Notification> notification,
@@ -28,121 +28,112 @@ void OnWebNotificationAllowed(base::WeakPtr<Notification> notification,
                               const content::PlatformNotificationData& data,
                               bool audio_muted,
                               bool allowed) {
-	if (!notification)
-		return;
-	if (allowed) {
-		brightray::NotificationOptions options;
-		options.title = data.title;
-		options.msg = data.body;
-		options.tag = data.tag;
-		options.icon_url = data.icon;
-		options.icon = icon;
-		options.silent = audio_muted ? true : data.silent;
-		options.has_reply = false;
-		notification->Show(options);
-	} else {
-		notification->Destroy();
-	}
+  if (!notification)
+    return;
+  if (allowed) {
+    brightray::NotificationOptions options;
+    options.title = data.title;
+    options.msg = data.body;
+    options.tag = data.tag;
+    options.icon_url = data.icon;
+    options.icon = icon;
+    options.silent = audio_muted ? true : data.silent;
+    options.has_reply = false;
+    notification->Show(options);
+  } else {
+    notification->Destroy();
+  }
 }
 
 class NotificationDelegateImpl final : public brightray::NotificationDelegate {
-public:
-explicit NotificationDelegateImpl(const std::string& notification_id)
-	: notification_id_(notification_id) {
-}
+ public:
+  explicit NotificationDelegateImpl(const std::string& notification_id)
+      : notification_id_(notification_id) {}
 
-void NotificationDestroyed() override {
-	delete this;
-}
+  void NotificationDestroyed() override { delete this; }
 
-void NotificationClick() override {
-	content::NotificationEventDispatcher::GetInstance()
-	->DispatchNonPersistentClickEvent(notification_id_);
-}
+  void NotificationClick() override {
+    content::NotificationEventDispatcher::GetInstance()
+        ->DispatchNonPersistentClickEvent(notification_id_);
+  }
 
-void NotificationClosed() override {
-	content::NotificationEventDispatcher::GetInstance()
-	->DispatchNonPersistentCloseEvent(notification_id_);
-}
+  void NotificationClosed() override {
+    content::NotificationEventDispatcher::GetInstance()
+        ->DispatchNonPersistentCloseEvent(notification_id_);
+  }
 
-void NotificationDisplayed() override {
-	content::NotificationEventDispatcher::GetInstance()
-	->DispatchNonPersistentShowEvent(notification_id_);
-}
+  void NotificationDisplayed() override {
+    content::NotificationEventDispatcher::GetInstance()
+        ->DispatchNonPersistentShowEvent(notification_id_);
+  }
 
-private:
-std::string notification_id_;
+ private:
+  std::string notification_id_;
 
-DISALLOW_COPY_AND_ASSIGN(NotificationDelegateImpl);
+  DISALLOW_COPY_AND_ASSIGN(NotificationDelegateImpl);
 };
 
 }  // namespace
 
 PlatformNotificationService::PlatformNotificationService(
-	BrowserClient* browser_client)
-	: browser_client_(browser_client),
-	render_process_id_(-1) {
-}
+    BrowserClient* browser_client)
+    : browser_client_(browser_client), render_process_id_(-1) {}
 
-PlatformNotificationService::~PlatformNotificationService() {
-}
+PlatformNotificationService::~PlatformNotificationService() {}
 
 blink::mojom::PermissionStatus
 PlatformNotificationService::CheckPermissionOnUIThread(
-	content::BrowserContext* browser_context,
-	const GURL& origin,
-	int render_process_id) {
-	render_process_id_ = render_process_id;
-	return blink::mojom::PermissionStatus::GRANTED;
+    content::BrowserContext* browser_context,
+    const GURL& origin,
+    int render_process_id) {
+  render_process_id_ = render_process_id;
+  return blink::mojom::PermissionStatus::GRANTED;
 }
 
 blink::mojom::PermissionStatus
 PlatformNotificationService::CheckPermissionOnIOThread(
-	content::ResourceContext* resource_context,
-	const GURL& origin,
-	int render_process_id) {
-	return blink::mojom::PermissionStatus::GRANTED;
+    content::ResourceContext* resource_context,
+    const GURL& origin,
+    int render_process_id) {
+  return blink::mojom::PermissionStatus::GRANTED;
 }
 
 void PlatformNotificationService::DisplayNotification(
-	content::BrowserContext* browser_context,
-	const std::string& notification_id,
-	const GURL& origin,
-	const content::PlatformNotificationData& notification_data,
-	const content::NotificationResources& notification_resources,
-	base::Closure* cancel_callback) {
-	auto presenter = browser_client_->GetNotificationPresenter();
-	if (!presenter)
-		return;
-	NotificationDelegateImpl* delegate =
-		new NotificationDelegateImpl(notification_id);
-	auto notification = presenter->CreateNotification(delegate);
-	if (notification) {
-		*cancel_callback = base::Bind(&RemoveNotification, notification);
-		browser_client_->WebNotificationAllowed(
-			render_process_id_, base::Bind(&OnWebNotificationAllowed, notification,
-			                               notification_resources.notification_icon,
-			                               notification_data));
-	}
+    content::BrowserContext* browser_context,
+    const std::string& notification_id,
+    const GURL& origin,
+    const content::PlatformNotificationData& notification_data,
+    const content::NotificationResources& notification_resources,
+    base::Closure* cancel_callback) {
+  auto presenter = browser_client_->GetNotificationPresenter();
+  if (!presenter)
+    return;
+  NotificationDelegateImpl* delegate =
+      new NotificationDelegateImpl(notification_id);
+  auto notification = presenter->CreateNotification(delegate);
+  if (notification) {
+    *cancel_callback = base::Bind(&RemoveNotification, notification);
+    browser_client_->WebNotificationAllowed(
+        render_process_id_, base::Bind(&OnWebNotificationAllowed, notification,
+                                       notification_resources.notification_icon,
+                                       notification_data));
+  }
 }
 
 void PlatformNotificationService::DisplayPersistentNotification(
-	content::BrowserContext* browser_context,
-	const std::string& notification_id,
-	const GURL& service_worker_scope,
-	const GURL& origin,
-	const content::PlatformNotificationData& notification_data,
-	const content::NotificationResources& notification_resources) {
-}
+    content::BrowserContext* browser_context,
+    const std::string& notification_id,
+    const GURL& service_worker_scope,
+    const GURL& origin,
+    const content::PlatformNotificationData& notification_data,
+    const content::NotificationResources& notification_resources) {}
 
 void PlatformNotificationService::ClosePersistentNotification(
-	content::BrowserContext* browser_context,
-	const std::string& notification_id) {
-}
+    content::BrowserContext* browser_context,
+    const std::string& notification_id) {}
 
 void PlatformNotificationService::GetDisplayedNotifications(
-	content::BrowserContext* browser_context,
-	const DisplayedNotificationsCallback& callback) {
-}
+    content::BrowserContext* browser_context,
+    const DisplayedNotificationsCallback& callback) {}
 
 }  // namespace brightray

@@ -8,29 +8,27 @@
 
 namespace brightray {
 
-RequireCTDelegate::RequireCTDelegate() {
-}
+RequireCTDelegate::RequireCTDelegate() {}
 
-RequireCTDelegate::~RequireCTDelegate() {
-}
+RequireCTDelegate::~RequireCTDelegate() {}
 
 void RequireCTDelegate::AddCTExcludedHost(const std::string& host) {
-	DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-	ct_excluded_hosts_.insert(host);
+  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+  ct_excluded_hosts_.insert(host);
 }
 
 void RequireCTDelegate::ClearCTExcludedHostsList() {
-	DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-	ct_excluded_hosts_.clear();
+  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+  ct_excluded_hosts_.clear();
 }
 
 RequireCTDelegate::CTRequirementLevel RequireCTDelegate::IsCTRequiredForHost(
-	const std::string& host) {
-	DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-	if (!ct_excluded_hosts_.empty() &&
-	    (ct_excluded_hosts_.find(host) != ct_excluded_hosts_.end()))
-		return CTRequirementLevel::NOT_REQUIRED;
-	return CTRequirementLevel::DEFAULT;
+    const std::string& host) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+  if (!ct_excluded_hosts_.empty() &&
+      (ct_excluded_hosts_.find(host) != ct_excluded_hosts_.end()))
+    return CTRequirementLevel::NOT_REQUIRED;
+  return CTRequirementLevel::DEFAULT;
 }
 
 }  // namespace brightray

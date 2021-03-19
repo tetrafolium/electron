@@ -12,48 +12,46 @@ namespace atom {
 
 // Special button that used by menu bar to show submenus.
 class SubmenuButton : public views::MenuButton {
-public:
-SubmenuButton(const base::string16& title,
-              views::MenuButtonListener* menu_button_listener,
-              const SkColor& background_color);
-virtual ~SubmenuButton();
+ public:
+  SubmenuButton(const base::string16& title,
+                views::MenuButtonListener* menu_button_listener,
+                const SkColor& background_color);
+  virtual ~SubmenuButton();
 
-void SetAcceleratorVisibility(bool visible);
-void SetUnderlineColor(SkColor color);
+  void SetAcceleratorVisibility(bool visible);
+  void SetUnderlineColor(SkColor color);
 
-void SetEnabledColor(SkColor color);
-void SetBackgroundColor(SkColor color);
+  void SetEnabledColor(SkColor color);
+  void SetBackgroundColor(SkColor color);
 
-base::char16 accelerator() const {
-	return accelerator_;
-}
+  base::char16 accelerator() const { return accelerator_; }
 
-// views::MenuButton:
-void PaintButtonContents(gfx::Canvas* canvas) override;
+  // views::MenuButton:
+  void PaintButtonContents(gfx::Canvas* canvas) override;
 
-// views::InkDropHostView:
-std::unique_ptr<views::InkDropRipple> CreateInkDropRipple() const override;
-std::unique_ptr<views::InkDrop> CreateInkDrop() override;
+  // views::InkDropHostView:
+  std::unique_ptr<views::InkDropRipple> CreateInkDropRipple() const override;
+  std::unique_ptr<views::InkDrop> CreateInkDrop() override;
 
-private:
-bool GetUnderlinePosition(const base::string16& text,
-                          base::char16* accelerator,
-                          int* start, int* end);
-void GetCharacterPosition(
-	const base::string16& text, int index, int* pos);
+ private:
+  bool GetUnderlinePosition(const base::string16& text,
+                            base::char16* accelerator,
+                            int* start,
+                            int* end);
+  void GetCharacterPosition(const base::string16& text, int index, int* pos);
 
-base::char16 accelerator_;
+  base::char16 accelerator_;
 
-bool show_underline_;
+  bool show_underline_;
 
-int underline_start_;
-int underline_end_;
-int text_width_;
-int text_height_;
-SkColor underline_color_;
-SkColor background_color_;
+  int underline_start_;
+  int underline_end_;
+  int text_width_;
+  int text_height_;
+  SkColor underline_color_;
+  SkColor background_color_;
 
-DISALLOW_COPY_AND_ASSIGN(SubmenuButton);
+  DISALLOW_COPY_AND_ASSIGN(SubmenuButton);
 };
 
 }  // namespace atom

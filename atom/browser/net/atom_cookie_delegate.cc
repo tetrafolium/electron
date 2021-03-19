@@ -8,37 +8,32 @@
 
 namespace atom {
 
-AtomCookieDelegate::AtomCookieDelegate() {
-}
+AtomCookieDelegate::AtomCookieDelegate() {}
 
-AtomCookieDelegate::~AtomCookieDelegate() {
-}
+AtomCookieDelegate::~AtomCookieDelegate() {}
 
 void AtomCookieDelegate::AddObserver(Observer* observer) {
-	observers_.AddObserver(observer);
+  observers_.AddObserver(observer);
 }
 
 void AtomCookieDelegate::RemoveObserver(Observer* observer) {
-	observers_.RemoveObserver(observer);
+  observers_.RemoveObserver(observer);
 }
 
-void AtomCookieDelegate::NotifyObservers(
-	const net::CanonicalCookie& cookie,
-	bool removed,
-	net::CookieStore::ChangeCause cause) {
-	for (Observer& observer : observers_)
-		observer.OnCookieChanged(cookie, removed, cause);
+void AtomCookieDelegate::NotifyObservers(const net::CanonicalCookie& cookie,
+                                         bool removed,
+                                         net::CookieStore::ChangeCause cause) {
+  for (Observer& observer : observers_)
+    observer.OnCookieChanged(cookie, removed, cause);
 }
 
-void AtomCookieDelegate::OnCookieChanged(
-	const net::CanonicalCookie& cookie,
-	bool removed,
-	net::CookieStore::ChangeCause cause) {
-	content::BrowserThread::PostTask(
-		content::BrowserThread::UI,
-		FROM_HERE,
-		base::Bind(&AtomCookieDelegate::NotifyObservers,
-		           this, cookie, removed, cause));
+void AtomCookieDelegate::OnCookieChanged(const net::CanonicalCookie& cookie,
+                                         bool removed,
+                                         net::CookieStore::ChangeCause cause) {
+  content::BrowserThread::PostTask(
+      content::BrowserThread::UI, FROM_HERE,
+      base::Bind(&AtomCookieDelegate::NotifyObservers, this, cookie, removed,
+                 cause));
 }
 
 }  // namespace atom

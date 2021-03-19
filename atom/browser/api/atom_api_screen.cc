@@ -25,105 +25,104 @@ namespace api {
 namespace {
 
 // Find an item in container according to its ID.
-template<class T>
+template <class T>
 typename T::iterator FindById(T* container, int id) {
-	auto predicate = [id] (const typename T::value_type& item) -> bool {
-				 return item.id() == id;
-			 };
-	return std::find_if(container->begin(), container->end(), predicate);
+  auto predicate = [id](const typename T::value_type& item) -> bool {
+    return item.id() == id;
+  };
+  return std::find_if(container->begin(), container->end(), predicate);
 }
 
 // Convert the changed_metrics bitmask to string array.
 std::vector<std::string> MetricsToArray(uint32_t metrics) {
-	std::vector<std::string> array;
-	if (metrics & display::DisplayObserver::DISPLAY_METRIC_BOUNDS)
-		array.push_back("bounds");
-	if (metrics & display::DisplayObserver::DISPLAY_METRIC_WORK_AREA)
-		array.push_back("workArea");
-	if (metrics & display::DisplayObserver::DISPLAY_METRIC_DEVICE_SCALE_FACTOR)
-		array.push_back("scaleFactor");
-	if (metrics & display::DisplayObserver::DISPLAY_METRIC_ROTATION)
-		array.push_back("rotation");
-	return array;
+  std::vector<std::string> array;
+  if (metrics & display::DisplayObserver::DISPLAY_METRIC_BOUNDS)
+    array.push_back("bounds");
+  if (metrics & display::DisplayObserver::DISPLAY_METRIC_WORK_AREA)
+    array.push_back("workArea");
+  if (metrics & display::DisplayObserver::DISPLAY_METRIC_DEVICE_SCALE_FACTOR)
+    array.push_back("scaleFactor");
+  if (metrics & display::DisplayObserver::DISPLAY_METRIC_ROTATION)
+    array.push_back("rotation");
+  return array;
 }
 
 }  // namespace
 
 Screen::Screen(v8::Isolate* isolate, display::Screen* screen)
-	: screen_(screen) {
-	screen_->AddObserver(this);
-	Init(isolate);
+    : screen_(screen) {
+  screen_->AddObserver(this);
+  Init(isolate);
 }
 
 Screen::~Screen() {
-	screen_->RemoveObserver(this);
+  screen_->RemoveObserver(this);
 }
 
 gfx::Point Screen::GetCursorScreenPoint() {
-	return screen_->GetCursorScreenPoint();
+  return screen_->GetCursorScreenPoint();
 }
 
 display::Display Screen::GetPrimaryDisplay() {
-	return screen_->GetPrimaryDisplay();
+  return screen_->GetPrimaryDisplay();
 }
 
 std::vector<display::Display> Screen::GetAllDisplays() {
-	return screen_->GetAllDisplays();
+  return screen_->GetAllDisplays();
 }
 
 display::Display Screen::GetDisplayNearestPoint(const gfx::Point& point) {
-	return screen_->GetDisplayNearestPoint(point);
+  return screen_->GetDisplayNearestPoint(point);
 }
 
 display::Display Screen::GetDisplayMatching(const gfx::Rect& match_rect) {
-	return screen_->GetDisplayMatching(match_rect);
+  return screen_->GetDisplayMatching(match_rect);
 }
 
 void Screen::OnDisplayAdded(const display::Display& new_display) {
-	Emit("display-added", new_display);
+  Emit("display-added", new_display);
 }
 
 void Screen::OnDisplayRemoved(const display::Display& old_display) {
-	Emit("display-removed", old_display);
+  Emit("display-removed", old_display);
 }
 
 void Screen::OnDisplayMetricsChanged(const display::Display& display,
                                      uint32_t changed_metrics) {
-	Emit("display-metrics-changed", display, MetricsToArray(changed_metrics));
+  Emit("display-metrics-changed", display, MetricsToArray(changed_metrics));
 }
 
 // static
 v8::Local<v8::Value> Screen::Create(v8::Isolate* isolate) {
-	if (!Browser::Get()->is_ready()) {
-		isolate->ThrowException(v8::Exception::Error(mate::StringToV8(
-								     isolate,
-								     "Cannot require \"screen\" module before app is ready")));
-		return v8::Null(isolate);
-	}
+  if (!Browser::Get()->is_ready()) {
+    isolate->ThrowException(v8::Exception::Error(mate::StringToV8(
+        isolate, "Cannot require \"screen\" module before app is ready")));
+    return v8::Null(isolate);
+  }
 
-	display::Screen* screen = display::Screen::GetScreen();
-	if (!screen) {
-		isolate->ThrowException(v8::Exception::Error(mate::StringToV8(
-								     isolate, "Failed to get screen information")));
-		return v8::Null(isolate);
-	}
+  display::Screen* screen = display::Screen::GetScreen();
+  if (!screen) {
+    isolate->ThrowException(v8::Exception::Error(
+        mate::StringToV8(isolate, "Failed to get screen information")));
+    return v8::Null(isolate);
+  }
 
-	return mate::CreateHandle(isolate, new Screen(isolate, screen)).ToV8();
+  return mate::CreateHandle(isolate, new Screen(isolate, screen)).ToV8();
 }
 
 // static
-void Screen::BuildPrototype(
-	v8::Isolate* isolate, v8::Local<v8::FunctionTemplate> prototype) {
-	prototype->SetClassName(mate::StringToV8(isolate, "Screen"));
-	mate::ObjectTemplateBuilder(isolate, prototype->PrototypeTemplate())
-	.SetMethod("getCursorScreenPoint", &Screen::GetCursorScreenPoint)
-	.SetMethod("getPrimaryDisplay", &Screen::GetPrimaryDisplay)
-	.SetMethod("getAllDisplays", &Screen::GetAllDisplays)
-	.SetMethod("getDisplayNearestPoint", &Screen::GetDisplayNearestPoint)
+void Screen::BuildPrototype(v8::Isolate* isolate,
+                            v8::Local<v8::FunctionTemplate> prototype) {
+  prototype->SetClassName(mate::StringToV8(isolate, "Screen"));
+  mate::ObjectTemplateBuilder(isolate, prototype->PrototypeTemplate())
+      .SetMethod("getCursorScreenPoint", &Screen::GetCursorScreenPoint)
+      .SetMethod("getPrimaryDisplay", &Screen::GetPrimaryDisplay)
+      .SetMethod("getAllDisplays", &Screen::GetAllDisplays)
+      .SetMethod("getDisplayNearestPoint", &Screen::GetDisplayNearestPoint)
 #if defined(OS_MACOSX)
-	.SetMethod("getMenuBarHeight", &Screen::getMenuBarHeight)
+      .SetMethod("getMenuBarHeight", &Screen::getMenuBarHeight)
 #endif
-	.SetMethod("getDisplayMatching", &Screen::GetDisplayMatching);
+      .SetMethod("getDisplayMatching", &Screen::GetDisplayMatching);
 }
 
 }  // namespace api
@@ -134,12 +133,14 @@ namespace {
 
 using atom::api::Screen;
 
-void Initialize(v8::Local<v8::Object> exports, v8::Local<v8::Value> unused,
-                v8::Local<v8::Context> context, void* priv) {
-	v8::Isolate* isolate = context->GetIsolate();
-	mate::Dictionary dict(isolate, exports);
-	dict.Set("screen", Screen::Create(isolate));
-	dict.Set("Screen", Screen::GetConstructor(isolate)->GetFunction());
+void Initialize(v8::Local<v8::Object> exports,
+                v8::Local<v8::Value> unused,
+                v8::Local<v8::Context> context,
+                void* priv) {
+  v8::Isolate* isolate = context->GetIsolate();
+  mate::Dictionary dict(isolate, exports);
+  dict.Set("screen", Screen::Create(isolate));
+  dict.Set("Screen", Screen::GetConstructor(isolate)->GetFunction());
 }
 
 }  // namespace

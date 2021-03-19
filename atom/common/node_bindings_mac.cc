@@ -15,53 +15,51 @@
 namespace atom {
 
 NodeBindingsMac::NodeBindingsMac(BrowserEnvironment browser_env)
-	: NodeBindings(browser_env) {
-}
+    : NodeBindings(browser_env) {}
 
-NodeBindingsMac::~NodeBindingsMac() {
-}
+NodeBindingsMac::~NodeBindingsMac() {}
 
 void NodeBindingsMac::RunMessageLoop() {
-	// Get notified when libuv's watcher queue changes.
-	uv_loop_->data = this;
-	uv_loop_->on_watcher_queue_updated = OnWatcherQueueChanged;
+  // Get notified when libuv's watcher queue changes.
+  uv_loop_->data = this;
+  uv_loop_->on_watcher_queue_updated = OnWatcherQueueChanged;
 
-	NodeBindings::RunMessageLoop();
+  NodeBindings::RunMessageLoop();
 }
 
 // static
 void NodeBindingsMac::OnWatcherQueueChanged(uv_loop_t* loop) {
-	NodeBindingsMac* self = static_cast<NodeBindingsMac*>(loop->data);
+  NodeBindingsMac* self = static_cast<NodeBindingsMac*>(loop->data);
 
-	// We need to break the io polling in the kqueue thread when loop's watcher
-	// queue changes, otherwise new events cannot be notified.
-	self->WakeupEmbedThread();
+  // We need to break the io polling in the kqueue thread when loop's watcher
+  // queue changes, otherwise new events cannot be notified.
+  self->WakeupEmbedThread();
 }
 
 void NodeBindingsMac::PollEvents() {
-	struct timeval tv;
-	int timeout = uv_backend_timeout(uv_loop_);
-	if (timeout != -1) {
-		tv.tv_sec = timeout / 1000;
-		tv.tv_usec = (timeout % 1000) * 1000;
-	}
+  struct timeval tv;
+  int timeout = uv_backend_timeout(uv_loop_);
+  if (timeout != -1) {
+    tv.tv_sec = timeout / 1000;
+    tv.tv_usec = (timeout % 1000) * 1000;
+  }
 
-	fd_set readset;
-	int fd = uv_backend_fd(uv_loop_);
-	FD_ZERO(&readset);
-	FD_SET(fd, &readset);
+  fd_set readset;
+  int fd = uv_backend_fd(uv_loop_);
+  FD_ZERO(&readset);
+  FD_SET(fd, &readset);
 
-	// Wait for new libuv events.
-	int r;
-	do {
-		r = select(fd + 1, &readset, nullptr, nullptr,
-		           timeout == -1 ? nullptr : &tv);
-	} while (r == -1 && errno == EINTR);
+  // Wait for new libuv events.
+  int r;
+  do {
+    r = select(fd + 1, &readset, nullptr, nullptr,
+               timeout == -1 ? nullptr : &tv);
+  } while (r == -1 && errno == EINTR);
 }
 
 // static
 NodeBindings* NodeBindings::Create(BrowserEnvironment browser_env) {
-	return new NodeBindingsMac(browser_env);
+  return new NodeBindingsMac(browser_env);
 }
 
 }  // namespace atom

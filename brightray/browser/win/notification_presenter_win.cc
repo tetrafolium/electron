@@ -28,71 +28,70 @@ namespace brightray {
 namespace {
 
 bool IsDebuggingNotifications() {
-	return base::Environment::Create()->HasVar("ELECTRON_DEBUG_NOTIFICATIONS");
+  return base::Environment::Create()->HasVar("ELECTRON_DEBUG_NOTIFICATIONS");
 }
 
 bool SaveIconToPath(const SkBitmap& bitmap, const base::FilePath& path) {
-	std::vector<unsigned char> png_data;
-	if (!gfx::PNGCodec::EncodeBGRASkBitmap(bitmap, false, &png_data))
-		return false;
+  std::vector<unsigned char> png_data;
+  if (!gfx::PNGCodec::EncodeBGRASkBitmap(bitmap, false, &png_data))
+    return false;
 
-	char* data = reinterpret_cast<char*>(&png_data[0]);
-	int size = static_cast<int>(png_data.size());
-	return base::WriteFile(path, data, size) == size;
+  char* data = reinterpret_cast<char*>(&png_data[0]);
+  int size = static_cast<int>(png_data.size());
+  return base::WriteFile(path, data, size) == size;
 }
 
 }  // namespace
 
 // static
 NotificationPresenter* NotificationPresenter::Create() {
-	auto version = base::win::GetVersion();
-	if (version < base::win::VERSION_WIN8)
-		return new NotificationPresenterWin7;
-	if (!WindowsToastNotification::Initialize())
-		return nullptr;
-	std::unique_ptr<NotificationPresenterWin> presenter(
-		new NotificationPresenterWin);
-	if (!presenter->Init())
-		return nullptr;
+  auto version = base::win::GetVersion();
+  if (version < base::win::VERSION_WIN8)
+    return new NotificationPresenterWin7;
+  if (!WindowsToastNotification::Initialize())
+    return nullptr;
+  std::unique_ptr<NotificationPresenterWin> presenter(
+      new NotificationPresenterWin);
+  if (!presenter->Init())
+    return nullptr;
 
-	if (IsDebuggingNotifications())
-		LOG(INFO) << "Successfully created Windows notifications presenter";
+  if (IsDebuggingNotifications())
+    LOG(INFO) << "Successfully created Windows notifications presenter";
 
-	return presenter.release();
+  return presenter.release();
 }
 
-NotificationPresenterWin::NotificationPresenterWin() {
-}
+NotificationPresenterWin::NotificationPresenterWin() {}
 
-NotificationPresenterWin::~NotificationPresenterWin() {
-}
+NotificationPresenterWin::~NotificationPresenterWin() {}
 
 bool NotificationPresenterWin::Init() {
-	return temp_dir_.CreateUniqueTempDir();
+  return temp_dir_.CreateUniqueTempDir();
 }
 
 base::string16 NotificationPresenterWin::SaveIconToFilesystem(
-	const SkBitmap& icon, const GURL& origin) {
-	std::string filename;
+    const SkBitmap& icon,
+    const GURL& origin) {
+  std::string filename;
 
-	if (origin.is_valid()) {
-		filename = base::MD5String(origin.spec()) + ".png";
-	} else {
-		base::TimeTicks now = base::TimeTicks::Now();
-		filename = std::to_string(now.ToInternalValue()) + ".png";
-	}
+  if (origin.is_valid()) {
+    filename = base::MD5String(origin.spec()) + ".png";
+  } else {
+    base::TimeTicks now = base::TimeTicks::Now();
+    filename = std::to_string(now.ToInternalValue()) + ".png";
+  }
 
-	base::FilePath path = temp_dir_.GetPath().Append(base::UTF8ToUTF16(filename));
-	if (base::PathExists(path))
-		return path.value();
-	if (SaveIconToPath(icon, path))
-		return path.value();
-	return base::UTF8ToUTF16(origin.spec());
+  base::FilePath path = temp_dir_.GetPath().Append(base::UTF8ToUTF16(filename));
+  if (base::PathExists(path))
+    return path.value();
+  if (SaveIconToPath(icon, path))
+    return path.value();
+  return base::UTF8ToUTF16(origin.spec());
 }
 
 Notification* NotificationPresenterWin::CreateNotificationObject(
-	NotificationDelegate* delegate) {
-	return new WindowsToastNotification(delegate, this);
+    NotificationDelegate* delegate) {
+  return new WindowsToastNotification(delegate, this);
 }
 
 }  // namespace brightray

@@ -8,6 +8,6 @@ namespace brightray {
 std::string GetApplicationName();
 std::string GetApplicationVersion();
 
-}
+}  // namespace brightray
 
 #endif  // BRIGHTRAY_COMMON_APPLICATION_INFO_H_

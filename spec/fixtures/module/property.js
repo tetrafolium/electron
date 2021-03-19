@@ -1,7 +1,7 @@
 exports.property = 1127;
 
 function func() {}
-func.property = "foo";
+func.property = 'foo';
 exports.func = func;
 
 exports.getFunctionProperty = () => {

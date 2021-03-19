@@ -11,12 +11,13 @@
 namespace mate {
 
 // static
-bool Converter<ui::Accelerator>::FromV8(
-	v8::Isolate* isolate, v8::Local<v8::Value> val, ui::Accelerator* out) {
-	std::string keycode;
-	if (!ConvertFromV8(isolate, val, &keycode))
-		return false;
-	return accelerator_util::StringToAccelerator(keycode, out);
+bool Converter<ui::Accelerator>::FromV8(v8::Isolate* isolate,
+                                        v8::Local<v8::Value> val,
+                                        ui::Accelerator* out) {
+  std::string keycode;
+  if (!ConvertFromV8(isolate, val, &keycode))
+    return false;
+  return accelerator_util::StringToAccelerator(keycode, out);
 }
 
 }  // namespace mate

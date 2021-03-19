@@ -22,47 +22,47 @@ namespace ppapi {
 namespace proxy {
 struct PPBFlash_DrawGlyphs_Params;
 }
-}
+}  // namespace ppapi
 
 namespace content {
 class RendererPpapiHost;
 }
 
 class PepperFlashRendererHost : public ppapi::host::ResourceHost {
-public:
-PepperFlashRendererHost(content::RendererPpapiHost* host,
-                        PP_Instance instance,
-                        PP_Resource resource);
-~PepperFlashRendererHost() override;
+ public:
+  PepperFlashRendererHost(content::RendererPpapiHost* host,
+                          PP_Instance instance,
+                          PP_Resource resource);
+  ~PepperFlashRendererHost() override;
 
-// ppapi::host::ResourceHost override.
-int32_t OnResourceMessageReceived(
-	const IPC::Message& msg,
-	ppapi::host::HostMessageContext* context) override;
+  // ppapi::host::ResourceHost override.
+  int32_t OnResourceMessageReceived(
+      const IPC::Message& msg,
+      ppapi::host::HostMessageContext* context) override;
 
-private:
-int32_t OnGetProxyForURL(ppapi::host::HostMessageContext* host_context,
-                         const std::string& url);
-int32_t OnSetInstanceAlwaysOnTop(
-	ppapi::host::HostMessageContext* host_context,
-	bool on_top);
-int32_t OnDrawGlyphs(ppapi::host::HostMessageContext* host_context,
-                     ppapi::proxy::PPBFlash_DrawGlyphs_Params params);
-int32_t OnNavigate(ppapi::host::HostMessageContext* host_context,
-                   const ppapi::URLRequestInfoData& data,
-                   const std::string& target,
-                   bool from_user_action);
-int32_t OnIsRectTopmost(ppapi::host::HostMessageContext* host_context,
-                        const PP_Rect& rect);
+ private:
+  int32_t OnGetProxyForURL(ppapi::host::HostMessageContext* host_context,
+                           const std::string& url);
+  int32_t OnSetInstanceAlwaysOnTop(
+      ppapi::host::HostMessageContext* host_context,
+      bool on_top);
+  int32_t OnDrawGlyphs(ppapi::host::HostMessageContext* host_context,
+                       ppapi::proxy::PPBFlash_DrawGlyphs_Params params);
+  int32_t OnNavigate(ppapi::host::HostMessageContext* host_context,
+                     const ppapi::URLRequestInfoData& data,
+                     const std::string& target,
+                     bool from_user_action);
+  int32_t OnIsRectTopmost(ppapi::host::HostMessageContext* host_context,
+                          const PP_Rect& rect);
 
-// A stack of ReplyMessageContexts to track Navigate() calls which have not
-// yet been replied to.
-std::vector<ppapi::host::ReplyMessageContext> navigate_replies_;
+  // A stack of ReplyMessageContexts to track Navigate() calls which have not
+  // yet been replied to.
+  std::vector<ppapi::host::ReplyMessageContext> navigate_replies_;
 
-content::RendererPpapiHost* host_;
-base::WeakPtrFactory<PepperFlashRendererHost> weak_factory_;
+  content::RendererPpapiHost* host_;
+  base::WeakPtrFactory<PepperFlashRendererHost> weak_factory_;
 
-DISALLOW_COPY_AND_ASSIGN(PepperFlashRendererHost);
+  DISALLOW_COPY_AND_ASSIGN(PepperFlashRendererHost);
 };
 
 #endif  // CHROME_RENDERER_PEPPER_PEPPER_FLASH_RENDERER_HOST_H_

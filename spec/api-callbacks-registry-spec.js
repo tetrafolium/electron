@@ -1,21 +1,21 @@
-const { assert } = require("chai");
-const { CallbacksRegistry } = require("electron");
+const {assert} = require('chai');
+const {CallbacksRegistry} = require('electron');
 
-describe("CallbacksRegistry module", () => {
+describe('CallbacksRegistry module', () => {
   let registry = null;
 
   beforeEach(() => {
     registry = new CallbacksRegistry();
   });
 
-  it("adds a callback to the registry", () => {
+  it('adds a callback to the registry', () => {
     const cb = () => [1, 2, 3, 4, 5];
     const key = registry.add(cb);
 
     assert.exists(key);
   });
 
-  it("returns a specified callback if it is in the registry", () => {
+  it('returns a specified callback if it is in the registry', () => {
     const cb = () => [1, 2, 3, 4, 5];
     const key = registry.add(cb);
     const callback = registry.get(key);
@@ -23,13 +23,13 @@ describe("CallbacksRegistry module", () => {
     assert.equal(callback.toString(), cb.toString());
   });
 
-  it("returns an empty function if the cb doesnt exist", () => {
+  it('returns an empty function if the cb doesnt exist', () => {
     const callback = registry.get(1);
 
     assert.isFunction(callback);
   });
 
-  it("removes a callback to the registry", () => {
+  it('removes a callback to the registry', () => {
     const cb = () => [1, 2, 3, 4, 5];
     const key = registry.add(cb);
 

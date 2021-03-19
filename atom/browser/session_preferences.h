@@ -18,27 +18,27 @@ class CommandLine;
 namespace atom {
 
 class SessionPreferences : public base::SupportsUserData::Data {
-public:
-static SessionPreferences* FromBrowserContext(
-	content::BrowserContext* context);
-static void AppendExtraCommandLineSwitches(
-	content::BrowserContext* context, base::CommandLine* command_line);
+ public:
+  static SessionPreferences* FromBrowserContext(
+      content::BrowserContext* context);
+  static void AppendExtraCommandLineSwitches(content::BrowserContext* context,
+                                             base::CommandLine* command_line);
 
-explicit SessionPreferences(content::BrowserContext* context);
-~SessionPreferences() override;
+  explicit SessionPreferences(content::BrowserContext* context);
+  ~SessionPreferences() override;
 
-void set_preloads(const std::vector<base::FilePath::StringType>& preloads) {
-	preloads_ = preloads;
-}
-const std::vector<base::FilePath::StringType>& preloads() const {
-	return preloads_;
-}
+  void set_preloads(const std::vector<base::FilePath::StringType>& preloads) {
+    preloads_ = preloads;
+  }
+  const std::vector<base::FilePath::StringType>& preloads() const {
+    return preloads_;
+  }
 
-private:
-// The user data key.
-static int kLocatorKey;
+ private:
+  // The user data key.
+  static int kLocatorKey;
 
-std::vector<base::FilePath::StringType> preloads_;
+  std::vector<base::FilePath::StringType> preloads_;
 };
 
 }  // namespace atom

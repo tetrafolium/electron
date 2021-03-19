@@ -1,3 +1,3 @@
-setImmediate(function () {
-  require("./preload-required-module");
+setImmediate(function() {
+  require('./preload-required-module');
 });

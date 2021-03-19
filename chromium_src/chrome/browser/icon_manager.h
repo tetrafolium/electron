@@ -56,59 +56,59 @@
 #include "ui/gfx/image/image.h"
 
 class IconManager {
-public:
-IconManager();
-~IconManager();
+ public:
+  IconManager();
+  ~IconManager();
 
-// Synchronous call to examine the internal caches for the icon. Returns the
-// icon if we have already loaded it, or null if we don't have it and must
-// load it via LoadIcon(). The returned bitmap is owned by the IconManager and
-// must not be free'd by the caller. If the caller needs to modify the icon,
-// it must make a copy and modify the copy.
-gfx::Image* LookupIconFromFilepath(const base::FilePath& file_path,
-                                   IconLoader::IconSize size);
+  // Synchronous call to examine the internal caches for the icon. Returns the
+  // icon if we have already loaded it, or null if we don't have it and must
+  // load it via LoadIcon(). The returned bitmap is owned by the IconManager and
+  // must not be free'd by the caller. If the caller needs to modify the icon,
+  // it must make a copy and modify the copy.
+  gfx::Image* LookupIconFromFilepath(const base::FilePath& file_path,
+                                     IconLoader::IconSize size);
 
-using IconRequestCallback = base::Callback<void (gfx::Image*)>;
+  using IconRequestCallback = base::Callback<void(gfx::Image*)>;
 
-// Asynchronous call to lookup and return the icon associated with file. The
-// work is done on the file thread, with the callbacks running on the thread
-// this function is called.
-//
-// Note:
-// 1. This does *not* check the cache.
-// 2. The returned bitmap pointer is *not* owned by callback. So callback
-//    should never keep it or delete it.
-// 3. The gfx::Image pointer passed to the callback will be null if decoding
-//    failed.
-base::CancelableTaskTracker::TaskId LoadIcon(
-	const base::FilePath& file_name,
-	IconLoader::IconSize size,
-	const IconRequestCallback& callback,
-	base::CancelableTaskTracker* tracker);
+  // Asynchronous call to lookup and return the icon associated with file. The
+  // work is done on the file thread, with the callbacks running on the thread
+  // this function is called.
+  //
+  // Note:
+  // 1. This does *not* check the cache.
+  // 2. The returned bitmap pointer is *not* owned by callback. So callback
+  //    should never keep it or delete it.
+  // 3. The gfx::Image pointer passed to the callback will be null if decoding
+  //    failed.
+  base::CancelableTaskTracker::TaskId LoadIcon(
+      const base::FilePath& file_name,
+      IconLoader::IconSize size,
+      const IconRequestCallback& callback,
+      base::CancelableTaskTracker* tracker);
 
-private:
-void OnIconLoaded(IconRequestCallback callback,
-                  base::FilePath file_path,
-                  IconLoader::IconSize size,
-                  std::unique_ptr<gfx::Image> result,
-                  const IconLoader::IconGroup& group);
+ private:
+  void OnIconLoaded(IconRequestCallback callback,
+                    base::FilePath file_path,
+                    IconLoader::IconSize size,
+                    std::unique_ptr<gfx::Image> result,
+                    const IconLoader::IconGroup& group);
 
-struct CacheKey {
-	CacheKey(const IconLoader::IconGroup& group, IconLoader::IconSize size);
+  struct CacheKey {
+    CacheKey(const IconLoader::IconGroup& group, IconLoader::IconSize size);
 
-	// Used as a key in the map below, so we need this comparator.
-	bool operator<(const CacheKey &other) const;
+    // Used as a key in the map below, so we need this comparator.
+    bool operator<(const CacheKey& other) const;
 
-	IconLoader::IconGroup group;
-	IconLoader::IconSize size;
-};
+    IconLoader::IconGroup group;
+    IconLoader::IconSize size;
+  };
 
-std::map<base::FilePath, IconLoader::IconGroup> group_cache_;
-std::map<CacheKey, std::unique_ptr<gfx::Image> > icon_cache_;
+  std::map<base::FilePath, IconLoader::IconGroup> group_cache_;
+  std::map<CacheKey, std::unique_ptr<gfx::Image>> icon_cache_;
 
-base::WeakPtrFactory<IconManager> weak_factory_;
+  base::WeakPtrFactory<IconManager> weak_factory_;
 
-DISALLOW_COPY_AND_ASSIGN(IconManager);
+  DISALLOW_COPY_AND_ASSIGN(IconManager);
 };
 
 #endif  // CHROME_BROWSER_ICON_MANAGER_H_

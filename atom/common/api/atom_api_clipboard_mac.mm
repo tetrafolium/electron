@@ -11,12 +11,12 @@ namespace atom {
 namespace api {
 
 void Clipboard::WriteFindText(const base::string16& text) {
-	NSString* text_ns = base::SysUTF16ToNSString(text);
-	[[FindPasteboard sharedInstance] setFindText:text_ns];
+  NSString* text_ns = base::SysUTF16ToNSString(text);
+  [[FindPasteboard sharedInstance] setFindText:text_ns];
 }
 
 base::string16 Clipboard::ReadFindText() {
-	return GetFindPboardText();
+  return GetFindPboardText();
 }
 
 }  // namespace api

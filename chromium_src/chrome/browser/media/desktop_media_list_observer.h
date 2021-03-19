@@ -8,20 +8,19 @@
 // Interface implemented by the desktop media picker dialog to receive
 // notifications about changes in DesktopMediaList.
 class DesktopMediaListObserver {
-public:
-virtual void OnSourceAdded(int index) = 0;
-virtual void OnSourceRemoved(int index) = 0;
-virtual void OnSourceMoved(int old_index, int new_index) = 0;
-virtual void OnSourceNameChanged(int index) = 0;
-virtual void OnSourceThumbnailChanged(int index) = 0;
+ public:
+  virtual void OnSourceAdded(int index) = 0;
+  virtual void OnSourceRemoved(int index) = 0;
+  virtual void OnSourceMoved(int old_index, int new_index) = 0;
+  virtual void OnSourceNameChanged(int index) = 0;
+  virtual void OnSourceThumbnailChanged(int index) = 0;
 
-// Return false to stop refreshing. The associated |DesktopMediaList| should
-// no longer be used.
-virtual bool OnRefreshFinished() = 0;
+  // Return false to stop refreshing. The associated |DesktopMediaList| should
+  // no longer be used.
+  virtual bool OnRefreshFinished() = 0;
 
-protected:
-virtual ~DesktopMediaListObserver() {
-}
+ protected:
+  virtual ~DesktopMediaListObserver() {}
 };
 
 #endif  // CHROME_BROWSER_MEDIA_DESKTOP_MEDIA_LIST_OBSERVER_H_

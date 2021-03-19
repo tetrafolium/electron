@@ -1,10 +1,9 @@
-const assert = require("assert");
-const { BrowserWindow } = require("electron").remote;
+const assert = require('assert');
+const {BrowserWindow} = require('electron').remote;
 
-exports.closeWindow = (
-  window,
-  { assertSingleWindow } = { assertSingleWindow: true }
-) => {
+exports.closeWindow = (window, {assertSingleWindow} = {
+  assertSingleWindow: true
+}) => {
   if (window == null || window.isDestroyed()) {
     if (assertSingleWindow) {
       assert.equal(BrowserWindow.getAllWindows().length, 1);
@@ -12,7 +11,7 @@ exports.closeWindow = (
     return Promise.resolve();
   } else {
     return new Promise((resolve, reject) => {
-      window.once("closed", () => {
+      window.once('closed', () => {
         if (assertSingleWindow) {
           assert.equal(BrowserWindow.getAllWindows().length, 1);
         }

@@ -33,21 +33,21 @@ class SkBitmap;
 namespace brightray {
 
 class NotificationPresenterWin : public NotificationPresenter {
-public:
-NotificationPresenterWin();
-~NotificationPresenterWin();
+ public:
+  NotificationPresenterWin();
+  ~NotificationPresenterWin();
 
-bool Init();
+  bool Init();
 
-base::string16 SaveIconToFilesystem(const SkBitmap& icon, const GURL& origin);
+  base::string16 SaveIconToFilesystem(const SkBitmap& icon, const GURL& origin);
 
-private:
-Notification* CreateNotificationObject(
-	NotificationDelegate* delegate) override;
+ private:
+  Notification* CreateNotificationObject(
+      NotificationDelegate* delegate) override;
 
-base::ScopedTempDir temp_dir_;
+  base::ScopedTempDir temp_dir_;
 
-DISALLOW_COPY_AND_ASSIGN(NotificationPresenterWin);
+  DISALLOW_COPY_AND_ASSIGN(NotificationPresenterWin);
 };
 
 }  // namespace brightray

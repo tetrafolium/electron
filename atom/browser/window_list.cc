@@ -13,93 +13,91 @@
 namespace atom {
 
 // static
-base::LazyInstance<base::ObserverList<WindowListObserver> >::Leaky
-WindowList::observers_ = LAZY_INSTANCE_INITIALIZER;
+base::LazyInstance<base::ObserverList<WindowListObserver>>::Leaky
+    WindowList::observers_ = LAZY_INSTANCE_INITIALIZER;
 
 // static
 WindowList* WindowList::instance_ = nullptr;
 
 // static
 WindowList* WindowList::GetInstance() {
-	if (!instance_)
-		instance_ = new WindowList;
-	return instance_;
+  if (!instance_)
+    instance_ = new WindowList;
+  return instance_;
 }
 
 // static
 WindowList::WindowVector WindowList::GetWindows() {
-	return GetInstance()->windows_;
+  return GetInstance()->windows_;
 }
 
 // static
 bool WindowList::IsEmpty() {
-	return GetInstance()->windows_.empty();
+  return GetInstance()->windows_.empty();
 }
 
 // static
 void WindowList::AddWindow(NativeWindow* window) {
-	DCHECK(window);
-	// Push |window| on the appropriate list instance.
-	WindowVector& windows = GetInstance()->windows_;
-	windows.push_back(window);
+  DCHECK(window);
+  // Push |window| on the appropriate list instance.
+  WindowVector& windows = GetInstance()->windows_;
+  windows.push_back(window);
 
-	for (WindowListObserver& observer : observers_.Get())
-		observer.OnWindowAdded(window);
+  for (WindowListObserver& observer : observers_.Get())
+    observer.OnWindowAdded(window);
 }
 
 // static
 void WindowList::RemoveWindow(NativeWindow* window) {
-	WindowVector& windows = GetInstance()->windows_;
-	windows.erase(std::remove(windows.begin(), windows.end(), window),
-	              windows.end());
+  WindowVector& windows = GetInstance()->windows_;
+  windows.erase(std::remove(windows.begin(), windows.end(), window),
+                windows.end());
 
-	for (WindowListObserver& observer : observers_.Get())
-		observer.OnWindowRemoved(window);
+  for (WindowListObserver& observer : observers_.Get())
+    observer.OnWindowRemoved(window);
 
-	if (windows.empty()) {
-		for (WindowListObserver& observer : observers_.Get())
-			observer.OnWindowAllClosed();
-	}
+  if (windows.empty()) {
+    for (WindowListObserver& observer : observers_.Get())
+      observer.OnWindowAllClosed();
+  }
 }
 
 // static
 void WindowList::WindowCloseCancelled(NativeWindow* window) {
-	for (WindowListObserver& observer : observers_.Get())
-		observer.OnWindowCloseCancelled(window);
+  for (WindowListObserver& observer : observers_.Get())
+    observer.OnWindowCloseCancelled(window);
 }
 
 // static
 void WindowList::AddObserver(WindowListObserver* observer) {
-	observers_.Get().AddObserver(observer);
+  observers_.Get().AddObserver(observer);
 }
 
 // static
 void WindowList::RemoveObserver(WindowListObserver* observer) {
-	observers_.Get().RemoveObserver(observer);
+  observers_.Get().RemoveObserver(observer);
 }
 
 // static
 void WindowList::CloseAllWindows() {
-	WindowVector windows = GetInstance()->windows_;
+  WindowVector windows = GetInstance()->windows_;
 #if defined(OS_MACOSX)
-	std::reverse(windows.begin(), windows.end());
+  std::reverse(windows.begin(), windows.end());
 #endif
-	for (const auto& window : windows)
-		if (!window->IsClosed())
-			window->Close();
+  for (const auto& window : windows)
+    if (!window->IsClosed())
+      window->Close();
 }
 
 // static
 void WindowList::DestroyAllWindows() {
-	WindowVector windows = GetInstance()->windows_;
-	for (const auto& window : windows)
-		window->CloseContents(nullptr); // e.g. Destroy()
+  WindowVector windows = GetInstance()->windows_;
+  for (const auto& window : windows)
+    window->CloseContents(nullptr);  // e.g. Destroy()
 }
 
-WindowList::WindowList() {
-}
+WindowList::WindowList() {}
 
-WindowList::~WindowList() {
-}
+WindowList::~WindowList() {}
 
 }  // namespace atom

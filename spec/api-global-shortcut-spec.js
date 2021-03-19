@@ -1,11 +1,11 @@
-const { globalShortcut } = require("electron").remote;
+const {globalShortcut} = require('electron').remote;
 
-const assert = require("assert");
-const isCI = require("electron").remote.getGlobal("isCi");
+const assert = require('assert');
+const isCI = require('electron').remote.getGlobal('isCi');
 
-describe("globalShortcut module", () => {
-  before(function () {
-    if (isCI && process.platform === "win32") {
+describe('globalShortcut module', () => {
+  before(function() {
+    if (isCI && process.platform === 'win32') {
       this.skip();
     }
   });
@@ -14,8 +14,8 @@ describe("globalShortcut module", () => {
     globalShortcut.unregisterAll();
   });
 
-  it("can register and unregister accelerators", () => {
-    const accelerator = "CommandOrControl+A+B+C";
+  it('can register and unregister accelerators', () => {
+    const accelerator = 'CommandOrControl+A+B+C';
 
     assert.equal(globalShortcut.isRegistered(accelerator), false);
     globalShortcut.register(accelerator, () => {});

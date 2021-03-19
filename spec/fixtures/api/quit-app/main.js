@@ -1,12 +1,12 @@
-var app = require("electron").app;
+var app = require('electron').app;
 
-app.on("ready", function () {
+app.on('ready', function() {
   // This setImmediate call gets the spec passing on Linux
-  setImmediate(function () {
+  setImmediate(function() {
     app.exit(123);
   });
 });
 
-process.on("exit", function (code) {
-  console.log("Exit event with code: " + code);
+process.on('exit', function(code) {
+  console.log('Exit event with code: ' + code);
 });

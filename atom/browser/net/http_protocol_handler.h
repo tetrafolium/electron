@@ -12,17 +12,17 @@
 namespace atom {
 
 class HttpProtocolHandler : public net::URLRequestJobFactory::ProtocolHandler {
-public:
-explicit HttpProtocolHandler(const std::string&);
-virtual ~HttpProtocolHandler();
+ public:
+  explicit HttpProtocolHandler(const std::string&);
+  virtual ~HttpProtocolHandler();
 
-// net::URLRequestJobFactory::ProtocolHandler:
-net::URLRequestJob* MaybeCreateJob(
-	net::URLRequest* request,
-	net::NetworkDelegate* network_delegate) const override;
+  // net::URLRequestJobFactory::ProtocolHandler:
+  net::URLRequestJob* MaybeCreateJob(
+      net::URLRequest* request,
+      net::NetworkDelegate* network_delegate) const override;
 
-private:
-std::string scheme_;
+ private:
+  std::string scheme_;
 };
 
 }  // namespace atom
