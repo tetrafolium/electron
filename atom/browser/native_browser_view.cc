@@ -12,9 +12,11 @@
 namespace atom {
 
 NativeBrowserView::NativeBrowserView(
-    brightray::InspectableWebContentsView* web_contents_view)
-    : web_contents_view_(web_contents_view) {}
+	brightray::InspectableWebContentsView* web_contents_view)
+	: web_contents_view_(web_contents_view) {
+}
 
-NativeBrowserView::~NativeBrowserView() {}
+NativeBrowserView::~NativeBrowserView() {
+}
 
 }  // namespace atom

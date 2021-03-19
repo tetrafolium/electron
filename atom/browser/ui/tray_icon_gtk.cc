@@ -27,44 +27,44 @@ TrayIconGtk::~TrayIconGtk() {
 }
 
 void TrayIconGtk::SetImage(const gfx::Image& image) {
-    if (icon_) {
-        icon_->SetImage(image.AsImageSkia());
-        return;
-    }
+	if (icon_) {
+		icon_->SetImage(image.AsImageSkia());
+		return;
+	}
 
-    base::string16 empty;
-    if (libgtkui::AppIndicatorIcon::CouldOpen()) {
-        ++indicators_count;
-        icon_.reset(new libgtkui::AppIndicatorIcon(
-                        base::StringPrintf(
-                            "%s%d", Browser::Get()->GetName().c_str(), indicators_count),
-                        image.AsImageSkia(),
-                        empty));
-    } else {
-        icon_.reset(new libgtkui::Gtk2StatusIcon(image.AsImageSkia(), empty));
-    }
-    icon_->set_delegate(this);
+	base::string16 empty;
+	if (libgtkui::AppIndicatorIcon::CouldOpen()) {
+		++indicators_count;
+		icon_.reset(new libgtkui::AppIndicatorIcon(
+				    base::StringPrintf(
+					    "%s%d", Browser::Get()->GetName().c_str(), indicators_count),
+				    image.AsImageSkia(),
+				    empty));
+	} else {
+		icon_.reset(new libgtkui::Gtk2StatusIcon(image.AsImageSkia(), empty));
+	}
+	icon_->set_delegate(this);
 }
 
 void TrayIconGtk::SetToolTip(const std::string& tool_tip) {
-    icon_->SetToolTip(base::UTF8ToUTF16(tool_tip));
+	icon_->SetToolTip(base::UTF8ToUTF16(tool_tip));
 }
 
 void TrayIconGtk::SetContextMenu(AtomMenuModel* menu_model) {
-    icon_->UpdatePlatformContextMenu(menu_model);
+	icon_->UpdatePlatformContextMenu(menu_model);
 }
 
 void TrayIconGtk::OnClick() {
-    NotifyClicked();
+	NotifyClicked();
 }
 
 bool TrayIconGtk::HasClickAction() {
-    return false;
+	return false;
 }
 
 // static
 TrayIcon* TrayIcon::Create() {
-    return new TrayIconGtk;
+	return new TrayIconGtk;
 }
 
 }  // namespace atom

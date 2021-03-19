@@ -12,20 +12,20 @@ NotificationPresenter::NotificationPresenter() {
 }
 
 NotificationPresenter::~NotificationPresenter() {
-    for (Notification* notification : notifications_)
-        delete notification;
+	for (Notification* notification : notifications_)
+		delete notification;
 }
 
 base::WeakPtr<Notification> NotificationPresenter::CreateNotification(
-    NotificationDelegate* delegate) {
-    Notification* notification = CreateNotificationObject(delegate);
-    notifications_.insert(notification);
-    return notification->GetWeakPtr();
+	NotificationDelegate* delegate) {
+	Notification* notification = CreateNotificationObject(delegate);
+	notifications_.insert(notification);
+	return notification->GetWeakPtr();
 }
 
 void NotificationPresenter::RemoveNotification(Notification* notification) {
-    notifications_.erase(notification);
-    delete notification;
+	notifications_.erase(notification);
+	delete notification;
 }
 
 }  // namespace brightray

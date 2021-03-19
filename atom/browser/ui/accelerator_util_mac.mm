@@ -11,39 +11,39 @@
 namespace accelerator_util {
 
 void SetPlatformAccelerator(ui::Accelerator* accelerator) {
-    unichar character;
-    unichar characterIgnoringModifiers;
+	unichar character;
+	unichar characterIgnoringModifiers;
 
-    NSUInteger modifiers =
-        (accelerator->IsCtrlDown() ? NSControlKeyMask : 0) |
-        (accelerator->IsCmdDown() ? NSCommandKeyMask : 0) |
-        (accelerator->IsAltDown() ? NSAlternateKeyMask : 0) |
-        (accelerator->IsShiftDown() ? NSShiftKeyMask : 0);
+	NSUInteger modifiers =
+		(accelerator->IsCtrlDown() ? NSControlKeyMask : 0) |
+		(accelerator->IsCmdDown() ? NSCommandKeyMask : 0) |
+		(accelerator->IsAltDown() ? NSAlternateKeyMask : 0) |
+		(accelerator->IsShiftDown() ? NSShiftKeyMask : 0);
 
-    ui::MacKeyCodeForWindowsKeyCode(accelerator->key_code(),
-                                    modifiers,
-                                    &character,
-                                    &characterIgnoringModifiers);
+	ui::MacKeyCodeForWindowsKeyCode(accelerator->key_code(),
+	                                modifiers,
+	                                &character,
+	                                &characterIgnoringModifiers);
 
-    if (character != characterIgnoringModifiers) {
-        if (isdigit(characterIgnoringModifiers)) {
-            // The character is a number so lets not mutate it with the modifiers
-            character = characterIgnoringModifiers;
-        } else {
-            modifiers ^= NSShiftKeyMask;
-        }
-    }
+	if (character != characterIgnoringModifiers) {
+		if (isdigit(characterIgnoringModifiers)) {
+			// The character is a number so lets not mutate it with the modifiers
+			character = characterIgnoringModifiers;
+		} else {
+			modifiers ^= NSShiftKeyMask;
+		}
+	}
 
-    if (character == NSDeleteFunctionKey) {
-        character = NSDeleteCharacter;
-    }
+	if (character == NSDeleteFunctionKey) {
+		character = NSDeleteCharacter;
+	}
 
-    NSString* characters =
-        [[[NSString alloc] initWithCharacters:&character length:1] autorelease];
+	NSString* characters =
+		[[[NSString alloc] initWithCharacters:&character length:1] autorelease];
 
-    std::unique_ptr<ui::PlatformAccelerator> platform_accelerator(
-        new ui::PlatformAcceleratorCocoa(characters, modifiers));
-    accelerator->set_platform_accelerator(std::move(platform_accelerator));
+	std::unique_ptr<ui::PlatformAccelerator> platform_accelerator(
+		new ui::PlatformAcceleratorCocoa(characters, modifiers));
+	accelerator->set_platform_accelerator(std::move(platform_accelerator));
 }
 
 }  // namespace accelerator_util

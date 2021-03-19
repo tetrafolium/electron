@@ -19,25 +19,25 @@ class DevToolsNetworkController;
 // while allowing SetNetworkState to be called from the UI thread.
 class DevToolsNetworkControllerHandle {
 public:
-    DevToolsNetworkControllerHandle();
-    ~DevToolsNetworkControllerHandle();
+DevToolsNetworkControllerHandle();
+~DevToolsNetworkControllerHandle();
 
-    // Called on the UI thread.
-    void SetNetworkState(const std::string& client_id,
-                         std::unique_ptr<DevToolsNetworkConditions> conditions);
+// Called on the UI thread.
+void SetNetworkState(const std::string& client_id,
+                     std::unique_ptr<DevToolsNetworkConditions> conditions);
 
-    // Called on the IO thread.
-    DevToolsNetworkController* GetController();
+// Called on the IO thread.
+DevToolsNetworkController* GetController();
 
 private:
-    void LazyInitialize();
-    void SetNetworkStateOnIO(
-        const std::string& client_id,
-        std::unique_ptr<DevToolsNetworkConditions> conditions);
+void LazyInitialize();
+void SetNetworkStateOnIO(
+	const std::string& client_id,
+	std::unique_ptr<DevToolsNetworkConditions> conditions);
 
-    std::unique_ptr<DevToolsNetworkController> controller_;
+std::unique_ptr<DevToolsNetworkController> controller_;
 
-    DISALLOW_COPY_AND_ASSIGN(DevToolsNetworkControllerHandle);
+DISALLOW_COPY_AND_ASSIGN(DevToolsNetworkControllerHandle);
 };
 
 }  // namespace brightray

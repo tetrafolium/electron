@@ -21,33 +21,34 @@ using content::BrowserThread;
 namespace chrome {
 
 PepperBrokerMessageFilter::PepperBrokerMessageFilter(PP_Instance instance,
-        BrowserPpapiHost* host)
-    : document_url_(host->GetDocumentURLForInstance(instance)) {
-    int unused;
-    host->GetRenderFrameIDsForInstance(instance, &render_process_id_, &unused);
+                                                     BrowserPpapiHost* host)
+	: document_url_(host->GetDocumentURLForInstance(instance)) {
+	int unused;
+	host->GetRenderFrameIDsForInstance(instance, &render_process_id_, &unused);
 }
 
-PepperBrokerMessageFilter::~PepperBrokerMessageFilter() {}
+PepperBrokerMessageFilter::~PepperBrokerMessageFilter() {
+}
 
 scoped_refptr<base::TaskRunner>
 PepperBrokerMessageFilter::OverrideTaskRunnerForMessage(
-    const IPC::Message& message) {
-    return BrowserThread::GetTaskRunnerForThread(BrowserThread::UI);
+	const IPC::Message& message) {
+	return BrowserThread::GetTaskRunnerForThread(BrowserThread::UI);
 }
 
 int32_t PepperBrokerMessageFilter::OnResourceMessageReceived(
-    const IPC::Message& msg,
-    ppapi::host::HostMessageContext* context) {
-    PPAPI_BEGIN_MESSAGE_MAP(PepperBrokerMessageFilter, msg)
-    PPAPI_DISPATCH_HOST_RESOURCE_CALL_0(PpapiHostMsg_Broker_IsAllowed,
-                                        OnIsAllowed)
-    PPAPI_END_MESSAGE_MAP()
-    return PP_ERROR_FAILED;
+	const IPC::Message& msg,
+	ppapi::host::HostMessageContext* context) {
+	PPAPI_BEGIN_MESSAGE_MAP(PepperBrokerMessageFilter, msg)
+	PPAPI_DISPATCH_HOST_RESOURCE_CALL_0(PpapiHostMsg_Broker_IsAllowed,
+	                                    OnIsAllowed)
+	PPAPI_END_MESSAGE_MAP()
+	return PP_ERROR_FAILED;
 }
 
 int32_t PepperBrokerMessageFilter::OnIsAllowed(
-    ppapi::host::HostMessageContext* context) {
-    return PP_OK;
+	ppapi::host::HostMessageContext* context) {
+	return PP_OK;
 }
 
 }  // namespace chrome

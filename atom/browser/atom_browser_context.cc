@@ -50,19 +50,19 @@ namespace atom {
 namespace {
 
 class NoCacheBackend : public net::HttpCache::BackendFactory {
-    int CreateBackend(net::NetLog* net_log,
-                      std::unique_ptr<disk_cache::Backend>* backend,
-                      const net::CompletionCallback& callback) override {
-        return net::ERR_FAILED;
-    }
+int CreateBackend(net::NetLog* net_log,
+                  std::unique_ptr<disk_cache::Backend>* backend,
+                  const net::CompletionCallback& callback) override {
+	return net::ERR_FAILED;
+}
 };
 
 std::string RemoveWhitespace(const std::string& str) {
-    std::string trimmed;
-    if (base::RemoveChars(str, " ", &trimmed))
-        return trimmed;
-    else
-        return str;
+	std::string trimmed;
+	if (base::RemoveChars(str, " ", &trimmed))
+		return trimmed;
+	else
+		return str;
 }
 
 }  // namespace
@@ -70,171 +70,171 @@ std::string RemoveWhitespace(const std::string& str) {
 AtomBrowserContext::AtomBrowserContext(const std::string& partition,
                                        bool in_memory,
                                        const base::DictionaryValue& options)
-    : brightray::BrowserContext(partition, in_memory),
-      network_delegate_(new AtomNetworkDelegate),
-      cookie_delegate_(new AtomCookieDelegate) {
-    // Construct user agent string.
-    Browser* browser = Browser::Get();
-    std::string name = RemoveWhitespace(browser->GetName());
-    std::string user_agent;
-    if (name == ATOM_PRODUCT_NAME) {
-        user_agent = "Chrome/" CHROME_VERSION_STRING " "
-                     ATOM_PRODUCT_NAME "/" ATOM_VERSION_STRING;
-    } else {
-        user_agent = base::StringPrintf(
-                         "%s/%s Chrome/%s " ATOM_PRODUCT_NAME "/" ATOM_VERSION_STRING,
-                         name.c_str(),
-                         browser->GetVersion().c_str(),
-                         CHROME_VERSION_STRING);
-    }
-    user_agent_ = content::BuildUserAgentFromProduct(user_agent);
+	: brightray::BrowserContext(partition, in_memory),
+	network_delegate_(new AtomNetworkDelegate),
+	cookie_delegate_(new AtomCookieDelegate) {
+	// Construct user agent string.
+	Browser* browser = Browser::Get();
+	std::string name = RemoveWhitespace(browser->GetName());
+	std::string user_agent;
+	if (name == ATOM_PRODUCT_NAME) {
+		user_agent = "Chrome/" CHROME_VERSION_STRING " "
+		             ATOM_PRODUCT_NAME "/" ATOM_VERSION_STRING;
+	} else {
+		user_agent = base::StringPrintf(
+			"%s/%s Chrome/%s " ATOM_PRODUCT_NAME "/" ATOM_VERSION_STRING,
+			name.c_str(),
+			browser->GetVersion().c_str(),
+			CHROME_VERSION_STRING);
+	}
+	user_agent_ = content::BuildUserAgentFromProduct(user_agent);
 
-    // Read options.
-    use_cache_ = true;
-    options.GetBoolean("cache", &use_cache_);
+	// Read options.
+	use_cache_ = true;
+	options.GetBoolean("cache", &use_cache_);
 
-    // Initialize Pref Registry in brightray.
-    InitPrefs();
+	// Initialize Pref Registry in brightray.
+	InitPrefs();
 }
 
 AtomBrowserContext::~AtomBrowserContext() {
 }
 
 void AtomBrowserContext::SetUserAgent(const std::string& user_agent) {
-    user_agent_ = user_agent;
+	user_agent_ = user_agent;
 }
 
 net::NetworkDelegate* AtomBrowserContext::CreateNetworkDelegate() {
-    return network_delegate_;
+	return network_delegate_;
 }
 
 net::CookieMonsterDelegate* AtomBrowserContext::CreateCookieDelegate() {
-    return cookie_delegate();
+	return cookie_delegate();
 }
 
 std::string AtomBrowserContext::GetUserAgent() {
-    return user_agent_;
+	return user_agent_;
 }
 
 std::unique_ptr<net::URLRequestJobFactory>
 AtomBrowserContext::CreateURLRequestJobFactory(
-    content::ProtocolHandlerMap* protocol_handlers) {
-    std::unique_ptr<AtomURLRequestJobFactory> job_factory(
-        new AtomURLRequestJobFactory);
+	content::ProtocolHandlerMap* protocol_handlers) {
+	std::unique_ptr<AtomURLRequestJobFactory> job_factory(
+		new AtomURLRequestJobFactory);
 
-    for (auto& it : *protocol_handlers) {
-        job_factory->SetProtocolHandler(it.first,
-                                        base::WrapUnique(it.second.release()));
-    }
-    protocol_handlers->clear();
+	for (auto& it : *protocol_handlers) {
+		job_factory->SetProtocolHandler(it.first,
+		                                base::WrapUnique(it.second.release()));
+	}
+	protocol_handlers->clear();
 
-    job_factory->SetProtocolHandler(url::kAboutScheme,
-                                    base::WrapUnique(new AboutProtocolHandler));
-    job_factory->SetProtocolHandler(
-        url::kDataScheme, base::WrapUnique(new net::DataProtocolHandler));
-    job_factory->SetProtocolHandler(
-        url::kFileScheme, base::WrapUnique(new asar::AsarProtocolHandler(
-                BrowserThread::GetBlockingPool()->GetTaskRunnerWithShutdownBehavior(
-                    base::SequencedWorkerPool::SKIP_ON_SHUTDOWN))));
-    job_factory->SetProtocolHandler(
-        url::kHttpScheme,
-        base::WrapUnique(new HttpProtocolHandler(url::kHttpScheme)));
-    job_factory->SetProtocolHandler(
-        url::kHttpsScheme,
-        base::WrapUnique(new HttpProtocolHandler(url::kHttpsScheme)));
-    job_factory->SetProtocolHandler(
-        url::kWsScheme,
-        base::WrapUnique(new HttpProtocolHandler(url::kWsScheme)));
-    job_factory->SetProtocolHandler(
-        url::kWssScheme,
-        base::WrapUnique(new HttpProtocolHandler(url::kWssScheme)));
+	job_factory->SetProtocolHandler(url::kAboutScheme,
+	                                base::WrapUnique(new AboutProtocolHandler));
+	job_factory->SetProtocolHandler(
+		url::kDataScheme, base::WrapUnique(new net::DataProtocolHandler));
+	job_factory->SetProtocolHandler(
+		url::kFileScheme, base::WrapUnique(new asar::AsarProtocolHandler(
+							   BrowserThread::GetBlockingPool()->GetTaskRunnerWithShutdownBehavior(
+								   base::SequencedWorkerPool::SKIP_ON_SHUTDOWN))));
+	job_factory->SetProtocolHandler(
+		url::kHttpScheme,
+		base::WrapUnique(new HttpProtocolHandler(url::kHttpScheme)));
+	job_factory->SetProtocolHandler(
+		url::kHttpsScheme,
+		base::WrapUnique(new HttpProtocolHandler(url::kHttpsScheme)));
+	job_factory->SetProtocolHandler(
+		url::kWsScheme,
+		base::WrapUnique(new HttpProtocolHandler(url::kWsScheme)));
+	job_factory->SetProtocolHandler(
+		url::kWssScheme,
+		base::WrapUnique(new HttpProtocolHandler(url::kWssScheme)));
 
-    auto host_resolver =
-        url_request_context_getter()->GetURLRequestContext()->host_resolver();
-    job_factory->SetProtocolHandler(
-        url::kFtpScheme,
-        net::FtpProtocolHandler::Create(host_resolver));
+	auto host_resolver =
+		url_request_context_getter()->GetURLRequestContext()->host_resolver();
+	job_factory->SetProtocolHandler(
+		url::kFtpScheme,
+		net::FtpProtocolHandler::Create(host_resolver));
 
-    return std::move(job_factory);
+	return std::move(job_factory);
 }
 
 net::HttpCache::BackendFactory*
 AtomBrowserContext::CreateHttpCacheBackendFactory(
-    const base::FilePath& base_path) {
-    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-    if (!use_cache_ || command_line->HasSwitch(switches::kDisableHttpCache))
-        return new NoCacheBackend;
-    else
-        return brightray::BrowserContext::CreateHttpCacheBackendFactory(base_path);
+	const base::FilePath& base_path) {
+	base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+	if (!use_cache_ || command_line->HasSwitch(switches::kDisableHttpCache))
+		return new NoCacheBackend;
+	else
+		return brightray::BrowserContext::CreateHttpCacheBackendFactory(base_path);
 }
 
 content::DownloadManagerDelegate*
 AtomBrowserContext::GetDownloadManagerDelegate() {
-    if (!download_manager_delegate_.get()) {
-        auto download_manager = content::BrowserContext::GetDownloadManager(this);
-        download_manager_delegate_.reset(
-            new AtomDownloadManagerDelegate(download_manager));
-    }
-    return download_manager_delegate_.get();
+	if (!download_manager_delegate_.get()) {
+		auto download_manager = content::BrowserContext::GetDownloadManager(this);
+		download_manager_delegate_.reset(
+			new AtomDownloadManagerDelegate(download_manager));
+	}
+	return download_manager_delegate_.get();
 }
 
 content::BrowserPluginGuestManager* AtomBrowserContext::GetGuestManager() {
-    if (!guest_manager_)
-        guest_manager_.reset(new WebViewManager);
-    return guest_manager_.get();
+	if (!guest_manager_)
+		guest_manager_.reset(new WebViewManager);
+	return guest_manager_.get();
 }
 
 content::PermissionManager* AtomBrowserContext::GetPermissionManager() {
-    if (!permission_manager_.get())
-        permission_manager_.reset(new AtomPermissionManager);
-    return permission_manager_.get();
+	if (!permission_manager_.get())
+		permission_manager_.reset(new AtomPermissionManager);
+	return permission_manager_.get();
 }
 
 std::unique_ptr<net::CertVerifier> AtomBrowserContext::CreateCertVerifier(
-    brightray::RequireCTDelegate* ct_delegate) {
-    return base::WrapUnique(new AtomCertVerifier(ct_delegate));
+	brightray::RequireCTDelegate* ct_delegate) {
+	return base::WrapUnique(new AtomCertVerifier(ct_delegate));
 }
 
 std::vector<std::string> AtomBrowserContext::GetCookieableSchemes() {
-    auto default_schemes = brightray::BrowserContext::GetCookieableSchemes();
-    const auto& standard_schemes = atom::api::GetStandardSchemes();
-    default_schemes.insert(default_schemes.end(),
-                           standard_schemes.begin(), standard_schemes.end());
-    return default_schemes;
+	auto default_schemes = brightray::BrowserContext::GetCookieableSchemes();
+	const auto& standard_schemes = atom::api::GetStandardSchemes();
+	default_schemes.insert(default_schemes.end(),
+	                       standard_schemes.begin(), standard_schemes.end());
+	return default_schemes;
 }
 
 void AtomBrowserContext::RegisterPrefs(PrefRegistrySimple* pref_registry) {
-    pref_registry->RegisterFilePathPref(prefs::kSelectFileLastDirectory,
-                                        base::FilePath());
-    base::FilePath download_dir;
-    PathService::Get(chrome::DIR_DEFAULT_DOWNLOADS, &download_dir);
-    pref_registry->RegisterFilePathPref(prefs::kDownloadDefaultDirectory,
-                                        download_dir);
-    pref_registry->RegisterDictionaryPref(prefs::kDevToolsFileSystemPaths);
+	pref_registry->RegisterFilePathPref(prefs::kSelectFileLastDirectory,
+	                                    base::FilePath());
+	base::FilePath download_dir;
+	PathService::Get(chrome::DIR_DEFAULT_DOWNLOADS, &download_dir);
+	pref_registry->RegisterFilePathPref(prefs::kDownloadDefaultDirectory,
+	                                    download_dir);
+	pref_registry->RegisterDictionaryPref(prefs::kDevToolsFileSystemPaths);
 }
 
 AtomBlobReader* AtomBrowserContext::GetBlobReader() {
-    if (!blob_reader_.get()) {
-        content::ChromeBlobStorageContext* blob_context =
-            content::ChromeBlobStorageContext::GetFor(this);
-        storage::FileSystemContext* file_system_context =
-            content::BrowserContext::GetStoragePartition(
-                this, nullptr)->GetFileSystemContext();
-        blob_reader_.reset(new AtomBlobReader(blob_context,
-                                              file_system_context));
-    }
-    return blob_reader_.get();
+	if (!blob_reader_.get()) {
+		content::ChromeBlobStorageContext* blob_context =
+			content::ChromeBlobStorageContext::GetFor(this);
+		storage::FileSystemContext* file_system_context =
+			content::BrowserContext::GetStoragePartition(
+				this, nullptr)->GetFileSystemContext();
+		blob_reader_.reset(new AtomBlobReader(blob_context,
+		                                      file_system_context));
+	}
+	return blob_reader_.get();
 }
 
 // static
 scoped_refptr<AtomBrowserContext> AtomBrowserContext::From(
-    const std::string& partition, bool in_memory,
-    const base::DictionaryValue& options) {
-    auto browser_context = brightray::BrowserContext::Get(partition, in_memory);
-    if (browser_context)
-        return static_cast<AtomBrowserContext*>(browser_context.get());
+	const std::string& partition, bool in_memory,
+	const base::DictionaryValue& options) {
+	auto browser_context = brightray::BrowserContext::Get(partition, in_memory);
+	if (browser_context)
+		return static_cast<AtomBrowserContext*>(browser_context.get());
 
-    return new AtomBrowserContext(partition, in_memory, options);
+	return new AtomBrowserContext(partition, in_memory, options);
 }
 
 }  // namespace atom

@@ -22,114 +22,116 @@ class WebContents;
 // meaningful. This is because the normal size of the guestview is overridden
 // whenever autosizing occurs.
 struct SetSizeParams {
-    SetSizeParams() {}
-    ~SetSizeParams() {}
+	SetSizeParams() {
+	}
+	~SetSizeParams() {
+	}
 
-    std::unique_ptr<bool> enable_auto_size;
-    std::unique_ptr<gfx::Size> min_size;
-    std::unique_ptr<gfx::Size> max_size;
-    std::unique_ptr<gfx::Size> normal_size;
+	std::unique_ptr<bool> enable_auto_size;
+	std::unique_ptr<gfx::Size> min_size;
+	std::unique_ptr<gfx::Size> max_size;
+	std::unique_ptr<gfx::Size> normal_size;
 };
 
 class WebViewGuestDelegate : public content::BrowserPluginGuestDelegate,
-    public content::WebContentsObserver,
-    public WebContentsZoomController::Observer {
+	public content::WebContentsObserver,
+	public WebContentsZoomController::Observer {
 public:
-    WebViewGuestDelegate();
-    ~WebViewGuestDelegate() override;
+WebViewGuestDelegate();
+~WebViewGuestDelegate() override;
 
-    void Initialize(api::WebContents* api_web_contents);
+void Initialize(api::WebContents* api_web_contents);
 
-    // Called when the WebContents is going to be destroyed.
-    void Destroy();
+// Called when the WebContents is going to be destroyed.
+void Destroy();
 
-    // Used to toggle autosize mode for this GuestView, and set both the automatic
-    // and normal sizes.
-    void SetSize(const SetSizeParams& params);
+// Used to toggle autosize mode for this GuestView, and set both the automatic
+// and normal sizes.
+void SetSize(const SetSizeParams& params);
 
-    // Return true if attached.
-    bool IsAttached() const {
-        return attached_;
-    }
+// Return true if attached.
+bool IsAttached() const {
+	return attached_;
+}
 
 protected:
-    // content::WebContentsObserver:
-    void DidFinishNavigation(
-        content::NavigationHandle* navigation_handle) override;
+// content::WebContentsObserver:
+void DidFinishNavigation(
+	content::NavigationHandle* navigation_handle) override;
 
-    // content::BrowserPluginGuestDelegate:
-    void DidAttach(int guest_proxy_routing_id) final;
-    void DidDetach() final;
-    content::WebContents* GetOwnerWebContents() const final;
-    void GuestSizeChanged(const gfx::Size& new_size) final;
-    void SetGuestHost(content::GuestHost* guest_host) final;
-    void WillAttach(content::WebContents* embedder_web_contents,
-                    int element_instance_id,
-                    bool is_full_page_plugin,
-                    const base::Closure& completion_callback) final;
-    bool CanBeEmbeddedInsideCrossProcessFrames() override;
-    content::RenderWidgetHost* GetOwnerRenderWidgetHost() override;
-    content::SiteInstance* GetOwnerSiteInstance() override;
-    content::WebContents* CreateNewGuestWindow(
-        const content::WebContents::CreateParams& create_params) override;
+// content::BrowserPluginGuestDelegate:
+void DidAttach(int guest_proxy_routing_id) final;
+void DidDetach() final;
+content::WebContents* GetOwnerWebContents() const final;
+void GuestSizeChanged(const gfx::Size& new_size) final;
+void SetGuestHost(content::GuestHost* guest_host) final;
+void WillAttach(content::WebContents* embedder_web_contents,
+                int element_instance_id,
+                bool is_full_page_plugin,
+                const base::Closure& completion_callback) final;
+bool CanBeEmbeddedInsideCrossProcessFrames() override;
+content::RenderWidgetHost* GetOwnerRenderWidgetHost() override;
+content::SiteInstance* GetOwnerSiteInstance() override;
+content::WebContents* CreateNewGuestWindow(
+	const content::WebContents::CreateParams& create_params) override;
 
-    // WebContentsZoomController::Observer:
-    void OnZoomLevelChanged(content::WebContents* web_contents,
-                            double level,
-                            bool is_temporary) override;
+// WebContentsZoomController::Observer:
+void OnZoomLevelChanged(content::WebContents* web_contents,
+                        double level,
+                        bool is_temporary) override;
 
 private:
-    // This method is invoked when the contents auto-resized to give the container
-    // an opportunity to match it if it wishes.
-    //
-    // This gives the derived class an opportunity to inform its container element
-    // or perform other actions.
-    void GuestSizeChangedDueToAutoSize(const gfx::Size& old_size,
-                                       const gfx::Size& new_size);
+// This method is invoked when the contents auto-resized to give the container
+// an opportunity to match it if it wishes.
+//
+// This gives the derived class an opportunity to inform its container element
+// or perform other actions.
+void GuestSizeChangedDueToAutoSize(const gfx::Size& old_size,
+                                   const gfx::Size& new_size);
 
-    // Returns the default size of the guestview.
-    gfx::Size GetDefaultSize() const;
+// Returns the default size of the guestview.
+gfx::Size GetDefaultSize() const;
 
-    void ResetZoomController();
+void ResetZoomController();
 
-    // The WebContents that attaches this guest view.
-    content::WebContents* embedder_web_contents_ = nullptr;
+// The WebContents that attaches this guest view.
+content::WebContents* embedder_web_contents_ = nullptr;
 
-    // The zoom controller of the embedder that is used
-    // to subscribe for zoom changes.
-    WebContentsZoomController* embedder_zoom_controller_;
+// The zoom controller of the embedder that is used
+// to subscribe for zoom changes.
+WebContentsZoomController* embedder_zoom_controller_;
 
-    // The size of the container element.
-    gfx::Size element_size_;
+// The size of the container element.
+gfx::Size element_size_;
 
-    // The size of the guest content. Note: In autosize mode, the container
-    // element may not match the size of the guest.
-    gfx::Size guest_size_;
+// The size of the guest content. Note: In autosize mode, the container
+// element may not match the size of the guest.
+gfx::Size guest_size_;
 
-    // A pointer to the guest_host.
-    content::GuestHost* guest_host_;
+// A pointer to the guest_host.
+content::GuestHost* guest_host_;
 
-    // Indicates whether autosize mode is enabled or not.
-    bool auto_size_enabled_;
+// Indicates whether autosize mode is enabled or not.
+bool auto_size_enabled_;
 
-    // The maximum size constraints of the container element in autosize mode.
-    gfx::Size max_auto_size_;
+// The maximum size constraints of the container element in autosize mode.
+gfx::Size max_auto_size_;
 
-    // The minimum size constraints of the container element in autosize mode.
-    gfx::Size min_auto_size_;
+// The minimum size constraints of the container element in autosize mode.
+gfx::Size min_auto_size_;
 
-    // The size that will be used when autosize mode is disabled.
-    gfx::Size normal_size_;
+// The size that will be used when autosize mode is disabled.
+gfx::Size normal_size_;
 
-    // Whether the guest view is inside a plugin document.
-    bool is_full_page_plugin_;
+// Whether the guest view is inside a plugin document.
+bool is_full_page_plugin_;
 
-    // Whether attached.
-    bool attached_;
+// Whether attached.
+bool attached_;
 
-    api::WebContents* api_web_contents_;
+api::WebContents* api_web_contents_;
 
-    DISALLOW_COPY_AND_ASSIGN(WebViewGuestDelegate);
+DISALLOW_COPY_AND_ASSIGN(WebViewGuestDelegate);
 };
 
 }  // namespace atom

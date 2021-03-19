@@ -14,7 +14,7 @@
 #include "ui/gfx/native_widget_types.h"
 
 typedef struct _DbusmenuMenuitem DbusmenuMenuitem;
-typedef struct _DbusmenuServer   DbusmenuServer;
+typedef struct _DbusmenuServer DbusmenuServer;
 
 namespace ui {
 class Accelerator;
@@ -37,40 +37,40 @@ class NativeWindowViews;
 // from menu models instead, and it is also per-window specific.
 class GlobalMenuBarX11 {
 public:
-    explicit GlobalMenuBarX11(NativeWindowViews* window);
-    virtual ~GlobalMenuBarX11();
+explicit GlobalMenuBarX11(NativeWindowViews* window);
+virtual ~GlobalMenuBarX11();
 
-    // Creates the object path for DbusmenuServer which is attached to |xid|.
-    static std::string GetPathForWindow(gfx::AcceleratedWidget xid);
+// Creates the object path for DbusmenuServer which is attached to |xid|.
+static std::string GetPathForWindow(gfx::AcceleratedWidget xid);
 
-    void SetMenu(AtomMenuModel* menu_model);
-    bool IsServerStarted() const;
+void SetMenu(AtomMenuModel* menu_model);
+bool IsServerStarted() const;
 
-    // Called by NativeWindow when it show/hides.
-    void OnWindowMapped();
-    void OnWindowUnmapped();
+// Called by NativeWindow when it show/hides.
+void OnWindowMapped();
+void OnWindowUnmapped();
 
 private:
-    // Creates a DbusmenuServer.
-    void InitServer(gfx::AcceleratedWidget xid);
+// Creates a DbusmenuServer.
+void InitServer(gfx::AcceleratedWidget xid);
 
-    // Create a menu from menu model.
-    void BuildMenuFromModel(AtomMenuModel* model, DbusmenuMenuitem* parent);
+// Create a menu from menu model.
+void BuildMenuFromModel(AtomMenuModel* model, DbusmenuMenuitem* parent);
 
-    // Sets the accelerator for |item|.
-    void RegisterAccelerator(DbusmenuMenuitem* item,
-                             const ui::Accelerator& accelerator);
+// Sets the accelerator for |item|.
+void RegisterAccelerator(DbusmenuMenuitem* item,
+                         const ui::Accelerator& accelerator);
 
-    CHROMEG_CALLBACK_1(GlobalMenuBarX11, void, OnItemActivated, DbusmenuMenuitem*,
-                       unsigned int);
-    CHROMEG_CALLBACK_0(GlobalMenuBarX11, void, OnSubMenuShow, DbusmenuMenuitem*);
+CHROMEG_CALLBACK_1(GlobalMenuBarX11, void, OnItemActivated, DbusmenuMenuitem*,
+                   unsigned int);
+CHROMEG_CALLBACK_0(GlobalMenuBarX11, void, OnSubMenuShow, DbusmenuMenuitem*);
 
-    NativeWindowViews* window_;
-    gfx::AcceleratedWidget xid_;
+NativeWindowViews* window_;
+gfx::AcceleratedWidget xid_;
 
-    DbusmenuServer* server_;
+DbusmenuServer* server_;
 
-    DISALLOW_COPY_AND_ASSIGN(GlobalMenuBarX11);
+DISALLOW_COPY_AND_ASSIGN(GlobalMenuBarX11);
 };
 
 }  // namespace atom

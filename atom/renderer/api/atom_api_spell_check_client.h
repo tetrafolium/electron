@@ -25,72 +25,72 @@ namespace atom {
 namespace api {
 
 class SpellCheckClient : public blink::WebSpellCheckPanelHostClient,
-    public blink::WebTextCheckClient {
+	public blink::WebTextCheckClient {
 public:
-    SpellCheckClient(const std::string& language,
-                     bool auto_spell_correct_turned_on,
-                     v8::Isolate* isolate,
-                     v8::Local<v8::Object> provider);
-    virtual ~SpellCheckClient();
+SpellCheckClient(const std::string& language,
+                 bool auto_spell_correct_turned_on,
+                 v8::Isolate* isolate,
+                 v8::Local<v8::Object> provider);
+virtual ~SpellCheckClient();
 
 private:
-    // blink::WebTextCheckClient:
-    void CheckSpelling(
-        const blink::WebString& text,
-        int& misspelledOffset,
-        int& misspelledLength,
-        blink::WebVector<blink::WebString>* optionalSuggestions) override;
-    void RequestCheckingOfText(
-        const blink::WebString& textToCheck,
-        blink::WebTextCheckingCompletion* completionCallback) override;
+// blink::WebTextCheckClient:
+void CheckSpelling(
+	const blink::WebString& text,
+	int& misspelledOffset,
+	int& misspelledLength,
+	blink::WebVector<blink::WebString>* optionalSuggestions) override;
+void RequestCheckingOfText(
+	const blink::WebString& textToCheck,
+	blink::WebTextCheckingCompletion* completionCallback) override;
 
-    // blink::WebSpellCheckPanelHostClient:
-    void ShowSpellingUI(bool show) override;
-    bool IsShowingSpellingUI() override;
-    void UpdateSpellingUIWithMisspelledWord(
-        const blink::WebString& word) override;
+// blink::WebSpellCheckPanelHostClient:
+void ShowSpellingUI(bool show) override;
+bool IsShowingSpellingUI() override;
+void UpdateSpellingUIWithMisspelledWord(
+	const blink::WebString& word) override;
 
-    struct SpellCheckScope {
-        v8::HandleScope handle_scope_;
-        v8::Context::Scope context_scope_;
-        v8::Local<v8::Object> provider_;
-        v8::Local<v8::Function> spell_check_;
+struct SpellCheckScope {
+	v8::HandleScope handle_scope_;
+	v8::Context::Scope context_scope_;
+	v8::Local<v8::Object> provider_;
+	v8::Local<v8::Function> spell_check_;
 
-        explicit SpellCheckScope(const SpellCheckClient& client);
-    };
+	explicit SpellCheckScope(const SpellCheckClient& client);
+};
 
-    // Check the spelling of text.
-    void SpellCheckText(const base::string16& text,
-                        bool stop_at_first_result,
-                        std::vector<blink::WebTextCheckingResult>* results);
+// Check the spelling of text.
+void SpellCheckText(const base::string16& text,
+                    bool stop_at_first_result,
+                    std::vector<blink::WebTextCheckingResult>* results);
 
-    // Call JavaScript to check spelling a word.
-    bool SpellCheckWord(const SpellCheckScope& scope,
-                        const base::string16& word_to_check) const;
+// Call JavaScript to check spelling a word.
+bool SpellCheckWord(const SpellCheckScope& scope,
+                    const base::string16& word_to_check) const;
 
-    // Returns whether or not the given word is a contraction of valid words
-    // (e.g. "word:word").
-    bool IsValidContraction(const SpellCheckScope& scope,
-                            const base::string16& word);
+// Returns whether or not the given word is a contraction of valid words
+// (e.g. "word:word").
+bool IsValidContraction(const SpellCheckScope& scope,
+                        const base::string16& word);
 
-    // Represents character attributes used for filtering out characters which
-    // are not supported by this SpellCheck object.
-    SpellcheckCharAttribute character_attributes_;
+// Represents character attributes used for filtering out characters which
+// are not supported by this SpellCheck object.
+SpellcheckCharAttribute character_attributes_;
 
-    // Represents word iterators used in this spellchecker. The |text_iterator_|
-    // splits text provided by WebKit into words, contractions, or concatenated
-    // words. The |contraction_iterator_| splits a concatenated word extracted by
-    // |text_iterator_| into word components so we can treat a concatenated word
-    // consisting only of correct words as a correct word.
-    SpellcheckWordIterator text_iterator_;
-    SpellcheckWordIterator contraction_iterator_;
+// Represents word iterators used in this spellchecker. The |text_iterator_|
+// splits text provided by WebKit into words, contractions, or concatenated
+// words. The |contraction_iterator_| splits a concatenated word extracted by
+// |text_iterator_| into word components so we can treat a concatenated word
+// consisting only of correct words as a correct word.
+SpellcheckWordIterator text_iterator_;
+SpellcheckWordIterator contraction_iterator_;
 
-    v8::Isolate* isolate_;
-    v8::Persistent<v8::Context> context_;
-    mate::ScopedPersistent<v8::Object> provider_;
-    mate::ScopedPersistent<v8::Function> spell_check_;
+v8::Isolate* isolate_;
+v8::Persistent<v8::Context> context_;
+mate::ScopedPersistent<v8::Object> provider_;
+mate::ScopedPersistent<v8::Function> spell_check_;
 
-    DISALLOW_COPY_AND_ASSIGN(SpellCheckClient);
+DISALLOW_COPY_AND_ASSIGN(SpellCheckClient);
 };
 
 }  // namespace api

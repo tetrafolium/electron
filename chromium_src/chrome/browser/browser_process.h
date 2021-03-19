@@ -25,19 +25,19 @@ class PrintJobManager;
 // These functions shouldn't return NULL unless otherwise noted.
 class BrowserProcess {
 public:
-    BrowserProcess();
-    ~BrowserProcess();
+BrowserProcess();
+~BrowserProcess();
 
-    std::string GetApplicationLocale();
-    IconManager* GetIconManager();
+std::string GetApplicationLocale();
+IconManager* GetIconManager();
 
-    printing::PrintJobManager* print_job_manager();
+printing::PrintJobManager* print_job_manager();
 
 private:
-    std::unique_ptr<printing::PrintJobManager> print_job_manager_;
-    std::unique_ptr<IconManager> icon_manager_;
+std::unique_ptr<printing::PrintJobManager> print_job_manager_;
+std::unique_ptr<IconManager> icon_manager_;
 
-    DISALLOW_COPY_AND_ASSIGN(BrowserProcess);
+DISALLOW_COPY_AND_ASSIGN(BrowserProcess);
 };
 
 extern BrowserProcess* g_browser_process;

@@ -22,54 +22,54 @@ namespace atom {
 class CertVerifierRequest;
 
 struct VerifyRequestParams {
-    std::string hostname;
-    std::string default_result;
-    int error_code;
-    scoped_refptr<net::X509Certificate> certificate;
+	std::string hostname;
+	std::string default_result;
+	int error_code;
+	scoped_refptr<net::X509Certificate> certificate;
 };
 
 class AtomCertVerifier : public net::CertVerifier {
 public:
-    explicit AtomCertVerifier(brightray::RequireCTDelegate* ct_delegate);
-    virtual ~AtomCertVerifier();
+explicit AtomCertVerifier(brightray::RequireCTDelegate* ct_delegate);
+virtual ~AtomCertVerifier();
 
-    using VerifyProc = base::Callback<void(const VerifyRequestParams& request,
-                                           const net::CompletionCallback&)>;
+using VerifyProc = base::Callback<void (const VerifyRequestParams& request,
+                                        const net::CompletionCallback&)>;
 
-    void SetVerifyProc(const VerifyProc& proc);
+void SetVerifyProc(const VerifyProc& proc);
 
-    const VerifyProc verify_proc() const {
-        return verify_proc_;
-    }
-    brightray::RequireCTDelegate* ct_delegate() const {
-        return ct_delegate_;
-    }
-    net::CertVerifier* default_verifier() const {
-        return default_cert_verifier_.get();
-    }
+const VerifyProc verify_proc() const {
+	return verify_proc_;
+}
+brightray::RequireCTDelegate* ct_delegate() const {
+	return ct_delegate_;
+}
+net::CertVerifier* default_verifier() const {
+	return default_cert_verifier_.get();
+}
 
 protected:
-    // net::CertVerifier:
-    int Verify(const RequestParams& params,
-               net::CRLSet* crl_set,
-               net::CertVerifyResult* verify_result,
-               const net::CompletionCallback& callback,
-               std::unique_ptr<Request>* out_req,
-               const net::NetLogWithSource& net_log) override;
-    bool SupportsOCSPStapling() override;
+// net::CertVerifier:
+int Verify(const RequestParams& params,
+           net::CRLSet* crl_set,
+           net::CertVerifyResult* verify_result,
+           const net::CompletionCallback& callback,
+           std::unique_ptr<Request>* out_req,
+           const net::NetLogWithSource& net_log) override;
+bool SupportsOCSPStapling() override;
 
 private:
-    friend class CertVerifierRequest;
+friend class CertVerifierRequest;
 
-    void RemoveRequest(const RequestParams& params);
-    CertVerifierRequest* FindRequest(const RequestParams& params);
+void RemoveRequest(const RequestParams& params);
+CertVerifierRequest* FindRequest(const RequestParams& params);
 
-    std::map<RequestParams, CertVerifierRequest*> inflight_requests_;
-    VerifyProc verify_proc_;
-    std::unique_ptr<net::CertVerifier> default_cert_verifier_;
-    brightray::RequireCTDelegate* ct_delegate_;
+std::map<RequestParams, CertVerifierRequest*> inflight_requests_;
+VerifyProc verify_proc_;
+std::unique_ptr<net::CertVerifier> default_cert_verifier_;
+brightray::RequireCTDelegate* ct_delegate_;
 
-    DISALLOW_COPY_AND_ASSIGN(AtomCertVerifier);
+DISALLOW_COPY_AND_ASSIGN(AtomCertVerifier);
 };
 
 }   // namespace atom

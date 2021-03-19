@@ -11,18 +11,19 @@
 namespace printing {
 
 PrintJobWorkerOwner::PrintJobWorkerOwner()
-    : task_runner_(base::ThreadTaskRunnerHandle::Get()) {}
+	: task_runner_(base::ThreadTaskRunnerHandle::Get()) {
+}
 
 PrintJobWorkerOwner::~PrintJobWorkerOwner() {
 }
 
 bool PrintJobWorkerOwner::RunsTasksInCurrentSequence() const {
-    return task_runner_->RunsTasksInCurrentSequence();
+	return task_runner_->RunsTasksInCurrentSequence();
 }
 
 bool PrintJobWorkerOwner::PostTask(const tracked_objects::Location& from_here,
                                    const base::Closure& task) {
-    return task_runner_->PostTask(from_here, task);
+	return task_runner_->PostTask(from_here, task);
 }
 
 }  // namespace printing

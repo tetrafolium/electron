@@ -5,25 +5,25 @@
 #include "chrome/common/tts_utterance_request.h"
 
 TtsUtteranceRequest::TtsUtteranceRequest()
-    : id(0),
-      volume(1.0),
-      rate(1.0),
-      pitch(1.0) {
+	: id(0),
+	volume(1.0),
+	rate(1.0),
+	pitch(1.0) {
 }
 
 TtsUtteranceRequest::~TtsUtteranceRequest() {
 }
 
 TtsVoice::TtsVoice()
-    : local_service(true),
-      is_default(false) {
+	: local_service(true),
+	is_default(false) {
 }
 
 TtsVoice::~TtsVoice() {
 }
 
 TtsUtteranceResponse::TtsUtteranceResponse()
-    : id(0) {
+	: id(0) {
 }
 
 TtsUtteranceResponse::~TtsUtteranceResponse() {

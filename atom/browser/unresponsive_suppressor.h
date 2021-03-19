@@ -13,11 +13,11 @@ bool IsUnresponsiveEventSuppressed();
 
 class UnresponsiveSuppressor {
 public:
-    UnresponsiveSuppressor();
-    ~UnresponsiveSuppressor();
+UnresponsiveSuppressor();
+~UnresponsiveSuppressor();
 
 private:
-    DISALLOW_COPY_AND_ASSIGN(UnresponsiveSuppressor);
+DISALLOW_COPY_AND_ASSIGN(UnresponsiveSuppressor);
 };
 
 }  // namespace atom

@@ -14,42 +14,42 @@ namespace atom {
 
 class AtomMainDelegate : public brightray::MainDelegate {
 public:
-    AtomMainDelegate();
-    ~AtomMainDelegate();
+AtomMainDelegate();
+~AtomMainDelegate();
 
 protected:
-    // content::ContentMainDelegate:
-    bool BasicStartupComplete(int* exit_code) override;
-    void PreSandboxStartup() override;
-    content::ContentBrowserClient* CreateContentBrowserClient() override;
-    content::ContentRendererClient* CreateContentRendererClient() override;
-    content::ContentUtilityClient* CreateContentUtilityClient() override;
-    int RunProcess(
-        const std::string& process_type,
-        const content::MainFunctionParams& main_function_params) override;
+// content::ContentMainDelegate:
+bool BasicStartupComplete(int* exit_code) override;
+void PreSandboxStartup() override;
+content::ContentBrowserClient* CreateContentBrowserClient() override;
+content::ContentRendererClient* CreateContentRendererClient() override;
+content::ContentUtilityClient* CreateContentUtilityClient() override;
+int RunProcess(
+	const std::string& process_type,
+	const content::MainFunctionParams& main_function_params) override;
 #if defined(OS_MACOSX)
-    bool ShouldSendMachPort(const std::string& process_type) override;
-    bool DelaySandboxInitialization(const std::string& process_type) override;
+bool ShouldSendMachPort(const std::string& process_type) override;
+bool DelaySandboxInitialization(const std::string& process_type) override;
 #endif
 
-    // brightray::MainDelegate:
-    std::unique_ptr<brightray::ContentClient> CreateContentClient() override;
+// brightray::MainDelegate:
+std::unique_ptr<brightray::ContentClient> CreateContentClient() override;
 #if defined(OS_MACOSX)
-    void OverrideChildProcessPath() override;
-    void OverrideFrameworkBundlePath() override;
+void OverrideChildProcessPath() override;
+void OverrideFrameworkBundlePath() override;
 #endif
 
 private:
 #if defined(OS_MACOSX)
-    void SetUpBundleOverrides();
+void SetUpBundleOverrides();
 #endif
 
-    brightray::ContentClient content_client_;
-    std::unique_ptr<content::ContentBrowserClient> browser_client_;
-    std::unique_ptr<content::ContentRendererClient> renderer_client_;
-    std::unique_ptr<content::ContentUtilityClient> utility_client_;
+brightray::ContentClient content_client_;
+std::unique_ptr<content::ContentBrowserClient> browser_client_;
+std::unique_ptr<content::ContentRendererClient> renderer_client_;
+std::unique_ptr<content::ContentUtilityClient> utility_client_;
 
-    DISALLOW_COPY_AND_ASSIGN(AtomMainDelegate);
+DISALLOW_COPY_AND_ASSIGN(AtomMainDelegate);
 };
 
 }  // namespace atom

@@ -16,21 +16,21 @@ namespace chrome {
 
 class ChromeBrowserPepperHostFactory : public ppapi::host::HostFactory {
 public:
-    // Non-owning pointer to the filter must outlive this class.
-    explicit ChromeBrowserPepperHostFactory(content::BrowserPpapiHost* host);
-    ~ChromeBrowserPepperHostFactory() override;
+// Non-owning pointer to the filter must outlive this class.
+explicit ChromeBrowserPepperHostFactory(content::BrowserPpapiHost* host);
+~ChromeBrowserPepperHostFactory() override;
 
-    std::unique_ptr<ppapi::host::ResourceHost> CreateResourceHost(
-        ppapi::host::PpapiHost* host,
-        PP_Resource resource,
-        PP_Instance instance,
-        const IPC::Message& message) override;
+std::unique_ptr<ppapi::host::ResourceHost> CreateResourceHost(
+	ppapi::host::PpapiHost* host,
+	PP_Resource resource,
+	PP_Instance instance,
+	const IPC::Message& message) override;
 
 private:
-    // Non-owning pointer.
-    content::BrowserPpapiHost* host_;
+// Non-owning pointer.
+content::BrowserPpapiHost* host_;
 
-    DISALLOW_COPY_AND_ASSIGN(ChromeBrowserPepperHostFactory);
+DISALLOW_COPY_AND_ASSIGN(ChromeBrowserPepperHostFactory);
 };
 
 }  // namespace chrome

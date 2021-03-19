@@ -24,70 +24,72 @@ using ppapi::host::ResourceMessageFilter;
 namespace chrome {
 
 ChromeBrowserPepperHostFactory::ChromeBrowserPepperHostFactory(
-    content::BrowserPpapiHost* host)
-    : host_(host) {}
+	content::BrowserPpapiHost* host)
+	: host_(host) {
+}
 
-ChromeBrowserPepperHostFactory::~ChromeBrowserPepperHostFactory() {}
+ChromeBrowserPepperHostFactory::~ChromeBrowserPepperHostFactory() {
+}
 
 std::unique_ptr<ResourceHost> ChromeBrowserPepperHostFactory::CreateResourceHost(
-    ppapi::host::PpapiHost* host,
-    PP_Resource resource,
-    PP_Instance instance,
-    const IPC::Message& message) {
-    DCHECK(host == host_->GetPpapiHost());
+	ppapi::host::PpapiHost* host,
+	PP_Resource resource,
+	PP_Instance instance,
+	const IPC::Message& message) {
+	DCHECK(host == host_->GetPpapiHost());
 
-    // Make sure the plugin is giving us a valid instance for this resource.
-    if (!host_->IsValidInstance(instance))
-        return std::unique_ptr<ResourceHost>();
+	// Make sure the plugin is giving us a valid instance for this resource.
+	if (!host_->IsValidInstance(instance))
+		return std::unique_ptr<ResourceHost>();
 
-    // Private interfaces.
-    if (host_->GetPpapiHost()->permissions().HasPermission(
-                ppapi::PERMISSION_PRIVATE)) {
-        switch (message.type()) {
-        case PpapiHostMsg_Broker_Create::ID: {
-            scoped_refptr<ResourceMessageFilter> broker_filter(
-                new PepperBrokerMessageFilter(instance, host_));
-            return std::unique_ptr<ResourceHost>(new MessageFilterHost(
-                    host_->GetPpapiHost(), instance, resource, broker_filter));
-        }
-        }
-    }
+	// Private interfaces.
+	if (host_->GetPpapiHost()->permissions().HasPermission(
+		    ppapi::PERMISSION_PRIVATE)) {
+		switch (message.type()) {
+		case PpapiHostMsg_Broker_Create::ID: {
+			scoped_refptr<ResourceMessageFilter> broker_filter(
+				new PepperBrokerMessageFilter(instance, host_));
+			return std::unique_ptr<ResourceHost>(new MessageFilterHost(
+								     host_->GetPpapiHost(), instance, resource, broker_filter));
+		}
+		}
+	}
 
-    // Flash interfaces.
-    if (host_->GetPpapiHost()->permissions().HasPermission(
-                ppapi::PERMISSION_FLASH)) {
-        switch (message.type()) {
-        case PpapiHostMsg_Flash_Create::ID:
-            return std::unique_ptr<ResourceHost>(
-                       new PepperFlashBrowserHost(host_, instance, resource));
-        case PpapiHostMsg_FlashClipboard_Create::ID: {
-            scoped_refptr<ResourceMessageFilter> clipboard_filter(
-                new PepperFlashClipboardMessageFilter);
-            return std::unique_ptr<ResourceHost>(new MessageFilterHost(
-                    host_->GetPpapiHost(), instance, resource, clipboard_filter));
-        }
-        case PpapiHostMsg_FlashDRM_Create::ID:
-            return std::unique_ptr<ResourceHost>(
-                       new chrome::PepperFlashDRMHost(host_, instance, resource));
-        }
-    }
+	// Flash interfaces.
+	if (host_->GetPpapiHost()->permissions().HasPermission(
+		    ppapi::PERMISSION_FLASH)) {
+		switch (message.type()) {
+		case PpapiHostMsg_Flash_Create::ID:
+			return std::unique_ptr<ResourceHost>(
+				new PepperFlashBrowserHost(host_, instance, resource));
+		case PpapiHostMsg_FlashClipboard_Create::ID: {
+			scoped_refptr<ResourceMessageFilter> clipboard_filter(
+				new PepperFlashClipboardMessageFilter);
+			return std::unique_ptr<ResourceHost>(new MessageFilterHost(
+								     host_->GetPpapiHost(), instance, resource, clipboard_filter));
+		}
+		case PpapiHostMsg_FlashDRM_Create::ID:
+			return std::unique_ptr<ResourceHost>(
+				new chrome::PepperFlashDRMHost(host_, instance, resource));
+		}
+	}
 
-    // Permissions for the following interfaces will be checked at the
-    // time of the corresponding instance's methods calls (because
-    // permission check can be performed only on the UI
-    // thread). Currently these interfaces are available only for
-    // whitelisted apps which may not have access to the other private
-    // interfaces.
-    if (message.type() == PpapiHostMsg_IsolatedFileSystem_Create::ID) {
-        PepperIsolatedFileSystemMessageFilter* isolated_fs_filter =
-            PepperIsolatedFileSystemMessageFilter::Create(instance, host_);
-        if (!isolated_fs_filter)
-            return std::unique_ptr<ResourceHost>();
-        return std::unique_ptr<ResourceHost>(
-                   new MessageFilterHost(host, instance, resource, isolated_fs_filter));
-    }
+	// Permissions for the following interfaces will be checked at the
+	// time of the corresponding instance's methods calls (because
+	// permission check can be performed only on the UI
+	// thread). Currently these interfaces are available only for
+	// whitelisted apps which may not have access to the other private
+	// interfaces.
+	if (message.type() == PpapiHostMsg_IsolatedFileSystem_Create::ID) {
+		PepperIsolatedFileSystemMessageFilter* isolated_fs_filter =
+			PepperIsolatedFileSystemMessageFilter::Create(instance, host_);
+		if (!isolated_fs_filter)
+			return std::unique_ptr<ResourceHost>();
+		return std::unique_ptr<ResourceHost>(
+			new MessageFilterHost(host, instance, resource, isolated_fs_filter));
+	}
 
-    return std::unique_ptr<ResourceHost>();
+	return std::unique_ptr<ResourceHost>();
 }
 
 }  // namespace chrome

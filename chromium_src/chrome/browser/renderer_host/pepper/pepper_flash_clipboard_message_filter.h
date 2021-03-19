@@ -31,44 +31,44 @@ namespace chrome {
 // clipboard types for each custom clipboard format which may be a limited
 // resource on a particular platform.
 class PepperFlashClipboardMessageFilter
-    : public ppapi::host::ResourceMessageFilter {
+	: public ppapi::host::ResourceMessageFilter {
 public:
-    PepperFlashClipboardMessageFilter();
+PepperFlashClipboardMessageFilter();
 
 protected:
-    // ppapi::host::ResourceMessageFilter overrides.
-    scoped_refptr<base::TaskRunner> OverrideTaskRunnerForMessage(
-        const IPC::Message& msg) override;
-    int32_t OnResourceMessageReceived(
-        const IPC::Message& msg,
-        ppapi::host::HostMessageContext* context) override;
+// ppapi::host::ResourceMessageFilter overrides.
+scoped_refptr<base::TaskRunner> OverrideTaskRunnerForMessage(
+	const IPC::Message& msg) override;
+int32_t OnResourceMessageReceived(
+	const IPC::Message& msg,
+	ppapi::host::HostMessageContext* context) override;
 
 private:
-    ~PepperFlashClipboardMessageFilter() override;
+~PepperFlashClipboardMessageFilter() override;
 
-    int32_t OnMsgRegisterCustomFormat(
-        ppapi::host::HostMessageContext* host_context,
-        const std::string& format_name);
-    int32_t OnMsgIsFormatAvailable(ppapi::host::HostMessageContext* host_context,
-                                   uint32_t clipboard_type,
-                                   uint32_t format);
-    int32_t OnMsgReadData(ppapi::host::HostMessageContext* host_context,
-                          uint32_t clipoard_type,
-                          uint32_t format);
-    int32_t OnMsgWriteData(ppapi::host::HostMessageContext* host_context,
-                           uint32_t clipboard_type,
-                           const std::vector<uint32_t>& formats,
-                           const std::vector<std::string>& data);
-    int32_t OnMsgGetSequenceNumber(ppapi::host::HostMessageContext* host_context,
-                                   uint32_t clipboard_type);
+int32_t OnMsgRegisterCustomFormat(
+	ppapi::host::HostMessageContext* host_context,
+	const std::string& format_name);
+int32_t OnMsgIsFormatAvailable(ppapi::host::HostMessageContext* host_context,
+                               uint32_t clipboard_type,
+                               uint32_t format);
+int32_t OnMsgReadData(ppapi::host::HostMessageContext* host_context,
+                      uint32_t clipoard_type,
+                      uint32_t format);
+int32_t OnMsgWriteData(ppapi::host::HostMessageContext* host_context,
+                       uint32_t clipboard_type,
+                       const std::vector<uint32_t>& formats,
+                       const std::vector<std::string>& data);
+int32_t OnMsgGetSequenceNumber(ppapi::host::HostMessageContext* host_context,
+                               uint32_t clipboard_type);
 
-    int32_t WriteClipboardDataItem(uint32_t format,
-                                   const std::string& data,
-                                   ui::ScopedClipboardWriter* scw);
+int32_t WriteClipboardDataItem(uint32_t format,
+                               const std::string& data,
+                               ui::ScopedClipboardWriter* scw);
 
-    ppapi::FlashClipboardFormatRegistry custom_formats_;
+ppapi::FlashClipboardFormatRegistry custom_formats_;
 
-    DISALLOW_COPY_AND_ASSIGN(PepperFlashClipboardMessageFilter);
+DISALLOW_COPY_AND_ASSIGN(PepperFlashClipboardMessageFilter);
 };
 
 }  // namespace chrome

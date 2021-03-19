@@ -17,51 +17,51 @@ namespace atom {
 namespace api {
 
 NSData* bufferFromNSImage(NSImage* image) {
-    CGImageRef ref = [image CGImageForProposedRect:nil context:nil hints:nil];
-    NSBitmapImageRep* rep = [[NSBitmapImageRep alloc] initWithCGImage:ref];
-    [rep setSize:[image size]];
-    return [rep representationUsingType:NSPNGFileType properties:[[NSDictionary alloc] init]];
+	CGImageRef ref = [image CGImageForProposedRect:nil context:nil hints:nil];
+	NSBitmapImageRep* rep = [[NSBitmapImageRep alloc] initWithCGImage:ref];
+	[rep setSize:[image size]];
+	return [rep representationUsingType:NSPNGFileType properties:[[NSDictionary alloc] init]];
 }
 
 double safeShift(double in, double def) {
-    if (in >= 0 || in <= 1 || in == def) return in;
-    return def;
+	if (in >= 0 || in <= 1 || in == def) return in;
+	return def;
 }
 
 mate::Handle<NativeImage> NativeImage::CreateFromNamedImage(
-    mate::Arguments* args, const std::string& name) {
-    @autoreleasepool {
-        std::vector<double> hsl_shift;
-        NSImage* image = [NSImage imageNamed:base::SysUTF8ToNSString(name)];
-        if (!image.valid) {
-            return CreateEmpty(args->isolate());
-        }
+	mate::Arguments* args, const std::string& name) {
+	@autoreleasepool {
+		std::vector<double> hsl_shift;
+		NSImage* image = [NSImage imageNamed:base::SysUTF8ToNSString(name)];
+		if (!image.valid) {
+			return CreateEmpty(args->isolate());
+		}
 
-        NSData* png_data = bufferFromNSImage(image);
+		NSData* png_data = bufferFromNSImage(image);
 
-        if (args->GetNext(&hsl_shift) && hsl_shift.size() == 3) {
-            gfx::Image gfx_image = gfx::Image::CreateFrom1xPNGBytes(
-                reinterpret_cast<const unsigned char*>((char *) [png_data bytes]), [png_data length]);
-            color_utils::HSL shift = {
-                safeShift(hsl_shift[0], -1),
-                safeShift(hsl_shift[1], 0.5),
-                safeShift(hsl_shift[2], 0.5)
-            };
-            png_data = bufferFromNSImage(gfx::Image(
-                                             gfx::ImageSkiaOperations::CreateHSLShiftedImage(
-                                                 gfx_image.AsImageSkia(), shift)).CopyNSImage());
-        }
+		if (args->GetNext(&hsl_shift) && hsl_shift.size() == 3) {
+			gfx::Image gfx_image = gfx::Image::CreateFrom1xPNGBytes(
+				reinterpret_cast<const unsigned char*>((char *) [png_data bytes]), [png_data length]);
+			color_utils::HSL shift = {
+				safeShift(hsl_shift[0], -1),
+				safeShift(hsl_shift[1], 0.5),
+				safeShift(hsl_shift[2], 0.5)
+			};
+			png_data = bufferFromNSImage(gfx::Image(
+							     gfx::ImageSkiaOperations::CreateHSLShiftedImage(
+								     gfx_image.AsImageSkia(), shift)).CopyNSImage());
+		}
 
-        return CreateFromPNG(args->isolate(), (char *) [png_data bytes], [png_data length]);
-    }
+		return CreateFromPNG(args->isolate(), (char *) [png_data bytes], [png_data length]);
+	}
 }
 
 void NativeImage::SetTemplateImage(bool setAsTemplate) {
-    [image_.AsNSImage() setTemplate:setAsTemplate];
+	[image_.AsNSImage() setTemplate:setAsTemplate];
 }
 
 bool NativeImage::IsTemplateImage() {
-    return [image_.AsNSImage() isTemplate];
+	return [image_.AsNSImage() isTemplate];
 }
 
 }  // namespace api

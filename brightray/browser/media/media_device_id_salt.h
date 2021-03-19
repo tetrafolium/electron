@@ -20,18 +20,18 @@ namespace brightray {
 // service. If the cache is cleared, the  MediaSourceIds are invalidated.
 class MediaDeviceIDSalt {
 public:
-    explicit MediaDeviceIDSalt(PrefService* pref_service);
-    ~MediaDeviceIDSalt();
+explicit MediaDeviceIDSalt(PrefService* pref_service);
+~MediaDeviceIDSalt();
 
-    std::string GetSalt();
+std::string GetSalt();
 
-    static void RegisterPrefs(PrefRegistrySimple* pref_registry);
-    static void Reset(PrefService* pref_service);
+static void RegisterPrefs(PrefRegistrySimple* pref_registry);
+static void Reset(PrefService* pref_service);
 
 private:
-    StringPrefMember media_device_id_salt_;
+StringPrefMember media_device_id_salt_;
 
-    DISALLOW_COPY_AND_ASSIGN(MediaDeviceIDSalt);
+DISALLOW_COPY_AND_ASSIGN(MediaDeviceIDSalt);
 };
 
 }  // namespace brightray

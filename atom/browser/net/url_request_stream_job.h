@@ -21,45 +21,45 @@ namespace atom {
 
 class URLRequestStreamJob : public JsAsker<net::URLRequestJob> {
 public:
-    URLRequestStreamJob(net::URLRequest* request,
-                        net::NetworkDelegate* network_delegate);
+URLRequestStreamJob(net::URLRequest* request,
+                    net::NetworkDelegate* network_delegate);
 
-    void OnData(mate::Arguments* args);
-    void OnEnd(mate::Arguments* args);
-    void OnError(mate::Arguments* args);
+void OnData(mate::Arguments* args);
+void OnEnd(mate::Arguments* args);
+void OnError(mate::Arguments* args);
 
-    // URLRequestJob
-    void GetResponseInfo(net::HttpResponseInfo* info) override;
+// URLRequestJob
+void GetResponseInfo(net::HttpResponseInfo* info) override;
 
 protected:
-    // URLRequestJob
-    int ReadRawData(net::IOBuffer* buf, int buf_size) override;
-    void DoneReading() override;
-    void DoneReadingRedirectResponse() override;
-    std::unique_ptr<net::SourceStream> SetUpSourceStream() override;
-    bool GetMimeType(std::string* mime_type) const override;
-    int GetResponseCode() const override;
+// URLRequestJob
+int ReadRawData(net::IOBuffer* buf, int buf_size) override;
+void DoneReading() override;
+void DoneReadingRedirectResponse() override;
+std::unique_ptr<net::SourceStream> SetUpSourceStream() override;
+bool GetMimeType(std::string* mime_type) const override;
+int GetResponseCode() const override;
 
 private:
-    // JSAsker
-    void BeforeStartInUI(v8::Isolate*, v8::Local<v8::Value>) override;
-    void StartAsync(std::unique_ptr<base::Value> options) override;
-    void OnResponse(bool success, std::unique_ptr<base::Value> value);
+// JSAsker
+void BeforeStartInUI(v8::Isolate*, v8::Local<v8::Value>) override;
+void StartAsync(std::unique_ptr<base::Value> options) override;
+void OnResponse(bool success, std::unique_ptr<base::Value> value);
 
-    // Callback after data is asynchronously read from the file into |buf|.
-    void CopyMoreData(scoped_refptr<net::IOBuffer> io_buf, int io_buf_size);
-    void CopyMoreDataDone(scoped_refptr<net::IOBuffer> io_buf, int read_count);
+// Callback after data is asynchronously read from the file into |buf|.
+void CopyMoreData(scoped_refptr<net::IOBuffer> io_buf, int io_buf_size);
+void CopyMoreDataDone(scoped_refptr<net::IOBuffer> io_buf, int read_count);
 
-    std::deque<char> buffer_;
-    bool ended_;
-    bool errored_;
-    scoped_refptr<net::IOBuffer> pending_io_buf_;
-    int pending_io_buf_size_;
-    scoped_refptr<net::HttpResponseHeaders> response_headers_;
-    mate::EventSubscriber<URLRequestStreamJob>::SafePtr subscriber_;
-    base::WeakPtrFactory<URLRequestStreamJob> weak_factory_;
+std::deque<char> buffer_;
+bool ended_;
+bool errored_;
+scoped_refptr<net::IOBuffer> pending_io_buf_;
+int pending_io_buf_size_;
+scoped_refptr<net::HttpResponseHeaders> response_headers_;
+mate::EventSubscriber<URLRequestStreamJob>::SafePtr subscriber_;
+base::WeakPtrFactory<URLRequestStreamJob> weak_factory_;
 
-    DISALLOW_COPY_AND_ASSIGN(URLRequestStreamJob);
+DISALLOW_COPY_AND_ASSIGN(URLRequestStreamJob);
 };
 }  // namespace atom
 

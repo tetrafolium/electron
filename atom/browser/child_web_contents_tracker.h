@@ -13,11 +13,11 @@ namespace atom {
 // created by native `window.open()`
 class ChildWebContentsTracker : public content::WebContentsObserver {
 public:
-    explicit ChildWebContentsTracker(content::WebContents* web_contents);
-    static bool IsChildWebContents(content::WebContents* web_contents);
+explicit ChildWebContentsTracker(content::WebContents* web_contents);
+static bool IsChildWebContents(content::WebContents* web_contents);
 
 protected:
-    void WebContentsDestroyed() override;
+void WebContentsDestroyed() override;
 };
 
 }  // namespace atom

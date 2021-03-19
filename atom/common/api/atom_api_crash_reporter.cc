@@ -18,13 +18,13 @@ namespace mate {
 
 template<>
 struct Converter<CrashReporter::UploadReportResult> {
-    static v8::Local<v8::Value> ToV8(v8::Isolate* isolate,
-                                     const CrashReporter::UploadReportResult& reports) {
-        mate::Dictionary dict(isolate, v8::Object::New(isolate));
-        dict.Set("date", v8::Date::New(isolate, reports.first*1000.0));
-        dict.Set("id", reports.second);
-        return dict.GetHandle();
-    }
+	static v8::Local<v8::Value> ToV8(v8::Isolate* isolate,
+	                                 const CrashReporter::UploadReportResult& reports) {
+		mate::Dictionary dict(isolate, v8::Object::New(isolate));
+		dict.Set("date", v8::Date::New(isolate, reports.first*1000.0));
+		dict.Set("id", reports.second);
+		return dict.GetHandle();
+	}
 };
 
 }  // namespace mate
@@ -33,40 +33,40 @@ namespace {
 
 // TODO(2.0) Remove
 void SetExtraParameter(const std::string& key, mate::Arguments* args) {
-    std::string value;
-    if (args->GetNext(&value))
-        CrashReporter::GetInstance()->AddExtraParameter(key, value);
-    else
-        CrashReporter::GetInstance()->RemoveExtraParameter(key);
+	std::string value;
+	if (args->GetNext(&value))
+		CrashReporter::GetInstance()->AddExtraParameter(key, value);
+	else
+		CrashReporter::GetInstance()->RemoveExtraParameter(key);
 }
 
 void AddExtraParameter(const std::string& key, const std::string& value) {
-    CrashReporter::GetInstance()->AddExtraParameter(key, value);
+	CrashReporter::GetInstance()->AddExtraParameter(key, value);
 }
 
 void RemoveExtraParameter(const std::string& key) {
-    CrashReporter::GetInstance()->RemoveExtraParameter(key);
+	CrashReporter::GetInstance()->RemoveExtraParameter(key);
 }
 
 std::map<std::string, std::string> GetParameters() {
-    return CrashReporter::GetInstance()->GetParameters();
+	return CrashReporter::GetInstance()->GetParameters();
 }
 
 void Initialize(v8::Local<v8::Object> exports, v8::Local<v8::Value> unused,
                 v8::Local<v8::Context> context, void* priv) {
-    mate::Dictionary dict(context->GetIsolate(), exports);
-    auto reporter = base::Unretained(CrashReporter::GetInstance());
-    dict.SetMethod("start", base::Bind(&CrashReporter::Start, reporter));
-    dict.SetMethod("setExtraParameter", &SetExtraParameter);
-    dict.SetMethod("addExtraParameter", &AddExtraParameter);
-    dict.SetMethod("removeExtraParameter", &RemoveExtraParameter);
-    dict.SetMethod("getParameters", &GetParameters);
-    dict.SetMethod("getUploadedReports",
-                   base::Bind(&CrashReporter::GetUploadedReports, reporter));
-    dict.SetMethod("setUploadToServer",
-                   base::Bind(&CrashReporter::SetUploadToServer, reporter));
-    dict.SetMethod("getUploadToServer",
-                   base::Bind(&CrashReporter::GetUploadToServer, reporter));
+	mate::Dictionary dict(context->GetIsolate(), exports);
+	auto reporter = base::Unretained(CrashReporter::GetInstance());
+	dict.SetMethod("start", base::Bind(&CrashReporter::Start, reporter));
+	dict.SetMethod("setExtraParameter", &SetExtraParameter);
+	dict.SetMethod("addExtraParameter", &AddExtraParameter);
+	dict.SetMethod("removeExtraParameter", &RemoveExtraParameter);
+	dict.SetMethod("getParameters", &GetParameters);
+	dict.SetMethod("getUploadedReports",
+	               base::Bind(&CrashReporter::GetUploadedReports, reporter));
+	dict.SetMethod("setUploadToServer",
+	               base::Bind(&CrashReporter::SetUploadToServer, reporter));
+	dict.SetMethod("getUploadToServer",
+	               base::Bind(&CrashReporter::GetUploadToServer, reporter));
 }
 
 }  // namespace

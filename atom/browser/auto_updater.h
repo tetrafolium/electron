@@ -19,49 +19,56 @@ namespace auto_updater {
 
 class Delegate {
 public:
-    // An error happened.
-    virtual void OnError(const std::string& error) {}
+// An error happened.
+virtual void OnError(const std::string& error) {
+}
 
-    virtual void OnError(const std::string& error, const int code,
-                         const std::string& domain) {}
+virtual void OnError(const std::string& error, const int code,
+                     const std::string& domain) {
+}
 
-    // Checking to see if there is an update
-    virtual void OnCheckingForUpdate() {}
+// Checking to see if there is an update
+virtual void OnCheckingForUpdate() {
+}
 
-    // There is an update available and it is being downloaded
-    virtual void OnUpdateAvailable() {}
+// There is an update available and it is being downloaded
+virtual void OnUpdateAvailable() {
+}
 
-    // There is no available update.
-    virtual void OnUpdateNotAvailable() {}
+// There is no available update.
+virtual void OnUpdateNotAvailable() {
+}
 
-    // There is a new update which has been downloaded.
-    virtual void OnUpdateDownloaded(const std::string& release_notes,
-                                    const std::string& release_name,
-                                    const base::Time& release_date,
-                                    const std::string& update_url) {}
+// There is a new update which has been downloaded.
+virtual void OnUpdateDownloaded(const std::string& release_notes,
+                                const std::string& release_name,
+                                const base::Time& release_date,
+                                const std::string& update_url) {
+}
 
 protected:
-    virtual ~Delegate() {}
+virtual ~Delegate() {
+}
 };
 
 class AutoUpdater {
 public:
-    typedef std::map<std::string, std::string> HeaderMap;
+typedef std::map<std::string, std::string> HeaderMap;
 
-    // Gets/Sets the delegate.
-    static Delegate* GetDelegate();
-    static void SetDelegate(Delegate* delegate);
+// Gets/Sets the delegate.
+static Delegate* GetDelegate();
+static void SetDelegate(Delegate* delegate);
 
-    static std::string GetFeedURL();
-    static void SetFeedURL(const std::string& url,
-                           const HeaderMap& requestHeaders);
-    static void CheckForUpdates();
-    static void QuitAndInstall();
+static std::string GetFeedURL();
+static void SetFeedURL(const std::string& url,
+                       const HeaderMap& requestHeaders);
+static void CheckForUpdates();
+static void QuitAndInstall();
 
 private:
-    static Delegate* delegate_;
+static Delegate* delegate_;
 
-    DISALLOW_IMPLICIT_CONSTRUCTORS(AutoUpdater);
+DISALLOW_IMPLICIT_CONSTRUCTORS(AutoUpdater);
 };
 
 }  // namespace auto_updater

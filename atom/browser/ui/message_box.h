@@ -20,20 +20,20 @@ namespace atom {
 class NativeWindow;
 
 enum MessageBoxType {
-    MESSAGE_BOX_TYPE_NONE = 0,
-    MESSAGE_BOX_TYPE_INFORMATION,
-    MESSAGE_BOX_TYPE_WARNING,
-    MESSAGE_BOX_TYPE_ERROR,
-    MESSAGE_BOX_TYPE_QUESTION,
+	MESSAGE_BOX_TYPE_NONE = 0,
+	MESSAGE_BOX_TYPE_INFORMATION,
+	MESSAGE_BOX_TYPE_WARNING,
+	MESSAGE_BOX_TYPE_ERROR,
+	MESSAGE_BOX_TYPE_QUESTION,
 };
 
 enum MessageBoxOptions {
-    MESSAGE_BOX_NONE    = 0,
-    MESSAGE_BOX_NO_LINK = 1 << 0,
+	MESSAGE_BOX_NONE    = 0,
+	MESSAGE_BOX_NO_LINK = 1 << 0,
 };
 
-typedef base::Callback<void(int code, bool checkbox_checked)>
-MessageBoxCallback;
+typedef base::Callback<void (int code, bool checkbox_checked)>
+        MessageBoxCallback;
 
 int ShowMessageBox(NativeWindow* parent_window,
                    MessageBoxType type,

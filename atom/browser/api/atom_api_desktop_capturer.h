@@ -14,34 +14,34 @@ namespace atom {
 
 namespace api {
 
-class DesktopCapturer: public mate::EventEmitter<DesktopCapturer>,
-    public DesktopMediaListObserver {
+class DesktopCapturer : public mate::EventEmitter<DesktopCapturer>,
+	public DesktopMediaListObserver {
 public:
-    static mate::Handle<DesktopCapturer> Create(v8::Isolate* isolate);
+static mate::Handle<DesktopCapturer> Create(v8::Isolate* isolate);
 
-    static void BuildPrototype(v8::Isolate* isolate,
-                               v8::Local<v8::FunctionTemplate> prototype);
+static void BuildPrototype(v8::Isolate* isolate,
+                           v8::Local<v8::FunctionTemplate> prototype);
 
-    void StartHandling(bool capture_window,
-                       bool capture_screen,
-                       const gfx::Size& thumbnail_size);
+void StartHandling(bool capture_window,
+                   bool capture_screen,
+                   const gfx::Size& thumbnail_size);
 
 protected:
-    explicit DesktopCapturer(v8::Isolate* isolate);
-    ~DesktopCapturer() override;
+explicit DesktopCapturer(v8::Isolate* isolate);
+~DesktopCapturer() override;
 
-    // DesktopMediaListObserver overrides.
-    void OnSourceAdded(int index) override;
-    void OnSourceRemoved(int index) override;
-    void OnSourceMoved(int old_index, int new_index) override;
-    void OnSourceNameChanged(int index) override;
-    void OnSourceThumbnailChanged(int index) override;
-    bool OnRefreshFinished() override;
+// DesktopMediaListObserver overrides.
+void OnSourceAdded(int index) override;
+void OnSourceRemoved(int index) override;
+void OnSourceMoved(int old_index, int new_index) override;
+void OnSourceNameChanged(int index) override;
+void OnSourceThumbnailChanged(int index) override;
+bool OnRefreshFinished() override;
 
 private:
-    std::unique_ptr<DesktopMediaList> media_list_;
+std::unique_ptr<DesktopMediaList> media_list_;
 
-    DISALLOW_COPY_AND_ASSIGN(DesktopCapturer);
+DISALLOW_COPY_AND_ASSIGN(DesktopCapturer);
 };
 
 }  // namespace api

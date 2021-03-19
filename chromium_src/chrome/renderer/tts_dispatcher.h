@@ -26,50 +26,50 @@ struct TtsVoice;
 // so each one routes IPC messages to its WebSpeechSynthesizerClient only if
 // the utterance id (which is globally unique) matches.
 class TtsDispatcher
-    : public blink::WebSpeechSynthesizer,
-      public content::RenderThreadObserver {
+	: public blink::WebSpeechSynthesizer,
+	public content::RenderThreadObserver {
 public:
-    explicit TtsDispatcher(blink::WebSpeechSynthesizerClient* client);
-    virtual ~TtsDispatcher();
+explicit TtsDispatcher(blink::WebSpeechSynthesizerClient* client);
+virtual ~TtsDispatcher();
 
 private:
-    // RenderProcessObserver override.
-    virtual bool OnControlMessageReceived(const IPC::Message& message) override;
+// RenderProcessObserver override.
+virtual bool OnControlMessageReceived(const IPC::Message& message) override;
 
-    // blink::WebSpeechSynthesizer implementation.
-    virtual void UpdateVoiceList() override;
-    virtual void Speak(const blink::WebSpeechSynthesisUtterance& utterance)
-    override;
-    virtual void Pause() override;
-    virtual void Resume() override;
-    virtual void Cancel() override;
+// blink::WebSpeechSynthesizer implementation.
+virtual void UpdateVoiceList() override;
+virtual void Speak(const blink::WebSpeechSynthesisUtterance& utterance)
+override;
+virtual void Pause() override;
+virtual void Resume() override;
+virtual void Cancel() override;
 
-    blink::WebSpeechSynthesisUtterance FindUtterance(int utterance_id);
+blink::WebSpeechSynthesisUtterance FindUtterance(int utterance_id);
 
-    void OnSetVoiceList(const std::vector<TtsVoice>& voices);
-    void OnDidStartSpeaking(int utterance_id);
-    void OnDidFinishSpeaking(int utterance_id);
-    void OnDidPauseSpeaking(int utterance_id);
-    void OnDidResumeSpeaking(int utterance_id);
-    void OnWordBoundary(int utterance_id, int char_index);
-    void OnSentenceBoundary(int utterance_id, int char_index);
-    void OnMarkerEvent(int utterance_id, int char_index);
-    void OnWasInterrupted(int utterance_id);
-    void OnWasCancelled(int utterance_id);
-    void OnSpeakingErrorOccurred(int utterance_id,
-                                 const std::string& error_message);
+void OnSetVoiceList(const std::vector<TtsVoice>& voices);
+void OnDidStartSpeaking(int utterance_id);
+void OnDidFinishSpeaking(int utterance_id);
+void OnDidPauseSpeaking(int utterance_id);
+void OnDidResumeSpeaking(int utterance_id);
+void OnWordBoundary(int utterance_id, int char_index);
+void OnSentenceBoundary(int utterance_id, int char_index);
+void OnMarkerEvent(int utterance_id, int char_index);
+void OnWasInterrupted(int utterance_id);
+void OnWasCancelled(int utterance_id);
+void OnSpeakingErrorOccurred(int utterance_id,
+                             const std::string& error_message);
 
-    // The WebKit client class that we use to send events back to the JS world.
-    // Weak reference, this will be valid as long as this object exists.
-    blink::WebSpeechSynthesizerClient* synthesizer_client_;
+// The WebKit client class that we use to send events back to the JS world.
+// Weak reference, this will be valid as long as this object exists.
+blink::WebSpeechSynthesizerClient* synthesizer_client_;
 
-    // Next utterance id, used to map response IPCs to utterance objects.
-    static int next_utterance_id_;
+// Next utterance id, used to map response IPCs to utterance objects.
+static int next_utterance_id_;
 
-    // Map from id to utterance objects.
-    base::hash_map<int, blink::WebSpeechSynthesisUtterance> utterance_id_map_;
+// Map from id to utterance objects.
+base::hash_map<int, blink::WebSpeechSynthesisUtterance> utterance_id_map_;
 
-    DISALLOW_COPY_AND_ASSIGN(TtsDispatcher);
+DISALLOW_COPY_AND_ASSIGN(TtsDispatcher);
 };
 
 #endif  // CHROME_RENDERER_TTS_DISPATCHER_H_
