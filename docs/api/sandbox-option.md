@@ -1,9 +1,9 @@
 # `sandbox` Option
 
 > Create a browser window with a renderer that can run inside Chromium OS sandbox. With this
-option enabled, the renderer must communicate via IPC to the main process in order to access node APIs.
-However, in order to enable the Chromium OS sandbox, electron must be run with the `--enable-sandbox`
-command line argument.
+> option enabled, the renderer must communicate via IPC to the main process in order to access node APIs.
+> However, in order to enable the Chromium OS sandbox, electron must be run with the `--enable-sandbox`
+> command line argument.
 
 One of the key security features of Chromium is that all blink rendering/JavaScript
 code is executed within a sandbox. This sandbox uses OS-specific features to ensure
@@ -40,15 +40,15 @@ do in chromium (i.e. they do not return a [`BrowserWindowProxy`](browser-window-
 To create a sandboxed window, simply pass `sandbox: true` to `webPreferences`:
 
 ```js
-let win
-app.on('ready', () => {
+let win;
+app.on("ready", () => {
   win = new BrowserWindow({
     webPreferences: {
-      sandbox: true
-    }
-  })
-  win.loadURL('http://google.com')
-})
+      sandbox: true,
+    },
+  });
+  win.loadURL("http://google.com");
+});
 ```
 
 In the above code the [`BrowserWindow`](browser-window.md) that was created has node.js disabled and can communicate
@@ -65,12 +65,12 @@ entire app to be in sandbox, `--enable-mixed-sandbox` command-line argument must
 This option is currently only supported on macOS and Windows.
 
 ```js
-let win
-app.on('ready', () => {
+let win;
+app.on("ready", () => {
   // no need to pass `sandbox: true` since `--enable-sandbox` was enabled.
-  win = new BrowserWindow()
-  win.loadURL('http://google.com')
-})
+  win = new BrowserWindow();
+  win.loadURL("http://google.com");
+});
 ```
 
 Note that it is not enough to call
@@ -96,16 +96,16 @@ An app can make customizations to sandboxed renderers using a preload script.
 Here's an example:
 
 ```js
-let win
-app.on('ready', () => {
+let win;
+app.on("ready", () => {
   win = new BrowserWindow({
     webPreferences: {
       sandbox: true,
-      preload: 'preload.js'
-    }
-  })
-  win.loadURL('http://google.com')
-})
+      preload: "preload.js",
+    },
+  });
+  win.loadURL("http://google.com");
+});
 ```
 
 and preload.js:
@@ -114,24 +114,24 @@ and preload.js:
 // This file is loaded whenever a javascript context is created. It runs in a
 // private scope that can access a subset of electron renderer APIs. We must be
 // careful to not leak any objects into the global scope!
-const fs = require('fs')
-const {ipcRenderer} = require('electron')
+const fs = require("fs");
+const { ipcRenderer } = require("electron");
 
 // read a configuration file using the `fs` module
-const buf = fs.readFileSync('allowed-popup-urls.json')
-const allowedUrls = JSON.parse(buf.toString('utf8'))
+const buf = fs.readFileSync("allowed-popup-urls.json");
+const allowedUrls = JSON.parse(buf.toString("utf8"));
 
-const defaultWindowOpen = window.open
+const defaultWindowOpen = window.open;
 
-function customWindowOpen (url, ...args) {
+function customWindowOpen(url, ...args) {
   if (allowedUrls.indexOf(url) === -1) {
-    ipcRenderer.sendSync('blocked-popup-notification', location.origin, url)
-    return null
+    ipcRenderer.sendSync("blocked-popup-notification", location.origin, url);
+    return null;
   }
-  return defaultWindowOpen(url, ...args)
+  return defaultWindowOpen(url, ...args);
 }
 
-window.open = customWindowOpen
+window.open = customWindowOpen;
 ```
 
 Important things to notice in the preload script:

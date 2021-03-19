@@ -6,13 +6,13 @@ Process: [Main](../tutorial/quick-start.md#main-process)
 
 ### `new TouchBarSlider(options)` _Experimental_
 
-* `options` Object
-  * `label` String (optional) - Label text.
-  * `value` Integer (optional) - Selected value.
-  * `minValue` Integer (optional) - Minimum value.
-  * `maxValue` Integer (optional) - Maximum value.
-  * `change` Function (optional) - Function to call when the slider is changed.
-    * `newValue` Number - The value that the user selected on the Slider.
+- `options` Object
+  - `label` String (optional) - Label text.
+  - `value` Integer (optional) - Selected value.
+  - `minValue` Integer (optional) - Minimum value.
+  - `maxValue` Integer (optional) - Maximum value.
+  - `change` Function (optional) - Function to call when the slider is changed.
+    - `newValue` Number - The value that the user selected on the Slider.
 
 ### Instance Properties
 

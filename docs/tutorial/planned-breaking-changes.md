@@ -9,54 +9,53 @@ warnings will be added at least 90 days beforehand.
 
 ```js
 // Deprecated
-app.getAppMemoryInfo()
+app.getAppMemoryInfo();
 // Replace with
-app.getAppMetrics()
+app.getAppMetrics();
 ```
 
 ## `BrowserWindow`
 
 ```js
 // Deprecated
-let optionsA = {webPreferences: {blinkFeatures: ''}}
-let windowA = new BrowserWindow(optionsA)
+let optionsA = { webPreferences: { blinkFeatures: "" } };
+let windowA = new BrowserWindow(optionsA);
 // Replace with
-let optionsB = {webPreferences: {enableBlinkFeatures: ''}}
-let windowB = new BrowserWindow(optionsB)
+let optionsB = { webPreferences: { enableBlinkFeatures: "" } };
+let windowB = new BrowserWindow(optionsB);
 ```
-
 
 ```js
 // Deprecated
-let optionsA = {titleBarStyle: 'hidden-inset'}
-let windowA = new BrowserWindow(optionsA)
+let optionsA = { titleBarStyle: "hidden-inset" };
+let windowA = new BrowserWindow(optionsA);
 // Replace with
-let optionsB = {titleBarStyle: 'hiddenInset'}
-let windowB = new BrowserWindow(optionsB)
+let optionsB = { titleBarStyle: "hiddenInset" };
+let windowB = new BrowserWindow(optionsB);
 ```
 
 ## `clipboard`
 
 ```js
 // Deprecated
-clipboard.readRtf()
+clipboard.readRtf();
 // Replace with
-clipboard.readRTF()
+clipboard.readRTF();
 
 // Deprecated
-clipboard.writeRtf()
+clipboard.writeRtf();
 // Replace with
-clipboard.writeRTF()
+clipboard.writeRTF();
 
 // Deprecated
-clipboard.readHtml()
+clipboard.readHtml();
 // Replace with
-clipboard.readHTML()
+clipboard.readHTML();
 
 // Deprecated
-clipboard.writeHtml()
+clipboard.writeHtml();
 // Replace with
-clipboard.writeHTML()
+clipboard.writeHTML();
 ```
 
 ## `crashReporter`
@@ -64,58 +63,58 @@ clipboard.writeHTML()
 ```js
 // Deprecated
 crashReporter.start({
-  companyName: 'Crashly',
-  submitURL: 'https://crash.server.com',
-  autoSubmit: true
-})
+  companyName: "Crashly",
+  submitURL: "https://crash.server.com",
+  autoSubmit: true,
+});
 // Replace with
 crashReporter.start({
-  companyName: 'Crashly',
-  submitURL: 'https://crash.server.com',
-  uploadToServer: true
-})
+  companyName: "Crashly",
+  submitURL: "https://crash.server.com",
+  uploadToServer: true,
+});
 ```
 
 ## `menu`
 
 ```js
 // Deprecated
-menu.popup(browserWindow, 100, 200, 2)
+menu.popup(browserWindow, 100, 200, 2);
 // Replace with
-menu.popup(browserWindow, {x: 100, y: 200, positioningItem: 2})
+menu.popup(browserWindow, { x: 100, y: 200, positioningItem: 2 });
 ```
 
 ## `nativeImage`
 
 ```js
 // Deprecated
-nativeImage.toPng()
+nativeImage.toPng();
 // Replace with
-nativeImage.toPNG()
+nativeImage.toPNG();
 
 // Deprecated
-nativeImage.toJpeg()
+nativeImage.toJpeg();
 // Replace with
-nativeImage.toJPEG()
+nativeImage.toJPEG();
 
 // Deprecated
-nativeImage.createFromBuffer(buffer, 1.0)
+nativeImage.createFromBuffer(buffer, 1.0);
 // Replace with
 nativeImage.createFromBuffer(buffer, {
-  scaleFactor: 1.0
-})
+  scaleFactor: 1.0,
+});
 ```
 
 ## `process`
 
 ```js
 // Deprecated
-process.versions['atom-shell']
+process.versions["atom-shell"];
 // Replace with
-process.versions.electron
+process.versions.electron;
 ```
 
-* `process.versions.electron` and `process.version.chrome` will be made
+- `process.versions.electron` and `process.version.chrome` will be made
   read-only properties for consistency with the other `process.versions`
   properties set by Node.
 
@@ -124,70 +123,70 @@ process.versions.electron
 ```js
 // Deprecated
 ses.setCertificateVerifyProc(function (hostname, certificate, callback) {
-  callback(true)
-})
+  callback(true);
+});
 // Replace with
 ses.setCertificateVerifyProc(function (request, callback) {
-  callback(0)
-})
+  callback(0);
+});
 ```
 
 ## `Tray`
 
 ```js
 // Deprecated
-tray.setHighlightMode(true)
+tray.setHighlightMode(true);
 // Replace with
-tray.setHighlightMode('on')
+tray.setHighlightMode("on");
 
 // Deprecated
-tray.setHighlightMode(false)
+tray.setHighlightMode(false);
 // Replace with
-tray.setHighlightMode('off')
+tray.setHighlightMode("off");
 ```
 
 ## `webContents`
 
 ```js
 // Deprecated
-webContents.openDevTools({detach: true})
+webContents.openDevTools({ detach: true });
 // Replace with
-webContents.openDevTools({mode: 'detach'})
+webContents.openDevTools({ mode: "detach" });
 ```
 
 ```js
 // Deprecated
-webContents.setZoomLevelLimits(1, 2)
+webContents.setZoomLevelLimits(1, 2);
 // Replace with
-webContents.setVisualZoomLevelLimits(1, 2)
+webContents.setVisualZoomLevelLimits(1, 2);
 ```
 
 ## `webFrame`
 
 ```js
 // Deprecated
-webFrame.setZoomLevelLimits(1, 2)
+webFrame.setZoomLevelLimits(1, 2);
 // Replace with
-webFrame.setVisualZoomLevelLimits(1, 2)
+webFrame.setVisualZoomLevelLimits(1, 2);
 
 // Deprecated
-webFrame.registerURLSchemeAsSecure('app')
+webFrame.registerURLSchemeAsSecure("app");
 // Replace with
-protocol.registerStandardSchemes(['app'], {secure: true})
+protocol.registerStandardSchemes(["app"], { secure: true });
 
 // Deprecated
-webFrame.registerURLSchemeAsPrivileged('app', {secure: true})
+webFrame.registerURLSchemeAsPrivileged("app", { secure: true });
 // Replace with
-protocol.registerStandardSchemes(['app'], {secure: true})
+protocol.registerStandardSchemes(["app"], { secure: true });
 ```
 
 ## `<webview>`
 
 ```js
 // Deprecated
-webview.setZoomLevelLimits(1, 2)
+webview.setZoomLevelLimits(1, 2);
 // Replace with
-webview.setVisualZoomLevelLimits(1, 2)
+webview.setVisualZoomLevelLimits(1, 2);
 ```
 
 ## Node Headers URL
@@ -201,24 +200,23 @@ Replace with: https://atom.io/download/electron
 
 ## Duplicate ARM Assets
 
-Each Electron release includes two identical ARM builds with slightly different 
-filenames, like `electron-v1.7.3-linux-arm.zip` and 
-`electron-v1.7.3-linux-armv7l.zip`. The asset with the `v7l` prefix was added 
-to clarify to users which ARM version it supports, and to disambiguate it from 
+Each Electron release includes two identical ARM builds with slightly different
+filenames, like `electron-v1.7.3-linux-arm.zip` and
+`electron-v1.7.3-linux-armv7l.zip`. The asset with the `v7l` prefix was added
+to clarify to users which ARM version it supports, and to disambiguate it from
 future armv6l and arm64 assets that may be produced.
 
-The file _without the prefix_ is still being published to avoid breaking any 
-setups that may be consuming it. Starting at 2.0, the un-prefixed file will 
+The file _without the prefix_ is still being published to avoid breaking any
+setups that may be consuming it. Starting at 2.0, the un-prefixed file will
 no longer be published.
 
 For details, see
 [6986](https://github.com/electron/electron/pull/6986)
-and 
+and
 [7189](https://github.com/electron/electron/pull/7189).
-
 
 ## `FIXME` comments
 
-The `FIXME` string is used in code comments to denote things that should be 
-fixed for the 2.0 release. See 
+The `FIXME` string is used in code comments to denote things that should be
+fixed for the 2.0 release. See
 https://github.com/electron/electron/search?q=fixme

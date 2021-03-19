@@ -8,10 +8,10 @@ The following example shows how to quit the application when the last window is
 closed:
 
 ```javascript
-const {app} = require('electron')
-app.on('window-all-closed', () => {
-  app.quit()
-})
+const { app } = require("electron");
+app.on("window-all-closed", () => {
+  app.quit();
+});
 ```
 
 ## Events
@@ -32,7 +32,7 @@ In most cases, you should just do everything in the `ready` event handler.
 
 Returns:
 
-* `launchInfo` Object _macOS_
+- `launchInfo` Object _macOS_
 
 Emitted when Electron has finished initializing. On macOS, `launchInfo` holds
 the `userInfo` of the `NSUserNotification` that was used to open the application,
@@ -54,21 +54,21 @@ emitted.
 
 Returns:
 
-* `event` Event
+- `event` Event
 
 Emitted before the application starts closing its windows.
 Calling `event.preventDefault()` will prevent the default behaviour, which is
 terminating the application.
 
 **Note:** If application quit was initiated by `autoUpdater.quitAndInstall()`
-then `before-quit` is emitted *after* emitting `close` event on all windows and
+then `before-quit` is emitted _after_ emitting `close` event on all windows and
 closing them.
 
 ### Event: 'will-quit'
 
 Returns:
 
-* `event` Event
+- `event` Event
 
 Emitted when all windows have been closed and the application will quit.
 Calling `event.preventDefault()` will prevent the default behaviour, which is
@@ -81,8 +81,8 @@ the `will-quit` and `window-all-closed` events.
 
 Returns:
 
-* `event` Event
-* `exitCode` Integer
+- `event` Event
+- `exitCode` Integer
 
 Emitted when the application is quitting.
 
@@ -90,8 +90,8 @@ Emitted when the application is quitting.
 
 Returns:
 
-* `event` Event
-* `path` String
+- `event` Event
+- `path` String
 
 Emitted when the user wants to open a file with the application. The `open-file`
 event is usually emitted when the application is already open and the OS wants
@@ -109,8 +109,8 @@ filepath.
 
 Returns:
 
-* `event` Event
-* `url` String
+- `event` Event
+- `url` String
 
 Emitted when the user wants to open a URL with the application. Your application's
 `Info.plist` file must define the url scheme within the `CFBundleURLTypes` key, and
@@ -122,8 +122,8 @@ You should call `event.preventDefault()` if you want to handle this event.
 
 Returns:
 
-* `event` Event
-* `hasVisibleWindows` Boolean
+- `event` Event
+- `hasVisibleWindows` Boolean
 
 Emitted when the application is activated. Various actions can trigger
 this event, such as launching the application for the first time, attempting
@@ -134,10 +134,10 @@ application's dock or taskbar icon.
 
 Returns:
 
-* `event` Event
-* `type` String - A string identifying the activity. Maps to
+- `event` Event
+- `type` String - A string identifying the activity. Maps to
   [`NSUserActivity.activityType`][activity-type].
-* `userInfo` Object - Contains app-specific state stored by the activity on
+- `userInfo` Object - Contains app-specific state stored by the activity on
   another device.
 
 Emitted during [Handoff][handoff] when an activity from a different device wants
@@ -153,8 +153,8 @@ Supported activity types are specified in the app's `Info.plist` under the
 
 Returns:
 
-* `event` Event
-* `type` String - A string identifying the activity. Maps to
+- `event` Event
+- `type` String - A string identifying the activity. Maps to
   [`NSUserActivity.activityType`][activity-type].
 
 Emitted during [Handoff][handoff] before an activity from a different device wants
@@ -165,10 +165,10 @@ this event.
 
 Returns:
 
-* `event` Event
-* `type` String - A string identifying the activity. Maps to
+- `event` Event
+- `type` String - A string identifying the activity. Maps to
   [`NSUserActivity.activityType`][activity-type].
-* `error` String - A string with the error's localized description.
+- `error` String - A string with the error's localized description.
 
 Emitted during [Handoff][handoff] when an activity from a different device
 fails to be resumed.
@@ -177,10 +177,10 @@ fails to be resumed.
 
 Returns:
 
-* `event` Event
-* `type` String - A string identifying the activity. Maps to
+- `event` Event
+- `type` String - A string identifying the activity. Maps to
   [`NSUserActivity.activityType`][activity-type].
-* `userInfo` Object - Contains app-specific state stored by the activity.
+- `userInfo` Object - Contains app-specific state stored by the activity.
 
 Emitted during [Handoff][handoff] after an activity from this device was successfully
 resumed on another one.
@@ -189,10 +189,10 @@ resumed on another one.
 
 Returns:
 
-* `event` Event
-* `type` String - A string identifying the activity. Maps to
+- `event` Event
+- `type` String - A string identifying the activity. Maps to
   [`NSUserActivity.activityType`][activity-type].
-* `userInfo` Object - Contains app-specific state stored by the activity.
+- `userInfo` Object - Contains app-specific state stored by the activity.
 
 Emitted when [Handoff][handoff] is about to be resumed on another device. If you need to update the state to be transferred, you should call `event.preventDefault()` immediatelly, construct a new `userInfo` dictionary and call `app.updateCurrentActiviy()` in a timely manner. Otherwise the operation will fail and `continue-activity-error` will be called.
 
@@ -200,7 +200,7 @@ Emitted when [Handoff][handoff] is about to be resumed on another device. If you
 
 Returns:
 
-* `event` Event
+- `event` Event
 
 Emitted when the user clicks the native macOS new tab button. The new
 tab button is only visible if the current `BrowserWindow` has a
@@ -210,8 +210,8 @@ tab button is only visible if the current `BrowserWindow` has a
 
 Returns:
 
-* `event` Event
-* `window` [BrowserWindow](browser-window.md)
+- `event` Event
+- `window` [BrowserWindow](browser-window.md)
 
 Emitted when a [browserWindow](browser-window.md) gets blurred.
 
@@ -219,8 +219,8 @@ Emitted when a [browserWindow](browser-window.md) gets blurred.
 
 Returns:
 
-* `event` Event
-* `window` [BrowserWindow](browser-window.md)
+- `event` Event
+- `window` [BrowserWindow](browser-window.md)
 
 Emitted when a [browserWindow](browser-window.md) gets focused.
 
@@ -228,8 +228,8 @@ Emitted when a [browserWindow](browser-window.md) gets focused.
 
 Returns:
 
-* `event` Event
-* `window` [BrowserWindow](browser-window.md)
+- `event` Event
+- `window` [BrowserWindow](browser-window.md)
 
 Emitted when a new [browserWindow](browser-window.md) is created.
 
@@ -237,8 +237,8 @@ Emitted when a new [browserWindow](browser-window.md) is created.
 
 Returns:
 
-* `event` Event
-* `webContents` [WebContents](web-contents.md)
+- `event` Event
+- `webContents` [WebContents](web-contents.md)
 
 Emitted when a new [webContents](web-contents.md) is created.
 
@@ -246,42 +246,45 @@ Emitted when a new [webContents](web-contents.md) is created.
 
 Returns:
 
-* `event` Event
-* `webContents` [WebContents](web-contents.md)
-* `url` String
-* `error` String - The error code
-* `certificate` [Certificate](structures/certificate.md)
-* `callback` Function
-  * `isTrusted` Boolean - Whether to consider the certificate as trusted
+- `event` Event
+- `webContents` [WebContents](web-contents.md)
+- `url` String
+- `error` String - The error code
+- `certificate` [Certificate](structures/certificate.md)
+- `callback` Function
+  - `isTrusted` Boolean - Whether to consider the certificate as trusted
 
 Emitted when failed to verify the `certificate` for `url`, to trust the
 certificate you should prevent the default behavior with
 `event.preventDefault()` and call `callback(true)`.
 
 ```javascript
-const {app} = require('electron')
+const { app } = require("electron");
 
-app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-  if (url === 'https://github.com') {
-    // Verification logic.
-    event.preventDefault()
-    callback(true)
-  } else {
-    callback(false)
+app.on(
+  "certificate-error",
+  (event, webContents, url, error, certificate, callback) => {
+    if (url === "https://github.com") {
+      // Verification logic.
+      event.preventDefault();
+      callback(true);
+    } else {
+      callback(false);
+    }
   }
-})
+);
 ```
 
 ### Event: 'select-client-certificate'
 
 Returns:
 
-* `event` Event
-* `webContents` [WebContents](web-contents.md)
-* `url` URL
-* `certificateList` [Certificate[]](structures/certificate.md)
-* `callback` Function
-  * `certificate` [Certificate](structures/certificate.md) (optional)
+- `event` Event
+- `webContents` [WebContents](web-contents.md)
+- `url` URL
+- `certificateList` [Certificate[]](structures/certificate.md)
+- `callback` Function
+  - `certificate` [Certificate](structures/certificate.md) (optional)
 
 Emitted when a client certificate is requested.
 
@@ -291,33 +294,36 @@ and `callback` can be called with an entry filtered from the list. Using
 certificate from the store.
 
 ```javascript
-const {app} = require('electron')
+const { app } = require("electron");
 
-app.on('select-client-certificate', (event, webContents, url, list, callback) => {
-  event.preventDefault()
-  callback(list[0])
-})
+app.on(
+  "select-client-certificate",
+  (event, webContents, url, list, callback) => {
+    event.preventDefault();
+    callback(list[0]);
+  }
+);
 ```
 
 ### Event: 'login'
 
 Returns:
 
-* `event` Event
-* `webContents` [WebContents](web-contents.md)
-* `request` Object
-  * `method` String
-  * `url` URL
-  * `referrer` URL
-* `authInfo` Object
-  * `isProxy` Boolean
-  * `scheme` String
-  * `host` String
-  * `port` Integer
-  * `realm` String
-* `callback` Function
-  * `username` String
-  * `password` String
+- `event` Event
+- `webContents` [WebContents](web-contents.md)
+- `request` Object
+  - `method` String
+  - `url` URL
+  - `referrer` URL
+- `authInfo` Object
+  - `isProxy` Boolean
+  - `scheme` String
+  - `host` String
+  - `port` Integer
+  - `realm` String
+- `callback` Function
+  - `username` String
+  - `password` String
 
 Emitted when `webContents` wants to do basic auth.
 
@@ -326,20 +332,20 @@ should prevent the default behavior with `event.preventDefault()` and call
 `callback(username, password)` with the credentials.
 
 ```javascript
-const {app} = require('electron')
+const { app } = require("electron");
 
-app.on('login', (event, webContents, request, authInfo, callback) => {
-  event.preventDefault()
-  callback('username', 'secret')
-})
+app.on("login", (event, webContents, request, authInfo, callback) => {
+  event.preventDefault();
+  callback("username", "secret");
+});
 ```
 
 ### Event: 'gpu-process-crashed'
 
 Returns:
 
-* `event` Event
-* `killed` Boolean
+- `event` Event
+- `killed` Boolean
 
 Emitted when the gpu process crashes or is killed.
 
@@ -347,8 +353,8 @@ Emitted when the gpu process crashes or is killed.
 
 Returns:
 
-* `event` Event
-* `accessibilitySupportEnabled` Boolean - `true` when Chrome's accessibility
+- `event` Event
+- `accessibilitySupportEnabled` Boolean - `true` when Chrome's accessibility
   support is enabled, `false` otherwise.
 
 Emitted when Chrome's accessibility support changes. This event fires when
@@ -375,7 +381,7 @@ returning `false` in the `beforeunload` event handler.
 
 ### `app.exit([exitCode])`
 
-* `exitCode` Integer (optional)
+- `exitCode` Integer (optional)
 
 Exits immediately with `exitCode`. `exitCode` defaults to 0.
 
@@ -384,9 +390,9 @@ and `will-quit` events will not be emitted.
 
 ### `app.relaunch([options])`
 
-* `options` Object (optional)
-  * `args` String[] (optional)
-  * `execPath` String (optional)
+- `options` Object (optional)
+  - `args` String[] (optional)
+  - `execPath` String (optional)
 
 Relaunches the app when current instance exits.
 
@@ -405,10 +411,10 @@ An example of restarting current instance immediately and adding a new command
 line argument to the new instance:
 
 ```javascript
-const {app} = require('electron')
+const { app } = require("electron");
 
-app.relaunch({args: process.argv.slice(1).concat(['--relaunch'])})
-app.exit(0)
+app.relaunch({ args: process.argv.slice(1).concat(["--relaunch"]) });
+app.exit(0);
 ```
 
 ### `app.isReady()`
@@ -435,43 +441,43 @@ Returns `String` - The current application directory.
 
 ### `app.getPath(name)`
 
-* `name` String
+- `name` String
 
 Returns `String` - A path to a special directory or file associated with `name`. On
 failure an `Error` is thrown.
 
 You can request the following paths by the name:
 
-* `home` User's home directory.
-* `appData` Per-user application data directory, which by default points to:
-  * `%APPDATA%` on Windows
-  * `$XDG_CONFIG_HOME` or `~/.config` on Linux
-  * `~/Library/Application Support` on macOS
-* `userData` The directory for storing your app's configuration files, which by
+- `home` User's home directory.
+- `appData` Per-user application data directory, which by default points to:
+  - `%APPDATA%` on Windows
+  - `$XDG_CONFIG_HOME` or `~/.config` on Linux
+  - `~/Library/Application Support` on macOS
+- `userData` The directory for storing your app's configuration files, which by
   default it is the `appData` directory appended with your app's name.
-* `temp` Temporary directory.
-* `exe` The current executable file.
-* `module` The `libchromiumcontent` library.
-* `desktop` The current user's Desktop directory.
-* `documents` Directory for a user's "My Documents".
-* `downloads` Directory for a user's downloads.
-* `music` Directory for a user's music.
-* `pictures` Directory for a user's pictures.
-* `videos` Directory for a user's videos.
-* `logs` Directory for your app's log folder.
-* `pepperFlashSystemPlugin` Full path to the system version of the Pepper Flash plugin.
+- `temp` Temporary directory.
+- `exe` The current executable file.
+- `module` The `libchromiumcontent` library.
+- `desktop` The current user's Desktop directory.
+- `documents` Directory for a user's "My Documents".
+- `downloads` Directory for a user's downloads.
+- `music` Directory for a user's music.
+- `pictures` Directory for a user's pictures.
+- `videos` Directory for a user's videos.
+- `logs` Directory for your app's log folder.
+- `pepperFlashSystemPlugin` Full path to the system version of the Pepper Flash plugin.
 
 ### `app.getFileIcon(path[, options], callback)`
 
-* `path` String
-* `options` Object (optional)
-  * `size` String
-    * `small` - 16x16
-    * `normal` - 32x32
-    * `large` - 48x48 on _Linux_, 32x32 on _Windows_, unsupported on _macOS_.
-* `callback` Function
-  * `error` Error
-  * `icon` [NativeImage](native-image.md)
+- `path` String
+- `options` Object (optional)
+  - `size` String
+    - `small` - 16x16
+    - `normal` - 32x32
+    - `large` - 48x48 on _Linux_, 32x32 on _Windows_, unsupported on _macOS_.
+- `callback` Function
+  - `error` Error
+  - `icon` [NativeImage](native-image.md)
 
 Fetches a path's associated icon.
 
@@ -485,8 +491,8 @@ mime type.
 
 ### `app.setPath(name, path)`
 
-* `name` String
-* `path` String
+- `name` String
+- `path` String
 
 Overrides the `path` to a special directory or file associated with `name`. If
 the path specifies a directory that does not exist, the directory will be
@@ -516,7 +522,7 @@ preferred over `name` by Electron.
 
 ### `app.setName(name)`
 
-* `name` String
+- `name` String
 
 Overrides the current application's name.
 
@@ -532,7 +538,7 @@ Returns `String` - The current application locale. Possible return values are do
 
 ### `app.addRecentDocument(path)` _macOS_ _Windows_
 
-* `path` String
+- `path` String
 
 Adds `path` to the recent documents list.
 
@@ -545,11 +551,11 @@ Clears the recent documents list.
 
 ### `app.setAsDefaultProtocolClient(protocol[, path, args])`
 
-* `protocol` String - The name of your protocol, without `://`. If you want your
+- `protocol` String - The name of your protocol, without `://`. If you want your
   app to handle `electron://` links, call this method with `electron` as the
   parameter.
-* `path` String (optional) _Windows_ - Defaults to `process.execPath`
-* `args` String[] (optional) _Windows_ - Defaults to an empty array
+- `path` String (optional) _Windows_ - Defaults to `process.execPath`
+- `args` String[] (optional) _Windows_ - Defaults to an empty array
 
 Returns `Boolean` - Whether the call succeeded.
 
@@ -565,27 +571,26 @@ and args, an array of arguments to be passed to your executable when it launches
 **Note:** On macOS, you can only register protocols that have been added to
 your app's `info.plist`, which can not be modified at runtime. You can however
 change the file with a simple text editor or script during build time.
-Please refer to [Apple's documentation][CFBundleURLTypes] for details.
+Please refer to [Apple's documentation][cfbundleurltypes] for details.
 
 The API uses the Windows Registry and LSSetDefaultHandlerForURLScheme internally.
 
 ### `app.removeAsDefaultProtocolClient(protocol[, path, args])` _macOS_ _Windows_
 
-* `protocol` String - The name of your protocol, without `://`.
-* `path` String (optional) _Windows_ - Defaults to `process.execPath`
-* `args` String[] (optional) _Windows_ - Defaults to an empty array
+- `protocol` String - The name of your protocol, without `://`.
+- `path` String (optional) _Windows_ - Defaults to `process.execPath`
+- `args` String[] (optional) _Windows_ - Defaults to an empty array
 
 Returns `Boolean` - Whether the call succeeded.
 
 This method checks if the current executable as the default handler for a
 protocol (aka URI scheme). If so, it will remove the app as the default handler.
 
-
 ### `app.isDefaultProtocolClient(protocol[, path, args])` _macOS_ _Windows_
 
-* `protocol` String - The name of your protocol, without `://`.
-* `path` String (optional) _Windows_ - Defaults to `process.execPath`
-* `args` String[] (optional) _Windows_ - Defaults to an empty array
+- `protocol` String - The name of your protocol, without `://`.
+- `path` String (optional) _Windows_ - Defaults to `process.execPath`
+- `args` String[] (optional) _Windows_ - Defaults to an empty array
 
 Returns `Boolean`
 
@@ -596,13 +601,13 @@ This method checks if the current executable is the default handler for a protoc
 registered as the default protocol handler for a protocol. You can also verify
 this by checking `~/Library/Preferences/com.apple.LaunchServices.plist` on the
 macOS machine. Please refer to
-[Apple's documentation][LSCopyDefaultHandlerForURLScheme] for details.
+[Apple's documentation][lscopydefaulthandlerforurlscheme] for details.
 
 The API uses the Windows Registry and LSCopyDefaultHandlerForURLScheme internally.
 
 ### `app.setUserTasks(tasks)` _Windows_
 
-* `tasks` [Task[]](structures/task.md) - Array of `Task` objects
+- `tasks` [Task[]](structures/task.md) - Array of `Task` objects
 
 Adds `tasks` to the [Tasks][tasks] category of the JumpList on Windows.
 
@@ -617,10 +622,10 @@ Returns `Boolean` - Whether the call succeeded.
 
 Returns `Object`:
 
-* `minItems` Integer - The minimum number of items that will be shown in the
+- `minItems` Integer - The minimum number of items that will be shown in the
   Jump List (for a more detailed description of this value see the
-  [MSDN docs][JumpListBeginListMSDN]).
-* `removedItems` [JumpListItem[]](structures/jump-list-item.md) - Array of `JumpListItem` objects that correspond to
+  [MSDN docs][jumplistbeginlistmsdn]).
+- `removedItems` [JumpListItem[]](structures/jump-list-item.md) - Array of `JumpListItem` objects that correspond to
   items that the user has explicitly removed from custom categories in the
   Jump List. These items must not be re-added to the Jump List in the **next**
   call to `app.setJumpList()`, Windows will not display any custom category
@@ -628,20 +633,20 @@ Returns `Object`:
 
 ### `app.setJumpList(categories)` _Windows_
 
-* `categories` [JumpListCategory[]](structures/jump-list-category.md) or `null` - Array of `JumpListCategory` objects.
+- `categories` [JumpListCategory[]](structures/jump-list-category.md) or `null` - Array of `JumpListCategory` objects.
 
 Sets or removes a custom Jump List for the application, and returns one of the
 following strings:
 
-* `ok` - Nothing went wrong.
-* `error` - One or more errors occurred, enable runtime logging to figure out
+- `ok` - Nothing went wrong.
+- `error` - One or more errors occurred, enable runtime logging to figure out
   the likely cause.
-* `invalidSeparatorError` - An attempt was made to add a separator to a
+- `invalidSeparatorError` - An attempt was made to add a separator to a
   custom category in the Jump List. Separators are only allowed in the
   standard `Tasks` category.
-* `fileTypeRegistrationError` - An attempt was made to add a file link to
+- `fileTypeRegistrationError` - An attempt was made to add a file link to
   the Jump List for a file type the app isn't registered to handle.
-* `customCategoryAccessDeniedError` - Custom categories can't be added to the
+- `customCategoryAccessDeniedError` - Custom categories can't be added to the
   Jump List due to user privacy or group policy settings.
 
 If `categories` is `null` the previously set custom Jump List (if any) will be
@@ -662,68 +667,70 @@ items can be obtained using `app.getJumpListSettings()`.
 Here's a very simple example of creating a custom Jump List:
 
 ```javascript
-const {app} = require('electron')
+const { app } = require("electron");
 
 app.setJumpList([
   {
-    type: 'custom',
-    name: 'Recent Projects',
+    type: "custom",
+    name: "Recent Projects",
     items: [
-      { type: 'file', path: 'C:\\Projects\\project1.proj' },
-      { type: 'file', path: 'C:\\Projects\\project2.proj' }
-    ]
+      { type: "file", path: "C:\\Projects\\project1.proj" },
+      { type: "file", path: "C:\\Projects\\project2.proj" },
+    ],
   },
-  { // has a name so `type` is assumed to be "custom"
-    name: 'Tools',
+  {
+    // has a name so `type` is assumed to be "custom"
+    name: "Tools",
     items: [
       {
-        type: 'task',
-        title: 'Tool A',
+        type: "task",
+        title: "Tool A",
         program: process.execPath,
-        args: '--run-tool-a',
+        args: "--run-tool-a",
         icon: process.execPath,
         iconIndex: 0,
-        description: 'Runs Tool A'
+        description: "Runs Tool A",
       },
       {
-        type: 'task',
-        title: 'Tool B',
+        type: "task",
+        title: "Tool B",
         program: process.execPath,
-        args: '--run-tool-b',
+        args: "--run-tool-b",
         icon: process.execPath,
         iconIndex: 0,
-        description: 'Runs Tool B'
-      }
-    ]
+        description: "Runs Tool B",
+      },
+    ],
   },
-  { type: 'frequent' },
-  { // has no name and no type so `type` is assumed to be "tasks"
+  { type: "frequent" },
+  {
+    // has no name and no type so `type` is assumed to be "tasks"
     items: [
       {
-        type: 'task',
-        title: 'New Project',
+        type: "task",
+        title: "New Project",
         program: process.execPath,
-        args: '--new-project',
-        description: 'Create a new project.'
+        args: "--new-project",
+        description: "Create a new project.",
       },
-      { type: 'separator' },
+      { type: "separator" },
       {
-        type: 'task',
-        title: 'Recover Project',
+        type: "task",
+        title: "Recover Project",
         program: process.execPath,
-        args: '--recover-project',
-        description: 'Recover Project'
-      }
-    ]
-  }
-])
+        args: "--recover-project",
+        description: "Recover Project",
+      },
+    ],
+  },
+]);
 ```
 
 ### `app.makeSingleInstance(callback)`
 
-* `callback` Function
-  * `argv` String[] - An array of the second instance's command line arguments
-  * `workingDirectory` String - The second instance's working directory
+- `callback` Function
+  - `argv` String[] - An array of the second instance's command line arguments
+  - `workingDirectory` String - The second instance's working directory
 
 Returns `Boolean`.
 
@@ -756,24 +763,25 @@ An example of activating the window of primary instance when a second instance
 starts:
 
 ```javascript
-const {app} = require('electron')
-let myWindow = null
+const { app } = require("electron");
+let myWindow = null;
 
-const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
-  // Someone tried to run a second instance, we should focus our window.
-  if (myWindow) {
-    if (myWindow.isMinimized()) myWindow.restore()
-    myWindow.focus()
+const isSecondInstance = app.makeSingleInstance(
+  (commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (myWindow) {
+      if (myWindow.isMinimized()) myWindow.restore();
+      myWindow.focus();
+    }
   }
-})
+);
 
 if (isSecondInstance) {
-  app.quit()
+  app.quit();
 }
 
 // Create myWindow, load the rest of the app, etc...
-app.on('ready', () => {
-})
+app.on("ready", () => {});
 ```
 
 ### `app.releaseSingleInstance()`
@@ -783,10 +791,10 @@ multiple instances of the application to once again run side by side.
 
 ### `app.setUserActivity(type, userInfo[, webpageURL])` _macOS_
 
-* `type` String - Uniquely identifies the activity. Maps to
+- `type` String - Uniquely identifies the activity. Maps to
   [`NSUserActivity.activityType`][activity-type].
-* `userInfo` Object - App-specific state to store for use by another device.
-* `webpageURL` String (optional) - The webpage to load in a browser if no suitable app is
+- `userInfo` Object - App-specific state to store for use by another device.
+- `webpageURL` String (optional) - The webpage to load in a browser if no suitable app is
   installed on the resuming device. The scheme must be `http` or `https`.
 
 Creates an `NSUserActivity` and sets it as the current activity. The activity
@@ -798,33 +806,33 @@ Returns `String` - The type of the currently running activity.
 
 ### `app.invalidateCurrentActivity()` _macOS_
 
-* `type` String - Uniquely identifies the activity. Maps to
+- `type` String - Uniquely identifies the activity. Maps to
   [`NSUserActivity.activityType`][activity-type].
 
 Invalidates the current [Handoff][handoff] user activity.
 
 ### `app.updateCurrentActivity(type, userInfo)` _macOS_
 
-* `type` String - Uniquely identifies the activity. Maps to
+- `type` String - Uniquely identifies the activity. Maps to
   [`NSUserActivity.activityType`][activity-type].
-* `userInfo` Object - App-specific state to store for use by another device.
+- `userInfo` Object - App-specific state to store for use by another device.
 
 Updates the current activity if its type matches `type`, merging the entries from
 `userInfo` into its current `userInfo` dictionary.
 
 ### `app.setAppUserModelId(id)` _Windows_
 
-* `id` String
+- `id` String
 
 Changes the [Application User Model ID][app-user-model-id] to `id`.
 
 ### `app.importCertificate(options, callback)` _LINUX_
 
-* `options` Object
-  * `certificate` String - Path for the pkcs12 file.
-  * `password` String - Passphrase for the certificate.
-* `callback` Function
-  * `result` Integer - Result of import.
+- `options` Object
+  - `certificate` String - Path for the pkcs12 file.
+  - `password` String - Passphrase for the certificate.
+- `callback` Function
+  - `result` Integer - Result of import.
 
 Imports the certificate in pkcs12 format into the platform certificate store.
 `callback` is called with the `result` of import operation, a value of `0`
@@ -859,7 +867,7 @@ Returns [`GPUFeatureStatus`](structures/gpu-feature-status.md) - The Graphics Fe
 
 ### `app.setBadgeCount(count)` _Linux_ _macOS_
 
-* `count` Integer
+- `count` Integer
 
 Returns `Boolean` - Whether the call succeeded.
 
@@ -881,10 +889,10 @@ Returns `Boolean` - Whether the current desktop environment is Unity launcher.
 
 ### `app.getLoginItemSettings([options])` _macOS_ _Windows_
 
-* `options` Object (optional)
-  * `path` String (optional) _Windows_ - The executable path to compare against.
+- `options` Object (optional)
+  - `path` String (optional) _Windows_ - The executable path to compare against.
     Defaults to `process.execPath`.
-  * `args` String[] (optional) _Windows_ - The command-line arguments to compare
+  - `args` String[] (optional) _Windows_ - The command-line arguments to compare
     against. Defaults to an empty array.
 
 If you provided `path` and `args` options to `app.setLoginItemSettings` then you
@@ -892,53 +900,55 @@ need to pass the same arguments here for `openAtLogin` to be set correctly.
 
 Returns `Object`:
 
-* `openAtLogin` Boolean - `true` if the app is set to open at login.
-* `openAsHidden` Boolean _macOS_ - `true` if the app is set to open as hidden at login.
+- `openAtLogin` Boolean - `true` if the app is set to open at login.
+- `openAsHidden` Boolean _macOS_ - `true` if the app is set to open as hidden at login.
   This setting is not available on [MAS builds][mas-builds].
-* `wasOpenedAtLogin` Boolean _macOS_ - `true` if the app was opened at login
+- `wasOpenedAtLogin` Boolean _macOS_ - `true` if the app was opened at login
   automatically. This setting is not available on [MAS builds][mas-builds].
-* `wasOpenedAsHidden` Boolean _macOS_ - `true` if the app was opened as a hidden login
+- `wasOpenedAsHidden` Boolean _macOS_ - `true` if the app was opened as a hidden login
   item. This indicates that the app should not open any windows at startup.
   This setting is not available on [MAS builds][mas-builds].
-* `restoreState` Boolean _macOS_ - `true` if the app was opened as a login item that
+- `restoreState` Boolean _macOS_ - `true` if the app was opened as a login item that
   should restore the state from the previous session. This indicates that the
   app should restore the windows that were open the last time the app was
   closed. This setting is not available on [MAS builds][mas-builds].
 
 ### `app.setLoginItemSettings(settings)` _macOS_ _Windows_
 
-* `settings` Object
-  * `openAtLogin` Boolean (optional) - `true` to open the app at login, `false` to remove
+- `settings` Object
+  - `openAtLogin` Boolean (optional) - `true` to open the app at login, `false` to remove
     the app as a login item. Defaults to `false`.
-  * `openAsHidden` Boolean (optional) _macOS_ - `true` to open the app as hidden. Defaults to
+  - `openAsHidden` Boolean (optional) _macOS_ - `true` to open the app as hidden. Defaults to
     `false`. The user can edit this setting from the System Preferences so
     `app.getLoginItemStatus().wasOpenedAsHidden` should be checked when the app
     is opened to know the current value. This setting is not available on [MAS builds][mas-builds].
-  * `path` String (optional) _Windows_ - The executable to launch at login.
+  - `path` String (optional) _Windows_ - The executable to launch at login.
     Defaults to `process.execPath`.
-  * `args` String[] (optional) _Windows_ - The command-line arguments to pass to
+  - `args` String[] (optional) _Windows_ - The command-line arguments to pass to
     the executable. Defaults to an empty array. Take care to wrap paths in
     quotes.
 
 Set the app's login item settings.
 
-To work with Electron's `autoUpdater` on Windows, which uses [Squirrel][Squirrel-Windows],
+To work with Electron's `autoUpdater` on Windows, which uses [Squirrel][squirrel-windows],
 you'll want to set the launch path to Update.exe, and pass arguments that specify your
 application name. For example:
 
-``` javascript
-const appFolder = path.dirname(process.execPath)
-const updateExe = path.resolve(appFolder, '..', 'Update.exe')
-const exeName = path.basename(process.execPath)
+```javascript
+const appFolder = path.dirname(process.execPath);
+const updateExe = path.resolve(appFolder, "..", "Update.exe");
+const exeName = path.basename(process.execPath);
 
 app.setLoginItemSettings({
   openAtLogin: true,
   path: updateExe,
   args: [
-    '--processStart', `"${exeName}"`,
-    '--process-start-args', `"--hidden"`
-  ]
-})
+    "--processStart",
+    `"${exeName}"`,
+    "--process-start-args",
+    `"--hidden"`,
+  ],
+});
 ```
 
 ### `app.isAccessibilitySupportEnabled()` _macOS_ _Windows_
@@ -951,7 +961,7 @@ details.
 
 ### `app.setAccessibilitySupportEnabled(enabled)` _macOS_ _Windows_
 
-* `enabled` Boolean - Enable or disable [accessibility tree](https://developers.google.com/web/fundamentals/accessibility/semantics-builtin/the-accessibility-tree) rendering
+- `enabled` Boolean - Enable or disable [accessibility tree](https://developers.google.com/web/fundamentals/accessibility/semantics-builtin/the-accessibility-tree) rendering
 
 Manually enables Chrome's accessibility support, allowing to expose accessibility switch to users in application settings. https://www.chromium.org/developers/design-documents/accessibility for more
 details. Disabled by default.
@@ -960,20 +970,20 @@ details. Disabled by default.
 
 ### `app.setAboutPanelOptions(options)` _macOS_
 
-* `options` Object
-  * `applicationName` String (optional) - The app's name.
-  * `applicationVersion` String (optional) - The app's version.
-  * `copyright` String (optional) - Copyright information.
-  * `credits` String (optional) - Credit information.
-  * `version` String (optional) - The app's build version number.
+- `options` Object
+  - `applicationName` String (optional) - The app's name.
+  - `applicationVersion` String (optional) - The app's version.
+  - `copyright` String (optional) - Copyright information.
+  - `credits` String (optional) - Credit information.
+  - `version` String (optional) - The app's build version number.
 
 Set the about panel options. This will override the values defined in the app's
 `.plist` file. See the [Apple docs][about-panel-options] for more details.
 
 ### `app.commandLine.appendSwitch(switch[, value])`
 
-* `switch` String - A command-line switch
-* `value` String (optional) - A value for the given switch
+- `switch` String - A command-line switch
+- `value` String (optional) - A value for the given switch
 
 Append a switch (with optional `value`) to Chromium's command line.
 
@@ -982,7 +992,7 @@ to control some low-level Chromium behaviors.
 
 ### `app.commandLine.appendArgument(value)`
 
-* `value` String - The argument to append to the command line
+- `value` String - The argument to append to the command line
 
 Append an argument to Chromium's command line. The argument will be quoted
 correctly.
@@ -1017,8 +1027,8 @@ you exactly what went wrong
 
 ### `app.dock.bounce([type])` _macOS_
 
-* `type` String (optional) - Can be `critical` or `informational`. The default is
- `informational`
+- `type` String (optional) - Can be `critical` or `informational`. The default is
+  `informational`
 
 When `critical` is passed, the dock icon will bounce until either the
 application becomes active or the request is canceled.
@@ -1031,19 +1041,19 @@ Returns `Integer` an ID representing the request.
 
 ### `app.dock.cancelBounce(id)` _macOS_
 
-* `id` Integer
+- `id` Integer
 
 Cancel the bounce of `id`.
 
 ### `app.dock.downloadFinished(filePath)` _macOS_
 
-* `filePath` String
+- `filePath` String
 
 Bounces the Downloads stack if the filePath is inside the Downloads folder.
 
 ### `app.dock.setBadge(text)` _macOS_
 
-* `text` String
+- `text` String
 
 Sets the string to be displayed in the dock’s badging area.
 
@@ -1067,25 +1077,25 @@ return true immediately after that call.
 
 ### `app.dock.setMenu(menu)` _macOS_
 
-* `menu` [Menu](menu.md)
+- `menu` [Menu](menu.md)
 
 Sets the application's [dock menu][dock-menu].
 
 ### `app.dock.setIcon(image)` _macOS_
 
-* `image` ([NativeImage](native-image.md) | String)
+- `image` ([NativeImage](native-image.md) | String)
 
 Sets the `image` associated with this dock icon.
 
-[dock-menu]:https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/concepts/dockconcepts.html#//apple_ref/doc/uid/TP30000986-CH2-TPXREF103
-[tasks]:http://msdn.microsoft.com/en-us/library/windows/desktop/dd378460(v=vs.85).aspx#tasks
+[dock-menu]: https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/concepts/dockconcepts.html#//apple_ref/doc/uid/TP30000986-CH2-TPXREF103
+[tasks]: http://msdn.microsoft.com/en-us/library/windows/desktop/dd378460(v=vs.85).aspx#tasks
 [app-user-model-id]: https://msdn.microsoft.com/en-us/library/windows/desktop/dd378459(v=vs.85).aspx
-[CFBundleURLTypes]: https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html#//apple_ref/doc/uid/TP40009249-102207-TPXREF115
-[LSCopyDefaultHandlerForURLScheme]: https://developer.apple.com/library/mac/documentation/Carbon/Reference/LaunchServicesReference/#//apple_ref/c/func/LSCopyDefaultHandlerForURLScheme
+[cfbundleurltypes]: https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html#//apple_ref/doc/uid/TP40009249-102207-TPXREF115
+[lscopydefaulthandlerforurlscheme]: https://developer.apple.com/library/mac/documentation/Carbon/Reference/LaunchServicesReference/#//apple_ref/c/func/LSCopyDefaultHandlerForURLScheme
 [handoff]: https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/Handoff/HandoffFundamentals/HandoffFundamentals.html
 [activity-type]: https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSUserActivity_Class/index.html#//apple_ref/occ/instp/NSUserActivity/activityType
 [unity-requirement]: ../tutorial/desktop-environment-integration.md#unity-launcher-shortcuts-linux
 [mas-builds]: ../tutorial/mac-app-store-submission-guide.md
-[Squirrel-Windows]: https://github.com/Squirrel/Squirrel.Windows
-[JumpListBeginListMSDN]: https://msdn.microsoft.com/en-us/library/windows/desktop/dd378398(v=vs.85).aspx
+[squirrel-windows]: https://github.com/Squirrel/Squirrel.Windows
+[jumplistbeginlistmsdn]: https://msdn.microsoft.com/en-us/library/windows/desktop/dd378398(v=vs.85).aspx
 [about-panel-options]: https://developer.apple.com/reference/appkit/nsapplication/1428479-orderfrontstandardaboutpanelwith?language=objc

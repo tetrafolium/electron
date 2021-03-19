@@ -4,15 +4,15 @@ Follow the guidelines below for building Electron on Linux.
 
 ## Prerequisites
 
-* At least 25GB disk space and 8GB RAM.
-* Python 2.7.x. Some distributions like CentOS 6.x still use Python 2.6.x
+- At least 25GB disk space and 8GB RAM.
+- Python 2.7.x. Some distributions like CentOS 6.x still use Python 2.6.x
   so you may need to check your Python version with `python -V`.
-* Node.js. There are various ways to install Node. You can download
+- Node.js. There are various ways to install Node. You can download
   source code from [nodejs.org](http://nodejs.org) and compile it.
   Doing so permits installing Node on your own home directory as a standard user.
   Or try repositories such as [NodeSource](https://nodesource.com/blog/nodejs-v012-iojs-and-the-nodesource-linux-repositories).
-* [clang](https://clang.llvm.org/get_started.html) 3.4 or later.
-* Development headers of GTK+ and libnotify.
+- [clang](https://clang.llvm.org/get_started.html) 3.4 or later.
+- Development headers of GTK+ and libnotify.
 
 On Ubuntu, install the following libraries:
 
@@ -155,15 +155,16 @@ information may help you.
 
 ### Building `libchromiumcontent` locally
 
-To avoid using the prebuilt binaries of `libchromiumcontent`, you can build `libchromiumcontent` locally.  To do so, follow these steps:
+To avoid using the prebuilt binaries of `libchromiumcontent`, you can build `libchromiumcontent` locally. To do so, follow these steps:
 
 1. Install [depot_tools](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_build_instructions.md#Install)
 2. Install [additional build dependencies](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_build_instructions.md#Install-additional-build-dependencies)
 3. Fetch the git submodules:
-  
+
 ```sh
 $ git submodule update --init --recursive
 ```
+
 4. Pass the `--build_release_libcc` switch to `bootstrap.py` script:
 
 ```sh
@@ -179,11 +180,11 @@ $ ./script/build.py -c R
 
 ### Using system `clang` instead of downloaded `clang` binaries
 
-By default Electron is built with prebuilt 
+By default Electron is built with prebuilt
 [`clang`](https://clang.llvm.org/get_started.html) binaries provided by the
-Chromium project. If for some reason you want to build with the `clang` 
-installed in your system, you can call `bootstrap.py` with `--clang_dir=<path>` 
-switch. By passing it the build script will assume the `clang` binaries reside 
+Chromium project. If for some reason you want to build with the `clang`
+installed in your system, you can call `bootstrap.py` with `--clang_dir=<path>`
+switch. By passing it the build script will assume the `clang` binaries reside
 in `<path>/bin/`.
 
 For example if you installed `clang` under `/user/local/bin/clang`:
@@ -211,19 +212,19 @@ $ ./script/build.py -c R
 Apart from `CC` and `CXX`, you can also set the following environment variables to
 customise the build configuration:
 
-* `CPPFLAGS`
-* `CPPFLAGS_host`
-* `CFLAGS`
-* `CFLAGS_host`
-* `CXXFLAGS`
-* `CXXFLAGS_host`
-* `AR`
-* `AR_host`
-* `CC`
-* `CC_host`
-* `CXX`
-* `CXX_host`
-* `LDFLAGS`
+- `CPPFLAGS`
+- `CPPFLAGS_host`
+- `CFLAGS`
+- `CFLAGS_host`
+- `CXXFLAGS`
+- `CXXFLAGS_host`
+- `AR`
+- `AR_host`
+- `CC`
+- `CC_host`
+- `CXX`
+- `CXX_host`
+- `LDFLAGS`
 
 The environment variables have to be set when executing the `bootstrap.py`
 script, it won't work in the `build.py` script.

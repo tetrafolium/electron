@@ -23,7 +23,11 @@ form, the `webview` tag includes the `src` of the web page and css styles that
 control the appearance of the `webview` container:
 
 ```html
-<webview id="foo" src="https://www.github.com/" style="display:inline-flex; width:640px; height:480px"></webview>
+<webview
+  id="foo"
+  src="https://www.github.com/"
+  style="display:inline-flex; width:640px; height:480px"
+></webview>
 ```
 
 If you want to control the guest content in any way, you can write JavaScript
@@ -35,20 +39,20 @@ and displays a "loading..." message during the load time:
 ```html
 <script>
   onload = () => {
-    const webview = document.querySelector('webview')
-    const indicator = document.querySelector('.indicator')
+    const webview = document.querySelector("webview");
+    const indicator = document.querySelector(".indicator");
 
     const loadstart = () => {
-      indicator.innerText = 'loading...'
-    }
+      indicator.innerText = "loading...";
+    };
 
     const loadstop = () => {
-      indicator.innerText = ''
-    }
+      indicator.innerText = "";
+    };
 
-    webview.addEventListener('did-start-loading', loadstart)
-    webview.addEventListener('did-stop-loading', loadstop)
-  }
+    webview.addEventListener("did-start-loading", loadstart);
+    webview.addEventListener("did-stop-loading", loadstop);
+  };
 </script>
 ```
 
@@ -69,9 +73,9 @@ un-hidden. The recommended approach is to hide the `webview` using
 ```html
 <style>
   webview {
-    display:inline-flex;
-    width:640px;
-    height:480px;
+    display: inline-flex;
+    width: 640px;
+    height: 480px;
   }
   webview.hide {
     visibility: hidden;
@@ -100,7 +104,12 @@ The `src` attribute can also accept data URLs, such as
 ### `autosize`
 
 ```html
-<webview src="https://www.github.com/" autosize minwidth="576" minheight="432"></webview>
+<webview
+  src="https://www.github.com/"
+  autosize
+  minwidth="576"
+  minheight="432"
+></webview>
 ```
 
 When this attribute is present the `webview` container will automatically resize
@@ -150,7 +159,10 @@ the `webPreferences` specified to the `will-attach-webview` event.
 ### `httpreferrer`
 
 ```html
-<webview src="https://www.github.com/" httpreferrer="http://cheng.guru"></webview>
+<webview
+  src="https://www.github.com/"
+  httpreferrer="http://cheng.guru"
+></webview>
 ```
 
 Sets the referrer URL for the guest page.
@@ -158,7 +170,10 @@ Sets the referrer URL for the guest page.
 ### `useragent`
 
 ```html
-<webview src="https://www.github.com/" useragent="Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko"></webview>
+<webview
+  src="https://www.github.com/"
+  useragent="Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko"
+></webview>
 ```
 
 Sets the user agent for the guest page before the page is navigated to. Once the
@@ -203,7 +218,10 @@ windows. Popups are disabled by default.
 ### `webpreferences`
 
 ```html
-<webview src="https://github.com" webpreferences="allowRunningInsecureContent, javascript=no"></webview>
+<webview
+  src="https://github.com"
+  webpreferences="allowRunningInsecureContent, javascript=no"
+></webview>
 ```
 
 A list of strings which specifies the web preferences to be set on the webview, separated by `,`.
@@ -217,7 +235,10 @@ Special values `yes` and `1` are interpreted as `true`, while `no` and `0` are i
 ### `blinkfeatures`
 
 ```html
-<webview src="https://www.github.com/" blinkfeatures="PreciseMemoryInfo, CSSVariables"></webview>
+<webview
+  src="https://www.github.com/"
+  blinkfeatures="PreciseMemoryInfo, CSSVariables"
+></webview>
 ```
 
 A list of strings which specifies the blink features to be enabled separated by `,`.
@@ -227,7 +248,10 @@ The full list of supported feature strings can be found in the
 ### `disableblinkfeatures`
 
 ```html
-<webview src="https://www.github.com/" disableblinkfeatures="PreciseMemoryInfo, CSSVariables"></webview>
+<webview
+  src="https://www.github.com/"
+  disableblinkfeatures="PreciseMemoryInfo, CSSVariables"
+></webview>
 ```
 
 A list of strings which specifies the blink features to be disabled separated by `,`.
@@ -265,26 +289,25 @@ make resizing faster compared to relying on the webview element bounds to
 automatically resize the contents.
 
 ```javascript
-const {webContents} = require('electron')
+const { webContents } = require("electron");
 
 // We assume that `win` points to a `BrowserWindow` instance containing a
 // `<webview>` with `disableguestresize`.
 
-win.on('resize', () => {
-  const [width, height] = win.getContentSize()
+win.on("resize", () => {
+  const [width, height] = win.getContentSize();
   for (let wc of webContents.getAllWebContents()) {
     // Check if `wc` belongs to a webview in the `win` window.
-    if (wc.hostWebContents &&
-        wc.hostWebContents.id === win.webContents.id) {
+    if (wc.hostWebContents && wc.hostWebContents.id === win.webContents.id) {
       wc.setSize({
         normal: {
           width: width,
-          height: height
-        }
-      })
+          height: height,
+        },
+      });
     }
   }
-})
+});
 ```
 
 ## Methods
@@ -296,21 +319,21 @@ The `webview` tag has the following methods:
 **Example**
 
 ```javascript
-const webview = document.querySelector('webview')
-webview.addEventListener('dom-ready', () => {
-  webview.openDevTools()
-})
+const webview = document.querySelector("webview");
+webview.addEventListener("dom-ready", () => {
+  webview.openDevTools();
+});
 ```
 
 ### `<webview>.loadURL(url[, options])`
 
-* `url` URL
-* `options` Object (optional)
-  * `httpReferrer` String (optional) - A HTTP Referrer url.
-  * `userAgent` String (optional) - A user agent originating the request.
-  * `extraHeaders` String (optional) - Extra headers separated by "\n"
-  * `postData` ([UploadRawData[]](structures/upload-raw-data.md) | [UploadFile[]](structures/upload-file.md) | [UploadFileSystem[]](structures/upload-file-system.md) | [UploadBlob[]](structures/upload-blob.md)) (optional) -
-  * `baseURLForDataURL` String (optional) - Base url (with trailing path separator) for files to be loaded by the data url. This is needed only if the specified `url` is a data url and needs to load other files.
+- `url` URL
+- `options` Object (optional)
+  - `httpReferrer` String (optional) - A HTTP Referrer url.
+  - `userAgent` String (optional) - A user agent originating the request.
+  - `extraHeaders` String (optional) - Extra headers separated by "\n"
+  - `postData` ([UploadRawData[]](structures/upload-raw-data.md) | [UploadFile[]](structures/upload-file.md) | [UploadFileSystem[]](structures/upload-file-system.md) | [UploadBlob[]](structures/upload-blob.md)) (optional) -
+  - `baseURLForDataURL` String (optional) - Base url (with trailing path separator) for files to be loaded by the data url. This is needed only if the specified `url` is a data url and needs to load other files.
 
 Loads the `url` in the webview, the `url` must contain the protocol prefix,
 e.g. the `http://` or `file://`.
@@ -354,7 +377,7 @@ Returns `Boolean` - Whether the guest page can go forward.
 
 ### `<webview>.canGoToOffset(offset)`
 
-* `offset` Integer
+- `offset` Integer
 
 Returns `Boolean` - Whether the guest page can go to `offset`.
 
@@ -372,13 +395,13 @@ Makes the guest page go forward.
 
 ### `<webview>.goToIndex(index)`
 
-* `index` Integer
+- `index` Integer
 
 Navigates to the specified absolute index.
 
 ### `<webview>.goToOffset(offset)`
 
-* `offset` Integer
+- `offset` Integer
 
 Navigates to the specified offset from the "current entry".
 
@@ -388,7 +411,7 @@ Returns `Boolean` - Whether the renderer process has crashed.
 
 ### `<webview>.setUserAgent(userAgent)`
 
-* `userAgent` String
+- `userAgent` String
 
 Overrides the user agent for the guest page.
 
@@ -398,16 +421,16 @@ Returns `String` - The user agent for guest page.
 
 ### `<webview>.insertCSS(css)`
 
-* `css` String
+- `css` String
 
 Injects CSS into the guest page.
 
 ### `<webview>.executeJavaScript(code[, userGesture, callback])`
 
-* `code` String
-* `userGesture` Boolean (optional) - Default `false`.
-* `callback` Function (optional) - Called after script has been executed.
-  * `result` Any
+- `code` String
+- `userGesture` Boolean (optional) - Default `false`.
+- `callback` Function (optional) - Called after script has been executed.
+  - `result` Any
 
 Evaluates `code` in page. If `userGesture` is set, it will create the user
 gesture context in the page. HTML APIs like `requestFullScreen`, which require
@@ -431,8 +454,8 @@ Returns `Boolean` - Whether DevTools window of guest page is focused.
 
 ### `<webview>.inspectElement(x, y)`
 
-* `x` Integer
-* `y` Integer
+- `x` Integer
+- `y` Integer
 
 Starts inspecting element at position (`x`, `y`) of guest page.
 
@@ -442,7 +465,7 @@ Opens the DevTools for the service worker context present in the guest page.
 
 ### `<webview>.setAudioMuted(muted)`
 
-* `muted` Boolean
+- `muted` Boolean
 
 Set guest page muted.
 
@@ -488,34 +511,34 @@ Executes editing command `unselect` in page.
 
 ### `<webview>.replace(text)`
 
-* `text` String
+- `text` String
 
 Executes editing command `replace` in page.
 
 ### `<webview>.replaceMisspelling(text)`
 
-* `text` String
+- `text` String
 
 Executes editing command `replaceMisspelling` in page.
 
 ### `<webview>.insertText(text)`
 
-* `text` String
+- `text` String
 
 Inserts `text` to the focused element.
 
 ### `<webview>.findInPage(text[, options])`
 
-* `text` String - Content to be searched, must not be empty.
-* `options` Object (optional)
-  * `forward` Boolean (optional) - Whether to search forward or backward, defaults to `true`.
-  * `findNext` Boolean (optional) - Whether the operation is first request or a follow up,
+- `text` String - Content to be searched, must not be empty.
+- `options` Object (optional)
+  - `forward` Boolean (optional) - Whether to search forward or backward, defaults to `true`.
+  - `findNext` Boolean (optional) - Whether the operation is first request or a follow up,
     defaults to `false`.
-  * `matchCase` Boolean (optional) - Whether search should be case-sensitive,
+  - `matchCase` Boolean (optional) - Whether search should be case-sensitive,
     defaults to `false`.
-  * `wordStart` Boolean (optional) - Whether to look only at the start of words.
+  - `wordStart` Boolean (optional) - Whether to look only at the start of words.
     defaults to `false`.
-  * `medialCapitalAsWordStart` Boolean (optional) - When combined with `wordStart`,
+  - `medialCapitalAsWordStart` Boolean (optional) - When combined with `wordStart`,
     accepts a match in the middle of a word if the match begins with an
     uppercase letter followed by a lowercase or non-letter.
     Accepts several other intra-word matches, defaults to `false`.
@@ -527,53 +550,53 @@ can be obtained by subscribing to [`found-in-page`](webview-tag.md#event-found-i
 
 ### `<webview>.stopFindInPage(action)`
 
-* `action` String - Specifies the action to take place when ending
+- `action` String - Specifies the action to take place when ending
   [`<webview>.findInPage`](webview-tag.md#webviewtagfindinpage) request.
-  * `clearSelection` - Clear the selection.
-  * `keepSelection` - Translate the selection into a normal selection.
-  * `activateSelection` - Focus and click the selection node.
+  - `clearSelection` - Clear the selection.
+  - `keepSelection` - Translate the selection into a normal selection.
+  - `activateSelection` - Focus and click the selection node.
 
 Stops any `findInPage` request for the `webview` with the provided `action`.
 
 ### `<webview>.print([options])`
 
-* `options` Object (optional)
-  * `silent` Boolean (optional) - Don't ask user for print settings. Default is `false`.
-  * `printBackground` Boolean (optional) - Also prints the background color and image of
+- `options` Object (optional)
+  - `silent` Boolean (optional) - Don't ask user for print settings. Default is `false`.
+  - `printBackground` Boolean (optional) - Also prints the background color and image of
     the web page. Default is `false`.
-  * `deviceName` String (optional) - Set the printer device name to use. Default is `''`.
+  - `deviceName` String (optional) - Set the printer device name to use. Default is `''`.
 
 Prints `webview`'s web page. Same as `webContents.print([options])`.
 
 ### `<webview>.printToPDF(options, callback)`
 
-* `options` Object
-  * `marginsType` Integer (optional) - Specifies the type of margins to use. Uses 0 for
+- `options` Object
+  - `marginsType` Integer (optional) - Specifies the type of margins to use. Uses 0 for
     default margin, 1 for no margin, and 2 for minimum margin.
-  * `pageSize` String (optional) - Specify page size of the generated PDF. Can be `A3`,
+  - `pageSize` String (optional) - Specify page size of the generated PDF. Can be `A3`,
     `A4`, `A5`, `Legal`, `Letter`, `Tabloid` or an Object containing `height`
     and `width` in microns.
-  * `printBackground` Boolean (optional) - Whether to print CSS backgrounds.
-  * `printSelectionOnly` Boolean (optional) - Whether to print selection only.
-  * `landscape` Boolean (optional) - `true` for landscape, `false` for portrait.
-* `callback` Function
-  * `error` Error
-  * `data` Buffer
+  - `printBackground` Boolean (optional) - Whether to print CSS backgrounds.
+  - `printSelectionOnly` Boolean (optional) - Whether to print selection only.
+  - `landscape` Boolean (optional) - `true` for landscape, `false` for portrait.
+- `callback` Function
+  - `error` Error
+  - `data` Buffer
 
 Prints `webview`'s web page as PDF, Same as `webContents.printToPDF(options, callback)`.
 
 ### `<webview>.capturePage([rect, ]callback)`
 
-* `rect` [Rectangle](structures/rectangle.md) (optional) - The area of the page to be captured.
-* `callback` Function
-  * `image` [NativeImage](native-image.md)
+- `rect` [Rectangle](structures/rectangle.md) (optional) - The area of the page to be captured.
+- `callback` Function
+  - `image` [NativeImage](native-image.md)
 
 Captures a snapshot of the `webview`'s page. Same as `webContents.capturePage([rect, ]callback)`.
 
 ### `<webview>.send(channel[, arg1][, arg2][, ...])`
 
-* `channel` String
-* `...args` any[]
+- `channel` String
+- `...args` any[]
 
 Send an asynchronous message to renderer process via `channel`, you can also
 send arbitrary arguments. The renderer process can handle the message by
@@ -584,7 +607,7 @@ examples.
 
 ### `<webview>.sendInputEvent(event)`
 
-* `event` Object
+- `event` Object
 
 Sends an input `event` to the page.
 
@@ -593,14 +616,14 @@ for detailed description of `event` object.
 
 ### `<webview>.setZoomFactor(factor)`
 
-* `factor` Number - Zoom factor.
+- `factor` Number - Zoom factor.
 
 Changes the zoom factor to the specified factor. Zoom factor is
 zoom percent divided by 100, so 300% = 3.0.
 
 ### `<webview>.setZoomLevel(level)`
 
-* `level` Number - Zoom level.
+- `level` Number - Zoom level.
 
 Changes the zoom level to the specified level. The original size is 0 and each
 increment above or below represents zooming 20% larger or smaller to default
@@ -623,8 +646,8 @@ The following DOM events are available to the `webview` tag:
 
 Returns:
 
-* `url` String
-* `isMainFrame` Boolean
+- `url` String
+- `isMainFrame` Boolean
 
 Fired when a load has committed. This includes navigation within the current
 document as well as subframe document-level loads, but does not include
@@ -639,10 +662,10 @@ spinning, and the `onload` event is dispatched.
 
 Returns:
 
-* `errorCode` Integer
-* `errorDescription` String
-* `validatedURL` String
-* `isMainFrame` Boolean
+- `errorCode` Integer
+- `errorDescription` String
+- `validatedURL` String
+- `isMainFrame` Boolean
 
 This event is like `did-finish-load`, but fired when the load failed or was
 cancelled, e.g. `window.stop()` is invoked.
@@ -651,7 +674,7 @@ cancelled, e.g. `window.stop()` is invoked.
 
 Returns:
 
-* `isMainFrame` Boolean
+- `isMainFrame` Boolean
 
 Fired when a frame has done navigation.
 
@@ -667,14 +690,14 @@ Corresponds to the points in time when the spinner of the tab stops spinning.
 
 Returns:
 
-* `status` Boolean
-* `newURL` String
-* `originalURL` String
-* `httpResponseCode` Integer
-* `requestMethod` String
-* `referrer` String
-* `headers` Object
-* `resourceType` String
+- `status` Boolean
+- `newURL` String
+- `originalURL` String
+- `httpResponseCode` Integer
+- `requestMethod` String
+- `referrer` String
+- `headers` Object
+- `resourceType` String
 
 Fired when details regarding a requested resource is available.
 `status` indicates socket connection to download the resource.
@@ -683,9 +706,9 @@ Fired when details regarding a requested resource is available.
 
 Returns:
 
-* `oldURL` String
-* `newURL` String
-* `isMainFrame` Boolean
+- `oldURL` String
+- `newURL` String
+- `isMainFrame` Boolean
 
 Fired when a redirect was received while requesting a resource.
 
@@ -697,8 +720,8 @@ Fired when document in the given frame is loaded.
 
 Returns:
 
-* `title` String
-* `explicitSet` Boolean
+- `title` String
+- `explicitSet` Boolean
 
 Fired when page title is set during navigation. `explicitSet` is false when
 title is synthesized from file url.
@@ -707,7 +730,7 @@ title is synthesized from file url.
 
 Returns:
 
-* `favicons` String[] - Array of URLs.
+- `favicons` String[] - Array of URLs.
 
 Fired when page receives favicon urls.
 
@@ -723,10 +746,10 @@ Fired when page leaves fullscreen triggered by HTML API.
 
 Returns:
 
-* `level` Integer
-* `message` String
-* `line` Integer
-* `sourceId` String
+- `level` Integer
+- `message` String
+- `line` Integer
+- `sourceId` String
 
 Fired when the guest window logs a console message.
 
@@ -734,45 +757,45 @@ The following example code forwards all log messages to the embedder's console
 without regard for log level or other properties.
 
 ```javascript
-const webview = document.querySelector('webview')
-webview.addEventListener('console-message', (e) => {
-  console.log('Guest page logged a message:', e.message)
-})
+const webview = document.querySelector("webview");
+webview.addEventListener("console-message", (e) => {
+  console.log("Guest page logged a message:", e.message);
+});
 ```
 
 ### Event: 'found-in-page'
 
 Returns:
 
-* `result` Object
-  * `requestId` Integer
-  * `activeMatchOrdinal` Integer - Position of the active match.
-  * `matches` Integer - Number of Matches.
-  * `selectionArea` Object - Coordinates of first match region.
-  * `finalUpdate` Boolean
+- `result` Object
+  - `requestId` Integer
+  - `activeMatchOrdinal` Integer - Position of the active match.
+  - `matches` Integer - Number of Matches.
+  - `selectionArea` Object - Coordinates of first match region.
+  - `finalUpdate` Boolean
 
 Fired when a result is available for
 [`webview.findInPage`](webview-tag.md#webviewtagfindinpage) request.
 
 ```javascript
-const webview = document.querySelector('webview')
-webview.addEventListener('found-in-page', (e) => {
-  webview.stopFindInPage('keepSelection')
-})
+const webview = document.querySelector("webview");
+webview.addEventListener("found-in-page", (e) => {
+  webview.stopFindInPage("keepSelection");
+});
 
-const requestId = webview.findInPage('test')
-console.log(requestId)
+const requestId = webview.findInPage("test");
+console.log(requestId);
 ```
 
 ### Event: 'new-window'
 
 Returns:
 
-* `url` String
-* `frameName` String
-* `disposition` String - Can be `default`, `foreground-tab`, `background-tab`,
+- `url` String
+- `frameName` String
+- `disposition` String - Can be `default`, `foreground-tab`, `background-tab`,
   `new-window`, `save-to-disk` and `other`.
-* `options` Object - The options which should be used for creating the new
+- `options` Object - The options which should be used for creating the new
   [`BrowserWindow`](browser-window.md).
 
 Fired when the guest page attempts to open a new browser window.
@@ -780,22 +803,22 @@ Fired when the guest page attempts to open a new browser window.
 The following example code opens the new url in system's default browser.
 
 ```javascript
-const {shell} = require('electron')
-const webview = document.querySelector('webview')
+const { shell } = require("electron");
+const webview = document.querySelector("webview");
 
-webview.addEventListener('new-window', (e) => {
-  const protocol = require('url').parse(e.url).protocol
-  if (protocol === 'http:' || protocol === 'https:') {
-    shell.openExternal(e.url)
+webview.addEventListener("new-window", (e) => {
+  const protocol = require("url").parse(e.url).protocol;
+  if (protocol === "http:" || protocol === "https:") {
+    shell.openExternal(e.url);
   }
-})
+});
 ```
 
 ### Event: 'will-navigate'
 
 Returns:
 
-* `url` String
+- `url` String
 
 Emitted when a user or the page wants to start navigation. It can happen when
 the `window.location` object is changed or a user clicks a link in the page.
@@ -807,13 +830,13 @@ It is also not emitted during in-page navigation, such as clicking anchor links
 or updating the `window.location.hash`. Use `did-navigate-in-page` event for
 this purpose.
 
-Calling `event.preventDefault()` does __NOT__ have any effect.
+Calling `event.preventDefault()` does **NOT** have any effect.
 
 ### Event: 'did-navigate'
 
 Returns:
 
-* `url` String
+- `url` String
 
 Emitted when a navigation is done.
 
@@ -825,8 +848,8 @@ this purpose.
 
 Returns:
 
-* `isMainFrame` Boolean
-* `url` String
+- `isMainFrame` Boolean
+- `url` String
 
 Emitted when an in-page navigation happened.
 
@@ -842,18 +865,18 @@ The following example code navigates the `webview` to `about:blank` when the
 guest attempts to close itself.
 
 ```javascript
-const webview = document.querySelector('webview')
-webview.addEventListener('close', () => {
-  webview.src = 'about:blank'
-})
+const webview = document.querySelector("webview");
+webview.addEventListener("close", () => {
+  webview.src = "about:blank";
+});
 ```
 
 ### Event: 'ipc-message'
 
 Returns:
 
-* `channel` String
-* `args` Array
+- `channel` String
+- `args` Array
 
 Fired when the guest page has sent an asynchronous message to embedder page.
 
@@ -862,20 +885,20 @@ between guest page and embedder page:
 
 ```javascript
 // In embedder page.
-const webview = document.querySelector('webview')
-webview.addEventListener('ipc-message', (event) => {
-  console.log(event.channel)
+const webview = document.querySelector("webview");
+webview.addEventListener("ipc-message", (event) => {
+  console.log(event.channel);
   // Prints "pong"
-})
-webview.send('ping')
+});
+webview.send("ping");
 ```
 
 ```javascript
 // In guest page.
-const {ipcRenderer} = require('electron')
-ipcRenderer.on('ping', () => {
-  ipcRenderer.sendToHost('pong')
-})
+const { ipcRenderer } = require("electron");
+ipcRenderer.on("ping", () => {
+  ipcRenderer.sendToHost("pong");
+});
 ```
 
 ### Event: 'crashed'
@@ -890,8 +913,8 @@ Fired when the gpu process is crashed.
 
 Returns:
 
-* `name` String
-* `version` String
+- `name` String
+- `version` String
 
 Fired when a plugin process is crashed.
 
@@ -911,19 +934,19 @@ Emitted when media is paused or done playing.
 
 Returns:
 
-* `themeColor` String
+- `themeColor` String
 
 Emitted when a page's theme color changes. This is usually due to encountering a meta tag:
 
 ```html
-<meta name='theme-color' content='#ff0000'>
+<meta name="theme-color" content="#ff0000" />
 ```
 
 ### Event: 'update-target-url'
 
 Returns:
 
-* `url` String
+- `url` String
 
 Emitted when mouse moves over a link or the keyboard moves the focus to a link.
 

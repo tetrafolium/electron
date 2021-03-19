@@ -50,18 +50,18 @@ renderers through the `remote` property of `electron` module:
 ```javascript
 // In the main process.
 global.sharedObject = {
-  someProperty: 'default value'
-}
+  someProperty: "default value",
+};
 ```
 
 ```javascript
 // In page 1.
-require('electron').remote.getGlobal('sharedObject').someProperty = 'new value'
+require("electron").remote.getGlobal("sharedObject").someProperty = "new value";
 ```
 
 ```javascript
 // In page 2.
-console.log(require('electron').remote.getGlobal('sharedObject').someProperty)
+console.log(require("electron").remote.getGlobal("sharedObject").someProperty);
 ```
 
 ## My app's window/tray disappeared after a few minutes.
@@ -71,29 +71,29 @@ garbage collected.
 
 If you encounter this problem, the following articles may prove helpful:
 
-* [Memory Management][memory-management]
-* [Variable Scope][variable-scope]
+- [Memory Management][memory-management]
+- [Variable Scope][variable-scope]
 
 If you want a quick fix, you can make the variables global by changing your
 code from this:
 
 ```javascript
-const {app, Tray} = require('electron')
-app.on('ready', () => {
-  const tray = new Tray('/path/to/icon.png')
-  tray.setTitle('hello world')
-})
+const { app, Tray } = require("electron");
+app.on("ready", () => {
+  const tray = new Tray("/path/to/icon.png");
+  tray.setTitle("hello world");
+});
 ```
 
 to this:
 
 ```javascript
-const {app, Tray} = require('electron')
-let tray = null
-app.on('ready', () => {
-  tray = new Tray('/path/to/icon.png')
-  tray.setTitle('hello world')
-})
+const { app, Tray } = require("electron");
+let tray = null;
+app.on("ready", () => {
+  tray = new Tray("/path/to/icon.png");
+  tray.setTitle("hello world");
+});
 ```
 
 ## I can not use jQuery/RequireJS/Meteor/AngularJS in Electron.
@@ -106,13 +106,13 @@ To solve this, you can turn off node integration in Electron:
 
 ```javascript
 // In the main process.
-const {BrowserWindow} = require('electron')
+const { BrowserWindow } = require("electron");
 let win = new BrowserWindow({
   webPreferences: {
-    nodeIntegration: false
-  }
-})
-win.show()
+    nodeIntegration: false,
+  },
+});
+win.show();
 ```
 
 But if you want to keep the abilities of using Node.js and Electron APIs, you
@@ -120,13 +120,13 @@ have to rename the symbols in the page before including other libraries:
 
 ```html
 <head>
-<script>
-window.nodeRequire = require;
-delete window.require;
-delete window.exports;
-delete window.module;
-</script>
-<script type="text/javascript" src="jquery.js"></script>
+  <script>
+    window.nodeRequire = require;
+    delete window.require;
+    delete window.exports;
+    delete window.module;
+  </script>
+  <script type="text/javascript" src="jquery.js"></script>
 </head>
 ```
 
@@ -146,7 +146,7 @@ To verify whether you are using the correct built-in module, you can print the
 path of the `electron` module:
 
 ```javascript
-console.log(require.resolve('electron'))
+console.log(require.resolve("electron"));
 ```
 
 and then check if it is in the following form:

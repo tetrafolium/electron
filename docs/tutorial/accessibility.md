@@ -15,9 +15,9 @@ In the testing framework Spectron, you can now audit each window and `<webview>`
 ```javascript
 app.client.auditAccessibility().then(function (audit) {
   if (audit.failed) {
-    console.error(audit.message)
+    console.error(audit.message);
   }
-})
+});
 ```
 
 You can read more about this feature in [Spectron's documentation](https://github.com/electron/spectron#accessibility-testing).
@@ -54,7 +54,7 @@ CFStringRef kAXManualAccessibility = CFSTR("AXManualAccessibility");
     AXUIElementRef appRef = AXUIElementCreateApplication(app.processIdentifier);
     if (appRef == nil)
         return;
-    
+
     CFBooleanRef value = enable ? kCFBooleanTrue : kCFBooleanFalse;
     AXUIElementSetAttributeValue(appRef, kAXManualAccessibility, value);
     CFRelease(appRef);

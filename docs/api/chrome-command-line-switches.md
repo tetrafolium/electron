@@ -7,13 +7,13 @@ your app's main script before the [ready][ready] event of the [app][app] module
 is emitted:
 
 ```javascript
-const {app} = require('electron')
-app.commandLine.appendSwitch('remote-debugging-port', '8315')
-app.commandLine.appendSwitch('host-rules', 'MAP * 127.0.0.1')
+const { app } = require("electron");
+app.commandLine.appendSwitch("remote-debugging-port", "8315");
+app.commandLine.appendSwitch("host-rules", "MAP * 127.0.0.1");
 
-app.on('ready', () => {
+app.on("ready", () => {
   // Your code here
-})
+});
 ```
 
 ## --ignore-connections-limit=`domains`
@@ -67,8 +67,11 @@ list of hosts. This flag has an effect only if used in tandem with
 For example:
 
 ```javascript
-const {app} = require('electron')
-app.commandLine.appendSwitch('proxy-bypass-list', '<local>;*.google.com;*foo.com;1.2.3.4:5678')
+const { app } = require("electron");
+app.commandLine.appendSwitch(
+  "proxy-bypass-list",
+  "<local>;*.google.com;*foo.com;1.2.3.4:5678"
+);
 ```
 
 Will use the proxy server for all hosts except for local addresses (`localhost`,
@@ -90,12 +93,12 @@ A comma-separated list of `rules` that control how hostnames are mapped.
 
 For example:
 
-* `MAP * 127.0.0.1` Forces all hostnames to be mapped to 127.0.0.1
-* `MAP *.google.com proxy` Forces all google.com subdomains to be resolved to
+- `MAP * 127.0.0.1` Forces all hostnames to be mapped to 127.0.0.1
+- `MAP *.google.com proxy` Forces all google.com subdomains to be resolved to
   "proxy".
-* `MAP test.com [::1]:77` Forces "test.com" to resolve to IPv6 loopback. Will
+- `MAP test.com [::1]:77` Forces "test.com" to resolve to IPv6 loopback. Will
   also force the port of the resulting socket address to be 77.
-* `MAP * baz, EXCLUDE www.google.com` Remaps everything to "baz", except for
+- `MAP * baz, EXCLUDE www.google.com` Remaps everything to "baz", except for
   "www.google.com".
 
 These mappings apply to the endpoint host in a net request (the TCP connect

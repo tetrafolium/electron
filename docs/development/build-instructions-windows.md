@@ -4,13 +4,13 @@ Follow the guidelines below for building Electron on Windows.
 
 ## Prerequisites
 
-* Windows 7 / Server 2008 R2 or higher
-* Visual Studio 2015 Update 3 - [download VS 2015 Community Edition for
+- Windows 7 / Server 2008 R2 or higher
+- Visual Studio 2015 Update 3 - [download VS 2015 Community Edition for
   free](https://www.visualstudio.com/vs/older-downloads/)
-* [Python 2.7](http://www.python.org/download/releases/2.7/)
-* [Node.js](http://nodejs.org/download/)
-* [Git](http://git-scm.com)
-* [Debugging Tools for Windows](https://msdn.microsoft.com/en-us/library/windows/hardware/ff551063.aspx)
+- [Python 2.7](http://www.python.org/download/releases/2.7/)
+- [Node.js](http://nodejs.org/download/)
+- [Git](http://git-scm.com)
+- [Debugging Tools for Windows](https://msdn.microsoft.com/en-us/library/windows/hardware/ff551063.aspx)
   if you plan on creating a full distribution since `symstore.exe` is used for
   creating a symbol store from `.pdb` files.
 

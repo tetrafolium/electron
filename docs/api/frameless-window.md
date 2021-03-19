@@ -12,11 +12,10 @@ options on the [`BrowserWindow`](browser-window.md) class.
 To create a frameless window, you need to set `frame` to `false` in
 [BrowserWindow](browser-window.md)'s `options`:
 
-
 ```javascript
-const {BrowserWindow} = require('electron')
-let win = new BrowserWindow({width: 800, height: 600, frame: false})
-win.show()
+const { BrowserWindow } = require("electron");
+let win = new BrowserWindow({ width: 800, height: 600, frame: false });
+win.show();
 ```
 
 ### Alternatives on macOS
@@ -33,9 +32,9 @@ You can do so by specifying the `titleBarStyle` option:
 Results in a hidden title bar and a full size content window, yet the title bar still has the standard window controls (“traffic lights”) in the top left.
 
 ```javascript
-const {BrowserWindow} = require('electron')
-let win = new BrowserWindow({titleBarStyle: 'hidden'})
-win.show()
+const { BrowserWindow } = require("electron");
+let win = new BrowserWindow({ titleBarStyle: "hidden" });
+win.show();
 ```
 
 #### `hiddenInset`
@@ -43,9 +42,9 @@ win.show()
 Results in a hidden title bar with an alternative look where the traffic light buttons are slightly more inset from the window edge.
 
 ```javascript
-const {BrowserWindow} = require('electron')
-let win = new BrowserWindow({titleBarStyle: 'hiddenInset'})
-win.show()
+const { BrowserWindow } = require("electron");
+let win = new BrowserWindow({ titleBarStyle: "hiddenInset" });
+win.show();
 ```
 
 #### `customButtonsOnHover`
@@ -56,9 +55,12 @@ with mouse events that occur with the standard window toolbar buttons. This
 option is only applicable for frameless windows.
 
 ```javascript
-const {BrowserWindow} = require('electron')
-let win = new BrowserWindow({titleBarStyle: 'customButtonsOnHover', frame: false})
-win.show()
+const { BrowserWindow } = require("electron");
+let win = new BrowserWindow({
+  titleBarStyle: "customButtonsOnHover",
+  frame: false,
+});
+win.show();
 ```
 
 ## Transparent window
@@ -67,29 +69,29 @@ By setting the `transparent` option to `true`, you can also make the frameless
 window transparent:
 
 ```javascript
-const {BrowserWindow} = require('electron')
-let win = new BrowserWindow({transparent: true, frame: false})
-win.show()
+const { BrowserWindow } = require("electron");
+let win = new BrowserWindow({ transparent: true, frame: false });
+win.show();
 ```
 
 ### Limitations
 
-* You can not click through the transparent area. We are going to introduce an
+- You can not click through the transparent area. We are going to introduce an
   API to set window shape to solve this, see
   [our issue](https://github.com/electron/electron/issues/1335) for details.
-* Transparent windows are not resizable. Setting `resizable` to `true` may make
+- Transparent windows are not resizable. Setting `resizable` to `true` may make
   a transparent window stop working on some platforms.
-* The `blur` filter only applies to the web page, so there is no way to apply
+- The `blur` filter only applies to the web page, so there is no way to apply
   blur effect to the content below the window (i.e. other applications open on
   the user's system).
-* On Windows operating systems, transparent windows will not work when DWM is
+- On Windows operating systems, transparent windows will not work when DWM is
   disabled.
-* On Linux, users have to put `--enable-transparent-visuals --disable-gpu` in
+- On Linux, users have to put `--enable-transparent-visuals --disable-gpu` in
   the command line to disable GPU and allow ARGB to make transparent window,
   this is caused by an upstream bug that [alpha channel doesn't work on some
   NVidia drivers](https://code.google.com/p/chromium/issues/detail?id=369209) on
   Linux.
-* On Mac, the native window shadow will not be shown on a transparent window.
+- On Mac, the native window shadow will not be shown on a transparent window.
 
 ## Click-through window
 
@@ -98,9 +100,9 @@ events, you can call the [win.setIgnoreMouseEvents(ignore)][ignore-mouse-events]
 API:
 
 ```javascript
-const {BrowserWindow} = require('electron')
-let win = new BrowserWindow()
-win.setIgnoreMouseEvents(true)
+const { BrowserWindow } = require("electron");
+let win = new BrowserWindow();
+win.setIgnoreMouseEvents(true);
 ```
 
 ### Forwarding
@@ -111,14 +113,14 @@ optional parameter can be used to forward mouse move messages to the web page,
 allowing events such as `mouseleave` to be emitted:
 
 ```javascript
-let win = require('electron').remote.getCurrentWindow()
-let el = document.getElementById('clickThroughElement')
-el.addEventListener('mouseenter', () => {
-  win.setIgnoreMouseEvents(true, {forward: true})
-})
-el.addEventListener('mouseleave', () => {
-  win.setIgnoreMouseEvents(false)
-})
+let win = require("electron").remote.getCurrentWindow();
+let el = document.getElementById("clickThroughElement");
+el.addEventListener("mouseenter", () => {
+  win.setIgnoreMouseEvents(true, { forward: true });
+});
+el.addEventListener("mouseleave", () => {
+  win.setIgnoreMouseEvents(false);
+});
 ```
 
 This makes the web page click-through when over `el`, and returns to normal
@@ -130,7 +132,7 @@ By default, the frameless window is non-draggable. Apps need to specify
 `-webkit-app-region: drag` in CSS to tell Electron which regions are draggable
 (like the OS's standard titlebar), and apps can also use
 `-webkit-app-region: no-drag` to exclude the non-draggable area from the
- draggable region. Note that only rectangular shapes are currently supported.
+draggable region. Note that only rectangular shapes are currently supported.
 
 Note: `-webkit-app-region: drag` is known to have problems while the developer tools are open. See this [GitHub issue](https://github.com/electron/electron/issues/3647) for more information including a workaround.
 
@@ -138,8 +140,7 @@ To make the whole window draggable, you can add `-webkit-app-region: drag` as
 `body`'s style:
 
 ```html
-<body style="-webkit-app-region: drag">
-</body>
+<body style="-webkit-app-region: drag"></body>
 ```
 
 And note that if you have made the whole window draggable, you must also mark

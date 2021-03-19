@@ -6,13 +6,14 @@ them, and returns the result to the user.
 
 The `repl` module provides a REPL implementation that can be accessed using:
 
-* Assuming you have `electron` or `electron-prebuilt` installed as a local
+- Assuming you have `electron` or `electron-prebuilt` installed as a local
   project dependency:
 
   ```sh
   ./node_modules/.bin/electron --interactive
   ```
-* Assuming you have `electron` or `electron-prebuilt` installed globally:
+
+- Assuming you have `electron` or `electron-prebuilt` installed globally:
 
   ```sh
   electron --interactive

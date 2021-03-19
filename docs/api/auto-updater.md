@@ -53,7 +53,7 @@ The `autoUpdater` object emits the following events:
 
 Returns:
 
-* `error` Error
+- `error` Error
 
 Emitted when there is an error while updating.
 
@@ -74,11 +74,11 @@ Emitted when there is no available update.
 
 Returns:
 
-* `event` Event
-* `releaseNotes` String
-* `releaseName` String
-* `releaseDate` Date
-* `updateURL` String
+- `event` Event
+- `releaseNotes` String
+- `releaseName` String
+- `releaseDate` Date
+- `updateURL` String
 
 Emitted when an update has been downloaded.
 
@@ -90,8 +90,8 @@ The `autoUpdater` object has the following methods:
 
 ### `autoUpdater.setFeedURL(url[, requestHeaders])`
 
-* `url` String
-* `requestHeaders` Object (optional) _macOS_ - HTTP request headers.
+- `url` String
+- `requestHeaders` Object (optional) _macOS_ - HTTP request headers.
 
 Sets the `url` and initialize the auto updater.
 

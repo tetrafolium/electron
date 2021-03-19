@@ -8,7 +8,7 @@ to enable step-through debugging with breakpoints inside Electron's source code.
 
 ## Requirements
 
-* **A debug build of Electron**: The easiest way is usually building it
+- **A debug build of Electron**: The easiest way is usually building it
   yourself, using the tools and prerequisites listed in the
   [build instructions for macOS](build-instructions-osx.md). While you can
   easily attach to and debug Electron as you can download it directly, you will
@@ -17,7 +17,7 @@ to enable step-through debugging with breakpoints inside Electron's source code.
   variables and the execution path can seem strange because of inlining,
   tail calls, and other compiler optimizations.
 
-* **Xcode**: In addition to Xcode, also install the Xcode command line tools.
+- **Xcode**: In addition to Xcode, also install the Xcode command line tools.
   They include LLDB, the default debugger in Xcode on Mac OS X. It supports
   debugging C, Objective-C and C++ on the desktop and iOS devices and simulator.
 
@@ -113,6 +113,7 @@ Now, if you open up Electron's developer tools and call `setName`, you will once
 breakpoint.
 
 ### Further Reading
+
 LLDB is a powerful tool with a great documentation. To learn more about it, consider
 Apple's debugging documentation, for instance the [LLDB Command Structure Reference][lldb-command-structure]
 or the introduction to [Using LLDB as a Standalone Debugger][lldb-standalone].

@@ -11,20 +11,20 @@ For example, when creating a tray or setting a window's icon, you can pass an
 image file path as a `String`:
 
 ```javascript
-const {BrowserWindow, Tray} = require('electron')
+const { BrowserWindow, Tray } = require("electron");
 
-const appIcon = new Tray('/Users/somebody/images/icon.png')
-let win = new BrowserWindow({icon: '/Users/somebody/images/window.png'})
-console.log(appIcon, win)
+const appIcon = new Tray("/Users/somebody/images/icon.png");
+let win = new BrowserWindow({ icon: "/Users/somebody/images/window.png" });
+console.log(appIcon, win);
 ```
 
 Or read the image from the clipboard which returns a `NativeImage`:
 
 ```javascript
-const {clipboard, Tray} = require('electron')
-const image = clipboard.readImage()
-const appIcon = new Tray(image)
-console.log(appIcon)
+const { clipboard, Tray } = require("electron");
+const image = clipboard.readImage();
+const appIcon = new Tray(image);
+console.log(appIcon);
 ```
 
 ## Supported Formats
@@ -35,21 +35,21 @@ because of its support for transparency and lossless compression.
 On Windows, you can also load `ICO` icons from file paths. For best visual
 quality it is recommended to include at least the following sizes in the:
 
-* Small icon
- * 16x16 (100% DPI scale)
- * 20x20 (125% DPI scale)
- * 24x24 (150% DPI scale)
- * 32x32 (200% DPI scale)
-* Large icon
- * 32x32 (100% DPI scale)
- * 40x40 (125% DPI scale)
- * 48x48 (150% DPI scale)
- * 64x64 (200% DPI scale)
-* 256x256
+- Small icon
+- 16x16 (100% DPI scale)
+- 20x20 (125% DPI scale)
+- 24x24 (150% DPI scale)
+- 32x32 (200% DPI scale)
+- Large icon
+- 32x32 (100% DPI scale)
+- 40x40 (125% DPI scale)
+- 48x48 (150% DPI scale)
+- 64x64 (200% DPI scale)
+- 256x256
 
-Check the *Size requirements* section in [this article][icons].
+Check the _Size requirements_ section in [this article][icons].
 
-[icons]:https://msdn.microsoft.com/en-us/library/windows/desktop/dn742485(v=vs.85).aspx
+[icons]: https://msdn.microsoft.com/en-us/library/windows/desktop/dn742485(v=vs.85).aspx
 
 ## High Resolution Image
 
@@ -71,26 +71,25 @@ images/
 └── icon@3x.png
 ```
 
-
 ```javascript
-const {Tray} = require('electron')
-let appIcon = new Tray('/Users/somebody/images/icon.png')
-console.log(appIcon)
+const { Tray } = require("electron");
+let appIcon = new Tray("/Users/somebody/images/icon.png");
+console.log(appIcon);
 ```
 
 Following suffixes for DPI are also supported:
 
-* `@1x`
-* `@1.25x`
-* `@1.33x`
-* `@1.4x`
-* `@1.5x`
-* `@1.8x`
-* `@2x`
-* `@2.5x`
-* `@3x`
-* `@4x`
-* `@5x`
+- `@1x`
+- `@1.25x`
+- `@1.33x`
+- `@1.4x`
+- `@1.5x`
+- `@1.8x`
+- `@2x`
+- `@2.5x`
+- `@3x`
+- `@4x`
+- `@5x`
 
 ## Template Image
 
@@ -106,8 +105,8 @@ adapt to both light and dark menu bars.
 To mark an image as a template image, its filename should end with the word
 `Template`. For example:
 
-* `xxxTemplate.png`
-* `xxxTemplate@2x.png`
+- `xxxTemplate.png`
+- `xxxTemplate@2x.png`
 
 ## Methods
 
@@ -122,7 +121,7 @@ Creates an empty `NativeImage` instance.
 
 ### `nativeImage.createFromPath(path)`
 
-* `path` String
+- `path` String
 
 Returns `NativeImage`
 
@@ -131,19 +130,19 @@ returns an empty image if the `path` does not exist, cannot be read, or is not
 a valid image.
 
 ```javascript
-const nativeImage = require('electron').nativeImage
+const nativeImage = require("electron").nativeImage;
 
-let image = nativeImage.createFromPath('/Users/somebody/images/icon.png')
-console.log(image)
+let image = nativeImage.createFromPath("/Users/somebody/images/icon.png");
+console.log(image);
 ```
 
 ### `nativeImage.createFromBuffer(buffer[, options])`
 
-* `buffer` [Buffer][buffer]
-* `options` Object (optional)
-  * `width` Integer (optional) - Required for bitmap buffers.
-  * `height` Integer (optional) - Required for bitmap buffers.
-  * `scaleFactor` Double (optional) - Defaults to 1.0.
+- `buffer` [Buffer][buffer]
+- `options` Object (optional)
+  - `width` Integer (optional) - Required for bitmap buffers.
+  - `height` Integer (optional) - Required for bitmap buffers.
+  - `scaleFactor` Double (optional) - Defaults to 1.0.
 
 Returns `NativeImage`
 
@@ -151,7 +150,7 @@ Creates a new `NativeImage` instance from `buffer`.
 
 ### `nativeImage.createFromDataURL(dataURL)`
 
-* `dataURL` String
+- `dataURL` String
 
 Returns `NativeImage`
 
@@ -159,8 +158,8 @@ Creates a new `NativeImage` instance from `dataURL`.
 
 ### `nativeImage.createFromNamedImage(imageName[, hslShift])` _macOS_
 
-* `imageName` String
-* `hslShift` Number[]
+- `imageName` String
+- `hslShift` Number[]
 
 Returns `NativeImage`
 
@@ -169,18 +168,19 @@ given image name. See [`NSImageName`](https://developer.apple.com/documentation/
 for a list of possible values.
 
 The `hslShift` is applied to the image with the following rules
-* `hsl_shift[0]` (hue): The absolute hue value for the image - 0 and 1 map
-     to 0 and 360 on the hue color wheel (red).
-* `hsl_shift[1]` (saturation): A saturation shift for the image, with the
-    following key values:
-    0 = remove all color.
-    0.5 = leave unchanged.
-    1 = fully saturate the image.
-* `hsl_shift[2]` (lightness): A lightness shift for the image, with the
-    following key values:
-    0 = remove all lightness (make all pixels black).
-    0.5 = leave unchanged.
-    1 = full lightness (make all pixels white).
+
+- `hsl_shift[0]` (hue): The absolute hue value for the image - 0 and 1 map
+  to 0 and 360 on the hue color wheel (red).
+- `hsl_shift[1]` (saturation): A saturation shift for the image, with the
+  following key values:
+  0 = remove all color.
+  0.5 = leave unchanged.
+  1 = fully saturate the image.
+- `hsl_shift[2]` (lightness): A lightness shift for the image, with the
+  following key values:
+  0 = remove all lightness (make all pixels black).
+  0.5 = leave unchanged.
+  1 = full lightness (make all pixels white).
 
 This means that `[-1, 0, 1]` will make the image completely white and
 `[-1, 1, 0]` will make the image completely black.
@@ -197,36 +197,36 @@ The following methods are available on instances of the `NativeImage` class:
 
 #### `image.toPNG([options])`
 
-* `options` Object (optional)
-  * `scaleFactor` Double (optional) - Defaults to 1.0.
+- `options` Object (optional)
+  - `scaleFactor` Double (optional) - Defaults to 1.0.
 
 Returns `Buffer` - A [Buffer][buffer] that contains the image's `PNG` encoded data.
 
 #### `image.toJPEG(quality)`
 
-* `quality` Integer (**required**) - Between 0 - 100.
+- `quality` Integer (**required**) - Between 0 - 100.
 
 Returns `Buffer` - A [Buffer][buffer] that contains the image's `JPEG` encoded data.
 
 #### `image.toBitmap([options])`
 
-* `options` Object (optional)
-  * `scaleFactor` Double (optional) - Defaults to 1.0.
+- `options` Object (optional)
+  - `scaleFactor` Double (optional) - Defaults to 1.0.
 
 Returns `Buffer` - A [Buffer][buffer] that contains a copy of the image's raw bitmap pixel
 data.
 
 #### `image.toDataURL([options])`
 
-* `options` Object (optional)
-  * `scaleFactor` Double (optional) - Defaults to 1.0.
+- `options` Object (optional)
+  - `scaleFactor` Double (optional) - Defaults to 1.0.
 
 Returns `String` - The data URL of the image.
 
 #### `image.getBitmap([options])`
 
-* `options` Object (optional)
-  * `scaleFactor` Double (optional) - Defaults to 1.0.
+- `options` Object (optional)
+  - `scaleFactor` Double (optional) - Defaults to 1.0.
 
 Returns `Buffer` - A [Buffer][buffer] that contains the image's raw bitmap pixel data.
 
@@ -253,7 +253,7 @@ Returns [`Size`](structures/size.md)
 
 #### `image.setTemplateImage(option)`
 
-* `option` Boolean
+- `option` Boolean
 
 Marks the image as a template image.
 
@@ -263,16 +263,16 @@ Returns `Boolean` - Whether the image is a template image.
 
 #### `image.crop(rect)`
 
-* `rect` [Rectangle](structures/rectangle.md) - The area of the image to crop.
+- `rect` [Rectangle](structures/rectangle.md) - The area of the image to crop.
 
 Returns `NativeImage` - The cropped image.
 
 #### `image.resize(options)`
 
-* `options` Object
-  * `width` Integer (optional) - Defaults to the image's width.
-  * `height` Integer (optional) - Defaults to the image's height.
-  * `quality` String (optional) - The desired quality of the resize image.
+- `options` Object
+  - `width` Integer (optional) - Defaults to the image's width.
+  - `height` Integer (optional) - Defaults to the image's height.
+  - `quality` String (optional) - The desired quality of the resize image.
     Possible values are `good`, `better` or `best`. The default is `best`.
     These values express a desired quality/speed tradeoff. They are translated
     into an algorithm-specific method that depends on the capabilities
@@ -290,14 +290,14 @@ Returns `Float` - The image's aspect ratio.
 
 #### `image.addRepresentation(options)`
 
-* `options` Object
-  * `scaleFactor` Double - The scale factor to add the image representation for.
-  * `width` Integer (optional) - Defaults to 0. Required if a bitmap buffer
+- `options` Object
+  - `scaleFactor` Double - The scale factor to add the image representation for.
+  - `width` Integer (optional) - Defaults to 0. Required if a bitmap buffer
     is specified as `buffer`.
-  * `height` Integer (optional) - Defaults to 0. Required if a bitmap buffer
+  - `height` Integer (optional) - Defaults to 0. Required if a bitmap buffer
     is specified as `buffer`.
-  * `buffer` Buffer (optional) - The buffer containing the raw image data.
-  * `dataURL` String (optional) - The data URL containing either a base 64
+  - `buffer` Buffer (optional) - The buffer containing the raw image data.
+  - `dataURL` String (optional) - The data URL containing either a base 64
     encoded PNG or JPEG image.
 
 Add an image representation for a specific scale factor. This can be used

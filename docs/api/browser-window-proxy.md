@@ -21,7 +21,7 @@ Forcefully closes the child window without calling its unload event.
 
 #### `win.eval(code)`
 
-* `code` String
+- `code` String
 
 Evaluates the code in the child window.
 
@@ -35,8 +35,8 @@ Invokes the print dialog on the child window.
 
 #### `win.postMessage(message, targetOrigin)`
 
-* `message` String
-* `targetOrigin` String
+- `message` String
+- `targetOrigin` String
 
 Sends a message to the child window with the specified origin or `*` for no
 origin preference.

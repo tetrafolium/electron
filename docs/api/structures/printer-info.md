@@ -1,9 +1,9 @@
 # PrinterInfo Object
 
-* `name` String
-* `description` String
-* `status` Number
-* `isDefault` Boolean
+- `name` String
+- `description` String
+- `status` Number
+- `isDefault` Boolean
 
 ## Example
 

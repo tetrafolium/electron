@@ -8,32 +8,32 @@ See [`Menu`](menu.md) for examples.
 
 ### `new MenuItem(options)`
 
-* `options` Object
-  * `click` Function (optional) - Will be called with
+- `options` Object
+  - `click` Function (optional) - Will be called with
     `click(menuItem, browserWindow, event)` when the menu item is clicked.
-    * `menuItem` MenuItem
-    * `browserWindow` [BrowserWindow](browser-window.md)
-    * `event` Event
-  * `role` String (optional) - Define the action of the menu item, when specified the
+    - `menuItem` MenuItem
+    - `browserWindow` [BrowserWindow](browser-window.md)
+    - `event` Event
+  - `role` String (optional) - Define the action of the menu item, when specified the
     `click` property will be ignored. See [roles](#roles).
-  * `type` String (optional) - Can be `normal`, `separator`, `submenu`, `checkbox` or
+  - `type` String (optional) - Can be `normal`, `separator`, `submenu`, `checkbox` or
     `radio`.
-  * `label` String (optional)
-  * `sublabel` String (optional)
-  * `accelerator` [Accelerator](accelerator.md) (optional)
-  * `icon` ([NativeImage](native-image.md) | String) (optional)
-  * `enabled` Boolean (optional) - If false, the menu item will be greyed out and
+  - `label` String (optional)
+  - `sublabel` String (optional)
+  - `accelerator` [Accelerator](accelerator.md) (optional)
+  - `icon` ([NativeImage](native-image.md) | String) (optional)
+  - `enabled` Boolean (optional) - If false, the menu item will be greyed out and
     unclickable.
-  * `visible` Boolean (optional) - If false, the menu item will be entirely hidden.
-  * `checked` Boolean (optional) - Should only be specified for `checkbox` or `radio` type
+  - `visible` Boolean (optional) - If false, the menu item will be entirely hidden.
+  - `checked` Boolean (optional) - Should only be specified for `checkbox` or `radio` type
     menu items.
-  * `submenu` (MenuItemConstructorOptions[] | [Menu](menu.md)) (optional) - Should be specified for `submenu` type menu items. If
+  - `submenu` (MenuItemConstructorOptions[] | [Menu](menu.md)) (optional) - Should be specified for `submenu` type menu items. If
     `submenu` is specified, the `type: 'submenu'` can be omitted. If the value
     is not a [`Menu`](menu.md) then it will be automatically converted to one using
     `Menu.buildFromTemplate`.
-  * `id` String (optional) - Unique within a single menu. If defined then it can be used
+  - `id` String (optional) - Unique within a single menu. If defined then it can be used
     as a reference to this item by the position attribute.
-  * `position` String (optional) - This field allows fine-grained definition of the
+  - `position` String (optional) - This field allows fine-grained definition of the
     specific location within a given menu.
 
 ### Roles
@@ -49,47 +49,47 @@ default to appropriate values for each platform.
 
 The `role` property can have following values:
 
-* `undo`
-* `redo`
-* `cut`
-* `copy`
-* `paste`
-* `pasteandmatchstyle`
-* `selectall`
-* `delete`
-* `minimize` - Minimize current window.
-* `close` - Close current window.
-* `quit`- Quit the application.
-* `reload` - Reload the current window.
-* `forcereload` - Reload the current window ignoring the cache.
-* `toggledevtools` - Toggle developer tools in the current window.
-* `togglefullscreen`- Toggle full screen mode on the current window.
-* `resetzoom` - Reset the focused page's zoom level to the original size.
-* `zoomin` - Zoom in the focused page by 10%.
-* `zoomout` - Zoom out the focused page by 10%.
-* `editMenu` - Whole default "Edit" menu (Undo, Copy, etc.).
-* `windowMenu` - Whole default "Window" menu (Minimize, Close, etc.).
+- `undo`
+- `redo`
+- `cut`
+- `copy`
+- `paste`
+- `pasteandmatchstyle`
+- `selectall`
+- `delete`
+- `minimize` - Minimize current window.
+- `close` - Close current window.
+- `quit`- Quit the application.
+- `reload` - Reload the current window.
+- `forcereload` - Reload the current window ignoring the cache.
+- `toggledevtools` - Toggle developer tools in the current window.
+- `togglefullscreen`- Toggle full screen mode on the current window.
+- `resetzoom` - Reset the focused page's zoom level to the original size.
+- `zoomin` - Zoom in the focused page by 10%.
+- `zoomout` - Zoom out the focused page by 10%.
+- `editMenu` - Whole default "Edit" menu (Undo, Copy, etc.).
+- `windowMenu` - Whole default "Window" menu (Minimize, Close, etc.).
 
 The following additional roles are available on _macOS_:
 
-* `about` - Map to the `orderFrontStandardAboutPanel` action.
-* `hide` - Map to the `hide` action.
-* `hideothers` - Map to the `hideOtherApplications` action.
-* `unhide` - Map to the `unhideAllApplications` action.
-* `startspeaking` - Map to the `startSpeaking` action.
-* `stopspeaking` - Map to the `stopSpeaking` action.
-* `front` - Map to the `arrangeInFront` action.
-* `zoom` - Map to the `performZoom` action.
-* `toggletabbar` - Map to the `toggleTabBar` action.
-* `selectnexttab` - Map to the `selectNextTab` action.
-* `selectprevioustab` - Map to the `selectPreviousTab` action.
-* `mergeallwindows` - Map to the `mergeAllWindows` action.
-* `movetabtonewwindow` - Map to the `moveTabToNewWindow` action.
-* `window` - The submenu is a "Window" menu.
-* `help` - The submenu is a "Help" menu.
-* `services` - The submenu is a "Services" menu.
-* `recentdocuments` - The submenu is an "Open Recent" menu.
-* `clearrecentdocuments` - Map to the `clearRecentDocuments` action.
+- `about` - Map to the `orderFrontStandardAboutPanel` action.
+- `hide` - Map to the `hide` action.
+- `hideothers` - Map to the `hideOtherApplications` action.
+- `unhide` - Map to the `unhideAllApplications` action.
+- `startspeaking` - Map to the `startSpeaking` action.
+- `stopspeaking` - Map to the `stopSpeaking` action.
+- `front` - Map to the `arrangeInFront` action.
+- `zoom` - Map to the `performZoom` action.
+- `toggletabbar` - Map to the `toggleTabBar` action.
+- `selectnexttab` - Map to the `selectNextTab` action.
+- `selectprevioustab` - Map to the `selectPreviousTab` action.
+- `mergeallwindows` - Map to the `mergeAllWindows` action.
+- `movetabtonewwindow` - Map to the `moveTabToNewWindow` action.
+- `window` - The submenu is a "Window" menu.
+- `help` - The submenu is a "Help" menu.
+- `services` - The submenu is a "Services" menu.
+- `recentdocuments` - The submenu is an "Open Recent" menu.
+- `clearrecentdocuments` - Map to the `clearRecentDocuments` action.
 
 When specifying a `role` on macOS, `label` and `accelerator` are the only
 options that will affect the menu item. All other options will be ignored.
