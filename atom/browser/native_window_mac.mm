@@ -1436,7 +1436,7 @@ void NativeWindowMac::SetSimpleFullScreen(bool simple_fullscreen) {
       // Hide the titlebar
       SetStyleMask(false, NSTitledWindowMask);
 
-      // Resize the window to accomodate the _entire_ screen size
+      // Resize the window to accommodate the _entire_ screen size
       fullscreenFrame.size.height -=
           [[[NSApplication sharedApplication] mainMenu] menuBarHeight];
     } else {

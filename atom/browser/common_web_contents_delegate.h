@@ -31,7 +31,7 @@ class CommonWebContentsDelegate
   CommonWebContentsDelegate();
   virtual ~CommonWebContentsDelegate();
 
-  // Creates a InspectableWebContents object and takes onwership of
+  // Creates a InspectableWebContents object and takes ownership of
   // |web_contents|.
   void InitWithWebContents(content::WebContents* web_contents,
                            AtomBrowserContext* browser_context);

@@ -41,7 +41,7 @@ def main():
         action="store_true",
         dest="print_sdk_path",
         default=False,
-        help="Additionaly print the path the SDK (appears first).")
+        help="Additionally print the path the SDK (appears first).")
     options, args = parser.parse_args()
     if len(args) != 1:
         parser.error('Please specify a minimum SDK version')
