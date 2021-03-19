@@ -7,31 +7,38 @@ import sys
 from lib.config import enable_verbose_mode
 from lib.util import execute
 
-IGNORE_FILES = set(os.path.join(*components) for components in [
-    ['atom', 'browser', 'mac', 'atom_application.h'],
-    ['atom', 'browser', 'mac', 'atom_application_delegate.h'],
-    ['atom', 'browser', 'resources', 'win', 'resource.h'],
-    ['atom', 'browser', 'ui', 'cocoa', 'atom_menu_controller.h'],
-    ['atom', 'browser', 'ui', 'cocoa', 'atom_touch_bar.h'],
-    ['atom', 'browser', 'ui', 'cocoa', 'touch_bar_forward_declarations.h'],
-    ['atom', 'browser', 'ui', 'cocoa', 'NSColor+Hex.h'],
-    ['atom', 'browser', 'ui', 'cocoa', 'NSString+ANSI.h'],
-    ['atom', 'common', 'api', 'api_messages.h'],
-    ['atom', 'common', 'common_message_generator.cc'],
-    ['atom', 'common', 'common_message_generator.h'],
-    ['atom', 'node', 'osfhandle.cc'],
-    ['brightray', 'browser', 'mac', 'bry_inspectable_web_contents_view.h'],
-    ['brightray', 'browser', 'mac', 'event_dispatching_window.h'],
-    ['brightray', 'browser', 'mac', 'notification_center_delegate.h'],
-    ['brightray', 'browser', 'win', 'notification_presenter_win7.h'],
-    ['brightray', 'browser', 'win', 'win32_desktop_notifications', 'common.h'],
-    ['brightray', 'browser', 'win', 'win32_desktop_notifications',
-        'desktop_notification_controller.cc'],
-    ['brightray', 'browser', 'win', 'win32_desktop_notifications',
-        'desktop_notification_controller.h'],
-    ['brightray', 'browser', 'win', 'win32_desktop_notifications', 'toast.h'],
-    ['brightray', 'browser', 'win', 'win32_notification.h']
-])
+IGNORE_FILES = set(
+    os.path.join(*components) for components in
+    [['atom', 'browser', 'mac', 'atom_application.h'],
+     ['atom', 'browser', 'mac', 'atom_application_delegate.h'],
+     ['atom', 'browser', 'resources', 'win', 'resource.h'],
+     ['atom', 'browser', 'ui', 'cocoa', 'atom_menu_controller.h'],
+     ['atom', 'browser', 'ui', 'cocoa', 'atom_touch_bar.h'],
+     ['atom', 'browser', 'ui', 'cocoa', 'touch_bar_forward_declarations.h'],
+     ['atom', 'browser', 'ui', 'cocoa', 'NSColor+Hex.h'],
+     ['atom', 'browser', 'ui', 'cocoa', 'NSString+ANSI.h'],
+     ['atom', 'common', 'api', 'api_messages.h'],
+     ['atom', 'common', 'common_message_generator.cc'],
+     ['atom', 'common', 'common_message_generator.h'],
+     ['atom', 'node', 'osfhandle.cc'],
+     ['brightray', 'browser', 'mac', 'bry_inspectable_web_contents_view.h'],
+     ['brightray', 'browser', 'mac', 'event_dispatching_window.h'],
+     ['brightray', 'browser', 'mac', 'notification_center_delegate.h'],
+     ['brightray', 'browser', 'win', 'notification_presenter_win7.h'],
+     [
+         'brightray', 'browser', 'win', 'win32_desktop_notifications',
+         'common.h'
+     ],
+     [
+         'brightray', 'browser', 'win', 'win32_desktop_notifications',
+         'desktop_notification_controller.cc'
+     ],
+     [
+         'brightray', 'browser', 'win', 'win32_desktop_notifications',
+         'desktop_notification_controller.h'
+     ],
+     ['brightray', 'browser', 'win', 'win32_desktop_notifications', 'toast.h'],
+     ['brightray', 'browser', 'win', 'win32_notification.h']])
 
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -40,26 +47,24 @@ def main():
 
     parser = argparse.ArgumentParser(
         description="Run cpplint on Electron's C++ files",
-        formatter_class=argparse.RawTextHelpFormatter
-    )
-    parser.add_argument(
-        '-c', '--only-changed',
-        action='store_true',
-        default=False,
-        dest='only_changed',
-        help='only run on changed files'
-    )
-    parser.add_argument(
-        '-v', '--verbose',
-        action='store_true',
-        default=False,
-        dest='verbose',
-        help='show cpplint output'
-    )
+        formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument('-c',
+                        '--only-changed',
+                        action='store_true',
+                        default=False,
+                        dest='only_changed',
+                        help='only run on changed files')
+    parser.add_argument('-v',
+                        '--verbose',
+                        action='store_true',
+                        default=False,
+                        dest='verbose',
+                        help='show cpplint output')
     args = parser.parse_args()
 
     if not os.path.isfile(cpplint_path()):
-        print("[INFO] Skipping cpplint, dependencies has not been bootstrapped")
+        print(
+            "[INFO] Skipping cpplint, dependencies has not been bootstrapped")
         return
 
     if args.verbose:

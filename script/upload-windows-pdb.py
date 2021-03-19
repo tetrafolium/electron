@@ -7,7 +7,6 @@ import sys
 from lib.config import s3_config
 from lib.util import electron_gyp, execute, rm_rf, safe_mkdir, s3put
 
-
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 SYMBOLS_DIR = 'dist\\symbols'
 DOWNLOAD_DIR = 'vendor\\download\\libchromiumcontent'

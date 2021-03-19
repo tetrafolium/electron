@@ -6,8 +6,8 @@ import os
 import re
 import sys
 
-REQUESTS_DIR = os.path.abspath(os.path.join(__file__, '..', '..', '..',
-                                            'vendor', 'requests'))
+REQUESTS_DIR = os.path.abspath(
+    os.path.join(__file__, '..', '..', '..', 'vendor', 'requests'))
 sys.path.append(os.path.join(REQUESTS_DIR, 'build', 'lib'))
 sys.path.append(os.path.join(REQUESTS_DIR, 'build', 'lib.linux-x86_64-2.7'))
 

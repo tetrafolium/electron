@@ -2,7 +2,6 @@
 # Copyright (c) 2012 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
-
 """Prints the lowest locally available SDK version greater than or equal to a
 given minimum sdk version to standard output.
 
@@ -15,7 +14,6 @@ import re
 import subprocess
 import sys
 
-
 from optparse import OptionParser
 
 
@@ -26,15 +24,24 @@ def parse_version(version_str):
 
 def main():
     parser = OptionParser()
-    parser.add_option("--verify",
-                      action="store_true", dest="verify", default=False,
-                      help="return the sdk argument and warn if it doesn't exist")
+    parser.add_option(
+        "--verify",
+        action="store_true",
+        dest="verify",
+        default=False,
+        help="return the sdk argument and warn if it doesn't exist")
     parser.add_option("--sdk_path",
-                      action="store", type="string", dest="sdk_path", default="",
+                      action="store",
+                      type="string",
+                      dest="sdk_path",
+                      default="",
                       help="user-specified SDK path; bypasses verification")
-    parser.add_option("--print_sdk_path",
-                      action="store_true", dest="print_sdk_path", default=False,
-                      help="Additionaly print the path the SDK (appears first).")
+    parser.add_option(
+        "--print_sdk_path",
+        action="store_true",
+        dest="print_sdk_path",
+        default=False,
+        help="Additionaly print the path the SDK (appears first).")
     options, args = parser.parse_args()
     if len(args) != 1:
         parser.error('Please specify a minimum SDK version')
@@ -47,9 +54,10 @@ def main():
     if job.returncode != 0:
         print >> sys.stderr, out
         print >> sys.stderr, err
-        raise Exception(('Error %d running xcode-select, you might have to run '
-                         '|sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer| '
-                         'if you are using Xcode 4.') % job.returncode)
+        raise Exception((
+            'Error %d running xcode-select, you might have to run '
+            '|sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer| '
+            'if you are using Xcode 4.') % job.returncode)
     # The Developer folder moved in Xcode 4.3.
     xcode43_sdk_path = os.path.join(
         out.rstrip(), 'Platforms/MacOSX.platform/Developer/SDKs')
@@ -57,12 +65,15 @@ def main():
         sdk_dir = xcode43_sdk_path
     else:
         sdk_dir = os.path.join(out.rstrip(), 'SDKs')
-    sdks = [re.findall('^MacOSX(10\.\d+)\.sdk$', s)
-            for s in os.listdir(sdk_dir)]
+    sdks = [
+        re.findall('^MacOSX(10\.\d+)\.sdk$', s) for s in os.listdir(sdk_dir)
+    ]
     # [['10.5'], ['10.6']] => ['10.5', '10.6']
     sdks = [s[0] for s in sdks if s]
-    sdks = [s for s in sdks  # ['10.5', '10.6'] => ['10.6']
-            if parse_version(s) >= parse_version(min_sdk_version)]
+    sdks = [
+        s for s in sdks  # ['10.5', '10.6'] => ['10.6']
+        if parse_version(s) >= parse_version(min_sdk_version)
+    ]
     if not sdks:
         raise Exception('No %s+ SDK found' % min_sdk_version)
     best_sdk = sorted(sdks, key=parse_version)[0]
@@ -82,8 +93,9 @@ def main():
         return min_sdk_version
 
     if options.print_sdk_path:
-        print subprocess.check_output(['xcodebuild', '-version', '-sdk',
-                                       'macosx' + best_sdk, 'Path']).strip()
+        print subprocess.check_output(
+            ['xcodebuild', '-version', '-sdk', 'macosx' + best_sdk,
+             'Path']).strip()
 
     return best_sdk
 

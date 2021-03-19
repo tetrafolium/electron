@@ -2,7 +2,6 @@
 # Copyright (c) 2013 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
-
 """Install Debian sysroots for building chromium.
 """
 
@@ -31,7 +30,6 @@ import urllib2
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-
 URL_PREFIX = 'http://s3.amazonaws.com'
 URL_PATH = 'gh-contractor-zcbenz/toolchain'
 
@@ -47,7 +45,7 @@ def GetSha1(filename):
     with open(filename, 'rb') as f:
         while True:
             # Read in 1mb chunks, so it doesn't all have to be loaded into memory.
-            chunk = f.read(1024*1024)
+            chunk = f.read(1024 * 1024)
             if not chunk:
                 break
             sha1.update(chunk)
@@ -55,16 +53,22 @@ def GetSha1(filename):
 
 
 def main(args):
-    parser = optparse.OptionParser(
-        'usage: %prog [OPTIONS]', description=__doc__)
-    parser.add_option('--running-as-hook', action='store_true',
-                      default=False, help='Used when running from gclient hooks.'
-                                          ' Installs default sysroot images.')
-    parser.add_option('--arch', type='choice', choices=VALID_ARCHS,
+    parser = optparse.OptionParser('usage: %prog [OPTIONS]',
+                                   description=__doc__)
+    parser.add_option('--running-as-hook',
+                      action='store_true',
+                      default=False,
+                      help='Used when running from gclient hooks.'
+                      ' Installs default sysroot images.')
+    parser.add_option('--arch',
+                      type='choice',
+                      choices=VALID_ARCHS,
                       help='Sysroot architecture: %s' % ', '.join(VALID_ARCHS))
-    parser.add_option('--all', action='store_true',
-                      help='Install all sysroot images (useful when updating the'
-                           ' images)')
+    parser.add_option(
+        '--all',
+        action='store_true',
+        help='Install all sysroot images (useful when updating the'
+        ' images)')
     options, _ = parser.parse_args(args)
     if options.running_as_hook and not sys.platform.startswith('linux'):
         return 0

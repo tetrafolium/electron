@@ -7,49 +7,39 @@ import argparse
 
 from lib.util import execute, get_electron_version, parse_version, scoped_cwd
 
-
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
 def main():
 
     parser = argparse.ArgumentParser(
-        description='Bump version numbers. Must specify at least one of the three'
-        + ' options:\n'
-        + '   --bump=patch to increment patch version, or\n'
-        + '   --stable to promote current beta to stable, or\n'
-        + '   --version={version} to set version number directly\n'
-        + 'Note that you can use both --bump and --stable '
-        + 'simultaneously.',
-        formatter_class=argparse.RawTextHelpFormatter
-    )
-    parser.add_argument(
-        '--version',
-        default=None,
-        dest='new_version',
-        help='new version number'
-    )
-    parser.add_argument(
-        '--bump',
-        action='store',
-        default=None,
-        dest='bump',
-        help='increment [major | minor | patch | beta]'
-    )
+        description=
+        'Bump version numbers. Must specify at least one of the three' +
+        ' options:\n' + '   --bump=patch to increment patch version, or\n' +
+        '   --stable to promote current beta to stable, or\n' +
+        '   --version={version} to set version number directly\n' +
+        'Note that you can use both --bump and --stable ' + 'simultaneously.',
+        formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument('--version',
+                        default=None,
+                        dest='new_version',
+                        help='new version number')
+    parser.add_argument('--bump',
+                        action='store',
+                        default=None,
+                        dest='bump',
+                        help='increment [major | minor | patch | beta]')
     parser.add_argument(
         '--stable',
         action='store_true',
         default=False,
         dest='stable',
-        help='promote to stable (i.e. remove `-beta.x` suffix)'
-    )
-    parser.add_argument(
-        '--dry-run',
-        action='store_true',
-        default=False,
-        dest='dry_run',
-        help='just to check that version number is correct'
-    )
+        help='promote to stable (i.e. remove `-beta.x` suffix)')
+    parser.add_argument('--dry-run',
+                        action='store_true',
+                        default=False,
+                        dest='dry_run',
+                        help='just to check that version number is correct')
 
     args = parser.parse_args()
 
@@ -149,14 +139,14 @@ def update_version_h(versions, suffix):
         line = lines[i]
         if 'ATOM_MAJOR_VERSION' in line:
             lines[i] = '#define ATOM_MAJOR_VERSION {0}\n'.format(versions[0])
-            lines[i +
-                  1] = '#define ATOM_MINOR_VERSION {0}\n'.format(versions[1])
-            lines[i +
-                  2] = '#define ATOM_PATCH_VERSION {0}\n'.format(versions[2])
+            lines[i + 1] = '#define ATOM_MINOR_VERSION {0}\n'.format(
+                versions[1])
+            lines[i + 2] = '#define ATOM_PATCH_VERSION {0}\n'.format(
+                versions[2])
 
             if (suffix):
-                lines[i +
-                      3] = '#define ATOM_PRE_RELEASE_VERSION {0}\n'.format(suffix)
+                lines[i + 3] = '#define ATOM_PRE_RELEASE_VERSION {0}\n'.format(
+                    suffix)
             else:
                 lines[i + 3] = '// #define ATOM_PRE_RELEASE_VERSION\n'
 
@@ -166,8 +156,8 @@ def update_version_h(versions, suffix):
 
 
 def update_info_plist(version):
-    info_plist = os.path.join(
-        'atom', 'browser', 'resources', 'mac', 'Info.plist')
+    info_plist = os.path.join('atom', 'browser', 'resources', 'mac',
+                              'Info.plist')
     with open(info_plist, 'r') as f:
         lines = f.readlines()
 
@@ -198,8 +188,8 @@ def update_package_json(version, suffix):
 
 
 def tag_version(version, suffix):
-    execute(['git', 'commit', '-a', '-m',
-             'Bump v{0}'.format(version + suffix)])
+    execute(
+        ['git', 'commit', '-a', '-m', 'Bump v{0}'.format(version + suffix)])
 
 
 if __name__ == '__main__':
