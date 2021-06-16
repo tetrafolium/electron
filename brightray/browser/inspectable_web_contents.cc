@@ -6,13 +6,13 @@ namespace brightray {
 
 InspectableWebContents* InspectableWebContents::Create(
     const content::WebContents::CreateParams& create_params) {
-  auto contents = content::WebContents::Create(create_params);
-  return Create(contents);
+    auto contents = content::WebContents::Create(create_params);
+    return Create(contents);
 }
 
 InspectableWebContents* InspectableWebContents::Create(
     content::WebContents* web_contents) {
-  return new InspectableWebContentsImpl(web_contents);
+    return new InspectableWebContentsImpl(web_contents);
 }
 
 }  // namespace brightray

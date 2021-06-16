@@ -24,15 +24,15 @@ static base::mac::ScopedObjCClassSwizzler* g_swizzle_imk_input_session;
 @end
 @implementation OOMDisabledIMKInputSession
 - (void)_coreAttributesFromRange:(NSRange)range
-                 whichAttributes:(long long)attributes
-               completionHandler:(void (^)(void))block {
-  // The allocator flag is per-process, so other threads may temporarily
-  // not have fatal OOM occur while this method executes, but it is better
-  // than crashing when using IME.
-  base::allocator::SetCallNewHandlerOnMallocFailure(false);
-  g_swizzle_imk_input_session->GetOriginalImplementation()(self, _cmd, range,
-                                                           attributes, block);
-  base::allocator::SetCallNewHandlerOnMallocFailure(true);
+    whichAttributes:(long long)attributes
+    completionHandler:(void (^)(void))block {
+    // The allocator flag is per-process, so other threads may temporarily
+    // not have fatal OOM occur while this method executes, but it is better
+    // than crashing when using IME.
+    base::allocator::SetCallNewHandlerOnMallocFailure(false);
+    g_swizzle_imk_input_session->GetOriginalImplementation()(self, _cmd, range,
+            attributes, block);
+    base::allocator::SetCallNewHandlerOnMallocFailure(true);
 }
 @end
 #endif  // BUILDFLAG(USE_ALLOCATOR_SHIM)
@@ -40,101 +40,101 @@ static base::mac::ScopedObjCClassSwizzler* g_swizzle_imk_input_session;
 @implementation AtomApplicationDelegate
 
 - (void)setApplicationDockMenu:(atom::AtomMenuModel*)model {
-  menu_controller_.reset([[AtomMenuController alloc] initWithModel:model
-                                             useDefaultAccelerator:NO]);
+    menu_controller_.reset([[AtomMenuController alloc] initWithModel:model
+                                                       useDefaultAccelerator:NO]);
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification*)notify {
-  // Don't add the "Enter Full Screen" menu item automatically.
-  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"NSFullScreenMenuItemEverywhere"];
+    // Don't add the "Enter Full Screen" menu item automatically.
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"NSFullScreenMenuItemEverywhere"];
 
-  atom::Browser::Get()->WillFinishLaunching();
+    atom::Browser::Get()->WillFinishLaunching();
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification*)notify {
-  NSUserNotification *user_notification = [notify userInfo][(id)@"NSApplicationLaunchUserNotificationKey"];
+    NSUserNotification *user_notification = [notify userInfo][(id)@"NSApplicationLaunchUserNotificationKey"];
 
-  if (user_notification.userInfo != nil) {
-    std::unique_ptr<base::DictionaryValue> launch_info =
-      atom::NSDictionaryToDictionaryValue(user_notification.userInfo);
-    atom::Browser::Get()->DidFinishLaunching(*launch_info);
-  } else {
-    std::unique_ptr<base::DictionaryValue> empty_info(new base::DictionaryValue);
-    atom::Browser::Get()->DidFinishLaunching(*empty_info);
-  }
+    if (user_notification.userInfo != nil) {
+        std::unique_ptr<base::DictionaryValue> launch_info =
+            atom::NSDictionaryToDictionaryValue(user_notification.userInfo);
+        atom::Browser::Get()->DidFinishLaunching(*launch_info);
+    } else {
+        std::unique_ptr<base::DictionaryValue> empty_info(new base::DictionaryValue);
+        atom::Browser::Get()->DidFinishLaunching(*empty_info);
+    }
 
 #if BUILDFLAG(USE_ALLOCATOR_SHIM)
-  // Disable fatal OOM to hack around an OS bug https://crbug.com/654695.
-  if (base::mac::IsOS10_12()) {
-    g_swizzle_imk_input_session = new base::mac::ScopedObjCClassSwizzler(
-        NSClassFromString(@"IMKInputSession"),
-        [OOMDisabledIMKInputSession class],
-        @selector(_coreAttributesFromRange:whichAttributes:completionHandler:));
-  }
+    // Disable fatal OOM to hack around an OS bug https://crbug.com/654695.
+    if (base::mac::IsOS10_12()) {
+        g_swizzle_imk_input_session = new base::mac::ScopedObjCClassSwizzler(
+            NSClassFromString(@"IMKInputSession"),
+            [OOMDisabledIMKInputSession class],
+            @selector(_coreAttributesFromRange:whichAttributes:completionHandler:));
+    }
 #endif
 }
 
 - (NSMenu*)applicationDockMenu:(NSApplication*)sender {
-  if (menu_controller_)
-    return [menu_controller_ menu];
-  else
-    return nil;
+    if (menu_controller_)
+        return [menu_controller_ menu];
+    else
+        return nil;
 }
 
 - (BOOL)application:(NSApplication*)sender
-           openFile:(NSString*)filename {
-  std::string filename_str(base::SysNSStringToUTF8(filename));
-  return atom::Browser::Get()->OpenFile(filename_str) ? YES : NO;
+    openFile:(NSString*)filename {
+    std::string filename_str(base::SysNSStringToUTF8(filename));
+    return atom::Browser::Get()->OpenFile(filename_str) ? YES : NO;
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender {
-  atom::Browser* browser = atom::Browser::Get();
-  if (browser->is_quiting()) {
-    return NSTerminateNow;
-  } else {
-    // System started termination.
-    atom::Browser::Get()->Quit();
-    return NSTerminateCancel;
-  }
+    atom::Browser* browser = atom::Browser::Get();
+    if (browser->is_quiting()) {
+        return NSTerminateNow;
+    } else {
+        // System started termination.
+        atom::Browser::Get()->Quit();
+        return NSTerminateCancel;
+    }
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication*)theApplication
-                    hasVisibleWindows:(BOOL)flag {
-  atom::Browser* browser = atom::Browser::Get();
-  browser->Activate(static_cast<bool>(flag));
-  return flag;
+    hasVisibleWindows:(BOOL)flag {
+    atom::Browser* browser = atom::Browser::Get();
+    browser->Activate(static_cast<bool>(flag));
+    return flag;
 }
 
 -  (BOOL)application:(NSApplication*)sender
-continueUserActivity:(NSUserActivity*)userActivity
-  restorationHandler:(void (^)(NSArray*restorableObjects))restorationHandler {
-  std::string activity_type(base::SysNSStringToUTF8(userActivity.activityType));
-  std::unique_ptr<base::DictionaryValue> user_info =
-    atom::NSDictionaryToDictionaryValue(userActivity.userInfo);
-  if (!user_info)
-    return NO;
+    continueUserActivity:(NSUserActivity*)userActivity
+    restorationHandler:(void (^)(NSArray*restorableObjects))restorationHandler {
+    std::string activity_type(base::SysNSStringToUTF8(userActivity.activityType));
+    std::unique_ptr<base::DictionaryValue> user_info =
+        atom::NSDictionaryToDictionaryValue(userActivity.userInfo);
+    if (!user_info)
+        return NO;
 
-  atom::Browser* browser = atom::Browser::Get();
-  return browser->ContinueUserActivity(activity_type, *user_info) ? YES : NO;
+    atom::Browser* browser = atom::Browser::Get();
+    return browser->ContinueUserActivity(activity_type, *user_info) ? YES : NO;
 }
 
 - (BOOL)application:(NSApplication*)application willContinueUserActivityWithType:(NSString*)userActivityType {
-  std::string activity_type(base::SysNSStringToUTF8(userActivityType));
+    std::string activity_type(base::SysNSStringToUTF8(userActivityType));
 
-  atom::Browser* browser = atom::Browser::Get();
-  return browser->WillContinueUserActivity(activity_type) ? YES : NO;
+    atom::Browser* browser = atom::Browser::Get();
+    return browser->WillContinueUserActivity(activity_type) ? YES : NO;
 }
 
 - (void)application:(NSApplication*)application didFailToContinueUserActivityWithType:(NSString*)userActivityType error:(NSError*)error {
-  std::string activity_type(base::SysNSStringToUTF8(userActivityType));
-  std::string error_message(base::SysNSStringToUTF8([error localizedDescription]));
+    std::string activity_type(base::SysNSStringToUTF8(userActivityType));
+    std::string error_message(base::SysNSStringToUTF8([error localizedDescription]));
 
-  atom::Browser* browser = atom::Browser::Get();
-  browser->DidFailToContinueUserActivity(activity_type, error_message);
+    atom::Browser* browser = atom::Browser::Get();
+    browser->DidFailToContinueUserActivity(activity_type, error_message);
 }
 
 - (IBAction)newWindowForTab:(id)sender {
-  atom::Browser::Get()->NewWindowForTab();
+    atom::Browser::Get()->NewWindowForTab();
 }
 
 @end

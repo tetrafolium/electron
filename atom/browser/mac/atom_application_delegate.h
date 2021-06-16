@@ -7,8 +7,8 @@
 #import "atom/browser/ui/cocoa/atom_menu_controller.h"
 
 @interface AtomApplicationDelegate : NSObject<NSApplicationDelegate> {
- @private
-  base::scoped_nsobject<AtomMenuController> menu_controller_;
+@private
+    base::scoped_nsobject<AtomMenuController> menu_controller_;
 }
 
 // Sets the menu that will be returned in "applicationDockMenu:".

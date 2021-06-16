@@ -10,44 +10,44 @@
 @implementation NotificationCenterDelegate
 
 - (instancetype)initWithPresenter:(brightray::NotificationPresenterMac*)presenter {
-  self = [super init];
-  if (!self)
-    return nil;
+    self = [super init];
+    if (!self)
+        return nil;
 
-  presenter_ = presenter;
-  return self;
+    presenter_ = presenter;
+    return self;
 }
 
 - (void)userNotificationCenter:(NSUserNotificationCenter*)center
-        didDeliverNotification:(NSUserNotification*)notif {
-  auto notification = presenter_->GetNotification(notif);
-  if (notification)
-    notification->NotificationDisplayed();
+    didDeliverNotification:(NSUserNotification*)notif {
+    auto notification = presenter_->GetNotification(notif);
+    if (notification)
+        notification->NotificationDisplayed();
 }
 
 - (void)userNotificationCenter:(NSUserNotificationCenter*)center
-       didActivateNotification:(NSUserNotification *)notif {
-  auto notification = presenter_->GetNotification(notif);
+    didActivateNotification:(NSUserNotification *)notif {
+    auto notification = presenter_->GetNotification(notif);
 
-  if (getenv("ELECTRON_DEBUG_NOTIFICATIONS")) {
-    LOG(INFO) << "Notification activated (" << [notif.identifier UTF8String] << ")";
-  }
-
-  if (notification) {
-    if (notif.activationType == NSUserNotificationActivationTypeReplied) {
-      notification->NotificationReplied([notif.response.string UTF8String]);
-    } else if (notif.activationType == NSUserNotificationActivationTypeActionButtonClicked) {
-      notification->NotificationButtonClicked();
-    } else if (notif.activationType == NSUserNotificationActivationTypeContentsClicked) {
-      notification->NotificationClicked();
+    if (getenv("ELECTRON_DEBUG_NOTIFICATIONS")) {
+        LOG(INFO) << "Notification activated (" << [notif.identifier UTF8String] << ")";
     }
-  }
+
+    if (notification) {
+        if (notif.activationType == NSUserNotificationActivationTypeReplied) {
+            notification->NotificationReplied([notif.response.string UTF8String]);
+        } else if (notif.activationType == NSUserNotificationActivationTypeActionButtonClicked) {
+            notification->NotificationButtonClicked();
+        } else if (notif.activationType == NSUserNotificationActivationTypeContentsClicked) {
+            notification->NotificationClicked();
+        }
+    }
 }
 
 - (BOOL)userNotificationCenter:(NSUserNotificationCenter*)center
-     shouldPresentNotification:(NSUserNotification*)notification {
-  // Display notifications even if the app is active.
-  return YES;
+    shouldPresentNotification:(NSUserNotification*)notification {
+    // Display notifications even if the app is active.
+    return YES;
 }
 
 @end

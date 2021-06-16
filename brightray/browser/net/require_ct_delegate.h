@@ -14,19 +14,19 @@ namespace brightray {
 
 class RequireCTDelegate
     : public net::TransportSecurityState::RequireCTDelegate {
- public:
-  RequireCTDelegate();
-  ~RequireCTDelegate() override;
+public:
+    RequireCTDelegate();
+    ~RequireCTDelegate() override;
 
-  void AddCTExcludedHost(const std::string& host);
-  void ClearCTExcludedHostsList();
+    void AddCTExcludedHost(const std::string& host);
+    void ClearCTExcludedHostsList();
 
-  // net::TransportSecurityState::RequireCTDelegate:
-  CTRequirementLevel IsCTRequiredForHost(const std::string& host) override;
+    // net::TransportSecurityState::RequireCTDelegate:
+    CTRequirementLevel IsCTRequiredForHost(const std::string& host) override;
 
- private:
-  std::set<std::string> ct_excluded_hosts_;
-  DISALLOW_COPY_AND_ASSIGN(RequireCTDelegate);
+private:
+    std::set<std::string> ct_excluded_hosts_;
+    DISALLOW_COPY_AND_ASSIGN(RequireCTDelegate);
 };
 
 }  // namespace brightray

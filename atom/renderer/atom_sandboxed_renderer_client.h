@@ -12,27 +12,27 @@
 namespace atom {
 
 class AtomSandboxedRendererClient : public RendererClientBase {
- public:
-  AtomSandboxedRendererClient();
-  virtual ~AtomSandboxedRendererClient();
+public:
+    AtomSandboxedRendererClient();
+    virtual ~AtomSandboxedRendererClient();
 
-  void InvokeIpcCallback(v8::Handle<v8::Context> context,
-                         const std::string& callback_name,
-                         std::vector<v8::Handle<v8::Value>> args);
-  // atom::RendererClientBase:
-  void DidCreateScriptContext(
-      v8::Handle<v8::Context> context,
-      content::RenderFrame* render_frame) override;
-  void WillReleaseScriptContext(
-      v8::Handle<v8::Context> context,
-      content::RenderFrame* render_frame) override;
-  void SetupMainWorldOverrides(v8::Handle<v8::Context> context) override { }
-  // content::ContentRendererClient:
-  void RenderFrameCreated(content::RenderFrame*) override;
-  void RenderViewCreated(content::RenderView*) override;
+    void InvokeIpcCallback(v8::Handle<v8::Context> context,
+                           const std::string& callback_name,
+                           std::vector<v8::Handle<v8::Value>> args);
+    // atom::RendererClientBase:
+    void DidCreateScriptContext(
+        v8::Handle<v8::Context> context,
+        content::RenderFrame* render_frame) override;
+    void WillReleaseScriptContext(
+        v8::Handle<v8::Context> context,
+        content::RenderFrame* render_frame) override;
+    void SetupMainWorldOverrides(v8::Handle<v8::Context> context) override { }
+    // content::ContentRendererClient:
+    void RenderFrameCreated(content::RenderFrame*) override;
+    void RenderViewCreated(content::RenderView*) override;
 
- private:
-  DISALLOW_COPY_AND_ASSIGN(AtomSandboxedRendererClient);
+private:
+    DISALLOW_COPY_AND_ASSIGN(AtomSandboxedRendererClient);
 };
 
 }  // namespace atom

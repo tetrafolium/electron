@@ -20,7 +20,7 @@ const char kChromeUIDevToolsBundledHost[] = "devtools";
 
 // static
 WebUIControllerFactory* WebUIControllerFactory::GetInstance() {
-  return base::Singleton<WebUIControllerFactory>::get();
+    return base::Singleton<WebUIControllerFactory>::get();
 }
 
 WebUIControllerFactory::WebUIControllerFactory() {
@@ -30,31 +30,31 @@ WebUIControllerFactory::~WebUIControllerFactory() {
 }
 
 content::WebUI::TypeID WebUIControllerFactory::GetWebUIType(
-      content::BrowserContext* browser_context, const GURL& url) const {
-  if (url.host() == kChromeUIDevToolsBundledHost) {
-    return const_cast<WebUIControllerFactory*>(this);
-  }
+    content::BrowserContext* browser_context, const GURL& url) const {
+    if (url.host() == kChromeUIDevToolsBundledHost) {
+        return const_cast<WebUIControllerFactory*>(this);
+    }
 
-  return content::WebUI::kNoWebUI;
+    return content::WebUI::kNoWebUI;
 }
 
 bool WebUIControllerFactory::UseWebUIForURL(
     content::BrowserContext* browser_context, const GURL& url) const {
-  return GetWebUIType(browser_context, url) != content::WebUI::kNoWebUI;
+    return GetWebUIType(browser_context, url) != content::WebUI::kNoWebUI;
 }
 
 bool WebUIControllerFactory::UseWebUIBindingsForURL(
     content::BrowserContext* browser_context, const GURL& url) const {
-  return UseWebUIForURL(browser_context, url);
+    return UseWebUIForURL(browser_context, url);
 }
 
 content::WebUIController* WebUIControllerFactory::CreateWebUIControllerForURL(
     content::WebUI* web_ui, const GURL& url) const {
-  if (url.host() == kChromeUIDevToolsBundledHost) {
-    auto browser_context = web_ui->GetWebContents()->GetBrowserContext();
-    return new DevToolsUI(browser_context, web_ui);
-  }
-  return nullptr;
+    if (url.host() == kChromeUIDevToolsBundledHost) {
+        auto browser_context = web_ui->GetWebContents()->GetBrowserContext();
+        return new DevToolsUI(browser_context, web_ui);
+    }
+    return nullptr;
 }
 
 }  // namespace brightray

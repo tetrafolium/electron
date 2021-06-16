@@ -18,38 +18,40 @@ namespace printing {
 class PrintViewManagerBasic
     : public PrintViewManagerBase,
       public content::WebContentsUserData<PrintViewManagerBasic> {
- public:
-  virtual ~PrintViewManagerBasic();
+public:
+    virtual ~PrintViewManagerBasic();
 
 #if defined(OS_ANDROID)
-  // Sets the file descriptor into which the PDF will be written.
-  void set_file_descriptor(const base::FileDescriptor& file_descriptor) {
-    file_descriptor_ = file_descriptor;
-  }
+    // Sets the file descriptor into which the PDF will be written.
+    void set_file_descriptor(const base::FileDescriptor& file_descriptor) {
+        file_descriptor_ = file_descriptor;
+    }
 
-  // Gets the file descriptor into which the PDF will be written.
-  base::FileDescriptor file_descriptor() const { return file_descriptor_; }
+    // Gets the file descriptor into which the PDF will be written.
+    base::FileDescriptor file_descriptor() const {
+        return file_descriptor_;
+    }
 
-  // content::WebContentsObserver implementation.
-  // Terminates or cancels the print job if one was pending.
-  virtual void RenderProcessGone(base::TerminationStatus status) override;
+    // content::WebContentsObserver implementation.
+    // Terminates or cancels the print job if one was pending.
+    virtual void RenderProcessGone(base::TerminationStatus status) override;
 
-  // content::WebContentsObserver implementation.
-  virtual bool OnMessageReceived(const IPC::Message& message) override;
+    // content::WebContentsObserver implementation.
+    virtual bool OnMessageReceived(const IPC::Message& message) override;
 #endif
 
- private:
-  explicit PrintViewManagerBasic(content::WebContents* web_contents);
-  friend class content::WebContentsUserData<PrintViewManagerBasic>;
+private:
+    explicit PrintViewManagerBasic(content::WebContents* web_contents);
+    friend class content::WebContentsUserData<PrintViewManagerBasic>;
 
 #if defined(OS_ANDROID)
-  virtual void OnPrintingFailed(int cookie) override;
+    virtual void OnPrintingFailed(int cookie) override;
 
-  // The file descriptor into which the PDF of the page will be written.
-  base::FileDescriptor file_descriptor_;
+    // The file descriptor into which the PDF of the page will be written.
+    base::FileDescriptor file_descriptor_;
 #endif
 
-  DISALLOW_COPY_AND_ASSIGN(PrintViewManagerBasic);
+    DISALLOW_COPY_AND_ASSIGN(PrintViewManagerBasic);
 };
 
 }  // namespace printing

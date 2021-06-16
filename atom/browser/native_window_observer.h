@@ -19,80 +19,80 @@
 namespace atom {
 
 class NativeWindowObserver {
- public:
-  virtual ~NativeWindowObserver() {}
+public:
+    virtual ~NativeWindowObserver() {}
 
-  // Called when the web page in window wants to create a popup window.
-  virtual void WillCreatePopupWindow(const base::string16& frame_name,
-                                     const GURL& target_url,
-                                     const std::string& partition_id,
-                                     WindowOpenDisposition disposition) {}
+    // Called when the web page in window wants to create a popup window.
+    virtual void WillCreatePopupWindow(const base::string16& frame_name,
+                                       const GURL& target_url,
+                                       const std::string& partition_id,
+                                       WindowOpenDisposition disposition) {}
 
-  // Called when user is starting an navigation in web page.
-  virtual void WillNavigate(bool* prevent_default, const GURL& url) {}
+    // Called when user is starting an navigation in web page.
+    virtual void WillNavigate(bool* prevent_default, const GURL& url) {}
 
-  // Called when the window is gonna closed.
-  virtual void WillCloseWindow(bool* prevent_default) {}
+    // Called when the window is gonna closed.
+    virtual void WillCloseWindow(bool* prevent_default) {}
 
-  // Called before the native window object is going to be destroyed.
-  virtual void WillDestroyNativeObject() {}
+    // Called before the native window object is going to be destroyed.
+    virtual void WillDestroyNativeObject() {}
 
-  // Called when the window is closed.
-  virtual void OnWindowClosed() {}
+    // Called when the window is closed.
+    virtual void OnWindowClosed() {}
 
-  // Called when Windows sends WM_ENDSESSION message
-  virtual void OnWindowEndSession() {}
+    // Called when Windows sends WM_ENDSESSION message
+    virtual void OnWindowEndSession() {}
 
-  // Called when window loses focus.
-  virtual void OnWindowBlur() {}
+    // Called when window loses focus.
+    virtual void OnWindowBlur() {}
 
-  // Called when window gains focus.
-  virtual void OnWindowFocus() {}
+    // Called when window gains focus.
+    virtual void OnWindowFocus() {}
 
-  // Called when window is shown.
-  virtual void OnWindowShow() {}
+    // Called when window is shown.
+    virtual void OnWindowShow() {}
 
-  // Called when window is hidden.
-  virtual void OnWindowHide() {}
+    // Called when window is hidden.
+    virtual void OnWindowHide() {}
 
-  // Called when window is ready to show.
-  virtual void OnReadyToShow() {}
+    // Called when window is ready to show.
+    virtual void OnReadyToShow() {}
 
-  // Called when window state changed.
-  virtual void OnWindowMaximize() {}
-  virtual void OnWindowUnmaximize() {}
-  virtual void OnWindowMinimize() {}
-  virtual void OnWindowRestore() {}
-  virtual void OnWindowResize() {}
-  virtual void OnWindowMove() {}
-  virtual void OnWindowMoved() {}
-  virtual void OnWindowScrollTouchBegin() {}
-  virtual void OnWindowScrollTouchEnd() {}
-  virtual void OnWindowScrollTouchEdge() {}
-  virtual void OnWindowSwipe(const std::string& direction) {}
-  virtual void OnWindowSheetBegin() {}
-  virtual void OnWindowSheetEnd() {}
-  virtual void OnWindowEnterFullScreen() {}
-  virtual void OnWindowLeaveFullScreen() {}
-  virtual void OnWindowEnterHtmlFullScreen() {}
-  virtual void OnWindowLeaveHtmlFullScreen() {}
-  virtual void OnTouchBarItemResult(const std::string& item_id,
-                                    const base::DictionaryValue& details) {}
-  virtual void OnNewWindowForTab() {}
+    // Called when window state changed.
+    virtual void OnWindowMaximize() {}
+    virtual void OnWindowUnmaximize() {}
+    virtual void OnWindowMinimize() {}
+    virtual void OnWindowRestore() {}
+    virtual void OnWindowResize() {}
+    virtual void OnWindowMove() {}
+    virtual void OnWindowMoved() {}
+    virtual void OnWindowScrollTouchBegin() {}
+    virtual void OnWindowScrollTouchEnd() {}
+    virtual void OnWindowScrollTouchEdge() {}
+    virtual void OnWindowSwipe(const std::string& direction) {}
+    virtual void OnWindowSheetBegin() {}
+    virtual void OnWindowSheetEnd() {}
+    virtual void OnWindowEnterFullScreen() {}
+    virtual void OnWindowLeaveFullScreen() {}
+    virtual void OnWindowEnterHtmlFullScreen() {}
+    virtual void OnWindowLeaveHtmlFullScreen() {}
+    virtual void OnTouchBarItemResult(const std::string& item_id,
+                                      const base::DictionaryValue& details) {}
+    virtual void OnNewWindowForTab() {}
 
-  // Called when window message received
-  #if defined(OS_WIN)
-  virtual void OnWindowMessage(UINT message, WPARAM w_param, LPARAM l_param) {}
-  #endif
+    // Called when window message received
+#if defined(OS_WIN)
+    virtual void OnWindowMessage(UINT message, WPARAM w_param, LPARAM l_param) {}
+#endif
 
-  // Called when renderer is hung.
-  virtual void OnRendererUnresponsive() {}
+    // Called when renderer is hung.
+    virtual void OnRendererUnresponsive() {}
 
-  // Called when renderer recovers.
-  virtual void OnRendererResponsive() {}
+    // Called when renderer recovers.
+    virtual void OnRendererResponsive() {}
 
-  // Called on Windows when App Commands arrive (WM_APPCOMMAND)
-  virtual void OnExecuteWindowsCommand(const std::string& command_name) {}
+    // Called on Windows when App Commands arrive (WM_APPCOMMAND)
+    virtual void OnExecuteWindowsCommand(const std::string& command_name) {}
 };
 
 }  // namespace atom

@@ -3,7 +3,7 @@
 namespace brightray {
 
 gfx::ImageSkia InspectableWebContentsViewDelegate::GetDevToolsWindowIcon() {
-  return gfx::ImageSkia();
+    return gfx::ImageSkia();
 }
 
 }  // namespace brightray

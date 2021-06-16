@@ -12,21 +12,21 @@
 namespace atom {
 
 class ObjectLifeMonitor {
- protected:
-  ObjectLifeMonitor(v8::Isolate* isolate, v8::Local<v8::Object> target);
-  virtual ~ObjectLifeMonitor();
+protected:
+    ObjectLifeMonitor(v8::Isolate* isolate, v8::Local<v8::Object> target);
+    virtual ~ObjectLifeMonitor();
 
-  virtual void RunDestructor() = 0;
+    virtual void RunDestructor() = 0;
 
- private:
-  static void OnObjectGC(const v8::WeakCallbackInfo<ObjectLifeMonitor>& data);
-  static void Free(const v8::WeakCallbackInfo<ObjectLifeMonitor>& data);
+private:
+    static void OnObjectGC(const v8::WeakCallbackInfo<ObjectLifeMonitor>& data);
+    static void Free(const v8::WeakCallbackInfo<ObjectLifeMonitor>& data);
 
-  v8::Global<v8::Object> target_;
+    v8::Global<v8::Object> target_;
 
-  base::WeakPtrFactory<ObjectLifeMonitor> weak_ptr_factory_;
+    base::WeakPtrFactory<ObjectLifeMonitor> weak_ptr_factory_;
 
-  DISALLOW_COPY_AND_ASSIGN(ObjectLifeMonitor);
+    DISALLOW_COPY_AND_ASSIGN(ObjectLifeMonitor);
 };
 
 }  // namespace atom

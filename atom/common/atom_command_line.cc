@@ -19,26 +19,26 @@ std::vector<std::wstring> AtomCommandLine::wargv_;
 
 // static
 void AtomCommandLine::Init(int argc, const char* const* argv) {
-  // Hack around with the argv pointer. Used for process.title = "blah"
-  char** new_argv = uv_setup_args(argc, const_cast<char**>(argv));
-  for (int i = 0; i < argc; ++i) {
-    argv_.push_back(new_argv[i]);
-  }
+    // Hack around with the argv pointer. Used for process.title = "blah"
+    char** new_argv = uv_setup_args(argc, const_cast<char**>(argv));
+    for (int i = 0; i < argc; ++i) {
+        argv_.push_back(new_argv[i]);
+    }
 }
 
 #if defined(OS_WIN)
 // static
 void AtomCommandLine::InitW(int argc, const wchar_t* const* argv) {
-  for (int i = 0; i < argc; ++i) {
-    wargv_.push_back(argv[i]);
-  }
+    for (int i = 0; i < argc; ++i) {
+        wargv_.push_back(argv[i]);
+    }
 }
 #endif
 
 #if defined(OS_LINUX)
 // static
 void AtomCommandLine::InitializeFromCommandLine() {
-  argv_ = base::CommandLine::ForCurrentProcess()->argv();
+    argv_ = base::CommandLine::ForCurrentProcess()->argv();
 }
 #endif
 

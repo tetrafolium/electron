@@ -12,21 +12,21 @@ namespace mate {
 
 template<>
 struct Converter<ui::MenuSourceType> {
-  static v8::Local<v8::Value> ToV8(v8::Isolate* isolate,
-                                   const ui::MenuSourceType& in) {
-    switch (in) {
-      case ui::MENU_SOURCE_MOUSE:
-        return mate::StringToV8(isolate, "mouse");
-      case ui::MENU_SOURCE_KEYBOARD:
-        return mate::StringToV8(isolate, "keyboard");
-      case ui::MENU_SOURCE_TOUCH:
-        return mate::StringToV8(isolate, "touch");
-      case ui::MENU_SOURCE_TOUCH_EDIT_MENU:
-        return mate::StringToV8(isolate, "touchMenu");
-      default:
-        return mate::StringToV8(isolate, "none");
+    static v8::Local<v8::Value> ToV8(v8::Isolate* isolate,
+                                     const ui::MenuSourceType& in) {
+        switch (in) {
+        case ui::MENU_SOURCE_MOUSE:
+            return mate::StringToV8(isolate, "mouse");
+        case ui::MENU_SOURCE_KEYBOARD:
+            return mate::StringToV8(isolate, "keyboard");
+        case ui::MENU_SOURCE_TOUCH:
+            return mate::StringToV8(isolate, "touch");
+        case ui::MENU_SOURCE_TOUCH_EDIT_MENU:
+            return mate::StringToV8(isolate, "touchMenu");
+        default:
+            return mate::StringToV8(isolate, "none");
+        }
     }
-  }
 };
 
 }  // namespace mate

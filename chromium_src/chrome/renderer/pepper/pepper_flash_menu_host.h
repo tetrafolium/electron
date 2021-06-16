@@ -25,45 +25,45 @@ class SerializedFlashMenu;
 }
 
 class PepperFlashMenuHost : public ppapi::host::ResourceHost,
-                            public content::ContextMenuClient {
- public:
-  PepperFlashMenuHost(content::RendererPpapiHost* host,
-                      PP_Instance instance,
-                      PP_Resource resource,
-                      const ppapi::proxy::SerializedFlashMenu& serial_menu);
-  ~PepperFlashMenuHost() override;
+    public content::ContextMenuClient {
+public:
+    PepperFlashMenuHost(content::RendererPpapiHost* host,
+                        PP_Instance instance,
+                        PP_Resource resource,
+                        const ppapi::proxy::SerializedFlashMenu& serial_menu);
+    ~PepperFlashMenuHost() override;
 
-  int32_t OnResourceMessageReceived(
-      const IPC::Message& msg,
-      ppapi::host::HostMessageContext* context) override;
+    int32_t OnResourceMessageReceived(
+        const IPC::Message& msg,
+        ppapi::host::HostMessageContext* context) override;
 
- private:
-  int32_t OnHostMsgShow(ppapi::host::HostMessageContext* context,
-                        const PP_Point& location);
+private:
+    int32_t OnHostMsgShow(ppapi::host::HostMessageContext* context,
+                          const PP_Point& location);
 
-  // ContextMenuClient implementation.
-  void OnMenuAction(int request_id, unsigned action) override;
-  void OnMenuClosed(int request_id) override;
+    // ContextMenuClient implementation.
+    void OnMenuAction(int request_id, unsigned action) override;
+    void OnMenuClosed(int request_id) override;
 
-  void SendMenuReply(int32_t result, int action);
+    void SendMenuReply(int32_t result, int action);
 
-  content::RendererPpapiHost* renderer_ppapi_host_;
+    content::RendererPpapiHost* renderer_ppapi_host_;
 
-  bool showing_context_menu_;
-  int context_menu_request_id_;
+    bool showing_context_menu_;
+    int context_menu_request_id_;
 
-  std::vector<content::MenuItem> menu_data_;
+    std::vector<content::MenuItem> menu_data_;
 
-  // We send |MenuItem|s, which have an |unsigned| "action" field instead of
-  // an |int32_t| ID. (CONTENT also limits the range of valid values for
-  // actions.) This maps actions to IDs.
-  std::vector<int32_t> menu_id_map_;
+    // We send |MenuItem|s, which have an |unsigned| "action" field instead of
+    // an |int32_t| ID. (CONTENT also limits the range of valid values for
+    // actions.) This maps actions to IDs.
+    std::vector<int32_t> menu_id_map_;
 
-  // Used to send a single context menu "completion" upon menu close.
-  bool has_saved_context_menu_action_;
-  unsigned saved_context_menu_action_;
+    // Used to send a single context menu "completion" upon menu close.
+    bool has_saved_context_menu_action_;
+    unsigned saved_context_menu_action_;
 
-  DISALLOW_COPY_AND_ASSIGN(PepperFlashMenuHost);
+    DISALLOW_COPY_AND_ASSIGN(PepperFlashMenuHost);
 };
 
 #endif  // CHROME_RENDERER_PEPPER_PEPPER_FLASH_MENU_HOST_H_

@@ -13,8 +13,8 @@ class NotificationPresenterMac;
 
 @interface NotificationCenterDelegate :
     NSObject<NSUserNotificationCenterDelegate> {
- @private
-  brightray::NotificationPresenterMac* presenter_;
+@private
+    brightray::NotificationPresenterMac* presenter_;
 }
 - (instancetype)initWithPresenter:(brightray::NotificationPresenterMac*)presenter;
 @end

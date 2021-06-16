@@ -10,34 +10,34 @@
 namespace brightray {
 
 class MediaStreamDevicesController {
- public:
-  MediaStreamDevicesController(const content::MediaStreamRequest& request,
-                               const content::MediaResponseCallback& callback);
+public:
+    MediaStreamDevicesController(const content::MediaStreamRequest& request,
+                                 const content::MediaResponseCallback& callback);
 
-  virtual ~MediaStreamDevicesController();
+    virtual ~MediaStreamDevicesController();
 
-  // Accept or deny the request based on the default policy.
-  bool TakeAction();
+    // Accept or deny the request based on the default policy.
+    bool TakeAction();
 
-  // Explicitly accept or deny the request.
-  void Accept();
-  void Deny(content::MediaStreamRequestResult result);
+    // Explicitly accept or deny the request.
+    void Accept();
+    void Deny(content::MediaStreamRequestResult result);
 
- private:
-  // Handle the request of desktop or tab screen cast.
-  void HandleUserMediaRequest();
+private:
+    // Handle the request of desktop or tab screen cast.
+    void HandleUserMediaRequest();
 
-  // The original request for access to devices.
-  const content::MediaStreamRequest request_;
+    // The original request for access to devices.
+    const content::MediaStreamRequest request_;
 
-  // The callback that needs to be Run to notify WebRTC of whether access to
-  // audio/video devices was granted or not.
-  content::MediaResponseCallback callback_;
+    // The callback that needs to be Run to notify WebRTC of whether access to
+    // audio/video devices was granted or not.
+    content::MediaResponseCallback callback_;
 
-  bool microphone_requested_;
-  bool webcam_requested_;
+    bool microphone_requested_;
+    bool webcam_requested_;
 
-  DISALLOW_COPY_AND_ASSIGN(MediaStreamDevicesController);
+    DISALLOW_COPY_AND_ASSIGN(MediaStreamDevicesController);
 };
 
 }  // namespace brightray

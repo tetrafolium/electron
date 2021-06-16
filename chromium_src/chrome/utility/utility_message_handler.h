@@ -10,12 +10,12 @@ class Message;
 }
 
 class UtilityMessageHandler {
- public:
-  virtual ~UtilityMessageHandler() {}
+public:
+    virtual ~UtilityMessageHandler() {}
 
-  // Called when a message is received.  Returns true iff the message was
-  // handled.
-  virtual bool OnMessageReceived(const IPC::Message& message) = 0;
+    // Called when a message is received.  Returns true iff the message was
+    // handled.
+    virtual bool OnMessageReceived(const IPC::Message& message) = 0;
 };
 
 #endif  // CHROME_UTILITY_UTILITY_MESSAGE_HANDLER_H_

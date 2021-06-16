@@ -23,37 +23,37 @@ namespace atom {
 namespace api {
 
 class Screen : public mate::EventEmitter<Screen>,
-               public display::DisplayObserver {
- public:
-  static v8::Local<v8::Value> Create(v8::Isolate* isolate);
+    public display::DisplayObserver {
+public:
+    static v8::Local<v8::Value> Create(v8::Isolate* isolate);
 
-  static void BuildPrototype(v8::Isolate* isolate,
-                             v8::Local<v8::FunctionTemplate> prototype);
+    static void BuildPrototype(v8::Isolate* isolate,
+                               v8::Local<v8::FunctionTemplate> prototype);
 
- protected:
-  Screen(v8::Isolate* isolate, display::Screen* screen);
-  ~Screen() override;
+protected:
+    Screen(v8::Isolate* isolate, display::Screen* screen);
+    ~Screen() override;
 
-  gfx::Point GetCursorScreenPoint();
-  display::Display GetPrimaryDisplay();
-  std::vector<display::Display> GetAllDisplays();
-  display::Display GetDisplayNearestPoint(const gfx::Point& point);
-  display::Display GetDisplayMatching(const gfx::Rect& match_rect);
+    gfx::Point GetCursorScreenPoint();
+    display::Display GetPrimaryDisplay();
+    std::vector<display::Display> GetAllDisplays();
+    display::Display GetDisplayNearestPoint(const gfx::Point& point);
+    display::Display GetDisplayMatching(const gfx::Rect& match_rect);
 
 #if defined(OS_MACOSX)
-  int getMenuBarHeight();
+    int getMenuBarHeight();
 #endif
 
-  // display::DisplayObserver:
-  void OnDisplayAdded(const display::Display& new_display) override;
-  void OnDisplayRemoved(const display::Display& old_display) override;
-  void OnDisplayMetricsChanged(const display::Display& display,
-                               uint32_t changed_metrics) override;
+    // display::DisplayObserver:
+    void OnDisplayAdded(const display::Display& new_display) override;
+    void OnDisplayRemoved(const display::Display& old_display) override;
+    void OnDisplayMetricsChanged(const display::Display& display,
+                                 uint32_t changed_metrics) override;
 
- private:
-  display::Screen* screen_;
+private:
+    display::Screen* screen_;
 
-  DISALLOW_COPY_AND_ASSIGN(Screen);
+    DISALLOW_COPY_AND_ASSIGN(Screen);
 };
 
 }  // namespace api

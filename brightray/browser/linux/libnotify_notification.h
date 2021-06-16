@@ -15,26 +15,26 @@
 namespace brightray {
 
 class LibnotifyNotification : public Notification {
- public:
-  LibnotifyNotification(NotificationDelegate* delegate,
-                        NotificationPresenter* presenter);
-  virtual ~LibnotifyNotification();
+public:
+    LibnotifyNotification(NotificationDelegate* delegate,
+                          NotificationPresenter* presenter);
+    virtual ~LibnotifyNotification();
 
-  static bool Initialize();
+    static bool Initialize();
 
-  // Notification:
-  void Show(const NotificationOptions& options) override;
-  void Dismiss() override;
+    // Notification:
+    void Show(const NotificationOptions& options) override;
+    void Dismiss() override;
 
- private:
-  CHROMEG_CALLBACK_0(LibnotifyNotification, void, OnNotificationClosed,
-                     NotifyNotification*);
-  CHROMEG_CALLBACK_1(LibnotifyNotification, void, OnNotificationView,
-                     NotifyNotification*, char*);
+private:
+    CHROMEG_CALLBACK_0(LibnotifyNotification, void, OnNotificationClosed,
+                       NotifyNotification*);
+    CHROMEG_CALLBACK_1(LibnotifyNotification, void, OnNotificationView,
+                       NotifyNotification*, char*);
 
-  NotifyNotification* notification_;
+    NotifyNotification* notification_;
 
-  DISALLOW_COPY_AND_ASSIGN(LibnotifyNotification);
+    DISALLOW_COPY_AND_ASSIGN(LibnotifyNotification);
 };
 
 }  // namespace brightray

@@ -20,111 +20,111 @@ namespace {
 const content::MediaStreamDevice* FindDeviceWithId(
     const content::MediaStreamDevices& devices,
     const std::string& device_id) {
-  auto iter = devices.begin();
-  for (; iter != devices.end(); ++iter) {
-    if (iter->id == device_id) {
-      return &(*iter);
+    auto iter = devices.begin();
+    for (; iter != devices.end(); ++iter) {
+        if (iter->id == device_id) {
+            return &(*iter);
+        }
     }
-  }
-  return nullptr;
+    return nullptr;
 }
 
 const MediaStreamDevices& EmptyDevices() {
-  static MediaStreamDevices* devices = new MediaStreamDevices;
-  return *devices;
+    static MediaStreamDevices* devices = new MediaStreamDevices;
+    return *devices;
 }
 
 }  // namespace
 
 MediaCaptureDevicesDispatcher* MediaCaptureDevicesDispatcher::GetInstance() {
-  return base::Singleton<MediaCaptureDevicesDispatcher>::get();
+    return base::Singleton<MediaCaptureDevicesDispatcher>::get();
 }
 
 MediaCaptureDevicesDispatcher::MediaCaptureDevicesDispatcher()
     : is_device_enumeration_disabled_(false) {
-  // MediaCaptureDevicesDispatcher is a singleton. It should be created on
-  // UI thread.
-  DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+    // MediaCaptureDevicesDispatcher is a singleton. It should be created on
+    // UI thread.
+    DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
 }
 
 MediaCaptureDevicesDispatcher::~MediaCaptureDevicesDispatcher() {}
 
 const MediaStreamDevices&
 MediaCaptureDevicesDispatcher::GetAudioCaptureDevices() {
-  DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
-  if (is_device_enumeration_disabled_)
-    return EmptyDevices();
-  return content::MediaCaptureDevices::GetInstance()->GetAudioCaptureDevices();
+    DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+    if (is_device_enumeration_disabled_)
+        return EmptyDevices();
+    return content::MediaCaptureDevices::GetInstance()->GetAudioCaptureDevices();
 }
 
 const MediaStreamDevices&
 MediaCaptureDevicesDispatcher::GetVideoCaptureDevices() {
-  DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
-  if (is_device_enumeration_disabled_)
-    return EmptyDevices();
-  return content::MediaCaptureDevices::GetInstance()->GetVideoCaptureDevices();
+    DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+    if (is_device_enumeration_disabled_)
+        return EmptyDevices();
+    return content::MediaCaptureDevices::GetInstance()->GetVideoCaptureDevices();
 }
 
 void MediaCaptureDevicesDispatcher::GetDefaultDevices(
     bool audio,
     bool video,
     content::MediaStreamDevices* devices) {
-  DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
-  DCHECK(audio || video);
+    DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+    DCHECK(audio || video);
 
-  if (audio) {
-    const content::MediaStreamDevice* device = GetFirstAvailableAudioDevice();
-    if (device)
-      devices->push_back(*device);
-  }
+    if (audio) {
+        const content::MediaStreamDevice* device = GetFirstAvailableAudioDevice();
+        if (device)
+            devices->push_back(*device);
+    }
 
-  if (video) {
-    const content::MediaStreamDevice* device = GetFirstAvailableVideoDevice();
-    if (device)
-      devices->push_back(*device);
-  }
+    if (video) {
+        const content::MediaStreamDevice* device = GetFirstAvailableVideoDevice();
+        if (device)
+            devices->push_back(*device);
+    }
 }
 
 const content::MediaStreamDevice*
 MediaCaptureDevicesDispatcher::GetRequestedAudioDevice(
     const std::string& requested_audio_device_id) {
-  DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
-  const content::MediaStreamDevices& audio_devices = GetAudioCaptureDevices();
-  const content::MediaStreamDevice* const device =
-      FindDeviceWithId(audio_devices, requested_audio_device_id);
-  return device;
+    DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+    const content::MediaStreamDevices& audio_devices = GetAudioCaptureDevices();
+    const content::MediaStreamDevice* const device =
+        FindDeviceWithId(audio_devices, requested_audio_device_id);
+    return device;
 }
 
 const content::MediaStreamDevice*
 MediaCaptureDevicesDispatcher::GetFirstAvailableAudioDevice() {
-  DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
-  const content::MediaStreamDevices& audio_devices = GetAudioCaptureDevices();
-  if (audio_devices.empty())
-    return nullptr;
-  return &(*audio_devices.begin());
+    DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+    const content::MediaStreamDevices& audio_devices = GetAudioCaptureDevices();
+    if (audio_devices.empty())
+        return nullptr;
+    return &(*audio_devices.begin());
 }
 
 const content::MediaStreamDevice*
 MediaCaptureDevicesDispatcher::GetRequestedVideoDevice(
     const std::string& requested_video_device_id) {
-  DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
-  const content::MediaStreamDevices& video_devices = GetVideoCaptureDevices();
-  const content::MediaStreamDevice* const device =
-      FindDeviceWithId(video_devices, requested_video_device_id);
-  return device;
+    DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+    const content::MediaStreamDevices& video_devices = GetVideoCaptureDevices();
+    const content::MediaStreamDevice* const device =
+        FindDeviceWithId(video_devices, requested_video_device_id);
+    return device;
 }
 
 const content::MediaStreamDevice*
 MediaCaptureDevicesDispatcher::GetFirstAvailableVideoDevice() {
-  DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
-  const content::MediaStreamDevices& video_devices = GetVideoCaptureDevices();
-  if (video_devices.empty())
-    return nullptr;
-  return &(*video_devices.begin());
+    DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+    const content::MediaStreamDevices& video_devices = GetVideoCaptureDevices();
+    if (video_devices.empty())
+        return nullptr;
+    return &(*video_devices.begin());
 }
 
 void MediaCaptureDevicesDispatcher::DisableDeviceEnumerationForTesting() {
-  is_device_enumeration_disabled_ = true;
+    is_device_enumeration_disabled_ = true;
 }
 
 void MediaCaptureDevicesDispatcher::OnAudioCaptureDevicesChanged() {

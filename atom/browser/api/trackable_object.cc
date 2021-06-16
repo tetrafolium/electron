@@ -16,56 +16,58 @@ namespace {
 const char* kTrackedObjectKey = "TrackedObjectKey";
 
 class IDUserData : public base::SupportsUserData::Data {
- public:
-  explicit IDUserData(int32_t id) : id_(id) {}
+public:
+    explicit IDUserData(int32_t id) : id_(id) {}
 
-  operator int32_t() const { return id_; }
+    operator int32_t() const {
+        return id_;
+    }
 
- private:
-  int32_t id_;
+private:
+    int32_t id_;
 
-  DISALLOW_COPY_AND_ASSIGN(IDUserData);
+    DISALLOW_COPY_AND_ASSIGN(IDUserData);
 };
 
 }  // namespace
 
 TrackableObjectBase::TrackableObjectBase()
     : weak_map_id_(0), weak_factory_(this) {
-  cleanup_ = RegisterDestructionCallback(GetDestroyClosure());
+    cleanup_ = RegisterDestructionCallback(GetDestroyClosure());
 }
 
 TrackableObjectBase::~TrackableObjectBase() {
-  cleanup_.Run();
+    cleanup_.Run();
 }
 
 base::Closure TrackableObjectBase::GetDestroyClosure() {
-  return base::Bind(&TrackableObjectBase::Destroy, weak_factory_.GetWeakPtr());
+    return base::Bind(&TrackableObjectBase::Destroy, weak_factory_.GetWeakPtr());
 }
 
 void TrackableObjectBase::Destroy() {
-  delete this;
+    delete this;
 }
 
 void TrackableObjectBase::AttachAsUserData(base::SupportsUserData* wrapped) {
-  wrapped->SetUserData(kTrackedObjectKey,
-      base::MakeUnique<IDUserData>(weak_map_id_));
+    wrapped->SetUserData(kTrackedObjectKey,
+                         base::MakeUnique<IDUserData>(weak_map_id_));
 }
 
 // static
 int32_t TrackableObjectBase::GetIDFromWrappedClass(
     base::SupportsUserData* wrapped) {
-  if (wrapped) {
-    auto id = static_cast<IDUserData*>(wrapped->GetUserData(kTrackedObjectKey));
-    if (id)
-      return *id;
-  }
-  return 0;
+    if (wrapped) {
+        auto id = static_cast<IDUserData*>(wrapped->GetUserData(kTrackedObjectKey));
+        if (id)
+            return *id;
+    }
+    return 0;
 }
 
 // static
 base::Closure TrackableObjectBase::RegisterDestructionCallback(
     const base::Closure& c) {
-  return atom::AtomBrowserMainParts::Get()->RegisterDestructionCallback(c);
+    return atom::AtomBrowserMainParts::Get()->RegisterDestructionCallback(c);
 }
 
 }  // namespace mate

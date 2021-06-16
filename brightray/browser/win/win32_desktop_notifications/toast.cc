@@ -26,7 +26,7 @@ static COLORREF GetAccentColor() {
                                 &type,
                                 reinterpret_cast<BYTE*>(&color),
                                 &(size = sizeof(color))) == ERROR_SUCCESS &&
-                type == REG_DWORD) {
+                    type == REG_DWORD) {
                 // convert from RGBA
                 color = RGB(GetRValue(color),
                             GetGValue(color),
@@ -89,10 +89,10 @@ static HBITMAP StretchBitmap(HBITMAP bitmap, unsigned width, unsigned height) {
             if (GetDIBits(hdc_screen, bitmap, 0, 0, 0,
                           reinterpret_cast<BITMAPINFO*>(&bmi),
                           DIB_RGB_COLORS) &&
-                bmi.biSizeImage > 0 &&
-                (bmi.biSizeImage % 4) == 0) {
+                    bmi.biSizeImage > 0 &&
+                    (bmi.biSizeImage % 4) == 0) {
                 auto buf = reinterpret_cast<BYTE*>(
-                    _aligned_malloc(bmi.biSizeImage, sizeof(DWORD)));
+                               _aligned_malloc(bmi.biSizeImage, sizeof(DWORD)));
 
                 if (buf) {
                     GetDIBits(hdc_screen, bitmap, 0, bm.bmHeight, buf,
@@ -219,14 +219,14 @@ LRESULT DesktopNotificationController::Toast::WndProc(
     HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam) {
     switch (message) {
     case WM_CREATE:
-        {
-            auto& cs = reinterpret_cast<const CREATESTRUCT*&>(lparam);
-            auto data =
-                static_cast<shared_ptr<NotificationData>*>(cs->lpCreateParams);
-            auto inst = new Toast(hwnd, data);
-            SetWindowLongPtr(hwnd, 0, (LONG_PTR)inst);
-        }
-        break;
+    {
+        auto& cs = reinterpret_cast<const CREATESTRUCT*&>(lparam);
+        auto data =
+            static_cast<shared_ptr<NotificationData>*>(cs->lpCreateParams);
+        auto inst = new Toast(hwnd, data);
+        SetWindowLongPtr(hwnd, 0, (LONG_PTR)inst);
+    }
+    break;
 
     case WM_NCDESTROY:
         delete Get(hwnd);
@@ -243,64 +243,64 @@ LRESULT DesktopNotificationController::Toast::WndProc(
         return 0;
 
     case WM_LBUTTONDOWN:
-        {
-            auto inst = Get(hwnd);
+    {
+        auto inst = Get(hwnd);
 
-            inst->Dismiss();
+        inst->Dismiss();
 
-            Notification notification(inst->data_);
-            if (inst->is_close_hot_)
-                inst->data_->controller->OnNotificationDismissed(notification);
-            else
-                inst->data_->controller->OnNotificationClicked(notification);
-        }
-        return 0;
+        Notification notification(inst->data_);
+        if (inst->is_close_hot_)
+            inst->data_->controller->OnNotificationDismissed(notification);
+        else
+            inst->data_->controller->OnNotificationClicked(notification);
+    }
+    return 0;
 
     case WM_MOUSEMOVE:
-        {
-            auto inst = Get(hwnd);
-            if (!inst->is_highlighted_) {
-                inst->is_highlighted_ = true;
+    {
+        auto inst = Get(hwnd);
+        if (!inst->is_highlighted_) {
+            inst->is_highlighted_ = true;
 
-                TRACKMOUSEEVENT tme = { sizeof(tme), TME_LEAVE, hwnd };
-                TrackMouseEvent(&tme);
-            }
-
-            POINT cursor = { GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam) };
-            inst->is_close_hot_ =
-                (PtInRect(&inst->close_button_rect_, cursor) != FALSE);
-
-            if (!inst->is_non_interactive_)
-                inst->CancelDismiss();
-
-            inst->UpdateContents();
+            TRACKMOUSEEVENT tme = { sizeof(tme), TME_LEAVE, hwnd };
+            TrackMouseEvent(&tme);
         }
-        return 0;
+
+        POINT cursor = { GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam) };
+        inst->is_close_hot_ =
+            (PtInRect(&inst->close_button_rect_, cursor) != FALSE);
+
+        if (!inst->is_non_interactive_)
+            inst->CancelDismiss();
+
+        inst->UpdateContents();
+    }
+    return 0;
 
     case WM_MOUSELEAVE:
-        {
-            auto inst = Get(hwnd);
-            inst->is_highlighted_ = false;
-            inst->is_close_hot_ = false;
-            inst->UpdateContents();
+    {
+        auto inst = Get(hwnd);
+        inst->is_highlighted_ = false;
+        inst->is_close_hot_ = false;
+        inst->UpdateContents();
 
-            if (!inst->ease_out_active_ && inst->ease_in_pos_ == 1.0f)
-                inst->ScheduleDismissal();
+        if (!inst->ease_out_active_ && inst->ease_in_pos_ == 1.0f)
+            inst->ScheduleDismissal();
 
-            // Make sure stack collapse happens if needed
-            inst->data_->controller->StartAnimation();
-        }
-        return 0;
+        // Make sure stack collapse happens if needed
+        inst->data_->controller->StartAnimation();
+    }
+    return 0;
 
     case WM_WINDOWPOSCHANGED:
-        {
-            auto& wp = reinterpret_cast<WINDOWPOS*&>(lparam);
-            if (wp->flags & SWP_HIDEWINDOW) {
-                if (!IsWindowVisible(hwnd))
-                    Get(hwnd)->is_highlighted_ = false;
-            }
+    {
+        auto& wp = reinterpret_cast<WINDOWPOS*&>(lparam);
+        if (wp->flags & SWP_HIDEWINDOW) {
+            if (!IsWindowVisible(hwnd))
+                Get(hwnd)->is_highlighted_ = false;
         }
-        break;
+    }
+    break;
     }
 
     return DefWindowProc(hwnd, message, wparam, lparam);
@@ -333,7 +333,9 @@ void DesktopNotificationController::Toast::Draw() {
         (GetGValue(back_color) * 0.587f / 255) +
         (GetBValue(back_color) * 0.114f / 255);
 
-    const struct { float r, g, b; } back_f = {
+    const struct {
+        float r, g, b;
+    } back_f = {
         GetRValue(back_color) / 255.0f,
         GetGValue(back_color) / 255.0f,
         GetBValue(back_color) / 255.0f,
@@ -539,10 +541,10 @@ void DesktopNotificationController::Toast::UpdateBufferSize() {
         }
 
         if (new_size.cx != this->toast_size_.cx ||
-            new_size.cy != this->toast_size_.cy) {
+                new_size.cy != this->toast_size_.cy) {
             HDC hdc_screen = GetDC(NULL);
             auto new_bitmap = CreateCompatibleBitmap(hdc_screen,
-                                                     new_size.cx, new_size.cy);
+                              new_size.cx, new_size.cy);
             ReleaseDC(NULL, hdc_screen);
 
             if (new_bitmap) {
@@ -550,11 +552,13 @@ void DesktopNotificationController::Toast::UpdateBufferSize() {
                     RECT dirty1 = {}, dirty2 = {};
                     if (toast_size_.cx < new_size.cx) {
                         dirty1 = { toast_size_.cx, 0,
-                                   new_size.cx, toast_size_.cy };
+                                   new_size.cx, toast_size_.cy
+                                 };
                     }
                     if (toast_size_.cy < new_size.cy) {
                         dirty2 = { 0, toast_size_.cy,
-                                   new_size.cx, new_size.cy };
+                                   new_size.cx, new_size.cy
+                                 };
                     }
 
                     if (this->bitmap_) DeleteBitmap(this->bitmap_);
@@ -598,8 +602,8 @@ void DesktopNotificationController::Toast::UpdateBufferSize() {
 void DesktopNotificationController::Toast::UpdateScaledImage(const SIZE& size) {
     BITMAP bm;
     if (!GetObject(scaled_image_, sizeof(bm), &bm) ||
-        bm.bmWidth != size.cx ||
-        bm.bmHeight != size.cy) {
+            bm.bmWidth != size.cx ||
+            bm.bmHeight != size.cy) {
         if (scaled_image_) DeleteBitmap(scaled_image_);
         scaled_image_ = StretchBitmap(data_->image, size.cx, size.cy);
     }
@@ -669,7 +673,7 @@ void DesktopNotificationController::Toast::SetVerticalPosition(int y) {
 
     // Make sure the new animation's origin is at the current position
     vertical_pos_ += static_cast<int>(
-        (vertical_pos_target_ - vertical_pos_) * stack_collapse_pos_);
+                         (vertical_pos_target_ - vertical_pos_) * stack_collapse_pos_);
 
     // Set new target position and start the animation
     vertical_pos_target_ = y;

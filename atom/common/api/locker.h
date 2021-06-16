@@ -14,21 +14,23 @@ namespace mate {
 
 // Only lock when lockers are used in current thread.
 class Locker {
- public:
-  explicit Locker(v8::Isolate* isolate);
-  ~Locker();
+public:
+    explicit Locker(v8::Isolate* isolate);
+    ~Locker();
 
-  // Returns whether current process is browser process, currently we detect it
-  // by checking whether current has used V8 Lock, but it might be a bad idea.
-  static inline bool IsBrowserProcess() { return v8::Locker::IsActive(); }
+    // Returns whether current process is browser process, currently we detect it
+    // by checking whether current has used V8 Lock, but it might be a bad idea.
+    static inline bool IsBrowserProcess() {
+        return v8::Locker::IsActive();
+    }
 
- private:
-  void* operator new(size_t size);
-  void operator delete(void*, size_t);
+private:
+    void* operator new(size_t size);
+    void operator delete(void*, size_t);
 
-  std::unique_ptr<v8::Locker> locker_;
+    std::unique_ptr<v8::Locker> locker_;
 
-  DISALLOW_COPY_AND_ASSIGN(Locker);
+    DISALLOW_COPY_AND_ASSIGN(Locker);
 };
 
 }  // namespace mate

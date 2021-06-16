@@ -7,8 +7,8 @@
 namespace mate {
 
 Locker::Locker(v8::Isolate* isolate) {
-  if (IsBrowserProcess())
-    locker_.reset(new v8::Locker(isolate));
+    if (IsBrowserProcess())
+        locker_.reset(new v8::Locker(isolate));
 }
 
 Locker::~Locker() {

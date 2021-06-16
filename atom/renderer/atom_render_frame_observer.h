@@ -11,37 +11,37 @@
 namespace atom {
 
 enum World {
-  MAIN_WORLD = 0,
-  // Use a high number far away from 0 to not collide with any other world
-  // IDs created internally by Chrome.
-  ISOLATED_WORLD = 999
+    MAIN_WORLD = 0,
+    // Use a high number far away from 0 to not collide with any other world
+    // IDs created internally by Chrome.
+    ISOLATED_WORLD = 999
 };
 
 // Helper class to forward the messages to the client.
 class AtomRenderFrameObserver : public content::RenderFrameObserver {
- public:
-  AtomRenderFrameObserver(content::RenderFrame* frame,
-                          RendererClientBase* renderer_client);
+public:
+    AtomRenderFrameObserver(content::RenderFrame* frame,
+                            RendererClientBase* renderer_client);
 
-  // content::RenderFrameObserver:
-  void DidClearWindowObject() override;
-  void DidCreateScriptContext(v8::Handle<v8::Context> context,
-                              int world_id) override;
-  void DraggableRegionsChanged() override;
-  void WillReleaseScriptContext(v8::Local<v8::Context> context,
+    // content::RenderFrameObserver:
+    void DidClearWindowObject() override;
+    void DidCreateScriptContext(v8::Handle<v8::Context> context,
                                 int world_id) override;
-  void OnDestruct() override;
+    void DraggableRegionsChanged() override;
+    void WillReleaseScriptContext(v8::Local<v8::Context> context,
+                                  int world_id) override;
+    void OnDestruct() override;
 
- private:
-  bool ShouldNotifyClient(int world_id);
-  void CreateIsolatedWorldContext();
-  bool IsMainWorld(int world_id);
-  bool IsIsolatedWorld(int world_id);
+private:
+    bool ShouldNotifyClient(int world_id);
+    void CreateIsolatedWorldContext();
+    bool IsMainWorld(int world_id);
+    bool IsIsolatedWorld(int world_id);
 
-  content::RenderFrame* render_frame_;
-  RendererClientBase* renderer_client_;
+    content::RenderFrame* render_frame_;
+    RendererClientBase* renderer_client_;
 
-  DISALLOW_COPY_AND_ASSIGN(AtomRenderFrameObserver);
+    DISALLOW_COPY_AND_ASSIGN(AtomRenderFrameObserver);
 };
 
 }  // namespace atom

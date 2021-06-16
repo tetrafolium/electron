@@ -13,23 +13,23 @@ BrowserProcess* g_browser_process = NULL;
 BrowserProcess::BrowserProcess()
     : print_job_manager_(new printing::PrintJobManager),
       icon_manager_(new IconManager) {
-  g_browser_process = this;
+    g_browser_process = this;
 }
 
 BrowserProcess::~BrowserProcess() {
-  g_browser_process = NULL;
+    g_browser_process = NULL;
 }
 
 std::string BrowserProcess::GetApplicationLocale() {
-  return l10n_util::GetApplicationLocale("");
+    return l10n_util::GetApplicationLocale("");
 }
 
 IconManager* BrowserProcess::GetIconManager() {
-  if (!icon_manager_.get())
-    icon_manager_.reset(new IconManager);
-  return icon_manager_.get();
+    if (!icon_manager_.get())
+        icon_manager_.reset(new IconManager);
+    return icon_manager_.get();
 }
 
 printing::PrintJobManager* BrowserProcess::print_job_manager() {
-  return print_job_manager_.get();
+    return print_job_manager_.get();
 }

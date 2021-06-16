@@ -9,7 +9,7 @@ class Win32Notification;
 class NotificationPresenterWin7 :
     public NotificationPresenter,
     public DesktopNotificationController {
- public:
+public:
     NotificationPresenterWin7() = default;
 
     Win32Notification* GetNotificationObjectByRef(
@@ -17,7 +17,7 @@ class NotificationPresenterWin7 :
 
     Win32Notification* GetNotificationObjectByTag(const std::string& tag);
 
- private:
+private:
     brightray::Notification* CreateNotificationObject(
         NotificationDelegate* delegate) override;
 

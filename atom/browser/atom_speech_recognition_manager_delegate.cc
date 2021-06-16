@@ -53,17 +53,17 @@ void AtomSpeechRecognitionManagerDelegate::OnAudioLevelsChange(
 void AtomSpeechRecognitionManagerDelegate::CheckRecognitionIsAllowed(
     int session_id,
     base::OnceCallback<void(bool ask_user, bool is_allowed)> callback) {
-  std::move(callback).Run(true, true);
+    std::move(callback).Run(true, true);
 }
 
 content::SpeechRecognitionEventListener*
 AtomSpeechRecognitionManagerDelegate::GetEventListener() {
-  return this;
+    return this;
 }
 
 bool AtomSpeechRecognitionManagerDelegate::FilterProfanities(
     int render_process_id) {
-  return false;
+    return false;
 }
 
 }  // namespace atom

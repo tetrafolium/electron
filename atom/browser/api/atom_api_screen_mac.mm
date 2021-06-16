@@ -10,7 +10,7 @@ namespace atom {
 namespace api {
 
 int Screen::getMenuBarHeight() {
-  return [[NSApp mainMenu] menuBarHeight];
+    return [[NSApp mainMenu] menuBarHeight];
 }
 
 }// namespace api

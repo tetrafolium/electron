@@ -21,29 +21,29 @@ NodeDebugger::~NodeDebugger() {
 }
 
 void NodeDebugger::Start(node::NodePlatform* platform) {
-  auto inspector = env_->inspector_agent();
-  if (inspector == nullptr)
-    return;
+    auto inspector = env_->inspector_agent();
+    if (inspector == nullptr)
+        return;
 
-  node::DebugOptions options;
-  for (auto& arg : base::CommandLine::ForCurrentProcess()->argv()) {
+    node::DebugOptions options;
+    for (auto& arg : base::CommandLine::ForCurrentProcess()->argv()) {
 #if defined(OS_WIN)
-    options.ParseOption("Electron", base::UTF16ToUTF8(arg));
+        options.ParseOption("Electron", base::UTF16ToUTF8(arg));
 #else
-    options.ParseOption("Electron", arg);
+        options.ParseOption("Electron", arg);
 #endif
-  }
-
-  if (options.inspector_enabled()) {
-    // Set process._debugWaitConnect if --inspect-brk was specified to stop
-    // the debugger on the first line
-    if (options.wait_for_connect()) {
-      mate::Dictionary process(env_->isolate(), env_->process_object());
-      process.Set("_breakFirstLine", true);
     }
 
-    inspector->Start(platform, nullptr, options);
-  }
+    if (options.inspector_enabled()) {
+        // Set process._debugWaitConnect if --inspect-brk was specified to stop
+        // the debugger on the first line
+        if (options.wait_for_connect()) {
+            mate::Dictionary process(env_->isolate(), env_->process_object());
+            process.Set("_breakFirstLine", true);
+        }
+
+        inspector->Start(platform, nullptr, options);
+    }
 }
 
 }  // namespace atom

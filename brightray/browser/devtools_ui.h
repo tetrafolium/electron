@@ -14,12 +14,12 @@ namespace brightray {
 class BrowserContext;
 
 class DevToolsUI : public content::WebUIController {
- public:
-  explicit DevToolsUI(content::BrowserContext* browser_context,
-                      content::WebUI* web_ui);
+public:
+    explicit DevToolsUI(content::BrowserContext* browser_context,
+                        content::WebUI* web_ui);
 
- private:
-  DISALLOW_COPY_AND_ASSIGN(DevToolsUI);
+private:
+    DISALLOW_COPY_AND_ASSIGN(DevToolsUI);
 };
 
 }  // namespace brightray

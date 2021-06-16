@@ -16,9 +16,9 @@ class FilePath;
 namespace chrome {
 
 enum NotifyChromeResult {
-  NOTIFY_SUCCESS,
-  NOTIFY_FAILED,
-  NOTIFY_WINDOW_HUNG,
+    NOTIFY_SUCCESS,
+    NOTIFY_FAILED,
+    NOTIFY_WINDOW_HUNG,
 };
 
 // Finds an already running Chrome window if it exists.
@@ -29,7 +29,7 @@ HWND FindRunningChromeWindow(const base::FilePath& user_data_dir);
 // Returns true if a running Chrome is found and successfully notified.
 // |fast_start| is true when this is being called on the window fast start path.
 NotifyChromeResult AttemptToNotifyRunningChrome(HWND remote_window,
-                                                bool fast_start);
+        bool fast_start);
 
 // Changes the notification timeout to |new_timeout|, returns the old timeout.
 base::TimeDelta SetNotificationTimeoutForTesting(base::TimeDelta new_timeout);

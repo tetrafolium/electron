@@ -29,10 +29,10 @@ v8::Local<v8::Value> EmitEvent(v8::Isolate* isolate,
                                v8::Local<v8::Object> obj,
                                const StringType& name,
                                const internal::ValueVector& args) {
-  internal::ValueVector concatenated_args = {StringToV8(isolate, name)};
-  concatenated_args.reserve(1 + args.size());
-  concatenated_args.insert(concatenated_args.end(), args.begin(), args.end());
-  return internal::CallMethodWithArgs(isolate, obj, "emit", &concatenated_args);
+    internal::ValueVector concatenated_args = {StringToV8(isolate, name)};
+    concatenated_args.reserve(1 + args.size());
+    concatenated_args.insert(concatenated_args.end(), args.begin(), args.end());
+    return internal::CallMethodWithArgs(isolate, obj, "emit", &concatenated_args);
 }
 
 // obj.emit(name, args...);
@@ -42,10 +42,10 @@ v8::Local<v8::Value> EmitEvent(v8::Isolate* isolate,
                                v8::Local<v8::Object> obj,
                                const StringType& name,
                                const Args&... args) {
-  internal::ValueVector converted_args = {
-      StringToV8(isolate, name), ConvertToV8(isolate, args)...,
-  };
-  return internal::CallMethodWithArgs(isolate, obj, "emit", &converted_args);
+    internal::ValueVector converted_args = {
+        StringToV8(isolate, name), ConvertToV8(isolate, args)...,
+    };
+    return internal::CallMethodWithArgs(isolate, obj, "emit", &converted_args);
 }
 
 // obj.custom_emit(args...)
@@ -54,11 +54,11 @@ v8::Local<v8::Value> CustomEmit(v8::Isolate* isolate,
                                 v8::Local<v8::Object> object,
                                 const char* custom_emit,
                                 const Args&... args) {
-  internal::ValueVector converted_args = {
-      ConvertToV8(isolate, args)...,
-  };
-  return internal::CallMethodWithArgs(isolate, object, custom_emit,
-                                      &converted_args);
+    internal::ValueVector converted_args = {
+        ConvertToV8(isolate, args)...,
+    };
+    return internal::CallMethodWithArgs(isolate, object, custom_emit,
+                                        &converted_args);
 }
 
 }  // namespace mate
