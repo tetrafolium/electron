@@ -15,55 +15,55 @@ using content::WebPluginInfo;
 using content::BrowserThread;
 
 WidevineCdmMessageFilter::WidevineCdmMessageFilter(
-    int render_process_id,
-    content::BrowserContext* browser_context)
-    : BrowserMessageFilter(ChromeMsgStart),
-      render_process_id_(render_process_id),
-      browser_context_(browser_context) {
+	int render_process_id,
+	content::BrowserContext* browser_context)
+	: BrowserMessageFilter(ChromeMsgStart),
+	render_process_id_(render_process_id),
+	browser_context_(browser_context) {
 }
 
 bool WidevineCdmMessageFilter::OnMessageReceived(const IPC::Message& message) {
-    IPC_BEGIN_MESSAGE_MAP(WidevineCdmMessageFilter, message)
+	IPC_BEGIN_MESSAGE_MAP(WidevineCdmMessageFilter, message)
 #if BUILDFLAG(ENABLE_PEPPER_CDMS)
-    IPC_MESSAGE_HANDLER(
-        ChromeViewHostMsg_IsInternalPluginAvailableForMimeType,
-        OnIsInternalPluginAvailableForMimeType)
+	IPC_MESSAGE_HANDLER(
+		ChromeViewHostMsg_IsInternalPluginAvailableForMimeType,
+		OnIsInternalPluginAvailableForMimeType)
 #endif
-    IPC_MESSAGE_UNHANDLED(return false)
-    IPC_END_MESSAGE_MAP()
-    return true;
+	IPC_MESSAGE_UNHANDLED(return false)
+	IPC_END_MESSAGE_MAP()
+	return true;
 }
 
 #if BUILDFLAG(ENABLE_PEPPER_CDMS)
 void WidevineCdmMessageFilter::OnIsInternalPluginAvailableForMimeType(
-    const std::string& mime_type,
-    bool* is_available,
-    std::vector<base::string16>* additional_param_names,
-    std::vector<base::string16>* additional_param_values) {
-    std::vector<WebPluginInfo> plugins;
-    PluginService::GetInstance()->GetInternalPlugins(&plugins);
+	const std::string& mime_type,
+	bool* is_available,
+	std::vector<base::string16>* additional_param_names,
+	std::vector<base::string16>* additional_param_values) {
+	std::vector<WebPluginInfo> plugins;
+	PluginService::GetInstance()->GetInternalPlugins(&plugins);
 
-    for (size_t i = 0; i < plugins.size(); ++i) {
-        const WebPluginInfo& plugin = plugins[i];
-        const std::vector<content::WebPluginMimeType>& mime_types =
-            plugin.mime_types;
-        for (size_t j = 0; j < mime_types.size(); ++j) {
+	for (size_t i = 0; i < plugins.size(); ++i) {
+		const WebPluginInfo& plugin = plugins[i];
+		const std::vector<content::WebPluginMimeType>& mime_types =
+			plugin.mime_types;
+		for (size_t j = 0; j < mime_types.size(); ++j) {
 
-            if (mime_types[j].mime_type == mime_type) {
-                *is_available = true;
-                *additional_param_names = mime_types[j].additional_param_names;
-                *additional_param_values = mime_types[j].additional_param_values;
-                return;
-            }
-        }
-    }
+			if (mime_types[j].mime_type == mime_type) {
+				*is_available = true;
+				*additional_param_names = mime_types[j].additional_param_names;
+				*additional_param_values = mime_types[j].additional_param_values;
+				return;
+			}
+		}
+	}
 
-    *is_available = false;
+	*is_available = false;
 }
 #endif // BUILDFLAG(ENABLE_PEPPER_CDMS)
 
 void WidevineCdmMessageFilter::OnDestruct() const {
-    BrowserThread::DeleteOnUIThread::Destruct(this);
+	BrowserThread::DeleteOnUIThread::Destruct(this);
 }
 
 WidevineCdmMessageFilter::~WidevineCdmMessageFilter() {

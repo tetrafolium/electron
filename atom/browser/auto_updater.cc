@@ -9,16 +9,16 @@ namespace auto_updater {
 Delegate* AutoUpdater::delegate_ = nullptr;
 
 Delegate* AutoUpdater::GetDelegate() {
-    return delegate_;
+	return delegate_;
 }
 
 void AutoUpdater::SetDelegate(Delegate* delegate) {
-    delegate_ = delegate;
+	delegate_ = delegate;
 }
 
 #if !defined(OS_MACOSX) || defined(MAS_BUILD)
 std::string AutoUpdater::GetFeedURL() {
-    return "";
+	return "";
 }
 
 void AutoUpdater::SetFeedURL(const std::string& url,

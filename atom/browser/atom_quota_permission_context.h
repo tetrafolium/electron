@@ -11,19 +11,19 @@ namespace atom {
 
 class AtomQuotaPermissionContext : public content::QuotaPermissionContext {
 public:
-    typedef content::QuotaPermissionContext::QuotaPermissionResponse response;
+typedef content::QuotaPermissionContext::QuotaPermissionResponse response;
 
-    AtomQuotaPermissionContext();
-    virtual ~AtomQuotaPermissionContext();
+AtomQuotaPermissionContext();
+virtual ~AtomQuotaPermissionContext();
 
-    // content::QuotaPermissionContext:
-    void RequestQuotaPermission(
-        const content::StorageQuotaParams& params,
-        int render_process_id,
-        const PermissionCallback& callback) override;
+// content::QuotaPermissionContext:
+void RequestQuotaPermission(
+	const content::StorageQuotaParams& params,
+	int render_process_id,
+	const PermissionCallback& callback) override;
 
 private:
-    DISALLOW_COPY_AND_ASSIGN(AtomQuotaPermissionContext);
+DISALLOW_COPY_AND_ASSIGN(AtomQuotaPermissionContext);
 };
 
 }  // namespace atom

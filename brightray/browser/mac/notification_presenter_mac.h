@@ -16,19 +16,19 @@ class CocoaNotification;
 
 class NotificationPresenterMac : public NotificationPresenter {
 public:
-    CocoaNotification* GetNotification(NSUserNotification* notif);
+CocoaNotification* GetNotification(NSUserNotification* notif);
 
-    NotificationPresenterMac();
-    ~NotificationPresenterMac();
+NotificationPresenterMac();
+~NotificationPresenterMac();
 
 private:
-    Notification* CreateNotificationObject(
-        NotificationDelegate* delegate) override;
+Notification* CreateNotificationObject(
+	NotificationDelegate* delegate) override;
 
-    base::scoped_nsobject<NotificationCenterDelegate>
-    notification_center_delegate_;
+base::scoped_nsobject<NotificationCenterDelegate>
+notification_center_delegate_;
 
-    DISALLOW_COPY_AND_ASSIGN(NotificationPresenterMac);
+DISALLOW_COPY_AND_ASSIGN(NotificationPresenterMac);
 };
 
 }  // namespace brightray

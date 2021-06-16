@@ -11,17 +11,17 @@ namespace atom {
 
 class AboutProtocolHandler : public net::URLRequestJobFactory::ProtocolHandler {
 public:
-    AboutProtocolHandler();
-    ~AboutProtocolHandler() override;
+AboutProtocolHandler();
+~AboutProtocolHandler() override;
 
-    // net::URLRequestJobFactory::ProtocolHandler:
-    net::URLRequestJob* MaybeCreateJob(
-        net::URLRequest* request,
-        net::NetworkDelegate* network_delegate) const override;
-    bool IsSafeRedirectTarget(const GURL& location) const override;
+// net::URLRequestJobFactory::ProtocolHandler:
+net::URLRequestJob* MaybeCreateJob(
+	net::URLRequest* request,
+	net::NetworkDelegate* network_delegate) const override;
+bool IsSafeRedirectTarget(const GURL& location) const override;
 
 private:
-    DISALLOW_COPY_AND_ASSIGN(AboutProtocolHandler);
+DISALLOW_COPY_AND_ASSIGN(AboutProtocolHandler);
 };
 
 }  // namespace atom

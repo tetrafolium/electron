@@ -9,20 +9,20 @@
 namespace atom {
 
 AtomDesktopWindowTreeHostWin::AtomDesktopWindowTreeHostWin(
-    MessageHandlerDelegate* delegate,
-    views::internal::NativeWidgetDelegate* native_widget_delegate,
-    views::DesktopNativeWidgetAura* desktop_native_widget_aura)
-    : views::DesktopWindowTreeHostWin(native_widget_delegate,
-                                      desktop_native_widget_aura),
-      delegate_(delegate) {
+	MessageHandlerDelegate* delegate,
+	views::internal::NativeWidgetDelegate* native_widget_delegate,
+	views::DesktopNativeWidgetAura* desktop_native_widget_aura)
+	: views::DesktopWindowTreeHostWin(native_widget_delegate,
+	                                  desktop_native_widget_aura),
+	delegate_(delegate) {
 }
 
 AtomDesktopWindowTreeHostWin::~AtomDesktopWindowTreeHostWin() {
 }
 
 bool AtomDesktopWindowTreeHostWin::PreHandleMSG(
-    UINT message, WPARAM w_param, LPARAM l_param, LRESULT* result) {
-    return delegate_->PreHandleMSG(message, w_param, l_param, result);
+	UINT message, WPARAM w_param, LPARAM l_param, LRESULT* result) {
+	return delegate_->PreHandleMSG(message, w_param, l_param, result);
 }
 
 }  // namespace atom

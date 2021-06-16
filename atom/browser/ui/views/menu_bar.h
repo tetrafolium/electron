@@ -19,58 +19,58 @@ namespace atom {
 class MenuDelegate;
 
 class MenuBar : public views::View,
-    public views::MenuButtonListener {
+	public views::MenuButtonListener {
 public:
-    explicit MenuBar(NativeWindow* window);
-    virtual ~MenuBar();
+explicit MenuBar(NativeWindow* window);
+virtual ~MenuBar();
 
-    // Replaces current menu with a new one.
-    void SetMenu(AtomMenuModel* menu_model);
+// Replaces current menu with a new one.
+void SetMenu(AtomMenuModel* menu_model);
 
-    // Shows underline under accelerators.
-    void SetAcceleratorVisibility(bool visible);
+// Shows underline under accelerators.
+void SetAcceleratorVisibility(bool visible);
 
-    // Returns which submenu has accelerator |key|, -1 would be returned when
-    // there is no matching submenu.
-    int GetAcceleratorIndex(base::char16 key);
+// Returns which submenu has accelerator |key|, -1 would be returned when
+// there is no matching submenu.
+int GetAcceleratorIndex(base::char16 key);
 
-    // Shows the submenu whose accelerator is |key|.
-    void ActivateAccelerator(base::char16 key);
+// Shows the submenu whose accelerator is |key|.
+void ActivateAccelerator(base::char16 key);
 
-    // Returns there are how many items in the root menu.
-    int GetItemCount() const;
+// Returns there are how many items in the root menu.
+int GetItemCount() const;
 
-    // Get the menu under specified screen point.
-    bool GetMenuButtonFromScreenPoint(const gfx::Point& point,
-                                      AtomMenuModel** menu_model,
-                                      views::MenuButton** button);
+// Get the menu under specified screen point.
+bool GetMenuButtonFromScreenPoint(const gfx::Point& point,
+                                  AtomMenuModel** menu_model,
+                                  views::MenuButton** button);
 
 protected:
-    // views::View:
-    const char* GetClassName() const override;
+// views::View:
+const char* GetClassName() const override;
 
-    // views::MenuButtonListener:
-    void OnMenuButtonClicked(views::MenuButton* source,
-                             const gfx::Point& point,
-                             const ui::Event* event) override;
-    void OnNativeThemeChanged(const ui::NativeTheme* theme) override;
+// views::MenuButtonListener:
+void OnMenuButtonClicked(views::MenuButton* source,
+                         const gfx::Point& point,
+                         const ui::Event* event) override;
+void OnNativeThemeChanged(const ui::NativeTheme* theme) override;
 
 private:
-    void UpdateMenuBarColor();
+void UpdateMenuBarColor();
 
-    SkColor background_color_;
+SkColor background_color_;
 
 #if defined(USE_X11)
-    SkColor enabled_color_;
-    SkColor disabled_color_;
-    SkColor highlight_color_;
-    SkColor hover_color_;
+SkColor enabled_color_;
+SkColor disabled_color_;
+SkColor highlight_color_;
+SkColor hover_color_;
 #endif
 
-    NativeWindow* window_;
-    AtomMenuModel* menu_model_;
+NativeWindow* window_;
+AtomMenuModel* menu_model_;
 
-    DISALLOW_COPY_AND_ASSIGN(MenuBar);
+DISALLOW_COPY_AND_ASSIGN(MenuBar);
 };
 
 }  // namespace atom

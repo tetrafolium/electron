@@ -31,84 +31,84 @@ void TrayIcon::PopUpContextMenu(const gfx::Point& pos,
 }
 
 gfx::Rect TrayIcon::GetBounds() {
-    return gfx::Rect();
+	return gfx::Rect();
 }
 
 void TrayIcon::NotifyClicked(const gfx::Rect& bounds,
                              const gfx::Point& location,
                              int modifiers) {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnClicked(bounds, location, modifiers);
+	for (TrayIconObserver& observer : observers_)
+		observer.OnClicked(bounds, location, modifiers);
 }
 
 void TrayIcon::NotifyDoubleClicked(const gfx::Rect& bounds, int modifiers) {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnDoubleClicked(bounds, modifiers);
+	for (TrayIconObserver& observer : observers_)
+		observer.OnDoubleClicked(bounds, modifiers);
 }
 
 void TrayIcon::NotifyBalloonShow() {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnBalloonShow();
+	for (TrayIconObserver& observer : observers_)
+		observer.OnBalloonShow();
 }
 
 void TrayIcon::NotifyBalloonClicked() {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnBalloonClicked();
+	for (TrayIconObserver& observer : observers_)
+		observer.OnBalloonClicked();
 }
 
 void TrayIcon::NotifyBalloonClosed() {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnBalloonClosed();
+	for (TrayIconObserver& observer : observers_)
+		observer.OnBalloonClosed();
 }
 
 void TrayIcon::NotifyRightClicked(const gfx::Rect& bounds, int modifiers) {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnRightClicked(bounds, modifiers);
+	for (TrayIconObserver& observer : observers_)
+		observer.OnRightClicked(bounds, modifiers);
 }
 
 void TrayIcon::NotifyDrop() {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnDrop();
+	for (TrayIconObserver& observer : observers_)
+		observer.OnDrop();
 }
 
 void TrayIcon::NotifyDropFiles(const std::vector<std::string>& files) {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnDropFiles(files);
+	for (TrayIconObserver& observer : observers_)
+		observer.OnDropFiles(files);
 }
 
 void TrayIcon::NotifyDropText(const std::string& text) {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnDropText(text);
+	for (TrayIconObserver& observer : observers_)
+		observer.OnDropText(text);
 }
 
 void TrayIcon::NotifyMouseEntered(const gfx::Point& location, int modifiers) {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnMouseEntered(location, modifiers);
+	for (TrayIconObserver& observer : observers_)
+		observer.OnMouseEntered(location, modifiers);
 }
 
 void TrayIcon::NotifyMouseExited(const gfx::Point& location, int modifiers) {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnMouseExited(location, modifiers);
+	for (TrayIconObserver& observer : observers_)
+		observer.OnMouseExited(location, modifiers);
 }
 
 void TrayIcon::NotifyMouseMoved(const gfx::Point& location, int modifiers) {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnMouseMoved(location, modifiers);
+	for (TrayIconObserver& observer : observers_)
+		observer.OnMouseMoved(location, modifiers);
 }
 
 void TrayIcon::NotifyDragEntered() {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnDragEntered();
+	for (TrayIconObserver& observer : observers_)
+		observer.OnDragEntered();
 }
 
 void TrayIcon::NotifyDragExited() {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnDragExited();
+	for (TrayIconObserver& observer : observers_)
+		observer.OnDragExited();
 }
 
 void TrayIcon::NotifyDragEnded() {
-    for (TrayIconObserver& observer : observers_)
-        observer.OnDragEnded();
+	for (TrayIconObserver& observer : observers_)
+		observer.OnDragEnded();
 }
 
 }  // namespace atom

@@ -11,36 +11,36 @@ namespace brightray {
 
 Notification::Notification(NotificationDelegate* delegate,
                            NotificationPresenter* presenter)
-    : delegate_(delegate),
-      presenter_(presenter),
-      weak_factory_(this) {
+	: delegate_(delegate),
+	presenter_(presenter),
+	weak_factory_(this) {
 }
 
 Notification::~Notification() {
-    if (delegate())
-        delegate()->NotificationDestroyed();
+	if (delegate())
+		delegate()->NotificationDestroyed();
 }
 
 void Notification::NotificationClicked() {
-    if (delegate())
-        delegate()->NotificationClick();
-    Destroy();
+	if (delegate())
+		delegate()->NotificationClick();
+	Destroy();
 }
 
 void Notification::NotificationDismissed() {
-    if (delegate())
-        delegate()->NotificationClosed();
-    Destroy();
+	if (delegate())
+		delegate()->NotificationClosed();
+	Destroy();
 }
 
 void Notification::NotificationFailed() {
-    if (delegate())
-        delegate()->NotificationFailed();
-    Destroy();
+	if (delegate())
+		delegate()->NotificationFailed();
+	Destroy();
 }
 
 void Notification::Destroy() {
-    presenter()->RemoveNotification(this);
+	presenter()->RemoveNotification(this);
 }
 
 }  // namespace brightray

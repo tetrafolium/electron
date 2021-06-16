@@ -29,101 +29,101 @@ const char* ResourceTypeToString(content::ResourceType type);
 
 class AtomNetworkDelegate : public brightray::NetworkDelegate {
 public:
-    using ResponseCallback = base::Callback<void(const base::DictionaryValue&)>;
-    using SimpleListener = base::Callback<void(const base::DictionaryValue&)>;
-    using ResponseListener = base::Callback<void(const base::DictionaryValue&,
-                             const ResponseCallback&)>;
+using ResponseCallback = base::Callback<void (const base::DictionaryValue&)>;
+using SimpleListener = base::Callback<void (const base::DictionaryValue&)>;
+using ResponseListener = base::Callback<void (const base::DictionaryValue&,
+                                              const ResponseCallback&)>;
 
-    enum SimpleEvent {
-        kOnSendHeaders,
-        kOnBeforeRedirect,
-        kOnResponseStarted,
-        kOnCompleted,
-        kOnErrorOccurred,
-    };
+enum SimpleEvent {
+	kOnSendHeaders,
+	kOnBeforeRedirect,
+	kOnResponseStarted,
+	kOnCompleted,
+	kOnErrorOccurred,
+};
 
-    enum ResponseEvent {
-        kOnBeforeRequest,
-        kOnBeforeSendHeaders,
-        kOnHeadersReceived,
-    };
+enum ResponseEvent {
+	kOnBeforeRequest,
+	kOnBeforeSendHeaders,
+	kOnHeadersReceived,
+};
 
-    struct SimpleListenerInfo {
-        URLPatterns url_patterns;
-        SimpleListener listener;
-    };
+struct SimpleListenerInfo {
+	URLPatterns url_patterns;
+	SimpleListener listener;
+};
 
-    struct ResponseListenerInfo {
-        URLPatterns url_patterns;
-        ResponseListener listener;
-    };
+struct ResponseListenerInfo {
+	URLPatterns url_patterns;
+	ResponseListener listener;
+};
 
-    AtomNetworkDelegate();
-    ~AtomNetworkDelegate() override;
+AtomNetworkDelegate();
+~AtomNetworkDelegate() override;
 
-    void SetSimpleListenerInIO(SimpleEvent type,
-                               const URLPatterns& patterns,
-                               const SimpleListener& callback);
-    void SetResponseListenerInIO(ResponseEvent type,
-                                 const URLPatterns& patterns,
-                                 const ResponseListener& callback);
+void SetSimpleListenerInIO(SimpleEvent type,
+                           const URLPatterns& patterns,
+                           const SimpleListener& callback);
+void SetResponseListenerInIO(ResponseEvent type,
+                             const URLPatterns& patterns,
+                             const ResponseListener& callback);
 
-    void SetDevToolsNetworkEmulationClientId(const std::string& client_id);
+void SetDevToolsNetworkEmulationClientId(const std::string& client_id);
 
 protected:
-    // net::NetworkDelegate:
-    int OnBeforeURLRequest(net::URLRequest* request,
-                           const net::CompletionCallback& callback,
-                           GURL* new_url) override;
-    int OnBeforeStartTransaction(net::URLRequest* request,
-                                 const net::CompletionCallback& callback,
-                                 net::HttpRequestHeaders* headers) override;
-    void OnStartTransaction(net::URLRequest* request,
-                            const net::HttpRequestHeaders& headers) override;
-    int OnHeadersReceived(
-        net::URLRequest* request,
-        const net::CompletionCallback& callback,
-        const net::HttpResponseHeaders* original_response_headers,
-        scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
-        GURL* allowed_unsafe_redirect_url) override;
-    void OnBeforeRedirect(net::URLRequest* request,
-                          const GURL& new_location) override;
-    void OnResponseStarted(net::URLRequest* request) override;
-    void OnCompleted(net::URLRequest* request, bool started) override;
-    void OnURLRequestDestroyed(net::URLRequest* request) override;
+// net::NetworkDelegate:
+int OnBeforeURLRequest(net::URLRequest* request,
+                       const net::CompletionCallback& callback,
+                       GURL* new_url) override;
+int OnBeforeStartTransaction(net::URLRequest* request,
+                             const net::CompletionCallback& callback,
+                             net::HttpRequestHeaders* headers) override;
+void OnStartTransaction(net::URLRequest* request,
+                        const net::HttpRequestHeaders& headers) override;
+int OnHeadersReceived(
+	net::URLRequest* request,
+	const net::CompletionCallback& callback,
+	const net::HttpResponseHeaders* original_response_headers,
+	scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
+	GURL* allowed_unsafe_redirect_url) override;
+void OnBeforeRedirect(net::URLRequest* request,
+                      const GURL& new_location) override;
+void OnResponseStarted(net::URLRequest* request) override;
+void OnCompleted(net::URLRequest* request, bool started) override;
+void OnURLRequestDestroyed(net::URLRequest* request) override;
 
 private:
-    void OnErrorOccurred(net::URLRequest* request, bool started);
+void OnErrorOccurred(net::URLRequest* request, bool started);
 
-    template<typename...Args>
-    void HandleSimpleEvent(SimpleEvent type,
-                           net::URLRequest* request,
-                           Args... args);
-    template<typename Out, typename... Args>
-    int HandleResponseEvent(ResponseEvent type,
-                            net::URLRequest* request,
-                            const net::CompletionCallback& callback,
-                            Out out,
-                            Args... args);
+template<typename ... Args>
+void HandleSimpleEvent(SimpleEvent type,
+                       net::URLRequest* request,
+                       Args... args);
+template<typename Out, typename ... Args>
+int HandleResponseEvent(ResponseEvent type,
+                        net::URLRequest* request,
+                        const net::CompletionCallback& callback,
+                        Out out,
+                        Args... args);
 
-    // Deal with the results of Listener.
-    template<typename T>
-    void OnListenerResultInIO(
-        uint64_t id, T out, std::unique_ptr<base::DictionaryValue> response);
-    template<typename T>
-    void OnListenerResultInUI(
-        uint64_t id, T out, const base::DictionaryValue& response);
+// Deal with the results of Listener.
+template<typename T>
+void OnListenerResultInIO(
+	uint64_t id, T out, std::unique_ptr<base::DictionaryValue> response);
+template<typename T>
+void OnListenerResultInUI(
+	uint64_t id, T out, const base::DictionaryValue& response);
 
-    std::map<SimpleEvent, SimpleListenerInfo> simple_listeners_;
-    std::map<ResponseEvent, ResponseListenerInfo> response_listeners_;
-    std::map<uint64_t, net::CompletionCallback> callbacks_;
+std::map<SimpleEvent, SimpleListenerInfo> simple_listeners_;
+std::map<ResponseEvent, ResponseListenerInfo> response_listeners_;
+std::map<uint64_t, net::CompletionCallback> callbacks_;
 
-    base::Lock lock_;
+base::Lock lock_;
 
-    // Client id for devtools network emulation.
-    std::string client_id_;
+// Client id for devtools network emulation.
+std::string client_id_;
 
-    DISALLOW_COPY_AND_ASSIGN(AtomNetworkDelegate);
+DISALLOW_COPY_AND_ASSIGN(AtomNetworkDelegate);
 };
 
 }   // namespace atom

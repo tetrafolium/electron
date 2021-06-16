@@ -15,16 +15,16 @@ namespace brightray {
 
 class NetLog : public net::NetLog {
 public:
-    NetLog();
-    ~NetLog() override;
+NetLog();
+~NetLog() override;
 
-    void StartLogging();
+void StartLogging();
 
 private:
-    // This observer handles writing NetLogs.
-    std::unique_ptr<net::FileNetLogObserver> file_net_log_observer_;
+// This observer handles writing NetLogs.
+std::unique_ptr<net::FileNetLogObserver> file_net_log_observer_;
 
-    DISALLOW_COPY_AND_ASSIGN(NetLog);
+DISALLOW_COPY_AND_ASSIGN(NetLog);
 };
 
 }  // namespace brightray

@@ -7,35 +7,35 @@
 #include <winstring.h>
 
 ScopedHString::ScopedHString(const wchar_t* source)
-    : str_(nullptr) {
-    Reset(source);
+	: str_(nullptr) {
+	Reset(source);
 }
 
 ScopedHString::ScopedHString(const std::wstring& source)
-    : str_(nullptr) {
-    Reset(source);
+	: str_(nullptr) {
+	Reset(source);
 }
 
 ScopedHString::ScopedHString() : str_(nullptr) {
 }
 
 ScopedHString::~ScopedHString() {
-    Reset();
+	Reset();
 }
 
 void ScopedHString::Reset() {
-    if (str_) {
-        WindowsDeleteString(str_);
-        str_ = nullptr;
-    }
+	if (str_) {
+		WindowsDeleteString(str_);
+		str_ = nullptr;
+	}
 }
 
 void ScopedHString::Reset(const wchar_t* source) {
-    Reset();
-    WindowsCreateString(source, wcslen(source), &str_);
+	Reset();
+	WindowsCreateString(source, wcslen(source), &str_);
 }
 
 void ScopedHString::Reset(const std::wstring& source) {
-    Reset();
-    WindowsCreateString(source.c_str(), source.length(), &str_);
+	Reset();
+	WindowsCreateString(source.c_str(), source.length(), &str_);
 }

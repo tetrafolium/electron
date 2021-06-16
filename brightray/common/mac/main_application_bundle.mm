@@ -16,39 +16,39 @@ namespace brightray {
 namespace {
 
 bool HasMainProcessKey() {
-    NSDictionary* info_dictionary = [base::mac::MainBundle() infoDictionary];
-    return [[info_dictionary objectForKey:@"ElectronMainProcess"] boolValue] != NO;
+	NSDictionary* info_dictionary = [base::mac::MainBundle() infoDictionary];
+	return [[info_dictionary objectForKey:@"ElectronMainProcess"] boolValue] != NO;
 }
 
 }  // namespace
 
 base::FilePath MainApplicationBundlePath() {
-    // Start out with the path to the running executable.
-    base::FilePath path;
-    PathService::Get(base::FILE_EXE, &path);
+	// Start out with the path to the running executable.
+	base::FilePath path;
+	PathService::Get(base::FILE_EXE, &path);
 
-    // Up to Contents.
-    if (!HasMainProcessKey() &&
-            base::EndsWith(path.value(), " Helper", base::CompareCase::SENSITIVE)) {
-        // The running executable is the helper. Go up five steps:
-        // Contents/Frameworks/Helper.app/Contents/MacOS/Helper
-        // ^ to here                                     ^ from here
-        path = path.DirName().DirName().DirName().DirName().DirName();
-    } else {
-        // One step up to MacOS, another to Contents.
-        path = path.DirName().DirName();
-    }
-    DCHECK_EQ(path.BaseName().value(), "Contents");
+	// Up to Contents.
+	if (!HasMainProcessKey() &&
+	    base::EndsWith(path.value(), " Helper", base::CompareCase::SENSITIVE)) {
+		// The running executable is the helper. Go up five steps:
+		// Contents/Frameworks/Helper.app/Contents/MacOS/Helper
+		// ^ to here                                     ^ from here
+		path = path.DirName().DirName().DirName().DirName().DirName();
+	} else {
+		// One step up to MacOS, another to Contents.
+		path = path.DirName().DirName();
+	}
+	DCHECK_EQ(path.BaseName().value(), "Contents");
 
-    // Up one more level to the .app.
-    path = path.DirName();
-    DCHECK_EQ(path.BaseName().Extension(), ".app");
+	// Up one more level to the .app.
+	path = path.DirName();
+	DCHECK_EQ(path.BaseName().Extension(), ".app");
 
-    return path;
+	return path;
 }
 
 NSBundle* MainApplicationBundle() {
-    return [NSBundle bundleWithPath:base::mac::FilePathToNSString(MainApplicationBundlePath())];
+	return [NSBundle bundleWithPath:base::mac::FilePathToNSString(MainApplicationBundlePath())];
 }
 
 }  // namespace brightray

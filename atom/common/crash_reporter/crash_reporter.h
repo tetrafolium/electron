@@ -18,50 +18,50 @@ namespace crash_reporter {
 
 class CrashReporter {
 public:
-    typedef std::map<std::string, std::string> StringMap;
-    typedef std::pair<int, std::string> UploadReportResult;  // upload-date, id
+typedef std::map<std::string, std::string> StringMap;
+typedef std::pair<int, std::string> UploadReportResult;      // upload-date, id
 
-    static CrashReporter* GetInstance();
-    static void StartInstance(const mate::Dictionary& options);
+static CrashReporter* GetInstance();
+static void StartInstance(const mate::Dictionary& options);
 
-    void Start(const std::string& product_name,
-               const std::string& company_name,
-               const std::string& submit_url,
-               const base::FilePath& crashes_dir,
-               bool upload_to_server,
-               bool skip_system_crash_handler,
-               const StringMap& extra_parameters);
+void Start(const std::string& product_name,
+           const std::string& company_name,
+           const std::string& submit_url,
+           const base::FilePath& crashes_dir,
+           bool upload_to_server,
+           bool skip_system_crash_handler,
+           const StringMap& extra_parameters);
 
-    virtual std::vector<CrashReporter::UploadReportResult> GetUploadedReports(
-        const base::FilePath& crashes_dir);
+virtual std::vector<CrashReporter::UploadReportResult> GetUploadedReports(
+	const base::FilePath& crashes_dir);
 
-    virtual void SetUploadToServer(bool upload_to_server);
-    virtual bool GetUploadToServer();
-    virtual void AddExtraParameter(const std::string& key,
-                                   const std::string& value);
-    virtual void RemoveExtraParameter(const std::string& key);
-    virtual std::map<std::string, std::string> GetParameters() const;
+virtual void SetUploadToServer(bool upload_to_server);
+virtual bool GetUploadToServer();
+virtual void AddExtraParameter(const std::string& key,
+                               const std::string& value);
+virtual void RemoveExtraParameter(const std::string& key);
+virtual std::map<std::string, std::string> GetParameters() const;
 
 protected:
-    CrashReporter();
-    virtual ~CrashReporter();
+CrashReporter();
+virtual ~CrashReporter();
 
-    virtual void InitBreakpad(const std::string& product_name,
-                              const std::string& version,
-                              const std::string& company_name,
-                              const std::string& submit_url,
-                              const base::FilePath& crashes_dir,
-                              bool upload_to_server,
-                              bool skip_system_crash_handler);
-    virtual void SetUploadParameters();
+virtual void InitBreakpad(const std::string& product_name,
+                          const std::string& version,
+                          const std::string& company_name,
+                          const std::string& submit_url,
+                          const base::FilePath& crashes_dir,
+                          bool upload_to_server,
+                          bool skip_system_crash_handler);
+virtual void SetUploadParameters();
 
-    StringMap upload_parameters_;
-    bool is_browser_;
+StringMap upload_parameters_;
+bool is_browser_;
 
 private:
-    void SetUploadParameters(const StringMap& parameters);
+void SetUploadParameters(const StringMap& parameters);
 
-    DISALLOW_COPY_AND_ASSIGN(CrashReporter);
+DISALLOW_COPY_AND_ASSIGN(CrashReporter);
 };
 
 }  // namespace crash_reporter

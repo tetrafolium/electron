@@ -20,31 +20,31 @@ struct PageRange;
 // Dispatches IPCs for printing.
 class PrintingHandlerWin : public UtilityMessageHandler {
 public:
-    PrintingHandlerWin();
-    ~PrintingHandlerWin() override;
+PrintingHandlerWin();
+~PrintingHandlerWin() override;
 
-    // IPC::Listener:
-    bool OnMessageReceived(const IPC::Message& message) override;
+// IPC::Listener:
+bool OnMessageReceived(const IPC::Message& message) override;
 
 private:
-    // IPC message handlers.
-    void OnRenderPDFPagesToMetafile(IPC::PlatformFileForTransit pdf_transit,
-                                    const PdfRenderSettings& settings);
-    void OnRenderPDFPagesToMetafileGetPage(
-        int page_number,
-        IPC::PlatformFileForTransit output_file);
-    void OnRenderPDFPagesToMetafileStop();
+// IPC message handlers.
+void OnRenderPDFPagesToMetafile(IPC::PlatformFileForTransit pdf_transit,
+                                const PdfRenderSettings& settings);
+void OnRenderPDFPagesToMetafileGetPage(
+	int page_number,
+	IPC::PlatformFileForTransit output_file);
+void OnRenderPDFPagesToMetafileStop();
 
-    int LoadPDF(base::File pdf_file);
-    bool RenderPdfPageToMetafile(int page_number,
-                                 base::File output_file,
-                                 float* scale_factor,
-                                 bool postscript);
+int LoadPDF(base::File pdf_file);
+bool RenderPdfPageToMetafile(int page_number,
+                             base::File output_file,
+                             float* scale_factor,
+                             bool postscript);
 
-    std::vector<char> pdf_data_;
-    PdfRenderSettings pdf_rendering_settings_;
+std::vector<char> pdf_data_;
+PdfRenderSettings pdf_rendering_settings_;
 
-    DISALLOW_COPY_AND_ASSIGN(PrintingHandlerWin);
+DISALLOW_COPY_AND_ASSIGN(PrintingHandlerWin);
 };
 
 }  // namespace printing

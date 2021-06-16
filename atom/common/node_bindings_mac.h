@@ -12,18 +12,18 @@ namespace atom {
 
 class NodeBindingsMac : public NodeBindings {
 public:
-    explicit NodeBindingsMac(BrowserEnvironment browser_env);
-    virtual ~NodeBindingsMac();
+explicit NodeBindingsMac(BrowserEnvironment browser_env);
+virtual ~NodeBindingsMac();
 
-    void RunMessageLoop() override;
+void RunMessageLoop() override;
 
 private:
-    // Called when uv's watcher queue changes.
-    static void OnWatcherQueueChanged(uv_loop_t* loop);
+// Called when uv's watcher queue changes.
+static void OnWatcherQueueChanged(uv_loop_t* loop);
 
-    void PollEvents() override;
+void PollEvents() override;
 
-    DISALLOW_COPY_AND_ASSIGN(NodeBindingsMac);
+DISALLOW_COPY_AND_ASSIGN(NodeBindingsMac);
 };
 
 }  // namespace atom

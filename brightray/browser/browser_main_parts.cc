@@ -70,11 +70,11 @@ namespace {
 #if defined(OS_WIN)
 // gfx::Font callbacks
 void AdjustUIFont(LOGFONT* logfont) {
-    l10n_util::AdjustUIFont(logfont);
+	l10n_util::AdjustUIFont(logfont);
 }
 
 int GetMinimumFontSize() {
-    return 10;
+	return 10;
 }
 #endif
 
@@ -87,75 +87,75 @@ bool g_in_x11_io_error_handler = false;
 const int kWaitForUIThreadSeconds = 10;
 
 void OverrideLinuxAppDataPath() {
-    base::FilePath path;
-    if (PathService::Get(DIR_APP_DATA, &path))
-        return;
-    std::unique_ptr<base::Environment> env(base::Environment::Create());
-    path = base::nix::GetXDGDirectory(env.get(),
-                                      base::nix::kXdgConfigHomeEnvVar,
-                                      base::nix::kDotConfigDir);
-    PathService::Override(DIR_APP_DATA, path);
+	base::FilePath path;
+	if (PathService::Get(DIR_APP_DATA, &path))
+		return;
+	std::unique_ptr<base::Environment> env(base::Environment::Create());
+	path = base::nix::GetXDGDirectory(env.get(),
+	                                  base::nix::kXdgConfigHomeEnvVar,
+	                                  base::nix::kDotConfigDir);
+	PathService::Override(DIR_APP_DATA, path);
 }
 
 int BrowserX11ErrorHandler(Display* d, XErrorEvent* error) {
-    if (!g_in_x11_io_error_handler) {
-        base::ThreadTaskRunnerHandle::Get()->PostTask(
-            FROM_HERE, base::Bind(&ui::LogErrorEventDescription, d, *error));
-    }
-    return 0;
+	if (!g_in_x11_io_error_handler) {
+		base::ThreadTaskRunnerHandle::Get()->PostTask(
+			FROM_HERE, base::Bind(&ui::LogErrorEventDescription, d, *error));
+	}
+	return 0;
 }
 
 // This function is used to help us diagnose crash dumps that happen
 // during the shutdown process.
 NOINLINE void WaitingForUIThreadToHandleIOError() {
-    // Ensure function isn't optimized away.
-    asm("");
-    sleep(kWaitForUIThreadSeconds);
+	// Ensure function isn't optimized away.
+	asm ("");
+	sleep(kWaitForUIThreadSeconds);
 }
 
 int BrowserX11IOErrorHandler(Display* d) {
-    if (!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) {
-        // Wait for the UI thread (which has a different connection to the X server)
-        // to get the error. We can't call shutdown from this thread without
-        // tripping an error. Doing it through a function so that we'll be able
-        // to see it in any crash dumps.
-        WaitingForUIThreadToHandleIOError();
-        return 0;
-    }
+	if (!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) {
+		// Wait for the UI thread (which has a different connection to the X server)
+		// to get the error. We can't call shutdown from this thread without
+		// tripping an error. Doing it through a function so that we'll be able
+		// to see it in any crash dumps.
+		WaitingForUIThreadToHandleIOError();
+		return 0;
+	}
 
-    // If there's an IO error it likely means the X server has gone away.
-    // If this CHECK fails, then that means SessionEnding() below triggered some
-    // code that tried to talk to the X server, resulting in yet another error.
-    CHECK(!g_in_x11_io_error_handler);
+	// If there's an IO error it likely means the X server has gone away.
+	// If this CHECK fails, then that means SessionEnding() below triggered some
+	// code that tried to talk to the X server, resulting in yet another error.
+	CHECK(!g_in_x11_io_error_handler);
 
-    g_in_x11_io_error_handler = true;
-    LOG(ERROR) << "X IO error received (X server probably went away)";
-    base::ThreadTaskRunnerHandle::Get()->PostTask(
-        FROM_HERE, base::MessageLoop::QuitWhenIdleClosure());
+	g_in_x11_io_error_handler = true;
+	LOG(ERROR) << "X IO error received (X server probably went away)";
+	base::ThreadTaskRunnerHandle::Get()->PostTask(
+		FROM_HERE, base::MessageLoop::QuitWhenIdleClosure());
 
-    return 0;
+	return 0;
 }
 
 int X11EmptyErrorHandler(Display* d, XErrorEvent* error) {
-    return 0;
+	return 0;
 }
 
 int X11EmptyIOErrorHandler(Display* d) {
-    return 0;
+	return 0;
 }
 #endif
 
 base::string16 MediaStringProvider(media::MessageId id) {
-    switch (id) {
-    case media::DEFAULT_AUDIO_DEVICE_NAME:
-        return base::ASCIIToUTF16("Default");
+	switch (id) {
+	case media::DEFAULT_AUDIO_DEVICE_NAME:
+		return base::ASCIIToUTF16("Default");
 #if defined(OS_WIN)
-    case media::COMMUNICATIONS_AUDIO_DEVICE_NAME:
-        return base::ASCIIToUTF16("Communications");
+	case media::COMMUNICATIONS_AUDIO_DEVICE_NAME:
+		return base::ASCIIToUTF16("Communications");
 #endif
-    default:
-        return base::string16();
-    }
+	default:
+		return base::string16();
+	}
 }
 
 }  // namespace
@@ -168,120 +168,120 @@ BrowserMainParts::~BrowserMainParts() {
 
 #if defined(OS_WIN) || defined(OS_LINUX)
 void OverrideAppLogsPath() {
-    base::FilePath path;
-    if (PathService::Get(brightray::DIR_APP_DATA, &path)) {
-        path = path.Append(base::FilePath::FromUTF8Unsafe(GetApplicationName()));
-        path = path.Append(base::FilePath::FromUTF8Unsafe("logs"));
-        PathService::Override(DIR_APP_LOGS, path);
-    }
+	base::FilePath path;
+	if (PathService::Get(brightray::DIR_APP_DATA, &path)) {
+		path = path.Append(base::FilePath::FromUTF8Unsafe(GetApplicationName()));
+		path = path.Append(base::FilePath::FromUTF8Unsafe("logs"));
+		PathService::Override(DIR_APP_LOGS, path);
+	}
 }
 #endif
 
 void BrowserMainParts::PreEarlyInitialization() {
-    std::unique_ptr<base::FeatureList> feature_list(new base::FeatureList);
-    feature_list->InitializeFromCommandLine("", "");
-    base::FeatureList::SetInstance(std::move(feature_list));
-    OverrideAppLogsPath();
+	std::unique_ptr<base::FeatureList> feature_list(new base::FeatureList);
+	feature_list->InitializeFromCommandLine("", "");
+	base::FeatureList::SetInstance(std::move(feature_list));
+	OverrideAppLogsPath();
 #if defined(USE_X11)
-    views::LinuxUI::SetInstance(BuildGtkUi());
-    OverrideLinuxAppDataPath();
+	views::LinuxUI::SetInstance(BuildGtkUi());
+	OverrideLinuxAppDataPath();
 
-    // Installs the X11 error handlers for the browser process used during
-    // startup. They simply print error messages and exit because
-    // we can't shutdown properly while creating and initializing services.
-    ui::SetX11ErrorHandlers(nullptr, nullptr);
+	// Installs the X11 error handlers for the browser process used during
+	// startup. They simply print error messages and exit because
+	// we can't shutdown properly while creating and initializing services.
+	ui::SetX11ErrorHandlers(nullptr, nullptr);
 #endif
 }
 
 void BrowserMainParts::ToolkitInitialized() {
-    ui::MaterialDesignController::Initialize();
+	ui::MaterialDesignController::Initialize();
 
 #if defined(USE_AURA) && defined(USE_X11)
-    views::LinuxUI::instance()->Initialize();
+	views::LinuxUI::instance()->Initialize();
 #endif
 
 #if defined(USE_AURA)
-    wm_state_.reset(new wm::WMState);
+	wm_state_.reset(new wm::WMState);
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-    views_delegate_.reset(new ViewsDelegate);
+	views_delegate_.reset(new ViewsDelegate);
 #endif
 
 #if defined(OS_WIN)
-    gfx::PlatformFontWin::adjust_font_callback = &AdjustUIFont;
-    gfx::PlatformFontWin::get_minimum_font_size_callback = &GetMinimumFontSize;
+	gfx::PlatformFontWin::adjust_font_callback = &AdjustUIFont;
+	gfx::PlatformFontWin::get_minimum_font_size_callback = &GetMinimumFontSize;
 
-    wchar_t module_name[MAX_PATH] = { 0 };
-    if (GetModuleFileName(NULL, module_name, MAX_PATH))
-        ui::CursorLoaderWin::SetCursorResourceModule(module_name);
+	wchar_t module_name[MAX_PATH] = { 0 };
+	if (GetModuleFileName(NULL, module_name, MAX_PATH))
+		ui::CursorLoaderWin::SetCursorResourceModule(module_name);
 #endif
 }
 
 void BrowserMainParts::PreMainMessageLoopStart() {
 #if defined(OS_MACOSX)
-    l10n_util::OverrideLocaleWithCocoaLocale();
+	l10n_util::OverrideLocaleWithCocoaLocale();
 #endif
-    InitializeResourceBundle("");
+	InitializeResourceBundle("");
 #if defined(OS_MACOSX)
-    InitializeMainNib();
+	InitializeMainNib();
 #endif
-    media::SetLocalizedStringProvider(MediaStringProvider);
+	media::SetLocalizedStringProvider(MediaStringProvider);
 }
 
 void BrowserMainParts::PreMainMessageLoopRun() {
-    content::WebUIControllerFactory::RegisterFactory(
-        WebUIControllerFactory::GetInstance());
+	content::WebUIControllerFactory::RegisterFactory(
+		WebUIControllerFactory::GetInstance());
 
-    // --remote-debugging-port
-    auto command_line = base::CommandLine::ForCurrentProcess();
-    if (command_line->HasSwitch(switches::kRemoteDebuggingPort))
-        DevToolsManagerDelegate::StartHttpHandler();
+	// --remote-debugging-port
+	auto command_line = base::CommandLine::ForCurrentProcess();
+	if (command_line->HasSwitch(switches::kRemoteDebuggingPort))
+		DevToolsManagerDelegate::StartHttpHandler();
 }
 
 void BrowserMainParts::PostMainMessageLoopStart() {
 #if defined(USE_X11)
-    // Installs the X11 error handlers for the browser process after the
-    // main message loop has started. This will allow us to exit cleanly
-    // if X exits before us.
-    ui::SetX11ErrorHandlers(BrowserX11ErrorHandler, BrowserX11IOErrorHandler);
+	// Installs the X11 error handlers for the browser process after the
+	// main message loop has started. This will allow us to exit cleanly
+	// if X exits before us.
+	ui::SetX11ErrorHandlers(BrowserX11ErrorHandler, BrowserX11IOErrorHandler);
 #endif
 #if defined(OS_LINUX)
-    bluez::DBusBluezManagerWrapperLinux::Initialize();
+	bluez::DBusBluezManagerWrapperLinux::Initialize();
 #endif
 }
 
 void BrowserMainParts::PostMainMessageLoopRun() {
 #if defined(USE_X11)
-    // Unset the X11 error handlers. The X11 error handlers log the errors using a
-    // |PostTask()| on the message-loop. But since the message-loop is in the
-    // process of terminating, this can cause errors.
-    ui::SetX11ErrorHandlers(X11EmptyErrorHandler, X11EmptyIOErrorHandler);
+	// Unset the X11 error handlers. The X11 error handlers log the errors using a
+	// |PostTask()| on the message-loop. But since the message-loop is in the
+	// process of terminating, this can cause errors.
+	ui::SetX11ErrorHandlers(X11EmptyErrorHandler, X11EmptyIOErrorHandler);
 #endif
 }
 
 int BrowserMainParts::PreCreateThreads() {
 #if defined(USE_AURA)
-    display::Screen* screen = views::CreateDesktopScreen();
-    display::Screen::SetScreenInstance(screen);
+	display::Screen* screen = views::CreateDesktopScreen();
+	display::Screen::SetScreenInstance(screen);
 #if defined(USE_X11)
-    views::LinuxUI::instance()->UpdateDeviceScaleFactor();
+	views::LinuxUI::instance()->UpdateDeviceScaleFactor();
 #endif
 #endif
 
-    // Force MediaCaptureDevicesDispatcher to be created on UI thread.
-    MediaCaptureDevicesDispatcher::GetInstance();
+	// Force MediaCaptureDevicesDispatcher to be created on UI thread.
+	MediaCaptureDevicesDispatcher::GetInstance();
 
-    if (!views::LayoutProvider::Get())
-        layout_provider_.reset(new views::LayoutProvider());
+	if (!views::LayoutProvider::Get())
+		layout_provider_.reset(new views::LayoutProvider());
 
-    return 0;
+	return 0;
 }
 
 void BrowserMainParts::PostDestroyThreads() {
 #if defined(OS_LINUX)
-    device::BluetoothAdapterFactory::Shutdown();
-    bluez::DBusBluezManagerWrapperLinux::Shutdown();
+	device::BluetoothAdapterFactory::Shutdown();
+	bluez::DBusBluezManagerWrapperLinux::Shutdown();
 #endif
 }
 

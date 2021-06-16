@@ -15,18 +15,18 @@ class NativeWindow;
 // NativeWindowViews.
 class NativeFrameView : public views::NativeFrameView {
 public:
-    NativeFrameView(NativeWindow* window, views::Widget* widget);
+NativeFrameView(NativeWindow* window, views::Widget* widget);
 
 protected:
-    // views::View:
-    gfx::Size GetMinimumSize() const override;
-    gfx::Size GetMaximumSize() const override;
-    const char* GetClassName() const override;
+// views::View:
+gfx::Size GetMinimumSize() const override;
+gfx::Size GetMaximumSize() const override;
+const char* GetClassName() const override;
 
 private:
-    NativeWindow* window_;  // weak ref.
+NativeWindow* window_;      // weak ref.
 
-    DISALLOW_COPY_AND_ASSIGN(NativeFrameView);
+DISALLOW_COPY_AND_ASSIGN(NativeFrameView);
 };
 
 }  // namespace atom

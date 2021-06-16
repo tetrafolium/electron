@@ -14,24 +14,24 @@ namespace mate {
 
 template<>
 struct Converter<base::FilePath> {
-    static v8::Local<v8::Value> ToV8(v8::Isolate* isolate,
-                                     const base::FilePath& val) {
-        return Converter<base::FilePath::StringType>::ToV8(isolate, val.value());
-    }
-    static bool FromV8(v8::Isolate* isolate,
-                       v8::Local<v8::Value> val,
-                       base::FilePath* out) {
-        if (val->IsNull())
-            return true;
+	static v8::Local<v8::Value> ToV8(v8::Isolate* isolate,
+	                                 const base::FilePath& val) {
+		return Converter<base::FilePath::StringType>::ToV8(isolate, val.value());
+	}
+	static bool FromV8(v8::Isolate* isolate,
+	                   v8::Local<v8::Value> val,
+	                   base::FilePath* out) {
+		if (val->IsNull())
+			return true;
 
-        base::FilePath::StringType path;
-        if (Converter<base::FilePath::StringType>::FromV8(isolate, val, &path)) {
-            *out = base::FilePath(path);
-            return true;
-        } else {
-            return false;
-        }
-    }
+		base::FilePath::StringType path;
+		if (Converter<base::FilePath::StringType>::FromV8(isolate, val, &path)) {
+			*out = base::FilePath(path);
+			return true;
+		} else {
+			return false;
+		}
+	}
 };
 
 }  // namespace mate

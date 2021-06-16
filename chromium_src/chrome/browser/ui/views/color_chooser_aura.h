@@ -21,37 +21,37 @@ class Widget;
 // TODO(mukai): rename this as -Ash and move to c/b/ui/ash after Linux-aura
 // switches to its native color chooser.
 class ColorChooserAura : public content::ColorChooser,
-    public views::ColorChooserListener {
+	public views::ColorChooserListener {
 public:
-    static ColorChooserAura* Open(content::WebContents* web_contents,
-                                  SkColor initial_color);
+static ColorChooserAura* Open(content::WebContents* web_contents,
+                              SkColor initial_color);
 
 private:
-    ColorChooserAura(content::WebContents* web_contents, SkColor initial_color);
+ColorChooserAura(content::WebContents* web_contents, SkColor initial_color);
 
-    // content::ColorChooser overrides:
-    virtual void End() override;
-    virtual void SetSelectedColor(SkColor color) override;
+// content::ColorChooser overrides:
+virtual void End() override;
+virtual void SetSelectedColor(SkColor color) override;
 
-    // views::ColorChooserListener overrides:
-    virtual void OnColorChosen(SkColor color) override;
-    virtual void OnColorChooserDialogClosed() override;
+// views::ColorChooserListener overrides:
+virtual void OnColorChosen(SkColor color) override;
+virtual void OnColorChooserDialogClosed() override;
 
-    void DidEndColorChooser();
+void DidEndColorChooser();
 
-    // The actual view of the color chooser.  No ownership because its parent
-    // view will take care of its lifetime.
-    views::ColorChooserView* view_;
+// The actual view of the color chooser.  No ownership because its parent
+// view will take care of its lifetime.
+views::ColorChooserView* view_;
 
-    // The widget for the color chooser.  No ownership because it's released
-    // automatically when closed.
-    views::Widget* widget_;
+// The widget for the color chooser.  No ownership because it's released
+// automatically when closed.
+views::Widget* widget_;
 
-    // The web contents invoking the color chooser.  No ownership because it will
-    // outlive this class.
-    content::WebContents* web_contents_;
+// The web contents invoking the color chooser.  No ownership because it will
+// outlive this class.
+content::WebContents* web_contents_;
 
-    DISALLOW_COPY_AND_ASSIGN(ColorChooserAura);
+DISALLOW_COPY_AND_ASSIGN(ColorChooserAura);
 };
 
 #endif  // CHROME_BROWSER_UI_VIEWS_COLOR_CHOOSER_AURA_H_

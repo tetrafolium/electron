@@ -17,29 +17,29 @@ namespace brightray {
 
 class CocoaNotification : public Notification {
 public:
-    CocoaNotification(NotificationDelegate* delegate,
-                      NotificationPresenter* presenter);
-    ~CocoaNotification();
+CocoaNotification(NotificationDelegate* delegate,
+                  NotificationPresenter* presenter);
+~CocoaNotification();
 
-    // Notification:
-    void Show(const NotificationOptions& options) override;
-    void Dismiss() override;
+// Notification:
+void Show(const NotificationOptions& options) override;
+void Dismiss() override;
 
-    void NotificationDisplayed();
-    void NotificationReplied(const std::string& reply);
-    void NotificationButtonClicked();
+void NotificationDisplayed();
+void NotificationReplied(const std::string& reply);
+void NotificationButtonClicked();
 
-    NSUserNotification* notification() const {
-        return notification_;
-    }
+NSUserNotification* notification() const {
+	return notification_;
+}
 
 private:
-    void LogAction(const char* action);
+void LogAction(const char* action);
 
-    base::scoped_nsobject<NSUserNotification> notification_;
-    int action_index_;
+base::scoped_nsobject<NSUserNotification> notification_;
+int action_index_;
 
-    DISALLOW_COPY_AND_ASSIGN(CocoaNotification);
+DISALLOW_COPY_AND_ASSIGN(CocoaNotification);
 };
 
 }  // namespace brightray

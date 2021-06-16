@@ -18,20 +18,20 @@ class MessageHandlerDelegate;
 
 class AtomDesktopWindowTreeHostWin : public views::DesktopWindowTreeHostWin {
 public:
-    AtomDesktopWindowTreeHostWin(
-        MessageHandlerDelegate* delegate,
-        views::internal::NativeWidgetDelegate* native_widget_delegate,
-        views::DesktopNativeWidgetAura* desktop_native_widget_aura);
-    ~AtomDesktopWindowTreeHostWin() override;
+AtomDesktopWindowTreeHostWin(
+	MessageHandlerDelegate* delegate,
+	views::internal::NativeWidgetDelegate* native_widget_delegate,
+	views::DesktopNativeWidgetAura* desktop_native_widget_aura);
+~AtomDesktopWindowTreeHostWin() override;
 
 protected:
-    bool PreHandleMSG(
-        UINT message, WPARAM w_param, LPARAM l_param, LRESULT* result) override;
+bool PreHandleMSG(
+	UINT message, WPARAM w_param, LPARAM l_param, LRESULT* result) override;
 
 private:
-    MessageHandlerDelegate* delegate_;  // weak ref
+MessageHandlerDelegate* delegate_;      // weak ref
 
-    DISALLOW_COPY_AND_ASSIGN(AtomDesktopWindowTreeHostWin);
+DISALLOW_COPY_AND_ASSIGN(AtomDesktopWindowTreeHostWin);
 };
 
 }  // namespace atom

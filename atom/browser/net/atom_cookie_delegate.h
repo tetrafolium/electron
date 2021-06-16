@@ -12,35 +12,37 @@ namespace atom {
 
 class AtomCookieDelegate : public net::CookieMonsterDelegate {
 public:
-    AtomCookieDelegate();
-    ~AtomCookieDelegate() override;
+AtomCookieDelegate();
+~AtomCookieDelegate() override;
 
-    class Observer {
-    public:
-        virtual void OnCookieChanged(const net::CanonicalCookie& cookie,
-                                     bool removed,
-                                     net::CookieStore::ChangeCause cause) {}
-    protected:
-        virtual ~Observer() {}
-    };
+class Observer {
+public:
+virtual void OnCookieChanged(const net::CanonicalCookie& cookie,
+                             bool removed,
+                             net::CookieStore::ChangeCause cause) {
+}
+protected:
+virtual ~Observer() {
+}
+};
 
-    void AddObserver(Observer* observer);
-    void RemoveObserver(Observer* observer);
+void AddObserver(Observer* observer);
+void RemoveObserver(Observer* observer);
 
-    // net::CookieMonsterDelegate:
-    void OnCookieChanged(const net::CanonicalCookie& cookie,
-                         bool removed,
-                         net::CookieStore::ChangeCause cause) override;
+// net::CookieMonsterDelegate:
+void OnCookieChanged(const net::CanonicalCookie& cookie,
+                     bool removed,
+                     net::CookieStore::ChangeCause cause) override;
 
 
 private:
-    base::ObserverList<Observer> observers_;
+base::ObserverList<Observer> observers_;
 
-    void NotifyObservers(const net::CanonicalCookie& cookie,
-                         bool removed,
-                         net::CookieStore::ChangeCause cause);
+void NotifyObservers(const net::CanonicalCookie& cookie,
+                     bool removed,
+                     net::CookieStore::ChangeCause cause);
 
-    DISALLOW_COPY_AND_ASSIGN(AtomCookieDelegate);
+DISALLOW_COPY_AND_ASSIGN(AtomCookieDelegate);
 };
 
 }   // namespace atom

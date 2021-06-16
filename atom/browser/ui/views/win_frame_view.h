@@ -11,19 +11,19 @@ namespace atom {
 
 class WinFrameView : public FramelessView {
 public:
-    WinFrameView();
-    virtual ~WinFrameView();
+WinFrameView();
+virtual ~WinFrameView();
 
-    // views::NonClientFrameView:
-    gfx::Rect GetWindowBoundsForClientBounds(
-        const gfx::Rect& client_bounds) const override;
-    int NonClientHitTest(const gfx::Point& point) override;
+// views::NonClientFrameView:
+gfx::Rect GetWindowBoundsForClientBounds(
+	const gfx::Rect& client_bounds) const override;
+int NonClientHitTest(const gfx::Point& point) override;
 
-    // views::View:
-    const char* GetClassName() const override;
+// views::View:
+const char* GetClassName() const override;
 
 private:
-    DISALLOW_COPY_AND_ASSIGN(WinFrameView);
+DISALLOW_COPY_AND_ASSIGN(WinFrameView);
 };
 
 }  // namespace atom

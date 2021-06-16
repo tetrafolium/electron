@@ -13,31 +13,33 @@
 #include "ppapi/proxy/ppapi_messages.h"
 
 PepperFlashFullscreenHost::PepperFlashFullscreenHost(
-    content::RendererPpapiHost* host,
-    PP_Instance instance,
-    PP_Resource resource)
-    : ResourceHost(host->GetPpapiHost(), instance, resource),
-      renderer_ppapi_host_(host) {}
+	content::RendererPpapiHost* host,
+	PP_Instance instance,
+	PP_Resource resource)
+	: ResourceHost(host->GetPpapiHost(), instance, resource),
+	renderer_ppapi_host_(host) {
+}
 
-PepperFlashFullscreenHost::~PepperFlashFullscreenHost() {}
+PepperFlashFullscreenHost::~PepperFlashFullscreenHost() {
+}
 
 int32_t PepperFlashFullscreenHost::OnResourceMessageReceived(
-    const IPC::Message& msg,
-    ppapi::host::HostMessageContext* context) {
-    PPAPI_BEGIN_MESSAGE_MAP(PepperFlashFullscreenHost, msg)
-    PPAPI_DISPATCH_HOST_RESOURCE_CALL(
-        PpapiHostMsg_FlashFullscreen_SetFullscreen,
-        OnSetFullscreen)
-    PPAPI_END_MESSAGE_MAP()
-    return PP_ERROR_FAILED;
+	const IPC::Message& msg,
+	ppapi::host::HostMessageContext* context) {
+	PPAPI_BEGIN_MESSAGE_MAP(PepperFlashFullscreenHost, msg)
+	PPAPI_DISPATCH_HOST_RESOURCE_CALL(
+		PpapiHostMsg_FlashFullscreen_SetFullscreen,
+		OnSetFullscreen)
+	PPAPI_END_MESSAGE_MAP()
+	return PP_ERROR_FAILED;
 }
 
 int32_t PepperFlashFullscreenHost::OnSetFullscreen(
-    ppapi::host::HostMessageContext* context,
-    bool fullscreen) {
-    content::PepperPluginInstance* plugin_instance =
-        renderer_ppapi_host_->GetPluginInstance(pp_instance());
-    if (plugin_instance && plugin_instance->FlashSetFullscreen(fullscreen, true))
-        return PP_OK;
-    return PP_ERROR_FAILED;
+	ppapi::host::HostMessageContext* context,
+	bool fullscreen) {
+	content::PepperPluginInstance* plugin_instance =
+		renderer_ppapi_host_->GetPluginInstance(pp_instance());
+	if (plugin_instance && plugin_instance->FlashSetFullscreen(fullscreen, true))
+		return PP_OK;
+	return PP_ERROR_FAILED;
 }

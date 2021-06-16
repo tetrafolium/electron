@@ -28,43 +28,43 @@
 #define CHROME_COMMON_PRINT_MESSAGES_H_
 
 struct PrintMsg_Print_Params {
-    PrintMsg_Print_Params();
-    ~PrintMsg_Print_Params();
+	PrintMsg_Print_Params();
+	~PrintMsg_Print_Params();
 
-    // Resets the members of the struct to 0.
-    void Reset();
+	// Resets the members of the struct to 0.
+	void Reset();
 
-    gfx::Size page_size;
-    gfx::Size content_size;
-    gfx::Rect printable_area;
-    int margin_top;
-    int margin_left;
-    double dpi;
-    double scale_factor;
-    bool rasterize_pdf;
-    int document_cookie;
-    bool selection_only;
-    bool supports_alpha_blend;
-    int32_t preview_ui_id;
-    int preview_request_id;
-    bool is_first_request;
-    blink::WebPrintScalingOption print_scaling_option;
-    bool print_to_pdf;
-    bool display_header_footer;
-    base::string16 title;
-    base::string16 url;
-    bool should_print_backgrounds;
+	gfx::Size page_size;
+	gfx::Size content_size;
+	gfx::Rect printable_area;
+	int margin_top;
+	int margin_left;
+	double dpi;
+	double scale_factor;
+	bool rasterize_pdf;
+	int document_cookie;
+	bool selection_only;
+	bool supports_alpha_blend;
+	int32_t preview_ui_id;
+	int preview_request_id;
+	bool is_first_request;
+	blink::WebPrintScalingOption print_scaling_option;
+	bool print_to_pdf;
+	bool display_header_footer;
+	base::string16 title;
+	base::string16 url;
+	bool should_print_backgrounds;
 };
 
 struct PrintMsg_PrintPages_Params {
-    PrintMsg_PrintPages_Params();
-    ~PrintMsg_PrintPages_Params();
+	PrintMsg_PrintPages_Params();
+	~PrintMsg_PrintPages_Params();
 
-    // Resets the members of the struct to 0.
-    void Reset();
+	// Resets the members of the struct to 0.
+	void Reset();
 
-    PrintMsg_Print_Params params;
-    std::vector<int> pages;
+	PrintMsg_Print_Params params;
+	std::vector<int> pages;
 };
 
 #endif  // CHROME_COMMON_PRINT_MESSAGES_H_

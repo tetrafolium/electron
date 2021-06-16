@@ -18,36 +18,36 @@ class OffscreenViewProxy;
 
 class OffscreenViewProxyObserver {
 public:
-    virtual void OnProxyViewPaint(const gfx::Rect& damage_rect) = 0;
-    virtual void ProxyViewDestroyed(OffscreenViewProxy* proxy) = 0;
+virtual void OnProxyViewPaint(const gfx::Rect& damage_rect) = 0;
+virtual void ProxyViewDestroyed(OffscreenViewProxy* proxy) = 0;
 };
 
 class OffscreenViewProxy {
 public:
-    explicit OffscreenViewProxy(views::View* view);
-    ~OffscreenViewProxy();
+explicit OffscreenViewProxy(views::View* view);
+~OffscreenViewProxy();
 
-    void SetObserver(OffscreenViewProxyObserver* observer);
-    void RemoveObserver();
+void SetObserver(OffscreenViewProxyObserver* observer);
+void RemoveObserver();
 
-    const SkBitmap* GetBitmap() const;
-    void SetBitmap(const SkBitmap& bitmap);
+const SkBitmap* GetBitmap() const;
+void SetBitmap(const SkBitmap& bitmap);
 
-    const gfx::Rect& GetBounds();
-    void SetBounds(const gfx::Rect& bounds);
+const gfx::Rect& GetBounds();
+void SetBounds(const gfx::Rect& bounds);
 
-    void OnEvent(ui::Event* event);
+void OnEvent(ui::Event* event);
 
-    void ResetView() {
-        view_ = nullptr;
-    }
+void ResetView() {
+	view_ = nullptr;
+}
 private:
-    views::View* view_;
+views::View* view_;
 
-    gfx::Rect view_bounds_;
-    std::unique_ptr<SkBitmap> view_bitmap_;
+gfx::Rect view_bounds_;
+std::unique_ptr<SkBitmap> view_bitmap_;
 
-    OffscreenViewProxyObserver* observer_;
+OffscreenViewProxyObserver* observer_;
 };
 
 }  // namespace atom

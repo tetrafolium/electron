@@ -12,13 +12,13 @@
 // Lives on the UI thread.
 class PrintingUIWebContentsObserver : public content::WebContentsObserver {
 public:
-    explicit PrintingUIWebContentsObserver(content::WebContents* web_contents);
+explicit PrintingUIWebContentsObserver(content::WebContents* web_contents);
 
-    // Return the parent NativeView of the observed WebContents.
-    gfx::NativeView GetParentView();
+// Return the parent NativeView of the observed WebContents.
+gfx::NativeView GetParentView();
 
 private:
-    DISALLOW_COPY_AND_ASSIGN(PrintingUIWebContentsObserver);
+DISALLOW_COPY_AND_ASSIGN(PrintingUIWebContentsObserver);
 };
 
 #endif  // CHROME_BROWSER_PRINTING_PRINTING_UI_WEB_CONTENTS_OBSERVER_H_

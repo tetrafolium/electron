@@ -23,19 +23,19 @@ namespace atom {
 namespace api {
 
 MenuMac::MenuMac(v8::Isolate* isolate, v8::Local<v8::Object> wrapper)
-    : Menu(isolate, wrapper),
-      weak_factory_(this) {
+	: Menu(isolate, wrapper),
+	weak_factory_(this) {
 }
 
 void MenuMac::PopupAt(Window* window, int x, int y, int positioning_item) {
-    NativeWindow* native_window = window->window();
-    if (!native_window)
-        return;
+	NativeWindow* native_window = window->window();
+	if (!native_window)
+		return;
 
-    auto popup = base::Bind(&MenuMac::PopupOnUI, weak_factory_.GetWeakPtr(),
-                            native_window->GetWeakPtr(), window->ID(), x, y,
-                            positioning_item);
-    BrowserThread::PostTask(BrowserThread::UI, FROM_HERE, popup);
+	auto popup = base::Bind(&MenuMac::PopupOnUI, weak_factory_.GetWeakPtr(),
+	                        native_window->GetWeakPtr(), window->ID(), x, y,
+	                        positioning_item);
+	BrowserThread::PostTask(BrowserThread::UI, FROM_HERE, popup);
 }
 
 void MenuMac::PopupOnUI(const base::WeakPtr<NativeWindow>& native_window,
@@ -43,100 +43,100 @@ void MenuMac::PopupOnUI(const base::WeakPtr<NativeWindow>& native_window,
                         int x,
                         int y,
                         int positioning_item) {
-    if (!native_window)
-        return;
-    brightray::InspectableWebContents* web_contents =
-        native_window->inspectable_web_contents();
-    if (!web_contents)
-        return;
+	if (!native_window)
+		return;
+	brightray::InspectableWebContents* web_contents =
+		native_window->inspectable_web_contents();
+	if (!web_contents)
+		return;
 
-    auto close_callback = base::Bind(&MenuMac::ClosePopupAt,
-                                     weak_factory_.GetWeakPtr(), window_id);
-    popup_controllers_[window_id] = base::scoped_nsobject<AtomMenuController>(
-                                        [[AtomMenuController alloc] initWithModel:model()
-                                                                    useDefaultAccelerator:NO]);
-    NSMenu* menu = [popup_controllers_[window_id] menu];
-    NSView* view = web_contents->GetView()->GetNativeView();
+	auto close_callback = base::Bind(&MenuMac::ClosePopupAt,
+	                                 weak_factory_.GetWeakPtr(), window_id);
+	popup_controllers_[window_id] = base::scoped_nsobject<AtomMenuController>(
+		[[AtomMenuController alloc] initWithModel:model()
+		 useDefaultAccelerator:NO]);
+	NSMenu* menu = [popup_controllers_[window_id] menu];
+	NSView* view = web_contents->GetView()->GetNativeView();
 
-    // Which menu item to show.
-    NSMenuItem* item = nil;
-    if (positioning_item < [menu numberOfItems] && positioning_item >= 0)
-        item = [menu itemAtIndex:positioning_item];
+	// Which menu item to show.
+	NSMenuItem* item = nil;
+	if (positioning_item < [menu numberOfItems] && positioning_item >= 0)
+		item = [menu itemAtIndex:positioning_item];
 
-    // (-1, -1) means showing on mouse location.
-    NSPoint position;
-    if (x == -1 || y == -1) {
-        NSWindow* nswindow = native_window->GetNativeWindow();
-        position = [view convertPoint:[nswindow mouseLocationOutsideOfEventStream]
-                         fromView:nil];
-    } else {
-        position = NSMakePoint(x, [view frame].size.height - y);
-    }
+	// (-1, -1) means showing on mouse location.
+	NSPoint position;
+	if (x == -1 || y == -1) {
+		NSWindow* nswindow = native_window->GetNativeWindow();
+		position = [view convertPoint:[nswindow mouseLocationOutsideOfEventStream]
+		            fromView:nil];
+	} else {
+		position = NSMakePoint(x, [view frame].size.height - y);
+	}
 
-    // If no preferred item is specified, try to show all of the menu items.
-    if (!positioning_item) {
-        CGFloat windowBottom = CGRectGetMinY([view window].frame);
-        CGFloat lowestMenuPoint = windowBottom + position.y - [menu size].height;
-        CGFloat screenBottom = CGRectGetMinY([view window].screen.frame);
-        CGFloat distanceFromBottom = lowestMenuPoint - screenBottom;
-        if (distanceFromBottom < 0)
-            position.y = position.y - distanceFromBottom + 4;
-    }
+	// If no preferred item is specified, try to show all of the menu items.
+	if (!positioning_item) {
+		CGFloat windowBottom = CGRectGetMinY([view window].frame);
+		CGFloat lowestMenuPoint = windowBottom + position.y - [menu size].height;
+		CGFloat screenBottom = CGRectGetMinY([view window].screen.frame);
+		CGFloat distanceFromBottom = lowestMenuPoint - screenBottom;
+		if (distanceFromBottom < 0)
+			position.y = position.y - distanceFromBottom + 4;
+	}
 
-    // Place the menu left of cursor if it is overflowing off right of screen.
-    CGFloat windowLeft = CGRectGetMinX([view window].frame);
-    CGFloat rightmostMenuPoint = windowLeft + position.x + [menu size].width;
-    CGFloat screenRight = CGRectGetMaxX([view window].screen.frame);
-    if (rightmostMenuPoint > screenRight)
-        position.x = position.x - [menu size].width;
+	// Place the menu left of cursor if it is overflowing off right of screen.
+	CGFloat windowLeft = CGRectGetMinX([view window].frame);
+	CGFloat rightmostMenuPoint = windowLeft + position.x + [menu size].width;
+	CGFloat screenRight = CGRectGetMaxX([view window].screen.frame);
+	if (rightmostMenuPoint > screenRight)
+		position.x = position.x - [menu size].width;
 
-    [popup_controllers_[window_id] setCloseCallback:close_callback];
-    // Make sure events can be pumped while the menu is up.
-    base::MessageLoop::ScopedNestableTaskAllower allow(
-        base::MessageLoop::current());
+	[popup_controllers_[window_id] setCloseCallback:close_callback];
+	// Make sure events can be pumped while the menu is up.
+	base::MessageLoop::ScopedNestableTaskAllower allow(
+		base::MessageLoop::current());
 
-    // One of the events that could be pumped is |window.close()|.
-    // User-initiated event-tracking loops protect against this by
-    // setting flags in -[CrApplication sendEvent:], but since
-    // web-content menus are initiated by IPC message the setup has to
-    // be done manually.
-    base::mac::ScopedSendingEvent sendingEventScoper;
+	// One of the events that could be pumped is |window.close()|.
+	// User-initiated event-tracking loops protect against this by
+	// setting flags in -[CrApplication sendEvent:], but since
+	// web-content menus are initiated by IPC message the setup has to
+	// be done manually.
+	base::mac::ScopedSendingEvent sendingEventScoper;
 
-    // Don't emit unresponsive event when showing menu.
-    atom::UnresponsiveSuppressor suppressor;
-    [menu popUpMenuPositioningItem:item atLocation:position inView:view];
+	// Don't emit unresponsive event when showing menu.
+	atom::UnresponsiveSuppressor suppressor;
+	[menu popUpMenuPositioningItem:item atLocation:position inView:view];
 }
 
 void MenuMac::ClosePopupAt(int32_t window_id) {
-    auto it = popup_controllers_.find(window_id);
-    if (it != popup_controllers_.end()) {
-        popup_controllers_.erase(it);
-    } else if (window_id == -1) {
-        popup_controllers_.clear();
-    }
+	auto it = popup_controllers_.find(window_id);
+	if (it != popup_controllers_.end()) {
+		popup_controllers_.erase(it);
+	} else if (window_id == -1) {
+		popup_controllers_.clear();
+	}
 }
 
 // static
 void Menu::SetApplicationMenu(Menu* base_menu) {
-    MenuMac* menu = static_cast<MenuMac*>(base_menu);
-    base::scoped_nsobject<AtomMenuController> menu_controller(
-        [[AtomMenuController alloc] initWithModel:menu->model_.get()
-                                    useDefaultAccelerator:YES]);
-    [NSApp setMainMenu:[menu_controller menu]];
+	MenuMac* menu = static_cast<MenuMac*>(base_menu);
+	base::scoped_nsobject<AtomMenuController> menu_controller(
+		[[AtomMenuController alloc] initWithModel:menu->model_.get()
+		 useDefaultAccelerator:YES]);
+	[NSApp setMainMenu:[menu_controller menu]];
 
-    // Ensure the menu_controller_ is destroyed after main menu is set.
-    menu_controller.swap(menu->menu_controller_);
+	// Ensure the menu_controller_ is destroyed after main menu is set.
+	menu_controller.swap(menu->menu_controller_);
 }
 
 // static
 void Menu::SendActionToFirstResponder(const std::string& action) {
-    SEL selector = NSSelectorFromString(base::SysUTF8ToNSString(action));
-    [NSApp sendAction:selector to:nil from:[NSApp mainMenu]];
+	SEL selector = NSSelectorFromString(base::SysUTF8ToNSString(action));
+	[NSApp sendAction:selector to:nil from:[NSApp mainMenu]];
 }
 
 // static
 mate::WrappableBase* Menu::New(mate::Arguments* args) {
-    return new MenuMac(args->isolate(), args->GetThis());
+	return new MenuMac(args->isolate(), args->GetThis());
 }
 
 }  // namespace api
