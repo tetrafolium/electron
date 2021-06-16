@@ -2,6 +2,7 @@ from dbusmock import DBusTestCase
 
 import atexit
 
+
 def cleanup():
     DBusTestCase.stop_dbus(DBusTestCase.system_bus_pid)
 
