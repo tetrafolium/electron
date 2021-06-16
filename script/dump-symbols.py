@@ -6,7 +6,6 @@ import sys
 from lib.config import PLATFORM
 from lib.util import electron_gyp, execute, rm_rf
 
-
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 DIST_DIR = os.path.join(SOURCE_ROOT, 'dist')
 OUT_DIR = os.path.join(SOURCE_ROOT, 'out', 'R')
@@ -19,11 +18,11 @@ def main(destination):
     (project_name, product_name) = get_names_from_gyp()
 
     if PLATFORM in ['darwin', 'linux']:
-        generate_breakpad_symbols = os.path.join(SOURCE_ROOT, 'tools', 'posix',
-                                                 'generate_breakpad_symbols.py')
+        generate_breakpad_symbols = os.path.join(
+            SOURCE_ROOT, 'tools', 'posix', 'generate_breakpad_symbols.py')
         if PLATFORM == 'darwin':
-            start = os.path.join(OUT_DIR, '{0}.app'.format(product_name), 'Contents',
-                                 'MacOS', product_name)
+            start = os.path.join(OUT_DIR, '{0}.app'.format(product_name),
+                                 'Contents', 'MacOS', product_name)
         else:
             start = os.path.join(OUT_DIR, project_name)
         args = [
@@ -35,8 +34,8 @@ def main(destination):
             '--jobs=16',
         ]
     else:
-        generate_breakpad_symbols = os.path.join(SOURCE_ROOT, 'tools', 'win',
-                                                 'generate_breakpad_symbols.py')
+        generate_breakpad_symbols = os.path.join(
+            SOURCE_ROOT, 'tools', 'win', 'generate_breakpad_symbols.py')
         args = [
             '--symbols-dir={0}'.format(destination),
             '--jobs=16',

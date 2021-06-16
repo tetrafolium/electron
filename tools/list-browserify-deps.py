@@ -3,7 +3,6 @@ import os
 import subprocess
 import sys
 
-
 SOURCE_ROOT = os.path.dirname(os.path.dirname(__file__))
 BROWSERIFY = os.path.join(SOURCE_ROOT, 'node_modules', '.bin', 'browserify')
 if sys.platform == 'win32':

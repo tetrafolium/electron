@@ -6,7 +6,6 @@ import sys
 
 from lib.util import rm_rf
 
-
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
@@ -30,8 +29,9 @@ def main():
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Remove generated and'
-                                                 'downloaded build files')
-    parser.add_argument('-b', '--build',
+                                     'downloaded build files')
+    parser.add_argument('-b',
+                        '--build',
                         help='Only remove out and dist directories',
                         action='store_true')
     return parser.parse_args()

@@ -10,7 +10,6 @@ from lib.config import PLATFORM, enable_verbose_mode, get_target_arch
 from lib.util import execute_stdout, get_electron_version, safe_mkdir, \
     update_node_modules, update_electron_modules
 
-
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
@@ -30,8 +29,10 @@ def main():
 
     # Create node headers
     script_path = os.path.join(SOURCE_ROOT, 'script', 'create-node-headers.py')
-    execute_stdout([sys.executable, script_path, '--version', version,
-                    '--directory', out_dir])
+    execute_stdout([
+        sys.executable, script_path, '--version', version, '--directory',
+        out_dir
+    ])
 
     if PLATFORM == 'win32':
         lib_dir = os.path.join(node_dir, 'Release')
@@ -42,18 +43,20 @@ def main():
 
     # Native modules can only be compiled against release builds on Windows
     if config[0] == 'R' or PLATFORM != 'win32':
-        update_electron_modules(os.path.dirname(spec_modules), get_target_arch(),
-                                node_dir)
+        update_electron_modules(os.path.dirname(spec_modules),
+                                get_target_arch(), node_dir)
     else:
         update_node_modules(os.path.dirname(spec_modules))
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Rebuild native test modules')
-    parser.add_argument('-v', '--verbose',
+    parser.add_argument('-v',
+                        '--verbose',
                         action='store_true',
                         help='Prints the output of the subprocesses')
-    parser.add_argument('-c', '--configuration',
+    parser.add_argument('-c',
+                        '--configuration',
                         help='Build configuration to rebuild modules against',
                         default='D',
                         required=False)

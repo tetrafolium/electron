@@ -6,7 +6,6 @@ import sys
 
 from lib.util import electron_gyp
 
-
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 PROJECT_NAME = electron_gyp()['project_name%']

@@ -3,7 +3,6 @@
 # Copyright (c) 2013 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
-
 """A tool to generate symbols for a binary suitable for breakpad.
 
 Currently, the tool only supports Linux, Android, and Mac. Support for other
@@ -20,7 +19,6 @@ import subprocess
 import sys
 import threading
 
-
 CONCURRENT_TASKS = 4
 
 
@@ -33,7 +31,9 @@ def GetCommandOutput(command):
     From chromium_utils.
     """
     devnull = open(os.devnull, 'w')
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull,
+    proc = subprocess.Popen(command,
+                            stdout=subprocess.PIPE,
+                            stderr=devnull,
                             bufsize=1)
     output = proc.communicate()[0]
     return output
@@ -99,8 +99,8 @@ def Resolve(path, exe_path, loader_path, rpaths):
     path = path.replace('@executable_path', exe_path)
     if path.find('@rpath') != -1:
         for rpath in rpaths:
-            new_path = Resolve(path.replace('@rpath', rpath), exe_path, loader_path,
-                               [])
+            new_path = Resolve(path.replace('@rpath', rpath), exe_path,
+                               loader_path, [])
             if os.access(new_path, os.F_OK):
                 return new_path
         return ''
@@ -130,7 +130,7 @@ def GetSharedLibraryDependenciesMac(binary, exe_path):
     rpaths = []
     for idx, line in enumerate(otool):
         if line.find('cmd LC_RPATH') != -1:
-            m = re.match(' *path (.*) \(offset .*\)$', otool[idx+2])
+            m = re.match(' *path (.*) \(offset .*\)$', otool[idx + 2])
             rpaths.append(m.group(1))
 
     otool = GetCommandOutput(['otool', '-L', binary]).splitlines()
@@ -194,11 +194,12 @@ def GenerateSymbols(options, binaries):
             elif sys.platform == 'linux2':
                 binary = GetSymbolPath(options, binary)
 
-            syms = GetCommandOutput([GetDumpSymsBinary(options.build_dir), '-r', '-c',
-                                     binary])
-            module_line = re.match(
-                "MODULE [^ ]+ [^ ]+ ([0-9A-F]+) (.*)\n", syms)
-            output_path = os.path.join(options.symbols_dir, module_line.group(2),
+            syms = GetCommandOutput(
+                [GetDumpSymsBinary(options.build_dir), '-r', '-c', binary])
+            module_line = re.match("MODULE [^ ]+ [^ ]+ ([0-9A-F]+) (.*)\n",
+                                   syms)
+            output_path = os.path.join(options.symbols_dir,
+                                       module_line.group(2),
                                        module_line.group(1))
             mkdir_p(output_path)
             symbol_file = "%s.sym" % module_line.group(2)
@@ -221,20 +222,38 @@ def GenerateSymbols(options, binaries):
 
 def main():
     parser = optparse.OptionParser()
-    parser.add_option('', '--build-dir', default='',
+    parser.add_option('',
+                      '--build-dir',
+                      default='',
                       help='The build output directory.')
-    parser.add_option('', '--symbols-dir', default='',
+    parser.add_option('',
+                      '--symbols-dir',
+                      default='',
                       help='The directory where to write the symbols file.')
-    parser.add_option('', '--libchromiumcontent-dir', default='',
-                      help='The directory where libchromiumcontent is downloaded.')
-    parser.add_option('', '--binary', default='',
+    parser.add_option(
+        '',
+        '--libchromiumcontent-dir',
+        default='',
+        help='The directory where libchromiumcontent is downloaded.')
+    parser.add_option('',
+                      '--binary',
+                      default='',
                       help='The path of the binary to generate symbols for.')
-    parser.add_option('', '--clear', default=False, action='store_true',
+    parser.add_option('',
+                      '--clear',
+                      default=False,
+                      action='store_true',
                       help='Clear the symbols directory before writing new '
-                           'symbols.')
-    parser.add_option('-j', '--jobs', default=CONCURRENT_TASKS, action='store',
-                      type='int', help='Number of parallel tasks to run.')
-    parser.add_option('-v', '--verbose', action='store_true',
+                      'symbols.')
+    parser.add_option('-j',
+                      '--jobs',
+                      default=CONCURRENT_TASKS,
+                      action='store',
+                      type='int',
+                      help='Number of parallel tasks to run.')
+    parser.add_option('-v',
+                      '--verbose',
+                      action='store_true',
                       help='Print verbose status output.')
 
     (options, _) = parser.parse_args()

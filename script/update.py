@@ -9,7 +9,6 @@ import sys
 from lib.config import get_target_arch, PLATFORM
 from lib.util import get_host_arch, import_vs_env
 
-
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
@@ -26,9 +25,11 @@ def main():
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Update build configurations')
-    parser.add_argument('--defines', default='',
+    parser.add_argument('--defines',
+                        default='',
                         help='The build variables passed to gyp')
-    parser.add_argument('--msvs', action='store_true',
+    parser.add_argument('--msvs',
+                        action='store_true',
                         help='Generate Visual Studio project')
     return parser.parse_args()
 
@@ -66,8 +67,8 @@ def run_gyp(target_arch, component):
     gyp = os.path.join('vendor', 'gyp', 'gyp_main.py')
     gyp_pylib = os.path.join(os.path.dirname(gyp), 'pylib')
     # Avoid using the old gyp lib in system.
-    env['PYTHONPATH'] = os.path.pathsep.join([gyp_pylib,
-                                              env.get('PYTHONPATH', '')])
+    env['PYTHONPATH'] = os.path.pathsep.join(
+        [gyp_pylib, env.get('PYTHONPATH', '')])
     # Whether to build for Mac App Store.
     if os.environ.has_key('MAS_BUILD'):
         mas_build = 1
@@ -92,8 +93,11 @@ def run_gyp(target_arch, component):
     if args.msvs:
         generator = 'msvs-ninja'
 
-    return subprocess.call([python, gyp, '-f', generator, '--depth', '.',
-                            'electron.gyp', '-Icommon.gypi'] + defines, env=env)
+    return subprocess.call([
+        python, gyp, '-f', generator, '--depth', '.', 'electron.gyp',
+        '-Icommon.gypi'
+    ] + defines,
+                           env=env)
 
 
 if __name__ == '__main__':

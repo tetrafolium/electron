@@ -47,8 +47,11 @@ def get_environment_from_batch_command(env_cmd, initial=None):
     lines = proc.stdout
     # Consume whatever output occurs until the tag is reached.
     consume(itertools.takewhile(lambda l: tag not in l, lines))
+
     # Define a way to handle each KEY=VALUE line.
-    def handle_line(l): return l.rstrip().split('=', 1)
+    def handle_line(l):
+        return l.rstrip().split('=', 1)
+
     # Parse key/values into pairs.
     pairs = map(handle_line, lines)
     # Make sure the pairs are valid.

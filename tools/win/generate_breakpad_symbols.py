@@ -3,7 +3,6 @@
 # Copyright (c) 2013 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
-
 """Convert pdb to sym for given directories"""
 
 import errno
@@ -16,10 +15,9 @@ import subprocess
 import sys
 import threading
 
-
 CONCURRENT_TASKS = 4
-SOURCE_ROOT = os.path.abspath(os.path.dirname(
-    os.path.dirname(os.path.dirname(__file__))))
+SOURCE_ROOT = os.path.abspath(
+    os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 DUMP_SYMS = os.path.join(SOURCE_ROOT, 'vendor', 'breakpad', 'dump_syms.exe')
 
 
@@ -32,7 +30,9 @@ def GetCommandOutput(command):
     From chromium_utils.
     """
     devnull = open(os.devnull, 'w')
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull,
+    proc = subprocess.Popen(command,
+                            stdout=subprocess.PIPE,
+                            stderr=devnull,
                             bufsize=1)
     output = proc.communicate()[0]
     return output
@@ -72,7 +72,8 @@ def GenerateSymbols(options, binaries):
                 queue.task_done()
                 continue
 
-            output_path = os.path.join(options.symbols_dir, module_line.group(2),
+            output_path = os.path.join(options.symbols_dir,
+                                       module_line.group(2),
                                        module_line.group(1))
             mkdir_p(output_path)
             symbol_file = "%s.sym" % module_line.group(2)[:-4]  # strip .pdb
@@ -95,14 +96,25 @@ def GenerateSymbols(options, binaries):
 
 def main():
     parser = optparse.OptionParser()
-    parser.add_option('', '--symbols-dir', default='',
+    parser.add_option('',
+                      '--symbols-dir',
+                      default='',
                       help='The directory where to write the symbols file.')
-    parser.add_option('', '--clear', default=False, action='store_true',
+    parser.add_option('',
+                      '--clear',
+                      default=False,
+                      action='store_true',
                       help='Clear the symbols directory before writing new '
-                           'symbols.')
-    parser.add_option('-j', '--jobs', default=CONCURRENT_TASKS, action='store',
-                      type='int', help='Number of parallel tasks to run.')
-    parser.add_option('-v', '--verbose', action='store_true',
+                      'symbols.')
+    parser.add_option('-j',
+                      '--jobs',
+                      default=CONCURRENT_TASKS,
+                      action='store',
+                      type='int',
+                      help='Number of parallel tasks to run.')
+    parser.add_option('-v',
+                      '--verbose',
+                      action='store_true',
                       help='Print verbose status output.')
 
     (options, directories) = parser.parse_args()

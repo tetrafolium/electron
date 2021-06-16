@@ -22,14 +22,16 @@ def main():
     s3 = S3Connection(access_key, secret_key)
     bucket = s3.get_bucket(bucket_name)
     if bucket is None:
-        print('S3 bucket "{}" does not exist!'.format(
-            bucket_name), file=sys.stderr)
+        print('S3 bucket "{}" does not exist!'.format(bucket_name),
+              file=sys.stderr)
         return 1
 
     prefix = 'atom-shell/tmp/{0}/'.format(args.version)
-    shasums = [s3_object.get_contents_as_string().strip()
-               for s3_object in bucket.list(prefix, delimiter='/')
-               if s3_object.key.endswith('.sha256sum')]
+    shasums = [
+        s3_object.get_contents_as_string().strip()
+        for s3_object in bucket.list(prefix, delimiter='/')
+        if s3_object.key.endswith('.sha256sum')
+    ]
     print('\n'.join(shasums))
     return 0
 
@@ -37,7 +39,9 @@ def main():
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Upload SHASUMS files to GitHub')
-    parser.add_argument('-v', '--version', help='Specify the version',
+    parser.add_argument('-v',
+                        '--version',
+                        help='Specify the version',
                         required=True)
     return parser.parse_args()
 

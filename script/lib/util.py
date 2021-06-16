@@ -18,8 +18,8 @@ import zipfile
 from config import is_verbose_mode, PLATFORM
 from env_util import get_vs_env
 
-BOTO_DIR = os.path.abspath(os.path.join(__file__, '..', '..', '..', 'vendor',
-                                        'boto'))
+BOTO_DIR = os.path.abspath(
+    os.path.join(__file__, '..', '..', '..', 'vendor', 'boto'))
 
 NPM = 'npm'
 if sys.platform in ['win32', 'cygwin']:
@@ -99,8 +99,8 @@ def download(text, url, path):
 
             if not ci:
                 percent = downloaded_size * 100. / file_size
-                status = "\r%s  %10d  [%3.1f%%]" % (
-                    text, downloaded_size, percent)
+                status = "\r%s  %10d  [%3.1f%%]" % (text, downloaded_size,
+                                                    percent)
                 print status,
 
         if ci:
@@ -167,8 +167,10 @@ def execute(argv, env=os.environ, cwd=None):
     if is_verbose_mode():
         print ' '.join(argv)
     try:
-        output = subprocess.check_output(
-            argv, stderr=subprocess.STDOUT, env=env, cwd=cwd)
+        output = subprocess.check_output(argv,
+                                         stderr=subprocess.STDOUT,
+                                         env=env,
+                                         cwd=cwd)
         if is_verbose_mode():
             print output
         return output
@@ -223,8 +225,8 @@ def run_boto_script(access_key, secret_key, script_name, *args):
     env = os.environ.copy()
     env['AWS_ACCESS_KEY_ID'] = access_key
     env['AWS_SECRET_ACCESS_KEY'] = secret_key
-    env['PYTHONPATH'] = os.path.pathsep.join(
-        [env.get('PYTHONPATH', '')] + boto_path_dirs())
+    env['PYTHONPATH'] = os.path.pathsep.join([env.get('PYTHONPATH', '')] +
+                                             boto_path_dirs())
 
     boto = os.path.join(BOTO_DIR, 'bin', script_name)
     execute([sys.executable, boto] + list(args), env)
@@ -232,9 +234,7 @@ def run_boto_script(access_key, secret_key, script_name, *args):
 
 def s3put(bucket, access_key, secret_key, prefix, key_prefix, files):
     args = [
-        '--bucket', bucket,
-        '--prefix', prefix,
-        '--key_prefix', key_prefix,
+        '--bucket', bucket, '--prefix', prefix, '--key_prefix', key_prefix,
         '--grant', 'public-read'
     ] + files
 

@@ -6,7 +6,6 @@ import os
 import subprocess
 import sys
 
-
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 

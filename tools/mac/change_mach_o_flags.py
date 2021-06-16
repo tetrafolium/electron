@@ -2,7 +2,6 @@
 # Copyright (c) 2011 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE-CHROMIUM file.
-
 """Usage: change_mach_o_flags.py [--executable-heap] [--no-pie] <executablepath>
 
 Arranges for the executable at |executable_path| to have its data (heap)
@@ -78,7 +77,6 @@ import os
 import struct
 import sys
 
-
 # <mach-o/fat.h>
 FAT_MAGIC = 0xcafebabe
 FAT_CIGAM = 0xbebafeca
@@ -130,7 +128,7 @@ def ReadUInt32(file, endian):
 
     bytes = CheckedRead(file, 4)
 
-    (uint32,) = struct.unpack(endian + 'I', bytes)
+    (uint32, ) = struct.unpack(endian + 'I', bytes)
     return uint32
 
 
@@ -241,11 +239,15 @@ def HandleFatFile(file, options, fat_offset=0):
 
 def main(me, args):
     parser = optparse.OptionParser('%prog [options] <executable_path>')
-    parser.add_option('--executable-heap', action='store_false',
-                      dest='no_heap_execution', default=True,
+    parser.add_option('--executable-heap',
+                      action='store_false',
+                      dest='no_heap_execution',
+                      default=True,
                       help='Clear the MH_NO_HEAP_EXECUTION bit')
-    parser.add_option('--no-pie', action='store_false',
-                      dest='pie', default=True,
+    parser.add_option('--no-pie',
+                      action='store_false',
+                      dest='pie',
+                      default=True,
                       help='Clear the MH_PIE bit')
     (options, loose_args) = parser.parse_args(args)
     if len(loose_args) != 1:
