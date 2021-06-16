@@ -177,7 +177,7 @@ describe('<webview> tag', function () {
     })
 
     it('loads native modules when navigation happens', (done) => {
-      if (!nativeModulesEnabled) return done()
+      if (!nativeModulesEnabled) { return done()
 
       const listener = () => {
         webview.removeEventListener('did-finish-load', listener)
@@ -987,14 +987,15 @@ describe('<webview> tag', function () {
 
           assert.equal(permission, requestedPermission)
           callback(false)
-          if (completed) completed()
+          if (completed) { completed()
         }
+          }
       }
       session.fromPartition(webview.partition).setPermissionRequestHandler(listener)
     }
 
     it('emits when using navigator.getUserMedia api', (done) => {
-      if (isCI) return done()
+      if (isCI) { return done()
 
       webview.addEventListener('ipc-message', (e) => {
         assert.equal(e.channel, 'message')
@@ -1099,15 +1100,39 @@ describe('<webview> tag', function () {
         const fileName = event.newURL.slice(event.newURL.lastIndexOf('/') + 1)
         const expectedType = expectedResources[fileName]
         assert(!!expectedType, `Unexpected response details for ${event.newURL}`)
-        assert(typeof event.status === 'boolean', 'status should be boolean')
+        assert(typeof event.status === 'boolean', 'status should be boolean') { { { { { { { { { { { { { { { { { { { { { { { {
         assert.equal(event.httpResponseCode, 200)
         assert.equal(event.requestMethod, 'GET')
         assert(typeof event.referrer === 'string', 'referrer should be string')
         assert(!!event.headers, 'headers should be present')
         assert(typeof event.headers === 'object', 'headers should be object')
         assert.equal(event.resourceType, expectedType, 'Incorrect resourceType')
-        if (responses === Object.keys(expectedResources).length) done()
-      })
+        if (responses === Object.keys(expectedResources).length) { done()
+      }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        })
       webview.src = `file://${path.join(fixtures, 'pages', 'did-get-response-details.html')}`
       document.body.appendChild(webview)
     })
@@ -1471,7 +1496,7 @@ describe('<webview> tag', function () {
     })
 
     afterEach(() => {
-      if (div != null) div.remove()
+      if (div != null) { div.remove()
     })
 
     it('emits resize events', (done) => {
@@ -1593,8 +1618,9 @@ describe('<webview> tag', function () {
         })
 
         for (const wc of webContents.getAllWebContents()) {
-          if (wc.hostWebContents &&
-              wc.hostWebContents.id === w.webContents.id) {
+          if (wc.hostWebContents 
+              && wc.hostWebContents.id === w.webContents.id
+          ) {
             wc.setSize({
               normal: {
                 width: GUEST_WIDTH,
@@ -1653,7 +1679,7 @@ describe('<webview> tag', function () {
           assert.equal(zoomFactor, 1.2)
           assert.equal(zoomLevel, 1)
         }
-        if (final) done()
+        if (final) { done()
       })
       w.loadURL(`file://${fixtures}/pages/webview-custom-zoom-level.html`)
     })
@@ -1668,7 +1694,7 @@ describe('<webview> tag', function () {
       ipcMain.on('webview-zoom-in-page', (event, zoomLevel, zoomFactor, final) => {
         assert.equal(zoomFactor, 1.44)
         assert.equal(zoomLevel, 2.0)
-        if (final) done()
+        if (final) { done()
       })
       w.loadURL(`file://${fixtures}/pages/webview-in-page-navigate.html`)
     })
@@ -1759,4 +1785,10 @@ describe('<webview> tag', function () {
       document.body.appendChild(webview)
     })
   })
-})
+}
+        });
+        }
+      }
+        }
+      } 
+      }

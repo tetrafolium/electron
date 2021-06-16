@@ -37,7 +37,7 @@ function testSampleDebugSession () {
     accum: [0, 0, 1, 3, 6]
   }
   scopeCallback = function (error, result) {
-    if (error) failures.push(error)
+    if (error) { failures.push(error)
     const i = cur++
     let v, actual, expected
     for (v of result['result']) {
@@ -47,6 +47,7 @@ function testSampleDebugSession () {
         failures.push(`Iteration ${i} variable: ${v['name']} ` +
           `expected: ${expected} actual: ${actual}`)
       }
+    }
     }
   }
   const session = new inspector.Session()
