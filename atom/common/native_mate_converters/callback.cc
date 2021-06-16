@@ -13,11 +13,11 @@ namespace internal {
 namespace {
 
 struct TranslaterHolder {
-  Translater translater;
+  Translator translator;
 };
 
 // Cached JavaScript version of |CallTranslater|.
-v8::Persistent<v8::FunctionTemplate> g_call_translater;
+v8::Persistent<v8::FunctionTemplate> g_call_translator;
 
 void CallTranslater(v8::Local<v8::External> external,
                     v8::Local<v8::Object> state,
@@ -91,18 +91,18 @@ v8::Local<v8::Function> SafeV8Function::NewHandle(v8::Isolate* isolate) const {
 
 v8::Local<v8::Value> CreateFunctionFromTranslater(
     v8::Isolate* isolate,
-    const Translater& translater) {
+    const Translator& translator) {
   // The FunctionTemplate is cached.
   if (g_call_translater.IsEmpty())
     g_call_translater.Reset(isolate, mate::CreateFunctionTemplate(
                                          isolate, base::Bind(&CallTranslater)));
 
-  v8::Local<v8::FunctionTemplate> call_translater =
-      v8::Local<v8::FunctionTemplate>::New(isolate, g_call_translater);
+  v8::Local<v8::FunctionTemplate> call_translator =
+      v8::Local<v8::FunctionTemplate>::New(isolate, g_call_translator);
   auto* holder = new TranslaterHolder;
-  holder->translater = translater;
+  holder->translator = translator;
   return BindFunctionWith(
-      isolate, isolate->GetCurrentContext(), call_translater->GetFunction(),
+      isolate, isolate->GetCurrentContext(), call_translator->GetFunction(),
       v8::External::New(isolate, holder), v8::Object::New(isolate));
 }
 

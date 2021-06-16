@@ -209,7 +209,7 @@ class JobEventDetails : public base::RefCountedThreadSafe<JobEventDetails> {
     // All missing pages have been requested.
     ALL_PAGES_REQUESTED,
 
-    // An error occured. Printing is canceled.
+    // An error occurred. Printing is canceled.
     FAILED,
   };
 

@@ -251,7 +251,7 @@ void URLRequestFetchJob::OnURLFetchComplete(const net::URLFetcher* source) {
   if (fetcher_->GetStatus().is_success()) {
     if (!response_info_) {
       // Since we notify header completion only after first write there will be
-      // no response object constructed for http respones with no content 204.
+      // no response object constructed for http response with no content 204.
       // We notify header completion here.
       HeadersCompleted();
       return;

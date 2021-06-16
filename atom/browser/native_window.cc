@@ -183,7 +183,7 @@ void NativeWindow::InitFromOptions(const mate::Dictionary& options) {
     fullscreenable = false;
 #endif
   }
-  // Overriden by 'fullscreenable'.
+  // Overridden by 'fullscreenable'.
   options.Get(options::kFullScreenable, &fullscreenable);
   SetFullScreenable(fullscreenable);
   if (fullscreen) {

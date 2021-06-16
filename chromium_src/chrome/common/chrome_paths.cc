@@ -324,7 +324,7 @@ bool PathProvider(int key, base::FilePath* result) {
         return false;
       cur = cur.Append(kInternalNaClPluginFileName);
       break;
-    // PNaCl is currenly installable via the component updater or by being
+    // PNaCl is currently installable via the component updater or by being
     // simply built-in.  DIR_PNACL_BASE is used as the base directory for
     // installation via component updater.  DIR_PNACL_COMPONENT will be
     // the final location of pnacl, which is a subdir of DIR_PNACL_BASE.

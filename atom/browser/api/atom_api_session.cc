@@ -328,7 +328,7 @@ void DoCacheActionInIO(
   if (!http_cache)
     RunCallbackInUI<int>(callback, net::ERR_FAILED);
 
-  // Call GetBackend and make the backend's ptr accessable in OnGetBackend.
+  // Call GetBackend and make the backend's ptr accessible in OnGetBackend.
   using BackendPtr = disk_cache::Backend*;
   auto* backend_ptr = new BackendPtr(nullptr);
   net::CompletionCallback on_get_backend =
