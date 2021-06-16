@@ -14,44 +14,44 @@
 namespace brightray {
 
 class PermissionManager : public content::PermissionManager {
-public:
-PermissionManager();
-~PermissionManager() override;
+ public:
+  PermissionManager();
+  ~PermissionManager() override;
 
-// content::PermissionManager:
-int RequestPermission(
-	content::PermissionType permission,
-	content::RenderFrameHost* render_frame_host,
-	const GURL& requesting_origin,
-	bool user_gesture,
-	const base::Callback<void(blink::mojom::PermissionStatus)>& callback)
-override;
-int RequestPermissions(
-	const std::vector<content::PermissionType>& permissions,
-	content::RenderFrameHost* render_frame_host,
-	const GURL& requesting_origin,
-	bool user_gesture,
-	const base::Callback<
-		void(const std::vector<blink::mojom::PermissionStatus>&)>& callback)
-override;
-void CancelPermissionRequest(int request_id) override;
-void ResetPermission(content::PermissionType permission,
-                     const GURL& requesting_origin,
-                     const GURL& embedding_origin) override;
-blink::mojom::PermissionStatus GetPermissionStatus(
-	content::PermissionType permission,
-	const GURL& requesting_origin,
-	const GURL& embedding_origin) override;
-int SubscribePermissionStatusChange(
-	content::PermissionType permission,
-	const GURL& requesting_origin,
-	const GURL& embedding_origin,
-	const base::Callback<void(blink::mojom::PermissionStatus)>& callback)
-override;
-void UnsubscribePermissionStatusChange(int subscription_id) override;
+  // content::PermissionManager:
+  int RequestPermission(
+      content::PermissionType permission,
+      content::RenderFrameHost* render_frame_host,
+      const GURL& requesting_origin,
+      bool user_gesture,
+      const base::Callback<void(blink::mojom::PermissionStatus)>& callback)
+      override;
+  int RequestPermissions(
+      const std::vector<content::PermissionType>& permissions,
+      content::RenderFrameHost* render_frame_host,
+      const GURL& requesting_origin,
+      bool user_gesture,
+      const base::Callback<
+          void(const std::vector<blink::mojom::PermissionStatus>&)>& callback)
+      override;
+  void CancelPermissionRequest(int request_id) override;
+  void ResetPermission(content::PermissionType permission,
+                       const GURL& requesting_origin,
+                       const GURL& embedding_origin) override;
+  blink::mojom::PermissionStatus GetPermissionStatus(
+      content::PermissionType permission,
+      const GURL& requesting_origin,
+      const GURL& embedding_origin) override;
+  int SubscribePermissionStatusChange(
+      content::PermissionType permission,
+      const GURL& requesting_origin,
+      const GURL& embedding_origin,
+      const base::Callback<void(blink::mojom::PermissionStatus)>& callback)
+      override;
+  void UnsubscribePermissionStatusChange(int subscription_id) override;
 
-private:
-DISALLOW_COPY_AND_ASSIGN(PermissionManager);
+ private:
+  DISALLOW_COPY_AND_ASSIGN(PermissionManager);
 };
 
 }  // namespace brightray

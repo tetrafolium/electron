@@ -17,18 +17,14 @@ describe('webContents module', () => {
   const fixtures = path.resolve(__dirname, 'fixtures')
   let w
 
-  beforeEach(() => {
-    w = new BrowserWindow({
-      show: false,
-      width: 400,
-      height: 400,
-      webPreferences: {
-        backgroundThrottling: false
-      }
-    })
-  })
+  beforeEach(() => {w = new BrowserWindow({
+                      show: false,
+                      width: 400,
+                      height: 400,
+                      webPreferences: {backgroundThrottling: false}
+                    })})
 
-  afterEach(() => closeWindow(w).then(() => { w = null }))
+  afterEach(() => closeWindow(w).then(() => {w = null}))
 
   describe('getAllWebContents() API', () => {
     it('returns an array of web contents', (done) => {
@@ -37,25 +33,29 @@ describe('webContents module', () => {
           return a.getId() - b.getId()
         })
 
-        assert.ok(all.length >= 4)
-        assert.equal(all[0].getType(), 'window')
-        assert.equal(all[all.length - 2].getType(), 'remote')
-        assert.equal(all[all.length - 1].getType(), 'webview')
+  assert.ok(all.length >= 4)
+  assert.equal(all[0].getType(), 'window')
+  assert.equal(all[all.length - 2].getType(), 'remote')
+  assert.equal(all[all.length - 1].getType(), 'webview')
 
         done()
       })
 
-      w.loadURL(`file://${path.join(fixtures, 'pages', 'webview-zoom-factor.html')}`)
+        w.loadURL(`file://${
+            path.join(fixtures, 'pages', 'webview-zoom-factor.html')}`)
       w.webContents.openDevTools()
     })
   })
 
   describe('getFocusedWebContents() API', () => {
     it('returns the focused web contents', (done) => {
-      if (isCi) { return done()
+      if (isCi) {
+        return done()
 
-      const specWebContents = remote.getCurrentWebContents()
-      assert.equal(specWebContents.getId(), webContents.getFocusedWebContents().getId())
+        const specWebContents = remote.getCurrentWebContents()
+        assert.equal(
+            specWebContents.getId(),
+            webContents.getFocusedWebContents().getId())
 
       specWebContents.once('devtools-opened', () => {
         assert.equal(specWebContents.devToolsWebContents.getId(), webContents.getFocusedWebContents().getId())
@@ -67,8 +67,8 @@ describe('webContents module', () => {
         done()
       })
 
-      specWebContents.openDevTools()
-    })
+        specWebContents.openDevTools()
+      })
 
     it('does not crash when called on a detached dev tools window', (done) => {
       const specWebContents = w.webContents
@@ -87,10 +87,10 @@ describe('webContents module', () => {
         done()
       })
 
-      specWebContents.openDevTools({mode: 'detach'})
+        specWebContents.openDevTools({mode: 'detach'})
       w.inspectElement(100, 100)
     })
-  })
+    })
 
   describe('setDevToolsWebCotnents() API', () => {
     it('sets arbitry webContents as devtools', (done) => {
@@ -99,22 +99,23 @@ describe('webContents module', () => {
         assert.ok(devtools.getURL().startsWith('chrome-devtools://devtools'))
         devtools.webContents.executeJavaScript('InspectorFrontendHost.constructor.name', (name) => {
           assert.ok(name, 'InspectorFrontendHostImpl')
-          devtools.destroy()
+        devtools.destroy()
           done()
         })
       })
-      w.webContents.setDevToolsWebContents(devtools.webContents)
+          w.webContents.setDevToolsWebContents(devtools.webContents)
       w.webContents.openDevTools()
     })
   })
 
-  describe('isFocused() API', () => {
-    it('returns false when the window is hidden', () => {
-      BrowserWindow.getAllWindows().forEach((window) => {
-        assert.equal(!window.isVisible() && window.webContents.isFocused(), false)
-      })
-    })
-  })
+      describe(
+          'isFocused() API',
+          () => {
+              it('returns false when the window is hidden',
+                 () => {BrowserWindow.getAllWindows().forEach(
+                     (window) => {assert.equal(
+                         !window.isVisible() && window.webContents.isFocused(),
+                         false)})})})
 
   describe('before-input-event event', () => {
     it('can prevent document keyboard events', (done) => {
@@ -125,8 +126,8 @@ describe('webContents module', () => {
           done()
         })
 
-        ipcRenderer.send('prevent-next-input-event', 'a', w.webContents.id)
-        w.webContents.sendInputEvent({type: 'keyDown', keyCode: 'a'})
+          ipcRenderer.send('prevent-next-input-event', 'a', w.webContents.id)
+          w.webContents.sendInputEvent({type: 'keyDown', keyCode: 'a'})
         w.webContents.sendInputEvent({type: 'keyDown', keyCode: 'b'})
       })
     })
@@ -138,33 +139,37 @@ describe('webContents module', () => {
           return new Promise((resolve, reject) => {
             w.webContents.once('before-input-event', (event, input) => {
               assert.equal(input.type, opts.type)
-              assert.equal(input.key, opts.key)
-              assert.equal(input.code, opts.code)
-              assert.equal(input.isAutoRepeat, opts.isAutoRepeat)
-              assert.equal(input.shift, opts.shift)
-              assert.equal(input.control, opts.control)
-              assert.equal(input.alt, opts.alt)
-              assert.equal(input.meta, opts.meta)
+            assert.equal(input.key, opts.key)
+            assert.equal(input.code, opts.code)
+            assert.equal(input.isAutoRepeat, opts.isAutoRepeat)
+            assert.equal(input.shift, opts.shift)
+            assert.equal(input.control, opts.control)
+            assert.equal(input.alt, opts.alt)
+            assert.equal(input.meta, opts.meta)
               resolve()
             })
 
-            const modifiers = []
-            if (opts.shift) { modifiers.push('shift')
-            if (opts.control) { modifiers.push('control')
-            if (opts.alt) { modifiers.push('alt')
-            if (opts.meta) { modifiers.push('meta')
-            if (opts.isAutoRepeat) { modifiers.push('isAutoRepeat')
+              const modifiers = [] if (opts.shift) {
+                modifiers.push('shift')
+                if (opts.control) {
+                  modifiers.push('control')
+                  if (opts.alt) {
+                    modifiers.push('alt')
+                    if (opts.meta) {
+                      modifiers.push('meta')
+                      if (opts.isAutoRepeat) {
+                        modifiers.push('isAutoRepeat')
 
-            w.webContents.sendInputEvent({
-              type: opts.type,
-              keyCode: opts.keyCode,
-              modifiers: modifiers
-            })
-          }
-            }
-            }
-            }
-            })
+                        w.webContents.sendInputEvent({
+                          type: opts.type,
+                          keyCode: opts.keyCode,
+                          modifiers: modifiers
+                        })
+                      }
+                    }
+                  }
+                }
+              })
         }
 
         Promise.resolve().then(() => {
@@ -229,11 +234,11 @@ describe('webContents module', () => {
     it('can send keydown events', (done) => {
       ipcMain.once('keydown', (event, key, code, keyCode, shiftKey, ctrlKey, altKey) => {
         assert.equal(key, 'a')
-        assert.equal(code, 'KeyA')
-        assert.equal(keyCode, 65)
-        assert.equal(shiftKey, false)
-        assert.equal(ctrlKey, false)
-        assert.equal(altKey, false)
+    assert.equal(code, 'KeyA')
+    assert.equal(keyCode, 65)
+    assert.equal(shiftKey, false)
+    assert.equal(ctrlKey, false)
+    assert.equal(altKey, false)
         done()
       })
       w.webContents.sendInputEvent({type: 'keyDown', keyCode: 'A'})
@@ -242,11 +247,11 @@ describe('webContents module', () => {
     it('can send keydown events with modifiers', (done) => {
       ipcMain.once('keydown', (event, key, code, keyCode, shiftKey, ctrlKey, altKey) => {
         assert.equal(key, 'Z')
-        assert.equal(code, 'KeyZ')
-        assert.equal(keyCode, 90)
-        assert.equal(shiftKey, true)
-        assert.equal(ctrlKey, true)
-        assert.equal(altKey, false)
+    assert.equal(code, 'KeyZ')
+    assert.equal(keyCode, 90)
+    assert.equal(shiftKey, true)
+    assert.equal(ctrlKey, true)
+    assert.equal(altKey, false)
         done()
       })
       w.webContents.sendInputEvent({type: 'keyDown', keyCode: 'Z', modifiers: ['shift', 'ctrl']})
@@ -255,11 +260,11 @@ describe('webContents module', () => {
     it('can send keydown events with special keys', (done) => {
       ipcMain.once('keydown', (event, key, code, keyCode, shiftKey, ctrlKey, altKey) => {
         assert.equal(key, 'Tab')
-        assert.equal(code, 'Tab')
-        assert.equal(keyCode, 9)
-        assert.equal(shiftKey, false)
-        assert.equal(ctrlKey, false)
-        assert.equal(altKey, true)
+    assert.equal(code, 'Tab')
+    assert.equal(keyCode, 9)
+    assert.equal(shiftKey, false)
+    assert.equal(ctrlKey, false)
+    assert.equal(altKey, true)
         done()
       })
       w.webContents.sendInputEvent({type: 'keyDown', keyCode: 'Tab', modifiers: ['alt']})
@@ -268,35 +273,35 @@ describe('webContents module', () => {
     it('can send char events', (done) => {
       ipcMain.once('keypress', (event, key, code, keyCode, shiftKey, ctrlKey, altKey) => {
         assert.equal(key, 'a')
-        assert.equal(code, 'KeyA')
-        assert.equal(keyCode, 65)
-        assert.equal(shiftKey, false)
-        assert.equal(ctrlKey, false)
-        assert.equal(altKey, false)
+    assert.equal(code, 'KeyA')
+    assert.equal(keyCode, 65)
+    assert.equal(shiftKey, false)
+    assert.equal(ctrlKey, false)
+    assert.equal(altKey, false)
         done()
       })
-      w.webContents.sendInputEvent({type: 'keyDown', keyCode: 'A'})
+        w.webContents.sendInputEvent({type: 'keyDown', keyCode: 'A'})
       w.webContents.sendInputEvent({type: 'char', keyCode: 'A'})
     })
 
     it('can send char events with modifiers', (done) => {
       ipcMain.once('keypress', (event, key, code, keyCode, shiftKey, ctrlKey, altKey) => {
         assert.equal(key, 'Z')
-        assert.equal(code, 'KeyZ')
-        assert.equal(keyCode, 90)
-        assert.equal(shiftKey, true)
-        assert.equal(ctrlKey, true)
-        assert.equal(altKey, false)
+    assert.equal(code, 'KeyZ')
+    assert.equal(keyCode, 90)
+    assert.equal(shiftKey, true)
+    assert.equal(ctrlKey, true)
+    assert.equal(altKey, false)
         done()
       })
-      w.webContents.sendInputEvent({type: 'keyDown', keyCode: 'Z'})
+        w.webContents.sendInputEvent({type: 'keyDown', keyCode: 'Z'})
       w.webContents.sendInputEvent({type: 'char', keyCode: 'Z', modifiers: ['shift', 'ctrl']})
     })
   })
 
   it('supports inserting CSS', (done) => {
     w.loadURL('about:blank')
-    w.webContents.insertCSS('body { background-repeat: round; }')
+  w.webContents.insertCSS('body { background-repeat: round; }')
     w.webContents.executeJavaScript('window.getComputedStyle(document.body).getPropertyValue("background-repeat")', (result) => {
       assert.equal(result, 'round')
       done()
@@ -305,39 +310,41 @@ describe('webContents module', () => {
 
   it('supports inspecting an element in the devtools', (done) => {
     w.loadURL('about:blank')
-    w.webContents.once('devtools-opened', () => {
-      done()
-    })
+  w.webContents.once('devtools-opened', () => {done()})
     w.webContents.inspectElement(10, 10)
   })
 
-  describe('startDrag({file, icon})', () => {
-    it('throws errors for a missing file or a missing/empty icon', () => {
-      assert.throws(() => {
-        w.webContents.startDrag({icon: path.join(__dirname, 'fixtures', 'assets', 'logo.png')})
-      }, /Must specify either 'file' or 'files' option/)
+    describe(
+        'startDrag({file, icon})',
+        () => {it(
+            'throws errors for a missing file or a missing/empty icon', () => {
+              assert.throws(
+                  () => {w.webContents.startDrag({
+                    icon: path.join(__dirname, 'fixtures', 'assets', 'logo.png')
+                  })},
+                  /Must specify either 'file' or 'files' option/)
 
-      assert.throws(() => {
-        w.webContents.startDrag({file: __filename})
-      }, /Must specify 'icon' option/)
+              assert.throws(
+                  () => {w.webContents.startDrag({file: __filename})},
+                  /Must specify 'icon' option/)
 
-      if (process.platform === 'darwin') {
-        assert.throws(() => {
-          w.webContents.startDrag({file: __filename, icon: __filename})
-        }, /Must specify non-empty 'icon' option/)
-      }
-    })
-  })
+              if (process.platform === 'darwin') {
+                assert.throws(
+                    () => {w.webContents.startDrag(
+                        {file: __filename, icon: __filename})},
+                    /Must specify non-empty 'icon' option/)
+              }
+            })})
 
   describe('focus()', () => {
     describe('when the web contents is hidden', () => {
       it('does not blur the focused window', (done) => {
         ipcMain.once('answer', (event, parentFocused, childFocused) => {
           assert.equal(parentFocused, true)
-          assert.equal(childFocused, false)
+  assert.equal(childFocused, false)
           done()
         })
-        w.show()
+          w.show()
         w.loadURL(`file://${path.join(__dirname, 'fixtures', 'pages', 'focus-web-contents.html')}`)
       })
     })
@@ -349,8 +356,8 @@ describe('webContents module', () => {
 
       w.webContents.once('did-finish-load', () => {
         const pid = w.webContents.getOSProcessId()
-        assert.equal(typeof pid, 'number')
-        assert(pid > 0, `pid ${pid} is not greater than 0`)
+      assert.equal(typeof pid, 'number')
+      assert(pid > 0, `pid ${pid} is not greater than 0`)
         done()
       })
       w.loadURL('about:blank')
@@ -391,10 +398,10 @@ describe('webContents module', () => {
       w.webContents.on('did-finish-load', () => {
         w.webContents.getZoomLevel((zoomLevel) => {
           assert.equal(zoomLevel, 0.0)
-          w.webContents.setZoomLevel(0.5)
+      w.webContents.setZoomLevel(0.5)
           w.webContents.getZoomLevel((zoomLevel) => {
             assert.equal(zoomLevel, 0.5)
-            w.webContents.setZoomLevel(0)
+          w.webContents.setZoomLevel(0)
             done()
           })
         })
@@ -404,26 +411,27 @@ describe('webContents module', () => {
     it('can persist zoom level across navigation', (done) => {
       let finalNavigation = false
       ipcMain.on('set-zoom', (e, host) => {
-        const zoomLevel = hostZoomMap[host]
-        if (!finalNavigation) { w.webContents.setZoomLevel(zoomLevel)
-        e.sender.send(`${host}-zoom-set`)
-      })
+        const zoomLevel = hostZoomMap[host] if (!finalNavigation) {
+          w.webContents.setZoomLevel(zoomLevel)
+          e.sender.send(`${host}-zoom-set`)
+        })
       ipcMain.on('host1-zoom-level', (e, zoomLevel) => {
-        const expectedZoomLevel = hostZoomMap.host1
-        assert.equal(zoomLevel, expectedZoomLevel)
-        if (finalNavigation) {
-          done()
-        } else {
-          w.loadURL(`${zoomScheme}://host2`)
-        }
+          const expectedZoomLevel = hostZoomMap.host1
+          assert.equal(zoomLevel, expectedZoomLevel)
+          if (finalNavigation) {
+            done()
+          }
+          else {
+            w.loadURL(`${zoomScheme}://host2`)
+          }
         }
             }
       }
       })
       ipcMain.once('host2-zoom-level', (e, zoomLevel) => {
         const expectedZoomLevel = hostZoomMap.host2
-        assert.equal(zoomLevel, expectedZoomLevel)
-        finalNavigation = true
+      assert.equal(zoomLevel, expectedZoomLevel)
+      finalNavigation = true
         w.webContents.goBack()
       })
       w.loadURL(`${zoomScheme}://host1`)
@@ -438,8 +446,8 @@ describe('webContents module', () => {
           assert.equal(zoomLevel1, hostZoomMap.host3)
           w2.webContents.getZoomLevel((zoomLevel2) => {
             assert.equal(zoomLevel1, zoomLevel2)
-            w2.setClosable(true)
-            w2.close()
+          w2.setClosable(true)
+          w2.close()
             done()
           })
         })
@@ -452,29 +460,26 @@ describe('webContents module', () => {
     })
 
     it('cannot propagate zoom level across different session', (done) => {
-      const w2 = new BrowserWindow({
-        show: false,
-        webPreferences: {
-          partition: 'temp'
-        }
-      })
+      const w2 =
+          new BrowserWindow({show: false, webPreferences: {partition: 'temp'}})
       const protocol = w2.webContents.session.protocol
-      protocol.registerStringProtocol(zoomScheme, (request, callback) => {
-        callback('hello')
-      }, (error) => {
-        if (error) { return done(error)
+      protocol.registerStringProtocol(
+          zoomScheme, (request, callback) => {callback('hello')}, (error) => {
+            if (error) {
+              return done(error)
         w2.webContents.on('did-finish-load', () => {
           w.webContents.getZoomLevel((zoomLevel1) => {
             assert.equal(zoomLevel1, hostZoomMap.host3)
             w2.webContents.getZoomLevel((zoomLevel2) => {
               assert.equal(zoomLevel2, 0)
-              assert.notEqual(zoomLevel1, zoomLevel2)
+            assert.notEqual(zoomLevel1, zoomLevel2)
               protocol.unregisterProtocol(zoomScheme, (error) => {
-                if (error) { return done(error)
-                w2.setClosable(true)
-                w2.close()
-                done()
-              })
+            if (error) {
+              return done(error)
+              w2.setClosable(true)
+              w2.close()
+              done()
+            })
             })
           })
         })
@@ -484,7 +489,7 @@ describe('webContents module', () => {
         })
         w.loadURL(`${zoomScheme}://host3`)
       })
-    })
+            })
 
     it('can persist when it contains iframe', (done) => {
       const server = http.createServer((req, res) => {
@@ -494,37 +499,33 @@ describe('webContents module', () => {
       })
       server.listen(0, '127.0.0.1', () => {
         const url = 'http://127.0.0.1:' + server.address().port
-        const content = `<iframe src=${url}></iframe>`
-        w.webContents.on('did-frame-finish-load', (e, isMainFrame) => {
-          if (!isMainFrame) {
+      const content = `<iframe src=${url}></iframe>`
+      w.webContents.on('did-frame-finish-load', (e, isMainFrame) => {
+        if (!isMainFrame) {
             w.webContents.getZoomLevel((zoomLevel) => {
               assert.equal(zoomLevel, 2.0)
-              w.webContents.setZoomLevel(0)
-              server.close()
+            w.webContents.setZoomLevel(0)
+            server.close()
               done()
             })
-          }
-        })
-        w.webContents.on('dom-ready', () => {
-          w.webContents.setZoomLevel(2.0)
-        })
+        }
+      })
+      w.webContents.on('dom-ready', () => {w.webContents.setZoomLevel(2.0)})
         w.loadURL(`data:text/html,${content}`)
       })
     })
 
     it('cannot propagate when used with webframe', (done) => {
       let finalZoomLevel = 0
-      const w2 = new BrowserWindow({
-        show: false
-      })
+    const w2 = new BrowserWindow({show: false})
       w2.webContents.on('did-finish-load', () => {
         w.webContents.getZoomLevel((zoomLevel1) => {
           assert.equal(zoomLevel1, finalZoomLevel)
           w2.webContents.getZoomLevel((zoomLevel2) => {
             assert.equal(zoomLevel2, 0)
-            assert.notEqual(zoomLevel1, zoomLevel2)
-            w2.setClosable(true)
-            w2.close()
+          assert.notEqual(zoomLevel1, zoomLevel2)
+          w2.setClosable(true)
+          w2.close()
             done()
           })
         })
@@ -538,29 +539,29 @@ describe('webContents module', () => {
 
     it('cannot persist zoom level after navigation with webFrame', (done) => {
       let initialNavigation = true
-      const source = `
+    const source = `
         const {ipcRenderer, webFrame} = require('electron')
         webFrame.setZoomLevel(0.6)
         ipcRenderer.send('zoom-level-set', webFrame.getZoomLevel())
       `
-      w.webContents.on('did-finish-load', () => {
-        if (initialNavigation) {
-          w.webContents.executeJavaScript(source, () => {})
-        } else {
+    w.webContents.on('did-finish-load', () => {
+      if (initialNavigation) {
+        w.webContents.executeJavaScript(source, () => {})
+      } else {
           w.webContents.getZoomLevel((zoomLevel) => {
             assert.equal(zoomLevel, 0)
             done()
           })
-        }
-      })
+      }
+    })
       ipcMain.once('zoom-level-set', (e, zoomLevel) => {
         assert.equal(zoomLevel, 0.6)
-        w.loadURL(`file://${fixtures}/pages/d.html`)
+      w.loadURL(`file://${fixtures}/pages/d.html`)
         initialNavigation = false
       })
       w.loadURL(`file://${fixtures}/pages/c.html`)
     })
-  })
+          })
 
   describe('webrtc ip policy api', () => {
     it('can set and get webrtc ip policies', () => {
@@ -582,9 +583,8 @@ describe('webContents module', () => {
       w.once('closed', () => {
         done()
       })
-      w.webContents.on('will-prevent-unload', (e) => {
-        assert.fail('should not have fired')
-      })
+  w.webContents.on(
+      'will-prevent-unload', (e) => {assert.fail('should not have fired')})
       w.loadURL('file://' + path.join(fixtures, 'api', 'close-beforeunload-undefined.html'))
     })
 
@@ -597,7 +597,7 @@ describe('webContents module', () => {
 
     it('supports calling preventDefault on will-prevent-unload events', (done) => {
       ipcRenderer.send('prevent-next-will-prevent-unload', w.webContents.id)
-      w.once('closed', () => done())
+    w.once('closed', () => done())
       w.loadURL('file://' + path.join(fixtures, 'api', 'close-beforeunload-false.html'))
     })
   })
@@ -609,8 +609,8 @@ describe('webContents module', () => {
     })
   })
 
-  // Destroying webContents in its event listener is going to crash when
-  // Electron is built in Debug mode.
+      // Destroying webContents in its event listener is going to crash when
+      // Electron is built in Debug mode.
   xdescribe('destroy()', () => {
     let server
 
@@ -620,18 +620,12 @@ describe('webContents module', () => {
           case '/404':
             response.statusCode = '404'
             response.end()
-            break
-          case '/301':
-            response.statusCode = '301'
+            break case '/301': response.statusCode = '301'
             response.setHeader('Location', '/200')
             response.end()
-            break
-          case '/200':
-            response.statusCode = '200'
+            break case '/200': response.statusCode = '200'
             response.end('hello')
-            break
-          default:
-            done('unsupported endpoint')
+            break default: done('unsupported endpoint')
         }
       }).listen(0, '127.0.0.1', () => {
         server.url = 'http://127.0.0.1:' + server.address().port
@@ -660,36 +654,38 @@ describe('webContents module', () => {
       ]
       const responseEvent = 'webcontents-destroyed'
 
-      function * genNavigationEvent () {
-        let eventOptions = null
-        while ((eventOptions = events.shift()) && events.length) {
-          eventOptions.responseEvent = responseEvent
-          ipcRenderer.send('test-webcontents-navigation-observer', eventOptions)
-          yield 1
-        }
+    function* genNavigationEvent() {
+      let eventOptions = null
+      while ((eventOptions = events.shift()) && events.length) {
+        eventOptions.responseEvent = responseEvent
+        ipcRenderer.send('test-webcontents-navigation-observer', eventOptions)
+        yield 1
       }
+    }
 
-      let gen = genNavigationEvent()
+    let gen = genNavigationEvent()
       ipcRenderer.on(responseEvent, () => {
-        if (!gen.next().value) { done()
-      })
-      gen.next()
+        if (!gen.next().value) {
+          done()
+        })
+        gen.next()
     })
   })
 
   describe('did-change-theme-color event', () => {
     it('is triggered with correct theme color', (done) => {
       let count = 0
-      w.webContents.on('did-change-theme-color', (e, color) => {
-        if (count === 0) {
-          count += 1
-          assert.equal(color, '#FFEEDD')
-          w.loadURL(`file://${path.join(__dirname, 'fixtures', 'pages', 'base-page.html')}`)
-        } else if (count === 1) {
-          assert.equal(color, null)
-          done()
-        }
-      })
+  w.webContents.on('did-change-theme-color', (e, color) => {
+    if (count === 0) {
+      count += 1
+      assert.equal(color, '#FFEEDD')
+      w.loadURL(`file://${
+          path.join(__dirname, 'fixtures', 'pages', 'base-page.html')}`)
+    } else if (count === 1) {
+      assert.equal(color, null)
+      done()
+    }
+  })
       w.loadURL(`file://${path.join(__dirname, 'fixtures', 'pages', 'theme-color.html')}`)
     })
   })
@@ -697,7 +693,8 @@ describe('webContents module', () => {
   describe('console-message event', () => {
     it('is triggered with correct log message', (done) => {
       w.webContents.on('console-message', (e, level, message) => {
-        // Don't just assert as Chromium might emit other logs that we should ignore.
+        // Don't just assert as Chromium might emit other logs that we should
+        // ignore.
         if (message === 'a') {
           done()
         }

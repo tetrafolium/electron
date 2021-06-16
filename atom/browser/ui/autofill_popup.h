@@ -19,63 +19,65 @@ namespace atom {
 class AutofillPopupView;
 
 class AutofillPopup {
-public:
-explicit AutofillPopup(gfx::NativeView);
-~AutofillPopup();
+ public:
+  explicit AutofillPopup(gfx::NativeView);
+  ~AutofillPopup();
 
-void CreateView(content::RenderFrameHost* render_frame,
-                bool offscreen, views::Widget* widget, const gfx::RectF& bounds);
-void Hide();
+  void CreateView(content::RenderFrameHost* render_frame,
+                  bool offscreen,
+                  views::Widget* widget,
+                  const gfx::RectF& bounds);
+  void Hide();
 
-void SetItems(const std::vector<base::string16>& values,
-              const std::vector<base::string16>& labels);
-void UpdatePopupBounds(int height_compensation);
+  void SetItems(const std::vector<base::string16>& values,
+                const std::vector<base::string16>& labels);
+  void UpdatePopupBounds(int height_compensation);
 
-private:
-friend class AutofillPopupView;
+ private:
+  friend class AutofillPopupView;
 
-void AcceptSuggestion(int index);
+  void AcceptSuggestion(int index);
 
-int GetDesiredPopupHeight();
-int GetDesiredPopupWidth();
-gfx::Rect GetRowBounds(int i);
-const gfx::FontList& GetValueFontListForRow(int index) const;
-const gfx::FontList& GetLabelFontListForRow(int index) const;
-ui::NativeTheme::ColorId GetBackgroundColorIDForRow(int index) const;
+  int GetDesiredPopupHeight();
+  int GetDesiredPopupWidth();
+  gfx::Rect GetRowBounds(int i);
+  const gfx::FontList& GetValueFontListForRow(int index) const;
+  const gfx::FontList& GetLabelFontListForRow(int index) const;
+  ui::NativeTheme::ColorId GetBackgroundColorIDForRow(int index) const;
 
-int GetLineCount();
-base::string16 GetValueAt(int i);
-base::string16 GetLabelAt(int i);
-int LineFromY(int y) const;
+  int GetLineCount();
+  base::string16 GetValueAt(int i);
+  base::string16 GetLabelAt(int i);
+  int LineFromY(int y) const;
 
-// The native view that contains this
-gfx::NativeView container_view_;
+  // The native view that contains this
+  gfx::NativeView container_view_;
 
-int selected_index_;
+  int selected_index_;
 
-// Popup location
-gfx::Rect popup_bounds_;
-gfx::Rect popup_bounds_in_view_;
+  // Popup location
+  gfx::Rect popup_bounds_;
+  gfx::Rect popup_bounds_in_view_;
 
-// Bounds of the autofilled element
-gfx::Rect element_bounds_;
+  // Bounds of the autofilled element
+  gfx::Rect element_bounds_;
 
-// Datalist suggestions
-std::vector<base::string16> values_;
-std::vector<base::string16> labels_;
+  // Datalist suggestions
+  std::vector<base::string16> values_;
+  std::vector<base::string16> labels_;
 
-// Font lists for the suggestions
-gfx::FontList smaller_font_list_;
-gfx::FontList bold_font_list_;
+  // Font lists for the suggestions
+  gfx::FontList smaller_font_list_;
+  gfx::FontList bold_font_list_;
 
-// For sending the accepted suggestion to the render frame that
-// asked to open the popup
-content::RenderFrameHost* frame_host_;
+  // For sending the accepted suggestion to the render frame that
+  // asked to open the popup
+  content::RenderFrameHost* frame_host_;
 
-// The popup view. The lifetime is managed by the owning Widget
-AutofillPopupView* view_;
+  // The popup view. The lifetime is managed by the owning Widget
+  AutofillPopupView* view_;
 
-DISALLOW_COPY_AND_ASSIGN(AutofillPopup);
+  DISALLOW_COPY_AND_ASSIGN(AutofillPopup);
 };
 
 }  // namespace atom

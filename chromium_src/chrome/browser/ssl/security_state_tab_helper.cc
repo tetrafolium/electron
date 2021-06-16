@@ -40,124 +40,122 @@ using safe_browsing::SafeBrowsingUIManager;
 #endif
 
 SecurityStateTabHelper::SecurityStateTabHelper(
-	content::WebContents* web_contents)
-	: content::WebContentsObserver(web_contents),
-	logged_http_warning_on_current_navigation_(false) {
-}
+    content::WebContents* web_contents)
+    : content::WebContentsObserver(web_contents),
+      logged_http_warning_on_current_navigation_(false) {}
 
-SecurityStateTabHelper::~SecurityStateTabHelper() {
-}
+SecurityStateTabHelper::~SecurityStateTabHelper() {}
 
 void SecurityStateTabHelper::GetSecurityInfo(
-	security_state::SecurityInfo* result) const {
-	security_state::GetSecurityInfo(GetVisibleSecurityState(),
-	                                UsedPolicyInstalledCertificate(),
-	                                base::Bind(&content::IsOriginSecure), result);
+    security_state::SecurityInfo* result) const {
+  security_state::GetSecurityInfo(GetVisibleSecurityState(),
+                                  UsedPolicyInstalledCertificate(),
+                                  base::Bind(&content::IsOriginSecure), result);
 }
 
 void SecurityStateTabHelper::VisibleSecurityStateChanged() {
-	if (logged_http_warning_on_current_navigation_)
-		return;
+  if (logged_http_warning_on_current_navigation_)
+    return;
 
-	security_state::SecurityInfo security_info;
-	GetSecurityInfo(&security_info);
-	if (!security_info.displayed_password_field_on_http &&
-	    !security_info.displayed_credit_card_field_on_http) {
-		return;
-	}
+  security_state::SecurityInfo security_info;
+  GetSecurityInfo(&security_info);
+  if (!security_info.displayed_password_field_on_http &&
+      !security_info.displayed_credit_card_field_on_http) {
+    return;
+  }
 
-	DCHECK(time_of_http_warning_on_current_navigation_.is_null());
-	time_of_http_warning_on_current_navigation_ = base::Time::Now();
+  DCHECK(time_of_http_warning_on_current_navigation_.is_null());
+  time_of_http_warning_on_current_navigation_ = base::Time::Now();
 
-	std::string warning;
-	bool warning_is_user_visible = false;
-	switch (security_info.security_level) {
-	case security_state::HTTP_SHOW_WARNING:
-		warning =
-			"This page includes a password or credit card input in a non-secure "
-			"context. A warning has been added to the URL bar. For more "
-			"information, see https://goo.gl/zmWq3m.";
-		warning_is_user_visible = true;
-		break;
-	case security_state::NONE:
-	case security_state::DANGEROUS:
-		warning =
-			"This page includes a password or credit card input in a non-secure "
-			"context. A warning will be added to the URL bar in Chrome 56 (Jan "
-			"2017). For more information, see https://goo.gl/zmWq3m.";
-		break;
-	default:
-		return;
-	}
+  std::string warning;
+  bool warning_is_user_visible = false;
+  switch (security_info.security_level) {
+    case security_state::HTTP_SHOW_WARNING:
+      warning =
+          "This page includes a password or credit card input in a non-secure "
+          "context. A warning has been added to the URL bar. For more "
+          "information, see https://goo.gl/zmWq3m.";
+      warning_is_user_visible = true;
+      break;
+    case security_state::NONE:
+    case security_state::DANGEROUS:
+      warning =
+          "This page includes a password or credit card input in a non-secure "
+          "context. A warning will be added to the URL bar in Chrome 56 (Jan "
+          "2017). For more information, see https://goo.gl/zmWq3m.";
+      break;
+    default:
+      return;
+  }
 
-	logged_http_warning_on_current_navigation_ = true;
-	web_contents()->GetMainFrame()->AddMessageToConsole(
-		content::CONSOLE_MESSAGE_LEVEL_WARNING, warning);
+  logged_http_warning_on_current_navigation_ = true;
+  web_contents()->GetMainFrame()->AddMessageToConsole(
+      content::CONSOLE_MESSAGE_LEVEL_WARNING, warning);
 
-	if (security_info.displayed_credit_card_field_on_http) {
-		UMA_HISTOGRAM_BOOLEAN(
-			"Security.HTTPBad.UserWarnedAboutSensitiveInput.CreditCard",
-			warning_is_user_visible);
-	}
-	if (security_info.displayed_password_field_on_http) {
-		UMA_HISTOGRAM_BOOLEAN(
-			"Security.HTTPBad.UserWarnedAboutSensitiveInput.Password",
-			warning_is_user_visible);
-	}
+  if (security_info.displayed_credit_card_field_on_http) {
+    UMA_HISTOGRAM_BOOLEAN(
+        "Security.HTTPBad.UserWarnedAboutSensitiveInput.CreditCard",
+        warning_is_user_visible);
+  }
+  if (security_info.displayed_password_field_on_http) {
+    UMA_HISTOGRAM_BOOLEAN(
+        "Security.HTTPBad.UserWarnedAboutSensitiveInput.Password",
+        warning_is_user_visible);
+  }
 }
 
 void SecurityStateTabHelper::DidStartNavigation(
-	content::NavigationHandle* navigation_handle) {
-	if (time_of_http_warning_on_current_navigation_.is_null() ||
-	    !navigation_handle->IsInMainFrame() ||
-	    navigation_handle->IsSameDocument()) {
-		return;
-	}
-	// Record how quickly a user leaves a site after encountering an
-	// HTTP-bad warning. A navigation here only counts if it is a
-	// main-frame, not-same-page navigation, since it aims to measure how
-	// quickly a user leaves a site after seeing the HTTP warning.
-	UMA_HISTOGRAM_LONG_TIMES(
-		"Security.HTTPBad.NavigationStartedAfterUserWarnedAboutSensitiveInput",
-		base::Time::Now() - time_of_http_warning_on_current_navigation_);
-	// After recording the histogram, clear the time of the warning. A
-	// timing histogram will not be recorded again on this page, because
-	// the time is only set the first time the HTTP-bad warning is shown
-	// per page.
-	time_of_http_warning_on_current_navigation_ = base::Time();
+    content::NavigationHandle* navigation_handle) {
+  if (time_of_http_warning_on_current_navigation_.is_null() ||
+      !navigation_handle->IsInMainFrame() ||
+      navigation_handle->IsSameDocument()) {
+    return;
+  }
+  // Record how quickly a user leaves a site after encountering an
+  // HTTP-bad warning. A navigation here only counts if it is a
+  // main-frame, not-same-page navigation, since it aims to measure how
+  // quickly a user leaves a site after seeing the HTTP warning.
+  UMA_HISTOGRAM_LONG_TIMES(
+      "Security.HTTPBad.NavigationStartedAfterUserWarnedAboutSensitiveInput",
+      base::Time::Now() - time_of_http_warning_on_current_navigation_);
+  // After recording the histogram, clear the time of the warning. A
+  // timing histogram will not be recorded again on this page, because
+  // the time is only set the first time the HTTP-bad warning is shown
+  // per page.
+  time_of_http_warning_on_current_navigation_ = base::Time();
 }
 
 void SecurityStateTabHelper::DidFinishNavigation(
-	content::NavigationHandle* navigation_handle) {
-	if (navigation_handle->IsInMainFrame() &&
-	    !navigation_handle->IsSameDocument()) {
-		// Only reset the console message flag for main-frame navigations,
-		// and not for same-page navigations like reference fragments and pushState.
-		logged_http_warning_on_current_navigation_ = false;
-	}
+    content::NavigationHandle* navigation_handle) {
+  if (navigation_handle->IsInMainFrame() &&
+      !navigation_handle->IsSameDocument()) {
+    // Only reset the console message flag for main-frame navigations,
+    // and not for same-page navigations like reference fragments and pushState.
+    logged_http_warning_on_current_navigation_ = false;
+  }
 }
 
 void SecurityStateTabHelper::WebContentsDestroyed() {
-	if (time_of_http_warning_on_current_navigation_.is_null()) {
-		return;
-	}
-	// Record how quickly the tab is closed after a user encounters an
-	// HTTP-bad warning. This histogram will only be recorded if the
-	// WebContents is destroyed before another navigation begins.
-	UMA_HISTOGRAM_LONG_TIMES(
-		"Security.HTTPBad.WebContentsDestroyedAfterUserWarnedAboutSensitiveInput",
-		base::Time::Now() - time_of_http_warning_on_current_navigation_);
+  if (time_of_http_warning_on_current_navigation_.is_null()) {
+    return;
+  }
+  // Record how quickly the tab is closed after a user encounters an
+  // HTTP-bad warning. This histogram will only be recorded if the
+  // WebContents is destroyed before another navigation begins.
+  UMA_HISTOGRAM_LONG_TIMES(
+      "Security.HTTPBad.WebContentsDestroyedAfterUserWarnedAboutSensitiveInput",
+      base::Time::Now() - time_of_http_warning_on_current_navigation_);
 }
 
 bool SecurityStateTabHelper::UsedPolicyInstalledCertificate() const {
 #if defined(OS_CHROMEOS)
-	policy::PolicyCertService* service =
-		policy::PolicyCertServiceFactory::GetForProfile(
-			Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
-	if (service && service->UsedPolicyCertificates())
-		return true;
+  policy::PolicyCertService* service =
+      policy::PolicyCertServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
+  if (service && service->UsedPolicyCertificates())
+    return true;
 #endif
-	return false;
+  return false;
 }
 
 #if 0
@@ -207,7 +205,7 @@ SecurityStateTabHelper::GetMaliciousContentStatus() const {
 
 std::unique_ptr<security_state::VisibleSecurityState>
 SecurityStateTabHelper::GetVisibleSecurityState() const {
-	auto state = security_state::GetVisibleSecurityState(web_contents());
+  auto state = security_state::GetVisibleSecurityState(web_contents());
 
 #if 0
 	// Malware status might already be known even if connection security
@@ -215,5 +213,5 @@ SecurityStateTabHelper::GetVisibleSecurityState() const {
 	state->malicious_content_status = GetMaliciousContentStatus();
 #endif
 
-	return state;
+  return state;
 }

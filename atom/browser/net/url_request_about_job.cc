@@ -10,30 +10,28 @@ namespace atom {
 
 URLRequestAboutJob::URLRequestAboutJob(net::URLRequest* request,
                                        net::NetworkDelegate* network_delegate)
-	: net::URLRequestJob(request, network_delegate), weak_ptr_factory_(this) {
-}
+    : net::URLRequestJob(request, network_delegate), weak_ptr_factory_(this) {}
 
 void URLRequestAboutJob::Start() {
-	base::ThreadTaskRunnerHandle::Get()->PostTask(
-		FROM_HERE, base::Bind(&URLRequestAboutJob::StartAsync,
-		                      weak_ptr_factory_.GetWeakPtr()));
+  base::ThreadTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::Bind(&URLRequestAboutJob::StartAsync,
+                            weak_ptr_factory_.GetWeakPtr()));
 }
 
 void URLRequestAboutJob::Kill() {
-	weak_ptr_factory_.InvalidateWeakPtrs();
-	URLRequestJob::Kill();
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  URLRequestJob::Kill();
 }
 
 bool URLRequestAboutJob::GetMimeType(std::string* mime_type) const {
-	*mime_type = "text/html";
-	return true;
+  *mime_type = "text/html";
+  return true;
 }
 
-URLRequestAboutJob::~URLRequestAboutJob() {
-}
+URLRequestAboutJob::~URLRequestAboutJob() {}
 
 void URLRequestAboutJob::StartAsync() {
-	NotifyHeadersComplete();
+  NotifyHeadersComplete();
 }
 
 }  // namespace atom

@@ -12,15 +12,14 @@ describe('modules support', () => {
 
   describe('third-party module', () => {
     describe('runas', () => {
-      if (!nativeModulesEnabled) { return
+    if (!nativeModulesEnabled) {
+      return
 
-      it('can be required in renderer', () => {
-        require('runas')
-      })
+          it('can be required in renderer', () => {require('runas')})
 
       it('can be required in node binary', (done) => {
         const runas = path.join(fixtures, 'module', 'runas.js')
-        const child = require('child_process').fork(runas)
+      const child = require('child_process').fork(runas)
         child.on('message', (msg) => {
           assert.equal(msg, 'ok')
           done()
@@ -30,16 +29,14 @@ describe('modules support', () => {
 
     describe('ffi', () => {
       before(function () {
-        if (!nativeModulesEnabled || process.platform === 'win32') {
-          this.skip()
-        }
+      if (!nativeModulesEnabled || process.platform === 'win32') {
+        this.skip()
+      }
       })
 
       it('does not crash', () => {
         const ffi = require('ffi')
-        const libm = ffi.Library('libm', {
-          ceil: ['double', ['double']]
-        })
+      const libm = ffi.Library('libm', {ceil: ['double', ['double']]})
         assert.equal(libm.ceil(1.5), 2)
       })
     })
@@ -73,11 +70,13 @@ describe('modules support', () => {
       })
     })
 
-    describe('global', () => {
-      it('can be declared in a module', () => {
-        assert.strictEqual(require('./fixtures/module/declare-global'), 'declared global')
-      })
-    })
+  describe(
+      'global',
+      () => {
+          it('can be declared in a module',
+             () => {assert.strictEqual(
+                 require('./fixtures/module/declare-global'),
+                 'declared global')})})
 
     describe('Buffer', () => {
       it('can be declared in a module', () => {
@@ -90,35 +89,37 @@ describe('modules support', () => {
     describe('when the path is inside the resources path', () => {
       it('does not include paths outside of the resources path', () => {
         let modulePath = process.resourcesPath
-        assert.deepEqual(Module._nodeModulePaths(modulePath), [
-          path.join(process.resourcesPath, 'node_modules')
-        ])
+  assert.deepEqual(
+      Module._nodeModulePaths(modulePath),
+      [path.join(process.resourcesPath, 'node_modules')])
 
-        modulePath = process.resourcesPath + '-foo'
-        const nodeModulePaths = Module._nodeModulePaths(modulePath)
-        assert(nodeModulePaths.includes(path.join(modulePath, 'node_modules')))
-        assert(nodeModulePaths.includes(path.join(modulePath, '..', 'node_modules')))
+  modulePath = process.resourcesPath + '-foo'
+  const nodeModulePaths = Module._nodeModulePaths(modulePath)
+  assert(nodeModulePaths.includes(path.join(modulePath, 'node_modules')))
+  assert(nodeModulePaths.includes(path.join(modulePath, '..', 'node_modules')))
 
-        modulePath = path.join(process.resourcesPath, 'foo')
-        assert.deepEqual(Module._nodeModulePaths(modulePath), [
-          path.join(process.resourcesPath, 'foo', 'node_modules'),
-          path.join(process.resourcesPath, 'node_modules')
-        ])
+  modulePath = path.join(process.resourcesPath, 'foo')
+  assert.deepEqual(Module._nodeModulePaths(modulePath), [
+    path.join(process.resourcesPath, 'foo', 'node_modules'),
+    path.join(process.resourcesPath, 'node_modules')
+  ])
 
-        modulePath = path.join(process.resourcesPath, 'node_modules', 'foo')
-        assert.deepEqual(Module._nodeModulePaths(modulePath), [
-          path.join(process.resourcesPath, 'node_modules', 'foo', 'node_modules'),
-          path.join(process.resourcesPath, 'node_modules')
-        ])
+  modulePath = path.join(process.resourcesPath, 'node_modules', 'foo')
+  assert.deepEqual(Module._nodeModulePaths(modulePath), [
+    path.join(process.resourcesPath, 'node_modules', 'foo', 'node_modules'),
+    path.join(process.resourcesPath, 'node_modules')
+  ])
 
-        modulePath = path.join(process.resourcesPath, 'node_modules', 'foo', 'bar')
-        assert.deepEqual(Module._nodeModulePaths(modulePath), [
-          path.join(process.resourcesPath, 'node_modules', 'foo', 'bar', 'node_modules'),
-          path.join(process.resourcesPath, 'node_modules', 'foo', 'node_modules'),
-          path.join(process.resourcesPath, 'node_modules')
-        ])
+  modulePath = path.join(process.resourcesPath, 'node_modules', 'foo', 'bar')
+  assert.deepEqual(Module._nodeModulePaths(modulePath), [
+    path.join(
+        process.resourcesPath, 'node_modules', 'foo', 'bar', 'node_modules'),
+    path.join(process.resourcesPath, 'node_modules', 'foo', 'node_modules'),
+    path.join(process.resourcesPath, 'node_modules')
+  ])
 
-        modulePath = path.join(process.resourcesPath, 'node_modules', 'foo', 'node_modules', 'bar')
+  modulePath = path.join(
+      process.resourcesPath, 'node_modules', 'foo', 'node_modules', 'bar')
         assert.deepEqual(Module._nodeModulePaths(modulePath), [
           path.join(process.resourcesPath, 'node_modules', 'foo', 'node_modules', 'bar', 'node_modules'),
           path.join(process.resourcesPath, 'node_modules', 'foo', 'node_modules'),
@@ -142,9 +143,7 @@ describe('modules support', () => {
     describe('when loaded URL is not file: protocol', () => {
       let w
 
-      beforeEach(() => {
-        w = new BrowserWindow({show: false})
-      })
+  beforeEach(() => {w = new BrowserWindow({show: false})})
 
       afterEach(async () => {
         await closeWindow(w)
@@ -153,7 +152,8 @@ describe('modules support', () => {
 
       it('searches for module under app directory', async () => {
         w.loadURL('about:blank')
-        const result = await w.webContents.executeJavaScript('typeof require("q").when')
+      const result =
+          await w.webContents.executeJavaScript('typeof require("q").when')
         assert.equal(result, 'function')
       })
     })

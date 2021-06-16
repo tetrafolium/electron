@@ -19,32 +19,32 @@ namespace extensions {
 // listens for global shortcuts. Handles setting up a keyboard hook and
 // forwarding its output to the base class for processing.
 class GlobalShortcutListenerWin : public GlobalShortcutListener {
-public:
-GlobalShortcutListenerWin();
-virtual ~GlobalShortcutListenerWin();
+ public:
+  GlobalShortcutListenerWin();
+  virtual ~GlobalShortcutListenerWin();
 
-private:
-// The implementation of our Window Proc, called by SingletonHwndObserver.
-void OnWndProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
+ private:
+  // The implementation of our Window Proc, called by SingletonHwndObserver.
+  void OnWndProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
 
-// GlobalShortcutListener implementation.
-virtual void StartListening() override;
-virtual void StopListening() override;
-virtual bool RegisterAcceleratorImpl(
-	const ui::Accelerator& accelerator) override;
-virtual void UnregisterAcceleratorImpl(
-	const ui::Accelerator& accelerator) override;
+  // GlobalShortcutListener implementation.
+  virtual void StartListening() override;
+  virtual void StopListening() override;
+  virtual bool RegisterAcceleratorImpl(
+      const ui::Accelerator& accelerator) override;
+  virtual void UnregisterAcceleratorImpl(
+      const ui::Accelerator& accelerator) override;
 
-// Whether this object is listening for global shortcuts.
-bool is_listening_;
+  // Whether this object is listening for global shortcuts.
+  bool is_listening_;
 
-// A map of registered accelerators and their registration ids.
-typedef std::map<ui::Accelerator, int> HotkeyIdMap;
-HotkeyIdMap hotkey_ids_;
+  // A map of registered accelerators and their registration ids.
+  typedef std::map<ui::Accelerator, int> HotkeyIdMap;
+  HotkeyIdMap hotkey_ids_;
 
-std::unique_ptr<gfx::SingletonHwndObserver> singleton_hwnd_observer_;
+  std::unique_ptr<gfx::SingletonHwndObserver> singleton_hwnd_observer_;
 
-DISALLOW_COPY_AND_ASSIGN(GlobalShortcutListenerWin);
+  DISALLOW_COPY_AND_ASSIGN(GlobalShortcutListenerWin);
 };
 
 }  // namespace extensions

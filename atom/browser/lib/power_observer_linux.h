@@ -17,24 +17,24 @@
 namespace atom {
 
 class PowerObserverLinux : public base::PowerObserver {
-public:
-PowerObserverLinux();
+ public:
+  PowerObserverLinux();
 
-private:
-void TakeSleepLock();
-void OnLoginServiceAvailable(bool available);
-void OnInhibitResponse(base::ScopedFD* scoped_fd, dbus::Response* response);
-void OnPrepareForSleep(dbus::Signal* signal);
-void OnSignalConnected(const std::string& interface,
-                       const std::string& signal,
-                       bool success);
+ private:
+  void TakeSleepLock();
+  void OnLoginServiceAvailable(bool available);
+  void OnInhibitResponse(base::ScopedFD* scoped_fd, dbus::Response* response);
+  void OnPrepareForSleep(dbus::Signal* signal);
+  void OnSignalConnected(const std::string& interface,
+                         const std::string& signal,
+                         bool success);
 
-scoped_refptr<dbus::Bus> bus_;
-scoped_refptr<dbus::ObjectProxy> logind_;
-std::string lock_owner_name_;
-base::ScopedFD sleep_lock_;
-base::WeakPtrFactory<PowerObserverLinux> weak_ptr_factory_;
-DISALLOW_COPY_AND_ASSIGN(PowerObserverLinux);
+  scoped_refptr<dbus::Bus> bus_;
+  scoped_refptr<dbus::ObjectProxy> logind_;
+  std::string lock_owner_name_;
+  base::ScopedFD sleep_lock_;
+  base::WeakPtrFactory<PowerObserverLinux> weak_ptr_factory_;
+  DISALLOW_COPY_AND_ASSIGN(PowerObserverLinux);
 };
 
 }  // namespace atom

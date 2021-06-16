@@ -17,22 +17,22 @@ namespace atom {
 namespace api {
 
 class MenuViews : public Menu {
-public:
-MenuViews(v8::Isolate* isolate, v8::Local<v8::Object> wrapper);
+ public:
+  MenuViews(v8::Isolate* isolate, v8::Local<v8::Object> wrapper);
 
-protected:
-void PopupAt(Window* window, int x, int y, int positioning_item) override;
-void ClosePopupAt(int32_t window_id) override;
+ protected:
+  void PopupAt(Window* window, int x, int y, int positioning_item) override;
+  void ClosePopupAt(int32_t window_id) override;
 
-private:
-void OnClosed(int32_t window_id);
+ private:
+  void OnClosed(int32_t window_id);
 
-// window ID -> open context menu
-std::map<int32_t, std::unique_ptr<views::MenuRunner> > menu_runners_;
+  // window ID -> open context menu
+  std::map<int32_t, std::unique_ptr<views::MenuRunner>> menu_runners_;
 
-base::WeakPtrFactory<MenuViews> weak_factory_;
+  base::WeakPtrFactory<MenuViews> weak_factory_;
 
-DISALLOW_COPY_AND_ASSIGN(MenuViews);
+  DISALLOW_COPY_AND_ASSIGN(MenuViews);
 };
 
 }  // namespace api

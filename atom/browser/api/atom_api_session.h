@@ -24,7 +24,7 @@ class FilePath;
 namespace mate {
 class Arguments;
 class Dictionary;
-}
+}  // namespace mate
 
 namespace net {
 class ProxyConfig;
@@ -37,79 +37,78 @@ class AtomBrowserContext;
 namespace api {
 
 class Session : public mate::TrackableObject<Session>,
-	public content::DownloadManager::Observer {
-public:
-using ResolveProxyCallback = base::Callback<void (std::string)>;
+                public content::DownloadManager::Observer {
+ public:
+  using ResolveProxyCallback = base::Callback<void(std::string)>;
 
-enum class CacheAction {
-	CLEAR,
-	STATS,
-};
+  enum class CacheAction {
+    CLEAR,
+    STATS,
+  };
 
-// Gets or creates Session from the |browser_context|.
-static mate::Handle<Session> CreateFrom(
-	v8::Isolate* isolate, AtomBrowserContext* browser_context);
+  // Gets or creates Session from the |browser_context|.
+  static mate::Handle<Session> CreateFrom(v8::Isolate* isolate,
+                                          AtomBrowserContext* browser_context);
 
-// Gets the Session of |partition|.
-static mate::Handle<Session> FromPartition(
-	v8::Isolate* isolate, const std::string& partition,
-	const base::DictionaryValue& options = base::DictionaryValue());
+  // Gets the Session of |partition|.
+  static mate::Handle<Session> FromPartition(
+      v8::Isolate* isolate,
+      const std::string& partition,
+      const base::DictionaryValue& options = base::DictionaryValue());
 
-AtomBrowserContext* browser_context() const {
-	return browser_context_.get();
-}
+  AtomBrowserContext* browser_context() const { return browser_context_.get(); }
 
-// mate::TrackableObject:
-static void BuildPrototype(v8::Isolate* isolate,
-                           v8::Local<v8::FunctionTemplate> prototype);
+  // mate::TrackableObject:
+  static void BuildPrototype(v8::Isolate* isolate,
+                             v8::Local<v8::FunctionTemplate> prototype);
 
-// Methods.
-void ResolveProxy(const GURL& url, ResolveProxyCallback callback);
-template<CacheAction action>
-void DoCacheAction(const net::CompletionCallback& callback);
-void ClearStorageData(mate::Arguments* args);
-void FlushStorageData();
-void SetProxy(const net::ProxyConfig& config, const base::Closure& callback);
-void SetDownloadPath(const base::FilePath& path);
-void EnableNetworkEmulation(const mate::Dictionary& options);
-void DisableNetworkEmulation();
-void SetCertVerifyProc(v8::Local<v8::Value> proc, mate::Arguments* args);
-void SetPermissionRequestHandler(v8::Local<v8::Value> val,
-                                 mate::Arguments* args);
-void ClearHostResolverCache(mate::Arguments* args);
-void ClearAuthCache(mate::Arguments* args);
-void AllowNTLMCredentialsForDomains(const std::string& domains);
-void SetUserAgent(const std::string& user_agent, mate::Arguments* args);
-std::string GetUserAgent();
-void GetBlobData(const std::string& uuid,
-                 const AtomBlobReader::CompletionCallback& callback);
-void CreateInterruptedDownload(const mate::Dictionary& options);
-void SetPreloads(const std::vector<base::FilePath::StringType>& preloads);
-std::vector<base::FilePath::StringType> GetPreloads() const;
-v8::Local<v8::Value> Cookies(v8::Isolate* isolate);
-v8::Local<v8::Value> Protocol(v8::Isolate* isolate);
-v8::Local<v8::Value> WebRequest(v8::Isolate* isolate);
+  // Methods.
+  void ResolveProxy(const GURL& url, ResolveProxyCallback callback);
+  template <CacheAction action>
+  void DoCacheAction(const net::CompletionCallback& callback);
+  void ClearStorageData(mate::Arguments* args);
+  void FlushStorageData();
+  void SetProxy(const net::ProxyConfig& config, const base::Closure& callback);
+  void SetDownloadPath(const base::FilePath& path);
+  void EnableNetworkEmulation(const mate::Dictionary& options);
+  void DisableNetworkEmulation();
+  void SetCertVerifyProc(v8::Local<v8::Value> proc, mate::Arguments* args);
+  void SetPermissionRequestHandler(v8::Local<v8::Value> val,
+                                   mate::Arguments* args);
+  void ClearHostResolverCache(mate::Arguments* args);
+  void ClearAuthCache(mate::Arguments* args);
+  void AllowNTLMCredentialsForDomains(const std::string& domains);
+  void SetUserAgent(const std::string& user_agent, mate::Arguments* args);
+  std::string GetUserAgent();
+  void GetBlobData(const std::string& uuid,
+                   const AtomBlobReader::CompletionCallback& callback);
+  void CreateInterruptedDownload(const mate::Dictionary& options);
+  void SetPreloads(const std::vector<base::FilePath::StringType>& preloads);
+  std::vector<base::FilePath::StringType> GetPreloads() const;
+  v8::Local<v8::Value> Cookies(v8::Isolate* isolate);
+  v8::Local<v8::Value> Protocol(v8::Isolate* isolate);
+  v8::Local<v8::Value> WebRequest(v8::Isolate* isolate);
 
-protected:
-Session(v8::Isolate* isolate, AtomBrowserContext* browser_context);
-~Session();
+ protected:
+  Session(v8::Isolate* isolate, AtomBrowserContext* browser_context);
+  ~Session();
 
-// content::DownloadManager::Observer:
-void OnDownloadCreated(content::DownloadManager* manager,
-                       content::DownloadItem* item) override;
+  // content::DownloadManager::Observer:
+  void OnDownloadCreated(content::DownloadManager* manager,
+                         content::DownloadItem* item) override;
 
-private:
-// Cached object.
-v8::Global<v8::Value> cookies_;
-v8::Global<v8::Value> protocol_;
-v8::Global<v8::Value> web_request_;
+ private:
+  // Cached object.
+  v8::Global<v8::Value> cookies_;
+  v8::Global<v8::Value> protocol_;
+  v8::Global<v8::Value> web_request_;
 
-// The X-DevTools-Emulate-Network-Conditions-Client-Id.
-std::string devtools_network_emulation_client_id_;
+  // The X-DevTools-Emulate-Network-Conditions-Client-Id.
+  std::string devtools_network_emulation_client_id_;
 
-scoped_refptr<AtomBrowserContext> browser_context_;
+  scoped_refptr<AtomBrowserContext> browser_context_;
 
-DISALLOW_COPY_AND_ASSIGN(Session);
+  DISALLOW_COPY_AND_ASSIGN(Session);
 };
 
 }  // namespace api

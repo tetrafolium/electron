@@ -10,25 +10,23 @@
 namespace atom {
 
 PreferencesManager::PreferencesManager() {
-	content::RenderThread::Get()->AddObserver(this);
+  content::RenderThread::Get()->AddObserver(this);
 }
 
-PreferencesManager::~PreferencesManager() {
-}
+PreferencesManager::~PreferencesManager() {}
 
-bool PreferencesManager::OnControlMessageReceived(
-	const IPC::Message& message) {
-	bool handled = true;
-	IPC_BEGIN_MESSAGE_MAP(PreferencesManager, message)
-	IPC_MESSAGE_HANDLER(AtomMsg_UpdatePreferences, OnUpdatePreferences)
-	IPC_MESSAGE_UNHANDLED(handled = false)
-	IPC_END_MESSAGE_MAP()
-	return handled;
+bool PreferencesManager::OnControlMessageReceived(const IPC::Message& message) {
+  bool handled = true;
+  IPC_BEGIN_MESSAGE_MAP(PreferencesManager, message)
+    IPC_MESSAGE_HANDLER(AtomMsg_UpdatePreferences, OnUpdatePreferences)
+    IPC_MESSAGE_UNHANDLED(handled = false)
+  IPC_END_MESSAGE_MAP()
+  return handled;
 }
 
 void PreferencesManager::OnUpdatePreferences(
-	const base::ListValue& preferences) {
-	preferences_ = preferences.CreateDeepCopy();
+    const base::ListValue& preferences) {
+  preferences_ = preferences.CreateDeepCopy();
 }
 
 }  // namespace atom

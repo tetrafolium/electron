@@ -11,7 +11,7 @@
 #define ATOM_PRE_RELEASE_VERSION -beta .2
 
 #ifndef ATOM_PRE_RELEASE_VERSION
-# define ATOM_PRE_RELEASE_VERSION ""
+#define ATOM_PRE_RELEASE_VERSION ""
 #endif
 
 #ifndef ATOM_STRINGIFY
@@ -19,18 +19,17 @@
 #define ATOM_STRINGIFY_HELPER(n) #n
 #endif
 
-# define ATOM_VERSION_STRING  ATOM_STRINGIFY(ATOM_MAJOR_VERSION) "." \
-	ATOM_STRINGIFY(ATOM_MINOR_VERSION) "." \
-	ATOM_STRINGIFY(ATOM_PATCH_VERSION)     \
-	ATOM_STRINGIFY(ATOM_PRE_RELEASE_VERSION)
+#define ATOM_VERSION_STRING                                  \
+  ATOM_STRINGIFY(ATOM_MAJOR_VERSION)                         \
+  "." ATOM_STRINGIFY(ATOM_MINOR_VERSION) "." ATOM_STRINGIFY( \
+      ATOM_PATCH_VERSION) ATOM_STRINGIFY(ATOM_PRE_RELEASE_VERSION)
 
 #define ATOM_VERSION "v" ATOM_VERSION_STRING
 
-
-#define ATOM_VERSION_AT_LEAST(major, minor, patch) \
-	(( (major) < ATOM_MAJOR_VERSION) \
-	 || ((major) == ATOM_MAJOR_VERSION && (minor) < ATOM_MINOR_VERSION) \
-	 || ((major) == ATOM_MAJOR_VERSION && (minor) == ATOM_MINOR_VERSION \
-	     && (patch) <= ATOM_PATCH_VERSION))
+#define ATOM_VERSION_AT_LEAST(major, minor, patch)                    \
+  (((major) < ATOM_MAJOR_VERSION) ||                                  \
+   ((major) == ATOM_MAJOR_VERSION && (minor) < ATOM_MINOR_VERSION) || \
+   ((major) == ATOM_MAJOR_VERSION && (minor) == ATOM_MINOR_VERSION && \
+    (patch) <= ATOM_PATCH_VERSION))
 
 #endif  // ATOM_COMMON_ATOM_VERSION_H_

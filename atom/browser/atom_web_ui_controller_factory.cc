@@ -17,62 +17,60 @@ namespace atom {
 
 // static
 AtomWebUIControllerFactory* AtomWebUIControllerFactory::GetInstance() {
-	return base::Singleton<AtomWebUIControllerFactory>::get();
+  return base::Singleton<AtomWebUIControllerFactory>::get();
 }
 
-AtomWebUIControllerFactory::AtomWebUIControllerFactory() {
-}
+AtomWebUIControllerFactory::AtomWebUIControllerFactory() {}
 
-AtomWebUIControllerFactory::~AtomWebUIControllerFactory() {
-}
+AtomWebUIControllerFactory::~AtomWebUIControllerFactory() {}
 
 content::WebUI::TypeID AtomWebUIControllerFactory::GetWebUIType(
-	content::BrowserContext* browser_context,
-	const GURL& url) const {
-	if (url.host() == kPdfViewerUIHost) {
-		return const_cast<AtomWebUIControllerFactory*>(this);
-	}
+    content::BrowserContext* browser_context,
+    const GURL& url) const {
+  if (url.host() == kPdfViewerUIHost) {
+    return const_cast<AtomWebUIControllerFactory*>(this);
+  }
 
-	return content::WebUI::kNoWebUI;
+  return content::WebUI::kNoWebUI;
 }
 
 bool AtomWebUIControllerFactory::UseWebUIForURL(
-	content::BrowserContext* browser_context,
-	const GURL& url) const {
-	return GetWebUIType(browser_context, url) != content::WebUI::kNoWebUI;
+    content::BrowserContext* browser_context,
+    const GURL& url) const {
+  return GetWebUIType(browser_context, url) != content::WebUI::kNoWebUI;
 }
 
 bool AtomWebUIControllerFactory::UseWebUIBindingsForURL(
-	content::BrowserContext* browser_context,
-	const GURL& url) const {
-	return UseWebUIForURL(browser_context, url);
+    content::BrowserContext* browser_context,
+    const GURL& url) const {
+  return UseWebUIForURL(browser_context, url);
 }
 
 content::WebUIController*
 AtomWebUIControllerFactory::CreateWebUIControllerForURL(content::WebUI* web_ui,
                                                         const GURL& url) const {
-	if (url.host() == kPdfViewerUIHost) {
-		base::StringPairs toplevel_params;
-		base::SplitStringIntoKeyValuePairs(url.query(), '=', '&', &toplevel_params);
-		std::string stream_id, src;
+  if (url.host() == kPdfViewerUIHost) {
+    base::StringPairs toplevel_params;
+    base::SplitStringIntoKeyValuePairs(url.query(), '=', '&', &toplevel_params);
+    std::string stream_id, src;
 
-		const net::UnescapeRule::Type unescape_rules =
-			net::UnescapeRule::SPACES | net::UnescapeRule::PATH_SEPARATORS |
-			net::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
-			net::UnescapeRule::REPLACE_PLUS_WITH_SPACE;
+    const net::UnescapeRule::Type unescape_rules =
+        net::UnescapeRule::SPACES | net::UnescapeRule::PATH_SEPARATORS |
+        net::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
+        net::UnescapeRule::REPLACE_PLUS_WITH_SPACE;
 
-		for (const auto& param : toplevel_params) {
-			if (param.first == kPdfPluginSrc) {
-				src = net::UnescapeURLComponent(param.second, unescape_rules);
-			}
-		}
-		if (url.has_ref()) {
-			src = src + '#' + url.ref();
-		}
-		auto browser_context = web_ui->GetWebContents()->GetBrowserContext();
-		return new PdfViewerUI(browser_context, web_ui, src);
-	}
-	return nullptr;
+    for (const auto& param : toplevel_params) {
+      if (param.first == kPdfPluginSrc) {
+        src = net::UnescapeURLComponent(param.second, unescape_rules);
+      }
+    }
+    if (url.has_ref()) {
+      src = src + '#' + url.ref();
+    }
+    auto browser_context = web_ui->GetWebContents()->GetBrowserContext();
+    return new PdfViewerUI(browser_context, web_ui, src);
+  }
+  return nullptr;
 }
 
 }  // namespace atom

@@ -13,24 +13,25 @@
 namespace atom {
 
 void AtomBrowserMainParts::PreMainMessageLoopStart() {
-	// Force the NSApplication subclass to be used.
-	[AtomApplication sharedApplication];
+  // Force the NSApplication subclass to be used.
+  [AtomApplication sharedApplication];
 
-	// Set our own application delegate.
-	AtomApplicationDelegate* delegate = [[AtomApplicationDelegate alloc] init];
-	[NSApp setDelegate:delegate];
+  // Set our own application delegate.
+  AtomApplicationDelegate* delegate = [[AtomApplicationDelegate alloc] init];
+  [NSApp setDelegate:delegate];
 
-	brightray::BrowserMainParts::PreMainMessageLoopStart();
+  brightray::BrowserMainParts::PreMainMessageLoopStart();
 
-	// Prevent Cocoa from turning command-line arguments into
-	// |-application:openFiles:|, since we already handle them directly.
-	[[NSUserDefaults standardUserDefaults]
-	 setObject:@"NO" forKey:@"NSTreatUnknownArgumentsAsOpen"];
+  // Prevent Cocoa from turning command-line arguments into
+  // |-application:openFiles:|, since we already handle them directly.
+  [[NSUserDefaults standardUserDefaults]
+      setObject:@"NO"
+         forKey:@"NSTreatUnknownArgumentsAsOpen"];
 }
 
 void AtomBrowserMainParts::FreeAppDelegate() {
-	[[NSApp delegate] release];
-	[NSApp setDelegate:nil];
+  [[NSApp delegate] release];
+  [NSApp setDelegate:nil];
 }
 
 }  // namespace atom

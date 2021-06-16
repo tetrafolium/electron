@@ -4,8 +4,8 @@
 
 #include "chrome/browser/icon_loader.h"
 
-#include <windows.h>
 #include <shellapi.h>
+#include <windows.h>
 
 #include "base/bind.h"
 #include "base/message_loop/message_loop.h"
@@ -18,55 +18,55 @@
 
 // static
 IconLoader::IconGroup IconLoader::GroupForFilepath(
-	const base::FilePath& file_path) {
-	if (file_path.MatchesExtension(L".exe") ||
-	    file_path.MatchesExtension(L".dll") ||
-	    file_path.MatchesExtension(L".ico")) {
-		return file_path.value();
-	}
+    const base::FilePath& file_path) {
+  if (file_path.MatchesExtension(L".exe") ||
+      file_path.MatchesExtension(L".dll") ||
+      file_path.MatchesExtension(L".ico")) {
+    return file_path.value();
+  }
 
-	return file_path.Extension();
+  return file_path.Extension();
 }
 
 // static
 content::BrowserThread::ID IconLoader::ReadIconThreadID() {
-	return content::BrowserThread::FILE;
+  return content::BrowserThread::FILE;
 }
 
 void IconLoader::ReadIcon() {
-	int size = 0;
-	switch (icon_size_) {
-	case IconLoader::SMALL:
-		size = SHGFI_SMALLICON;
-		break;
-	case IconLoader::NORMAL:
-		size = 0;
-		break;
-	case IconLoader::LARGE:
-		size = SHGFI_LARGEICON;
-		break;
-	default:
-		NOTREACHED();
-	}
+  int size = 0;
+  switch (icon_size_) {
+    case IconLoader::SMALL:
+      size = SHGFI_SMALLICON;
+      break;
+    case IconLoader::NORMAL:
+      size = 0;
+      break;
+    case IconLoader::LARGE:
+      size = SHGFI_LARGEICON;
+      break;
+    default:
+      NOTREACHED();
+  }
 
-	image_.reset();
+  image_.reset();
 
-	SHFILEINFO file_info = { 0 };
-	if (SHGetFileInfo(group_.c_str(), FILE_ATTRIBUTE_NORMAL, &file_info,
-	                  sizeof(SHFILEINFO),
-	                  SHGFI_ICON | size | SHGFI_USEFILEATTRIBUTES)) {
-		std::unique_ptr<SkBitmap> bitmap(
-			IconUtil::CreateSkBitmapFromHICON(file_info.hIcon));
-		if (bitmap.get()) {
-			gfx::ImageSkia image_skia(gfx::ImageSkiaRep(*bitmap,
-			                                            display::win::GetDPIScale()));
-			image_skia.MakeThreadSafe();
-			image_.reset(new gfx::Image(image_skia));
-			DestroyIcon(file_info.hIcon);
-		}
-	}
+  SHFILEINFO file_info = {0};
+  if (SHGetFileInfo(group_.c_str(), FILE_ATTRIBUTE_NORMAL, &file_info,
+                    sizeof(SHFILEINFO),
+                    SHGFI_ICON | size | SHGFI_USEFILEATTRIBUTES)) {
+    std::unique_ptr<SkBitmap> bitmap(
+        IconUtil::CreateSkBitmapFromHICON(file_info.hIcon));
+    if (bitmap.get()) {
+      gfx::ImageSkia image_skia(
+          gfx::ImageSkiaRep(*bitmap, display::win::GetDPIScale()));
+      image_skia.MakeThreadSafe();
+      image_.reset(new gfx::Image(image_skia));
+      DestroyIcon(file_info.hIcon);
+    }
+  }
 
-	target_task_runner_->PostTask(
-		FROM_HERE, base::Bind(callback_, base::Passed(&image_), group_));
-	delete this;
+  target_task_runner_->PostTask(
+      FROM_HERE, base::Bind(callback_, base::Passed(&image_), group_));
+  delete this;
 }

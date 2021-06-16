@@ -1,19 +1,19 @@
-const { app, BrowserWindow } = require("electron");
+const {app, BrowserWindow} = require('electron');
 
 const windows = [];
 
 function createWindow(id) {
-  const window = new BrowserWindow({ show: false });
+  const window = new BrowserWindow({show: false});
   window.loadURL(`data:,window${id}`);
   windows.push(window);
 }
 
-app.once("ready", () => {
+app.once('ready', () => {
   for (let i = 1; i <= 5; i++) {
     createWindow(i);
   }
 
-  setImmediate(function () {
+  setImmediate(function() {
     app.exit(123);
   });
 });

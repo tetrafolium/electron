@@ -12,24 +12,24 @@
 namespace atom {
 
 class ContentSettingsObserver : public content::RenderFrameObserver,
-	public blink::WebContentSettingsClient {
-public:
-explicit ContentSettingsObserver(content::RenderFrame* render_frame);
-~ContentSettingsObserver() override;
+                                public blink::WebContentSettingsClient {
+ public:
+  explicit ContentSettingsObserver(content::RenderFrame* render_frame);
+  ~ContentSettingsObserver() override;
 
-// blink::WebContentSettingsClient implementation.
-bool AllowDatabase(const blink::WebString& name,
-                   const blink::WebString& display_name,
-                   unsigned estimated_size) override;
-bool AllowStorage(bool local) override;
-bool AllowIndexedDB(const blink::WebString& name,
-                    const blink::WebSecurityOrigin& security_origin) override;
+  // blink::WebContentSettingsClient implementation.
+  bool AllowDatabase(const blink::WebString& name,
+                     const blink::WebString& display_name,
+                     unsigned estimated_size) override;
+  bool AllowStorage(bool local) override;
+  bool AllowIndexedDB(const blink::WebString& name,
+                      const blink::WebSecurityOrigin& security_origin) override;
 
-private:
-// content::RenderFrameObserver implementation.
-void OnDestruct() override;
+ private:
+  // content::RenderFrameObserver implementation.
+  void OnDestruct() override;
 
-DISALLOW_COPY_AND_ASSIGN(ContentSettingsObserver);
+  DISALLOW_COPY_AND_ASSIGN(ContentSettingsObserver);
 };
 
 }  // namespace atom

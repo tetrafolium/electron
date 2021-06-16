@@ -19,97 +19,91 @@ namespace extensions {
 
 // static
 GlobalShortcutListener* GlobalShortcutListener::GetInstance() {
-	CHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
-	static GlobalShortcutListenerWin* instance =
-		new GlobalShortcutListenerWin();
-	return instance;
+  CHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+  static GlobalShortcutListenerWin* instance = new GlobalShortcutListenerWin();
+  return instance;
 }
 
-GlobalShortcutListenerWin::GlobalShortcutListenerWin()
-	: is_listening_(false) {
-	CHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+GlobalShortcutListenerWin::GlobalShortcutListenerWin() : is_listening_(false) {
+  CHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
 }
 
 GlobalShortcutListenerWin::~GlobalShortcutListenerWin() {
-	if (is_listening_)
-		StopListening();
+  if (is_listening_)
+    StopListening();
 }
 
 void GlobalShortcutListenerWin::StartListening() {
-	DCHECK(!is_listening_); // Don't start twice.
-	DCHECK(!hotkey_ids_.empty()); // Also don't start if no hotkey is registered.
-	singleton_hwnd_observer_.reset(new gfx::SingletonHwndObserver(
-					       base::Bind(
-						       &GlobalShortcutListenerWin::OnWndProc, base::Unretained(this))));
+  DCHECK(!is_listening_);        // Don't start twice.
+  DCHECK(!hotkey_ids_.empty());  // Also don't start if no hotkey is registered.
+  singleton_hwnd_observer_.reset(new gfx::SingletonHwndObserver(base::Bind(
+      &GlobalShortcutListenerWin::OnWndProc, base::Unretained(this))));
 
-	is_listening_ = true;
+  is_listening_ = true;
 }
 
 void GlobalShortcutListenerWin::StopListening() {
-	DCHECK(is_listening_); // No point if we are not already listening.
-	DCHECK(hotkey_ids_.empty()); // Make sure the map is clean before ending.
-	singleton_hwnd_observer_.reset(nullptr);
-	is_listening_ = false;
+  DCHECK(is_listening_);        // No point if we are not already listening.
+  DCHECK(hotkey_ids_.empty());  // Make sure the map is clean before ending.
+  singleton_hwnd_observer_.reset(nullptr);
+  is_listening_ = false;
 }
 
 void GlobalShortcutListenerWin::OnWndProc(HWND hwnd,
                                           UINT message,
                                           WPARAM wparam,
                                           LPARAM lparam) {
-	if (message != WM_HOTKEY)
-		return;
+  if (message != WM_HOTKEY)
+    return;
 
-	int key_code = HIWORD(lparam);
-	int modifiers = 0;
-	modifiers |= (LOWORD(lparam) & MOD_SHIFT) ? ui::EF_SHIFT_DOWN : 0;
-	modifiers |= (LOWORD(lparam) & MOD_ALT) ? ui::EF_ALT_DOWN : 0;
-	modifiers |= (LOWORD(lparam) & MOD_CONTROL) ? ui::EF_CONTROL_DOWN : 0;
-	modifiers |= (LOWORD(lparam) & MOD_WIN) ? ui::EF_COMMAND_DOWN : 0;
+  int key_code = HIWORD(lparam);
+  int modifiers = 0;
+  modifiers |= (LOWORD(lparam) & MOD_SHIFT) ? ui::EF_SHIFT_DOWN : 0;
+  modifiers |= (LOWORD(lparam) & MOD_ALT) ? ui::EF_ALT_DOWN : 0;
+  modifiers |= (LOWORD(lparam) & MOD_CONTROL) ? ui::EF_CONTROL_DOWN : 0;
+  modifiers |= (LOWORD(lparam) & MOD_WIN) ? ui::EF_COMMAND_DOWN : 0;
 
-	ui::Accelerator accelerator(
-		ui::KeyboardCodeForWindowsKeyCode(key_code), modifiers);
+  ui::Accelerator accelerator(ui::KeyboardCodeForWindowsKeyCode(key_code),
+                              modifiers);
 
-	NotifyKeyPressed(accelerator);
+  NotifyKeyPressed(accelerator);
 }
 
 bool GlobalShortcutListenerWin::RegisterAcceleratorImpl(
-	const ui::Accelerator& accelerator) {
-	DCHECK(hotkey_ids_.find(accelerator) == hotkey_ids_.end());
+    const ui::Accelerator& accelerator) {
+  DCHECK(hotkey_ids_.find(accelerator) == hotkey_ids_.end());
 
-	int modifiers = 0;
-	modifiers |= accelerator.IsShiftDown() ? MOD_SHIFT : 0;
-	modifiers |= accelerator.IsCtrlDown() ? MOD_CONTROL : 0;
-	modifiers |= accelerator.IsAltDown() ? MOD_ALT : 0;
-	modifiers |= accelerator.IsCmdDown() ? MOD_WIN : 0;
+  int modifiers = 0;
+  modifiers |= accelerator.IsShiftDown() ? MOD_SHIFT : 0;
+  modifiers |= accelerator.IsCtrlDown() ? MOD_CONTROL : 0;
+  modifiers |= accelerator.IsAltDown() ? MOD_ALT : 0;
+  modifiers |= accelerator.IsCmdDown() ? MOD_WIN : 0;
 
-	static int hotkey_id = 0;
-	bool success = !!RegisterHotKey(
-		gfx::SingletonHwnd::GetInstance()->hwnd(),
-		hotkey_id,
-		modifiers,
-		accelerator.key_code());
+  static int hotkey_id = 0;
+  bool success = !!RegisterHotKey(gfx::SingletonHwnd::GetInstance()->hwnd(),
+                                  hotkey_id, modifiers, accelerator.key_code());
 
-	if (!success) {
-		// Most likely error: 1409 (Hotkey already registered).
-		return false;
-	}
+  if (!success) {
+    // Most likely error: 1409 (Hotkey already registered).
+    return false;
+  }
 
-	hotkey_ids_[accelerator] = hotkey_id++;
-	return true;
+  hotkey_ids_[accelerator] = hotkey_id++;
+  return true;
 }
 
 void GlobalShortcutListenerWin::UnregisterAcceleratorImpl(
-	const ui::Accelerator& accelerator) {
-	HotkeyIdMap::iterator it = hotkey_ids_.find(accelerator);
-	DCHECK(it != hotkey_ids_.end());
+    const ui::Accelerator& accelerator) {
+  HotkeyIdMap::iterator it = hotkey_ids_.find(accelerator);
+  DCHECK(it != hotkey_ids_.end());
 
-	bool success = !!UnregisterHotKey(
-		gfx::SingletonHwnd::GetInstance()->hwnd(), it->second);
-	// This call should always succeed, as long as we pass in the right HWND and
-	// an id we've used to register before.
-	DCHECK(success);
+  bool success =
+      !!UnregisterHotKey(gfx::SingletonHwnd::GetInstance()->hwnd(), it->second);
+  // This call should always succeed, as long as we pass in the right HWND and
+  // an id we've used to register before.
+  DCHECK(success);
 
-	hotkey_ids_.erase(it);
+  hotkey_ids_.erase(it);
 }
 
 }  // namespace extensions

@@ -15,28 +15,28 @@
 namespace atom {
 
 class URLRequestBufferJob : public JsAsker<net::URLRequestSimpleJob> {
-public:
-URLRequestBufferJob(net::URLRequest*, net::NetworkDelegate*);
+ public:
+  URLRequestBufferJob(net::URLRequest*, net::NetworkDelegate*);
 
-// JsAsker:
-void StartAsync(std::unique_ptr<base::Value> options) override;
+  // JsAsker:
+  void StartAsync(std::unique_ptr<base::Value> options) override;
 
-// URLRequestJob:
-void GetResponseInfo(net::HttpResponseInfo* info) override;
+  // URLRequestJob:
+  void GetResponseInfo(net::HttpResponseInfo* info) override;
 
-// URLRequestSimpleJob:
-int GetRefCountedData(std::string* mime_type,
-                      std::string* charset,
-                      scoped_refptr<base::RefCountedMemory>* data,
-                      const net::CompletionCallback& callback) const override;
+  // URLRequestSimpleJob:
+  int GetRefCountedData(std::string* mime_type,
+                        std::string* charset,
+                        scoped_refptr<base::RefCountedMemory>* data,
+                        const net::CompletionCallback& callback) const override;
 
-private:
-std::string mime_type_;
-std::string charset_;
-scoped_refptr<base::RefCountedBytes> data_;
-net::HttpStatusCode status_code_;
+ private:
+  std::string mime_type_;
+  std::string charset_;
+  scoped_refptr<base::RefCountedBytes> data_;
+  net::HttpStatusCode status_code_;
 
-DISALLOW_COPY_AND_ASSIGN(URLRequestBufferJob);
+  DISALLOW_COPY_AND_ASSIGN(URLRequestBufferJob);
 };
 
 }  // namespace atom

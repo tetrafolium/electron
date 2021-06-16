@@ -23,35 +23,36 @@ struct StreamInfo;
 namespace atom {
 
 class PdfViewerHandler : public content::WebUIMessageHandler,
-	public WebContentsZoomController::Observer {
-public:
-explicit PdfViewerHandler(const std::string& original_url);
-~PdfViewerHandler() override;
+                         public WebContentsZoomController::Observer {
+ public:
+  explicit PdfViewerHandler(const std::string& original_url);
+  ~PdfViewerHandler() override;
 
-void SetPdfResourceStream(content::StreamInfo* stream);
+  void SetPdfResourceStream(content::StreamInfo* stream);
 
-protected:
-// WebUIMessageHandler implementation.
-void RegisterMessages() override;
-void OnJavascriptAllowed() override;
-void OnJavascriptDisallowed() override;
+ protected:
+  // WebUIMessageHandler implementation.
+  void RegisterMessages() override;
+  void OnJavascriptAllowed() override;
+  void OnJavascriptDisallowed() override;
 
-private:
-void Initialize(const base::ListValue* args);
-void GetDefaultZoom(const base::ListValue* args);
-void GetInitialZoom(const base::ListValue* args);
-void SetZoom(const base::ListValue* args);
-void GetStrings(const base::ListValue* args);
-void Reload(const base::ListValue* args);
-void OnZoomLevelChanged(content::WebContents* web_contents, double level,
-                        bool is_temporary);
-void AddObserver();
-void RemoveObserver();
-std::unique_ptr<base::Value> initialize_callback_id_;
-content::StreamInfo* stream_;
-std::string original_url_;
+ private:
+  void Initialize(const base::ListValue* args);
+  void GetDefaultZoom(const base::ListValue* args);
+  void GetInitialZoom(const base::ListValue* args);
+  void SetZoom(const base::ListValue* args);
+  void GetStrings(const base::ListValue* args);
+  void Reload(const base::ListValue* args);
+  void OnZoomLevelChanged(content::WebContents* web_contents,
+                          double level,
+                          bool is_temporary);
+  void AddObserver();
+  void RemoveObserver();
+  std::unique_ptr<base::Value> initialize_callback_id_;
+  content::StreamInfo* stream_;
+  std::string original_url_;
 
-DISALLOW_COPY_AND_ASSIGN(PdfViewerHandler);
+  DISALLOW_COPY_AND_ASSIGN(PdfViewerHandler);
 };
 
 }  // namespace atom

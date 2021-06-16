@@ -15,21 +15,21 @@ class NodeBindings;
 
 // Watches for WebWorker and insert node integration to it.
 class WebWorkerObserver {
-public:
-// Returns the WebWorkerObserver for current worker thread.
-static WebWorkerObserver* GetCurrent();
+ public:
+  // Returns the WebWorkerObserver for current worker thread.
+  static WebWorkerObserver* GetCurrent();
 
-void ContextCreated(v8::Local<v8::Context> context);
-void ContextWillDestroy(v8::Local<v8::Context> context);
+  void ContextCreated(v8::Local<v8::Context> context);
+  void ContextWillDestroy(v8::Local<v8::Context> context);
 
-private:
-WebWorkerObserver();
-~WebWorkerObserver();
+ private:
+  WebWorkerObserver();
+  ~WebWorkerObserver();
 
-std::unique_ptr<NodeBindings> node_bindings_;
-std::unique_ptr<AtomBindings> atom_bindings_;
+  std::unique_ptr<NodeBindings> node_bindings_;
+  std::unique_ptr<AtomBindings> atom_bindings_;
 
-DISALLOW_COPY_AND_ASSIGN(WebWorkerObserver);
+  DISALLOW_COPY_AND_ASSIGN(WebWorkerObserver);
 };
 
 }  // namespace atom

@@ -14,24 +14,24 @@ namespace brightray {
 class DevToolsNetworkController;
 
 class DevToolsNetworkTransactionFactory : public net::HttpTransactionFactory {
-public:
-explicit DevToolsNetworkTransactionFactory(
-	DevToolsNetworkController* controller,
-	net::HttpNetworkSession* session);
-~DevToolsNetworkTransactionFactory() override;
+ public:
+  explicit DevToolsNetworkTransactionFactory(
+      DevToolsNetworkController* controller,
+      net::HttpNetworkSession* session);
+  ~DevToolsNetworkTransactionFactory() override;
 
-// net::HttpTransactionFactory:
-int CreateTransaction(
-	net::RequestPriority priority,
-	std::unique_ptr<net::HttpTransaction>* transaction) override;
-net::HttpCache* GetCache() override;
-net::HttpNetworkSession* GetSession() override;
+  // net::HttpTransactionFactory:
+  int CreateTransaction(
+      net::RequestPriority priority,
+      std::unique_ptr<net::HttpTransaction>* transaction) override;
+  net::HttpCache* GetCache() override;
+  net::HttpNetworkSession* GetSession() override;
 
-private:
-DevToolsNetworkController* controller_;
-std::unique_ptr<net::HttpTransactionFactory> network_layer_;
+ private:
+  DevToolsNetworkController* controller_;
+  std::unique_ptr<net::HttpTransactionFactory> network_layer_;
 
-DISALLOW_COPY_AND_ASSIGN(DevToolsNetworkTransactionFactory);
+  DISALLOW_COPY_AND_ASSIGN(DevToolsNetworkTransactionFactory);
 };
 
 }  // namespace brightray

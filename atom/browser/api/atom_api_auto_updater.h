@@ -18,39 +18,40 @@ namespace atom {
 namespace api {
 
 class AutoUpdater : public mate::EventEmitter<AutoUpdater>,
-	public auto_updater::Delegate,
-	public WindowListObserver {
-public:
-static mate::Handle<AutoUpdater> Create(v8::Isolate* isolate);
+                    public auto_updater::Delegate,
+                    public WindowListObserver {
+ public:
+  static mate::Handle<AutoUpdater> Create(v8::Isolate* isolate);
 
-static void BuildPrototype(v8::Isolate* isolate,
-                           v8::Local<v8::FunctionTemplate> prototype);
+  static void BuildPrototype(v8::Isolate* isolate,
+                             v8::Local<v8::FunctionTemplate> prototype);
 
-protected:
-explicit AutoUpdater(v8::Isolate* isolate);
-~AutoUpdater() override;
+ protected:
+  explicit AutoUpdater(v8::Isolate* isolate);
+  ~AutoUpdater() override;
 
-// Delegate implementations.
-void OnError(const std::string& error) override;
-void OnError(const std::string& message, const int code,
-             const std::string& domain);
-void OnCheckingForUpdate() override;
-void OnUpdateAvailable() override;
-void OnUpdateNotAvailable() override;
-void OnUpdateDownloaded(const std::string& release_notes,
-                        const std::string& release_name,
-                        const base::Time& release_date,
-                        const std::string& update_url) override;
+  // Delegate implementations.
+  void OnError(const std::string& error) override;
+  void OnError(const std::string& message,
+               const int code,
+               const std::string& domain);
+  void OnCheckingForUpdate() override;
+  void OnUpdateAvailable() override;
+  void OnUpdateNotAvailable() override;
+  void OnUpdateDownloaded(const std::string& release_notes,
+                          const std::string& release_name,
+                          const base::Time& release_date,
+                          const std::string& update_url) override;
 
-// WindowListObserver:
-void OnWindowAllClosed() override;
+  // WindowListObserver:
+  void OnWindowAllClosed() override;
 
-private:
-std::string GetFeedURL();
-void SetFeedURL(const std::string& url, mate::Arguments* args);
-void QuitAndInstall();
+ private:
+  std::string GetFeedURL();
+  void SetFeedURL(const std::string& url, mate::Arguments* args);
+  void QuitAndInstall();
 
-DISALLOW_COPY_AND_ASSIGN(AutoUpdater);
+  DISALLOW_COPY_AND_ASSIGN(AutoUpdater);
 };
 
 }  // namespace api

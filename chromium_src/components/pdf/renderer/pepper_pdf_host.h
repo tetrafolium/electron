@@ -13,38 +13,38 @@
 namespace content {
 class RenderFrame;
 class RendererPpapiHost;
-}
+}  // namespace content
 
 namespace pdf {
 
 class PdfAccessibilityTree;
 
 class PepperPDFHost : public ppapi::host::ResourceHost {
-public:
-PepperPDFHost(content::RendererPpapiHost* host,
-              PP_Instance instance,
-              PP_Resource resource);
-~PepperPDFHost() override;
+ public:
+  PepperPDFHost(content::RendererPpapiHost* host,
+                PP_Instance instance,
+                PP_Resource resource);
+  ~PepperPDFHost() override;
 
-// ppapi::host::ResourceHost:
-int32_t OnResourceMessageReceived(
-	const IPC::Message& msg,
-	ppapi::host::HostMessageContext* context) override;
+  // ppapi::host::ResourceHost:
+  int32_t OnResourceMessageReceived(
+      const IPC::Message& msg,
+      ppapi::host::HostMessageContext* context) override;
 
-private:
-int32_t OnHostMsgDidStartLoading(ppapi::host::HostMessageContext* context);
-int32_t OnHostMsgDidStopLoading(ppapi::host::HostMessageContext* context);
-int32_t OnHostMsgSaveAs(ppapi::host::HostMessageContext* context);
-int32_t OnHostMsgSetSelectedText(ppapi::host::HostMessageContext* context,
-                                 const base::string16& selected_text);
-int32_t OnHostMsgSetLinkUnderCursor(ppapi::host::HostMessageContext* context,
-                                    const std::string& url);
+ private:
+  int32_t OnHostMsgDidStartLoading(ppapi::host::HostMessageContext* context);
+  int32_t OnHostMsgDidStopLoading(ppapi::host::HostMessageContext* context);
+  int32_t OnHostMsgSaveAs(ppapi::host::HostMessageContext* context);
+  int32_t OnHostMsgSetSelectedText(ppapi::host::HostMessageContext* context,
+                                   const base::string16& selected_text);
+  int32_t OnHostMsgSetLinkUnderCursor(ppapi::host::HostMessageContext* context,
+                                      const std::string& url);
 
-content::RenderFrame* GetRenderFrame();
+  content::RenderFrame* GetRenderFrame();
 
-content::RendererPpapiHost* const host_;
+  content::RendererPpapiHost* const host_;
 
-DISALLOW_COPY_AND_ASSIGN(PepperPDFHost);
+  DISALLOW_COPY_AND_ASSIGN(PepperPDFHost);
 };
 
 }  // namespace pdf

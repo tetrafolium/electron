@@ -20,32 +20,30 @@ namespace atom {
 void DragFileItems(const std::vector<base::FilePath>& files,
                    const gfx::Image& icon,
                    gfx::NativeView view) {
-	// Set up our OLE machinery
-	ui::OSExchangeData data;
+  // Set up our OLE machinery
+  ui::OSExchangeData data;
 
-	button_drag_utils::SetDragImage(GURL(), files[0].LossyDisplayName(),
-	                                icon.AsImageSkia(), nullptr,
-	                                *views::Widget::GetTopLevelWidgetForNativeView(view), &data);
+  button_drag_utils::SetDragImage(
+      GURL(), files[0].LossyDisplayName(), icon.AsImageSkia(), nullptr,
+      *views::Widget::GetTopLevelWidgetForNativeView(view), &data);
 
-	std::vector<ui::FileInfo> file_infos;
-	for (const base::FilePath& file : files) {
-		file_infos.push_back(ui::FileInfo(file, base::FilePath()));
-	}
-	data.SetFilenames(file_infos);
+  std::vector<ui::FileInfo> file_infos;
+  for (const base::FilePath& file : files) {
+    file_infos.push_back(ui::FileInfo(file, base::FilePath()));
+  }
+  data.SetFilenames(file_infos);
 
-	aura::Window* root_window = view->GetRootWindow();
-	if (!root_window || !aura::client::GetDragDropClient(root_window))
-		return;
+  aura::Window* root_window = view->GetRootWindow();
+  if (!root_window || !aura::client::GetDragDropClient(root_window))
+    return;
 
-	gfx::Point location = display::Screen::GetScreen()->GetCursorScreenPoint();
-	// TODO(varunjain): Properly determine and send DRAG_EVENT_SOURCE below.
-	aura::client::GetDragDropClient(root_window)->StartDragAndDrop(
-		data,
-		root_window,
-		view,
-		location,
-		ui::DragDropTypes::DRAG_COPY | ui::DragDropTypes::DRAG_LINK,
-		ui::DragDropTypes::DRAG_EVENT_SOURCE_MOUSE);
+  gfx::Point location = display::Screen::GetScreen()->GetCursorScreenPoint();
+  // TODO(varunjain): Properly determine and send DRAG_EVENT_SOURCE below.
+  aura::client::GetDragDropClient(root_window)
+      ->StartDragAndDrop(
+          data, root_window, view, location,
+          ui::DragDropTypes::DRAG_COPY | ui::DragDropTypes::DRAG_LINK,
+          ui::DragDropTypes::DRAG_EVENT_SOURCE_MOUSE);
 }
 
 }  // namespace atom

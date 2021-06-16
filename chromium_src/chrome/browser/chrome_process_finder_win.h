@@ -16,9 +16,9 @@ class FilePath;
 namespace chrome {
 
 enum NotifyChromeResult {
-	NOTIFY_SUCCESS,
-	NOTIFY_FAILED,
-	NOTIFY_WINDOW_HUNG,
+  NOTIFY_SUCCESS,
+  NOTIFY_FAILED,
+  NOTIFY_WINDOW_HUNG,
 };
 
 // Finds an already running Chrome window if it exists.

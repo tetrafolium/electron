@@ -23,76 +23,76 @@ class PrintJob;
 class PrinterQuery;
 
 class PrintQueriesQueue : public base::RefCountedThreadSafe<PrintQueriesQueue> {
-public:
-PrintQueriesQueue();
+ public:
+  PrintQueriesQueue();
 
-// Queues a semi-initialized worker thread. Can be called from any thread.
-// Current use case is queuing from the I/O thread.
-// TODO(maruel):  Have them vanish after a timeout (~5 minutes?)
-void QueuePrinterQuery(PrinterQuery* job);
+  // Queues a semi-initialized worker thread. Can be called from any thread.
+  // Current use case is queuing from the I/O thread.
+  // TODO(maruel):  Have them vanish after a timeout (~5 minutes?)
+  void QueuePrinterQuery(PrinterQuery* job);
 
-// Pops a queued PrintJobWorkerOwner object that was previously queued or
-// create new one. Can be called from any thread.
-scoped_refptr<PrinterQuery> PopPrinterQuery(int document_cookie);
+  // Pops a queued PrintJobWorkerOwner object that was previously queued or
+  // create new one. Can be called from any thread.
+  scoped_refptr<PrinterQuery> PopPrinterQuery(int document_cookie);
 
-// Creates new query.
-scoped_refptr<PrinterQuery> CreatePrinterQuery(int render_process_id,
-                                               int render_frame_id);
+  // Creates new query.
+  scoped_refptr<PrinterQuery> CreatePrinterQuery(int render_process_id,
+                                                 int render_frame_id);
 
-void Shutdown();
+  void Shutdown();
 
-private:
-friend class base::RefCountedThreadSafe<PrintQueriesQueue>;
-typedef std::vector<scoped_refptr<PrinterQuery> > PrinterQueries;
+ private:
+  friend class base::RefCountedThreadSafe<PrintQueriesQueue>;
+  typedef std::vector<scoped_refptr<PrinterQuery>> PrinterQueries;
 
-virtual ~PrintQueriesQueue();
+  virtual ~PrintQueriesQueue();
 
-// Used to serialize access to queued_workers_.
-base::Lock lock_;
+  // Used to serialize access to queued_workers_.
+  base::Lock lock_;
 
-PrinterQueries queued_queries_;
+  PrinterQueries queued_queries_;
 
-DISALLOW_COPY_AND_ASSIGN(PrintQueriesQueue);
+  DISALLOW_COPY_AND_ASSIGN(PrintQueriesQueue);
 };
 
 class PrintJobManager : public content::NotificationObserver {
-public:
-PrintJobManager();
-~PrintJobManager() override;
+ public:
+  PrintJobManager();
+  ~PrintJobManager() override;
 
-// On browser quit, we should wait to have the print job finished.
-void Shutdown();
+  // On browser quit, we should wait to have the print job finished.
+  void Shutdown();
 
-// content::NotificationObserver
-void Observe(int type,
-             const content::NotificationSource& source,
-             const content::NotificationDetails& details) override;
+  // content::NotificationObserver
+  void Observe(int type,
+               const content::NotificationSource& source,
+               const content::NotificationDetails& details) override;
 
-// Returns queries queue. Never returns NULL. Must be called on Browser UI
-// Thread. Reference could be stored and used from any thread.
-scoped_refptr<PrintQueriesQueue> queue();
+  // Returns queries queue. Never returns NULL. Must be called on Browser UI
+  // Thread. Reference could be stored and used from any thread.
+  scoped_refptr<PrintQueriesQueue> queue();
 
-private:
-typedef std::set<scoped_refptr<PrintJob> > PrintJobs;
+ private:
+  typedef std::set<scoped_refptr<PrintJob>> PrintJobs;
 
-// Processes a NOTIFY_PRINT_JOB_EVENT notification.
-void OnPrintJobEvent(PrintJob* print_job,
-                     const JobEventDetails& event_details);
+  // Processes a NOTIFY_PRINT_JOB_EVENT notification.
+  void OnPrintJobEvent(PrintJob* print_job,
+                       const JobEventDetails& event_details);
 
-// Stops all printing jobs. If wait_for_finish is true, tries to give jobs
-// a chance to complete before stopping them.
-void StopJobs(bool wait_for_finish);
+  // Stops all printing jobs. If wait_for_finish is true, tries to give jobs
+  // a chance to complete before stopping them.
+  void StopJobs(bool wait_for_finish);
 
-content::NotificationRegistrar registrar_;
+  content::NotificationRegistrar registrar_;
 
-// Current print jobs that are active.
-PrintJobs current_jobs_;
+  // Current print jobs that are active.
+  PrintJobs current_jobs_;
 
-scoped_refptr<PrintQueriesQueue> queue_;
+  scoped_refptr<PrintQueriesQueue> queue_;
 
-bool is_shutdown_;
+  bool is_shutdown_;
 
-DISALLOW_COPY_AND_ASSIGN(PrintJobManager);
+  DISALLOW_COPY_AND_ASSIGN(PrintJobManager);
 };
 
 }  // namespace printing

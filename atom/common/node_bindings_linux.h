@@ -11,22 +11,22 @@
 namespace atom {
 
 class NodeBindingsLinux : public NodeBindings {
-public:
-explicit NodeBindingsLinux(BrowserEnvironment browser_env);
-virtual ~NodeBindingsLinux();
+ public:
+  explicit NodeBindingsLinux(BrowserEnvironment browser_env);
+  virtual ~NodeBindingsLinux();
 
-void RunMessageLoop() override;
+  void RunMessageLoop() override;
 
-private:
-// Called when uv's watcher queue changes.
-static void OnWatcherQueueChanged(uv_loop_t* loop);
+ private:
+  // Called when uv's watcher queue changes.
+  static void OnWatcherQueueChanged(uv_loop_t* loop);
 
-void PollEvents() override;
+  void PollEvents() override;
 
-// Epoll to poll for uv's backend fd.
-int epoll_;
+  // Epoll to poll for uv's backend fd.
+  int epoll_;
 
-DISALLOW_COPY_AND_ASSIGN(NodeBindingsLinux);
+  DISALLOW_COPY_AND_ASSIGN(NodeBindingsLinux);
 };
 
 }  // namespace atom
