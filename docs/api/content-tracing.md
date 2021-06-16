@@ -1,7 +1,7 @@
 # contentTracing
 
 > Collect tracing data from Chromium's content module for finding performance
-bottlenecks and slow operations.
+> bottlenecks and slow operations.
 
 Process: [Main](../glossary.md#main-process)
 
@@ -12,26 +12,25 @@ result.
 **Note:** You should not use this module until the `ready` event of the app
 module is emitted.
 
-
 ```javascript
-const {app, contentTracing} = require('electron')
+const { app, contentTracing } = require("electron");
 
-app.on('ready', () => {
+app.on("ready", () => {
   const options = {
-    categoryFilter: '*',
-    traceOptions: 'record-until-full,enable-sampling'
-  }
+    categoryFilter: "*",
+    traceOptions: "record-until-full,enable-sampling",
+  };
 
   contentTracing.startRecording(options, () => {
-    console.log('Tracing started')
+    console.log("Tracing started");
 
     setTimeout(() => {
-      contentTracing.stopRecording('', (path) => {
-        console.log('Tracing data recorded to ' + path)
-      })
-    }, 5000)
-  })
-})
+      contentTracing.stopRecording("", (path) => {
+        console.log("Tracing data recorded to " + path);
+      });
+    }, 5000);
+  });
+});
 ```
 
 ## Methods
@@ -40,8 +39,8 @@ The `contentTracing` module has the following methods:
 
 ### `contentTracing.getCategories(callback)`
 
-* `callback` Function
-  * `categories` String[]
+- `callback` Function
+  - `categories` String[]
 
 Get a set of category groups. The category groups can change as new code paths
 are reached.
@@ -51,10 +50,10 @@ Once all child processes have acknowledged the `getCategories` request the
 
 ### `contentTracing.startRecording(options, callback)`
 
-* `options` Object
-  * `categoryFilter` String
-  * `traceOptions` String
-* `callback` Function
+- `options` Object
+  - `categoryFilter` String
+  - `traceOptions` String
+- `callback` Function
 
 Start recording on all processes.
 
@@ -69,18 +68,18 @@ category patterns in the same list is not supported.
 
 Examples:
 
-* `test_MyTest*`,
-* `test_MyTest*,test_OtherStuff`,
-* `"-excluded_category1,-excluded_category2`
+- `test_MyTest*`,
+- `test_MyTest*,test_OtherStuff`,
+- `"-excluded_category1,-excluded_category2`
 
 `traceOptions` controls what kind of tracing is enabled, it is a comma-delimited
 list. Possible options are:
 
-* `record-until-full`
-* `record-continuously`
-* `trace-to-console`
-* `enable-sampling`
-* `enable-systrace`
+- `record-until-full`
+- `record-continuously`
+- `trace-to-console`
+- `enable-sampling`
+- `enable-systrace`
 
 The first 3 options are trace recording modes and hence mutually exclusive.
 If more than one trace recording modes appear in the `traceOptions` string,
@@ -93,9 +92,9 @@ before options parsed from `traceOptions` are applied on it.
 
 ### `contentTracing.stopRecording(resultFilePath, callback)`
 
-* `resultFilePath` String
-* `callback` Function
-  * `resultFilePath` String
+- `resultFilePath` String
+- `callback` Function
+  - `resultFilePath` String
 
 Stop recording on all processes.
 
@@ -114,10 +113,10 @@ temporary file. The actual file path will be passed to `callback` if it's not
 
 ### `contentTracing.startMonitoring(options, callback)`
 
-* `options` Object
-  * `categoryFilter` String
-  * `traceOptions` String
-* `callback` Function
+- `options` Object
+  - `categoryFilter` String
+  - `traceOptions` String
+- `callback` Function
 
 Start monitoring on all processes.
 
@@ -129,7 +128,7 @@ Once all child processes have acknowledged the `startMonitoring` request the
 
 ### `contentTracing.stopMonitoring(callback)`
 
-* `callback` Function
+- `callback` Function
 
 Stop monitoring on all processes.
 
@@ -138,9 +137,9 @@ Once all child processes have acknowledged the `stopMonitoring` request the
 
 ### `contentTracing.captureMonitoringSnapshot(resultFilePath, callback)`
 
-* `resultFilePath` String
-* `callback` Function
-  * `resultFilePath` String
+- `resultFilePath` String
+- `callback` Function
+  - `resultFilePath` String
 
 Get the current monitoring traced data.
 
@@ -153,12 +152,11 @@ all child processes to flush any pending trace data.
 Once all child processes have acknowledged the `captureMonitoringSnapshot`
 request the `callback` will be called with a file that contains the traced data.
 
-
 ### `contentTracing.getTraceBufferUsage(callback)`
 
-* `callback` Function
-  * `value` Number
-  * `percentage` Number
+- `callback` Function
+  - `value` Number
+  - `percentage` Number
 
 Get the maximum usage across processes of trace buffer as a percentage of the
 full state. When the TraceBufferUsage value is determined the `callback` is

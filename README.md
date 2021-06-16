@@ -1,6 +1,5 @@
 [![Electron Logo](https://electronjs.org/images/electron-logo.svg)](https://electronjs.org)
 
-
 [![CircleCI Build Status](https://circleci.com/gh/electron/electron/tree/master.svg?style=shield)](https://circleci.com/gh/electron/electron/tree/master)
 [![AppVeyor Build Status](https://windows-ci.electronjs.org/api/projects/status/nilyf07hcef14dvj/branch/master?svg=true)](https://windows-ci.electronjs.org/project/AppVeyor/electron/branch/master)
 [![Jenkins Build Status](https://mac-ci.electronjs.org/buildStatus/icon?job=Electron%20org/electron/master)](https://mac-ci.electronjs.org/blue/organizations/jenkins/Electron%20org%2Felectron/activity?branch=master)
@@ -69,14 +68,14 @@ your **Node app** (not your Electron app) it will return the file path to the
 binary. Use this to spawn Electron from Node scripts:
 
 ```javascript
-const electron = require('electron')
-const proc = require('child_process')
+const electron = require("electron");
+const proc = require("child_process");
 
 // will print something similar to /Users/maf/.../Electron
-console.log(electron)
+console.log(electron);
 
 // spawn Electron
-const child = proc.spawn(electron)
+const child = proc.spawn(electron);
 ```
 
 ### Mirrors
@@ -91,17 +90,18 @@ Find documentation translations in [electron/electron-i18n](https://github.com/e
 
 You can ask questions and interact with the community in the following
 locations:
+
 - [`electron`](https://discuss.atom.io/c/electron) category on the Atom
-forums
+  forums
 - `#atom-shell` channel on Freenode
 - [`Atom`](https://atom-slack.herokuapp.com) channel on Slack
-- [`electron-ru`](https://telegram.me/electron_ru) *(Russian)*
-- [`electron-br`](https://electron-br.slack.com) *(Brazilian Portuguese)*
-- [`electron-kr`](https://electron-kr.github.io/electron-kr) *(Korean)*
-- [`electron-jp`](https://electron-jp.slack.com) *(Japanese)*
-- [`electron-tr`](https://electron-tr.herokuapp.com) *(Turkish)*
-- [`electron-id`](https://electron-id.slack.com) *(Indonesia)*
-- [`electron-pl`](https://electronpl.github.io) *(Poland)*
+- [`electron-ru`](https://telegram.me/electron_ru) _(Russian)_
+- [`electron-br`](https://electron-br.slack.com) _(Brazilian Portuguese)_
+- [`electron-kr`](https://electron-kr.github.io/electron-kr) _(Korean)_
+- [`electron-jp`](https://electron-jp.slack.com) _(Japanese)_
+- [`electron-tr`](https://electron-tr.herokuapp.com) _(Turkish)_
+- [`electron-id`](https://electron-id.slack.com) _(Indonesia)_
+- [`electron-pl`](https://electronpl.github.io) _(Poland)_
 
 Check out [awesome-electron](https://github.com/sindresorhus/awesome-electron)
 for a community maintained list of useful example apps, tools and resources.

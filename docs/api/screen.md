@@ -15,40 +15,40 @@ property, so writing `let {screen} = require('electron')` will not work.
 An example of creating a window that fills the whole screen:
 
 ```javascript
-const electron = require('electron')
-const {app, BrowserWindow} = electron
+const electron = require("electron");
+const { app, BrowserWindow } = electron;
 
-let win
+let win;
 
-app.on('ready', () => {
-  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
-  win = new BrowserWindow({width, height})
-  win.loadURL('https://github.com')
-})
+app.on("ready", () => {
+  const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
+  win = new BrowserWindow({ width, height });
+  win.loadURL("https://github.com");
+});
 ```
 
 Another example of creating a window in the external display:
 
 ```javascript
-const electron = require('electron')
-const {app, BrowserWindow} = require('electron')
+const electron = require("electron");
+const { app, BrowserWindow } = require("electron");
 
-let win
+let win;
 
-app.on('ready', () => {
-  let displays = electron.screen.getAllDisplays()
+app.on("ready", () => {
+  let displays = electron.screen.getAllDisplays();
   let externalDisplay = displays.find((display) => {
-    return display.bounds.x !== 0 || display.bounds.y !== 0
-  })
+    return display.bounds.x !== 0 || display.bounds.y !== 0;
+  });
 
   if (externalDisplay) {
     win = new BrowserWindow({
       x: externalDisplay.bounds.x + 50,
-      y: externalDisplay.bounds.y + 50
-    })
-    win.loadURL('https://github.com')
+      y: externalDisplay.bounds.y + 50,
+    });
+    win.loadURL("https://github.com");
   }
-})
+});
 ```
 
 ## Events
@@ -59,8 +59,8 @@ The `screen` module emits the following events:
 
 Returns:
 
-* `event` Event
-* `newDisplay` [Display](structures/display.md)
+- `event` Event
+- `newDisplay` [Display](structures/display.md)
 
 Emitted when `newDisplay` has been added.
 
@@ -68,8 +68,8 @@ Emitted when `newDisplay` has been added.
 
 Returns:
 
-* `event` Event
-* `oldDisplay` [Display](structures/display.md)
+- `event` Event
+- `oldDisplay` [Display](structures/display.md)
 
 Emitted when `oldDisplay` has been removed.
 
@@ -77,9 +77,9 @@ Emitted when `oldDisplay` has been removed.
 
 Returns:
 
-* `event` Event
-* `display` [Display](structures/display.md)
-* `changedMetrics` String[]
+- `event` Event
+- `display` [Display](structures/display.md)
+- `changedMetrics` String[]
 
 Emitted when one or more metrics change in a `display`. The `changedMetrics` is
 an array of strings that describe the changes. Possible changes are `bounds`,
@@ -109,13 +109,13 @@ Returns [`Display[]`](structures/display.md) - An array of displays that are cur
 
 ### `screen.getDisplayNearestPoint(point)`
 
-* `point` [Point](structures/point.md)
+- `point` [Point](structures/point.md)
 
 Returns [`Display`](structures/display.md) - The display nearest the specified point.
 
 ### `screen.getDisplayMatching(rect)`
 
-* `rect` [Rectangle](structures/rectangle.md)
+- `rect` [Rectangle](structures/rectangle.md)
 
 Returns [`Display`](structures/display.md) - The display that most closely
 intersects the provided bounds.

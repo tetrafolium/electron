@@ -7,60 +7,60 @@ Process: [Main](../glossary.md#main-process)
 `Tray` is an [EventEmitter][event-emitter].
 
 ```javascript
-const {app, Menu, Tray} = require('electron')
+const { app, Menu, Tray } = require("electron");
 
-let tray = null
-app.on('ready', () => {
-  tray = new Tray('/path/to/my/icon')
+let tray = null;
+app.on("ready", () => {
+  tray = new Tray("/path/to/my/icon");
   const contextMenu = Menu.buildFromTemplate([
-    {label: 'Item1', type: 'radio'},
-    {label: 'Item2', type: 'radio'},
-    {label: 'Item3', type: 'radio', checked: true},
-    {label: 'Item4', type: 'radio'}
-  ])
-  tray.setToolTip('This is my application.')
-  tray.setContextMenu(contextMenu)
-})
+    { label: "Item1", type: "radio" },
+    { label: "Item2", type: "radio" },
+    { label: "Item3", type: "radio", checked: true },
+    { label: "Item4", type: "radio" },
+  ]);
+  tray.setToolTip("This is my application.");
+  tray.setContextMenu(contextMenu);
+});
 ```
 
-__Platform limitations:__
+**Platform limitations:**
 
-* On Linux the app indicator will be used if it is supported, otherwise
+- On Linux the app indicator will be used if it is supported, otherwise
   `GtkStatusIcon` will be used instead.
-* On Linux distributions that only have app indicator support, you have to
+- On Linux distributions that only have app indicator support, you have to
   install `libappindicator1` to make the tray icon work.
-* App indicator will only be shown when it has a context menu.
-* When app indicator is used on Linux, the `click` event is ignored.
-* On Linux in order for changes made to individual `MenuItem`s to take effect,
+- App indicator will only be shown when it has a context menu.
+- When app indicator is used on Linux, the `click` event is ignored.
+- On Linux in order for changes made to individual `MenuItem`s to take effect,
   you have to call `setContextMenu` again. For example:
 
 ```javascript
-const {app, Menu, Tray} = require('electron')
+const { app, Menu, Tray } = require("electron");
 
-let appIcon = null
-app.on('ready', () => {
-  appIcon = new Tray('/path/to/my/icon')
+let appIcon = null;
+app.on("ready", () => {
+  appIcon = new Tray("/path/to/my/icon");
   const contextMenu = Menu.buildFromTemplate([
-    {label: 'Item1', type: 'radio'},
-    {label: 'Item2', type: 'radio'}
-  ])
+    { label: "Item1", type: "radio" },
+    { label: "Item2", type: "radio" },
+  ]);
 
   // Make a change to the context menu
-  contextMenu.items[1].checked = false
+  contextMenu.items[1].checked = false;
 
   // Call this again for Linux because we modified the context menu
-  appIcon.setContextMenu(contextMenu)
-})
+  appIcon.setContextMenu(contextMenu);
+});
 ```
-* On Windows it is recommended to use `ICO` icons to get best visual effects.
+
+- On Windows it is recommended to use `ICO` icons to get best visual effects.
 
 If you want to keep exact same behaviors on all platforms, you should not
 rely on the `click` event and always attach a context menu to the tray icon.
 
-
 ### `new Tray(image)`
 
-* `image` ([NativeImage](native-image.md) | String)
+- `image` ([NativeImage](native-image.md) | String)
 
 Creates a new tray icon associated with the `image`.
 
@@ -70,35 +70,35 @@ The `Tray` module emits the following events:
 
 #### Event: 'click'
 
-* `event` Event
-  * `altKey` Boolean
-  * `shiftKey` Boolean
-  * `ctrlKey` Boolean
-  * `metaKey` Boolean
-* `bounds` [Rectangle](structures/rectangle.md) - The bounds of tray icon.
-* `position` [Point](structures/point.md) - The position of the event.
+- `event` Event
+  - `altKey` Boolean
+  - `shiftKey` Boolean
+  - `ctrlKey` Boolean
+  - `metaKey` Boolean
+- `bounds` [Rectangle](structures/rectangle.md) - The bounds of tray icon.
+- `position` [Point](structures/point.md) - The position of the event.
 
 Emitted when the tray icon is clicked.
 
 #### Event: 'right-click' _macOS_ _Windows_
 
-* `event` Event
-  * `altKey` Boolean
-  * `shiftKey` Boolean
-  * `ctrlKey` Boolean
-  * `metaKey` Boolean
-* `bounds` [Rectangle](structures/rectangle.md) - The bounds of tray icon.
+- `event` Event
+  - `altKey` Boolean
+  - `shiftKey` Boolean
+  - `ctrlKey` Boolean
+  - `metaKey` Boolean
+- `bounds` [Rectangle](structures/rectangle.md) - The bounds of tray icon.
 
 Emitted when the tray icon is right clicked.
 
 #### Event: 'double-click' _macOS_ _Windows_
 
-* `event` Event
-  * `altKey` Boolean
-  * `shiftKey` Boolean
-  * `ctrlKey` Boolean
-  * `metaKey` Boolean
-* `bounds` [Rectangle](structures/rectangle.md) - The bounds of tray icon.
+- `event` Event
+  - `altKey` Boolean
+  - `shiftKey` Boolean
+  - `ctrlKey` Boolean
+  - `metaKey` Boolean
+- `bounds` [Rectangle](structures/rectangle.md) - The bounds of tray icon.
 
 Emitted when the tray icon is double clicked.
 
@@ -121,15 +121,15 @@ Emitted when any dragged items are dropped on the tray icon.
 
 #### Event: 'drop-files' _macOS_
 
-* `event` Event
-* `files` String[] - The paths of the dropped files.
+- `event` Event
+- `files` String[] - The paths of the dropped files.
 
 Emitted when dragged files are dropped in the tray icon.
 
 #### Event: 'drop-text' _macOS_
 
-* `event` Event
-* `text` String - the dropped text string.
+- `event` Event
+- `text` String - the dropped text string.
 
 Emitted when dragged text is dropped in the tray icon.
 
@@ -147,34 +147,34 @@ Emitted when a drag operation ends on the tray or ends at another location.
 
 #### Event: 'mouse-enter' _macOS_
 
-* `event` Event
-  * `altKey` Boolean
-  * `shiftKey` Boolean
-  * `ctrlKey` Boolean
-  * `metaKey` Boolean
-* `position` [Point](structures/point.md) - The position of the event.
+- `event` Event
+  - `altKey` Boolean
+  - `shiftKey` Boolean
+  - `ctrlKey` Boolean
+  - `metaKey` Boolean
+- `position` [Point](structures/point.md) - The position of the event.
 
 Emitted when the mouse enters the tray icon.
 
 #### Event: 'mouse-leave' _macOS_
 
-* `event` Event
-  * `altKey` Boolean
-  * `shiftKey` Boolean
-  * `ctrlKey` Boolean
-  * `metaKey` Boolean
-* `position` [Point](structures/point.md) - The position of the event.
+- `event` Event
+  - `altKey` Boolean
+  - `shiftKey` Boolean
+  - `ctrlKey` Boolean
+  - `metaKey` Boolean
+- `position` [Point](structures/point.md) - The position of the event.
 
 Emitted when the mouse exits the tray icon.
 
 #### Event: 'mouse-move' _macOS_
 
-* `event` Event
-  * `altKey` Boolean
-  * `shiftKey` Boolean
-  * `ctrlKey` Boolean
-  * `metaKey` Boolean
-* `position` [Point](structures/point.md) - The position of the event.
+- `event` Event
+  - `altKey` Boolean
+  - `shiftKey` Boolean
+  - `ctrlKey` Boolean
+  - `metaKey` Boolean
+- `position` [Point](structures/point.md) - The position of the event.
 
 Emitted when the mouse moves in the tray icon.
 
@@ -188,35 +188,35 @@ Destroys the tray icon immediately.
 
 #### `tray.setImage(image)`
 
-* `image` ([NativeImage](native-image.md) | String)
+- `image` ([NativeImage](native-image.md) | String)
 
 Sets the `image` associated with this tray icon.
 
 #### `tray.setPressedImage(image)` _macOS_
 
-* `image` [NativeImage](native-image.md)
+- `image` [NativeImage](native-image.md)
 
 Sets the `image` associated with this tray icon when pressed on macOS.
 
 #### `tray.setToolTip(toolTip)`
 
-* `toolTip` String
+- `toolTip` String
 
 Sets the hover text for this tray icon.
 
 #### `tray.setTitle(title)` _macOS_
 
-* `title` String
+- `title` String
 
 Sets the title displayed aside of the tray icon in the status bar (Support ANSI colors).
 
 #### `tray.setHighlightMode(mode)` _macOS_
 
-* `mode` String - Highlight mode with one of the following values:
-  * `selection` - Highlight the tray icon when it is clicked and also when
+- `mode` String - Highlight mode with one of the following values:
+  - `selection` - Highlight the tray icon when it is clicked and also when
     its context menu is open. This is the default.
-  * `always` - Always highlight the tray icon.
-  * `never` - Never highlight the tray icon.
+  - `always` - Always highlight the tray icon.
+  - `never` - Never highlight the tray icon.
 
 Sets when the tray's icon background becomes highlighted (in blue).
 
@@ -225,35 +225,35 @@ by toggling between `'never'` and `'always'` modes when the window visibility
 changes.
 
 ```javascript
-const {BrowserWindow, Tray} = require('electron')
+const { BrowserWindow, Tray } = require("electron");
 
-const win = new BrowserWindow({width: 800, height: 600})
-const tray = new Tray('/path/to/my/icon')
+const win = new BrowserWindow({ width: 800, height: 600 });
+const tray = new Tray("/path/to/my/icon");
 
-tray.on('click', () => {
-  win.isVisible() ? win.hide() : win.show()
-})
-win.on('show', () => {
-  tray.setHighlightMode('always')
-})
-win.on('hide', () => {
-  tray.setHighlightMode('never')
-})
+tray.on("click", () => {
+  win.isVisible() ? win.hide() : win.show();
+});
+win.on("show", () => {
+  tray.setHighlightMode("always");
+});
+win.on("hide", () => {
+  tray.setHighlightMode("never");
+});
 ```
 
 #### `tray.displayBalloon(options)` _Windows_
 
-* `options` Object
-  * `icon` ([NativeImage](native-image.md) | String) (optional) -
-  * `title` String
-  * `content` String
+- `options` Object
+  - `icon` ([NativeImage](native-image.md) | String) (optional) -
+  - `title` String
+  - `content` String
 
 Displays a tray balloon.
 
 #### `tray.popUpContextMenu([menu, position])` _macOS_ _Windows_
 
-* `menu` Menu (optional)
-* `position` [Point](structures/point.md) (optional) - The pop up position.
+- `menu` Menu (optional)
+- `position` [Point](structures/point.md) (optional) - The pop up position.
 
 Pops up the context menu of the tray icon. When `menu` is passed, the `menu` will
 be shown instead of the tray icon's context menu.
@@ -262,7 +262,7 @@ The `position` is only available on Windows, and it is (0, 0) by default.
 
 #### `tray.setContextMenu(menu)`
 
-* `menu` Menu
+- `menu` Menu
 
 Sets the context menu for this icon.
 

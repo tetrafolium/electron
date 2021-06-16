@@ -13,7 +13,7 @@ interface and is therefore an [EventEmitter](https://nodejs.org/api/events.html#
 
 Returns:
 
-* `chunk` Buffer - A chunk of response body's data.
+- `chunk` Buffer - A chunk of response body's data.
 
 The `data` event is the usual method of transferring response data into
 applicative code.
@@ -54,9 +54,9 @@ A `String` representing the HTTP status message.
 An `Object` representing the response HTTP headers. The `headers` object is
 formatted as follows:
 
-* All header names are lowercased.
-* Each header name produces an array-valued property on the headers object.
-* Each header value is pushed into the array associated with its header name.
+- All header names are lowercased.
+- Each header name produces an array-valued property on the headers object.
+- Each header value is pushed into the array associated with its header name.
 
 #### `response.httpVersion`
 

@@ -20,13 +20,13 @@ Using the [React Developer Tools][react-devtools] as example:
 1. Navigate to `chrome://extensions`, and find its extension ID, which is a hash
    string like `fmkadmapgofadopljbjfkapdkoienihi`.
 1. Find out filesystem location used by Chrome for storing extensions:
-   * on Windows it is `%LOCALAPPDATA%\Google\Chrome\User Data\Default\Extensions`;
-   * on Linux it could be:
-     * `~/.config/google-chrome/Default/Extensions/`
-     * `~/.config/google-chrome-beta/Default/Extensions/`
-     * `~/.config/google-chrome-canary/Default/Extensions/`
-     * `~/.config/chromium/Default/Extensions/`
-   * on macOS it is `~/Library/Application Support/Google/Chrome/Default/Extensions`.
+   - on Windows it is `%LOCALAPPDATA%\Google\Chrome\User Data\Default\Extensions`;
+   - on Linux it could be:
+     - `~/.config/google-chrome/Default/Extensions/`
+     - `~/.config/google-chrome-beta/Default/Extensions/`
+     - `~/.config/google-chrome-canary/Default/Extensions/`
+     - `~/.config/chromium/Default/Extensions/`
+   - on macOS it is `~/Library/Application Support/Google/Chrome/Default/Extensions`.
 1. Pass the location of the extension to `BrowserWindow.addDevToolsExtension`
    API, for the React Developer Tools, it is something like:
    `~/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/0.15.0_0`
@@ -44,15 +44,15 @@ Electron only supports a limited set of `chrome.*` APIs, so some extensions
 using unsupported `chrome.*` APIs for chrome extension features may not work.
 Following Devtools Extensions are tested and guaranteed to work in Electron:
 
-* [Ember Inspector](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-* [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
-* [Backbone Debugger](https://chrome.google.com/webstore/detail/backbone-debugger/bhljhndlimiafopmmhjlgfpnnchjjbhd)
-* [jQuery Debugger](https://chrome.google.com/webstore/detail/jquery-debugger/dbhhnnnpaeobfddmlalhnehgclcmjimi)
-* [AngularJS Batarang](https://chrome.google.com/webstore/detail/angularjs-batarang/ighdmehidhipcmcojjgiloacoafjmpfk)
-* [Vue.js devtools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-* [Cerebral Debugger](http://www.cerebraljs.com/documentation/the_debugger)
-* [Redux DevTools Extension](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
-* [MobX Developer Tools](https://chrome.google.com/webstore/detail/mobx-developer-tools/pfgnfdagidkfgccljigdamigbcnndkod)
+- [Ember Inspector](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
+- [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
+- [Backbone Debugger](https://chrome.google.com/webstore/detail/backbone-debugger/bhljhndlimiafopmmhjlgfpnnchjjbhd)
+- [jQuery Debugger](https://chrome.google.com/webstore/detail/jquery-debugger/dbhhnnnpaeobfddmlalhnehgclcmjimi)
+- [AngularJS Batarang](https://chrome.google.com/webstore/detail/angularjs-batarang/ighdmehidhipcmcojjgiloacoafjmpfk)
+- [Vue.js devtools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+- [Cerebral Debugger](http://www.cerebraljs.com/documentation/the_debugger)
+- [Redux DevTools Extension](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
+- [MobX Developer Tools](https://chrome.google.com/webstore/detail/mobx-developer-tools/pfgnfdagidkfgccljigdamigbcnndkod)
 
 ### What should I do if a DevTools Extension is not working?
 

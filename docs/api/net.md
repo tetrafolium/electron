@@ -13,12 +13,12 @@ offering better support for web proxies.
 The following is a non-exhaustive list of why you may consider using the `net`
 module instead of the native Node.js modules:
 
-* Automatic management of system proxy configuration, support of the wpad
+- Automatic management of system proxy configuration, support of the wpad
   protocol and proxy pac configuration files.
-* Automatic tunneling of HTTPS requests.
-* Support for authenticating proxies using basic, digest, NTLM, Kerberos or
+- Automatic tunneling of HTTPS requests.
+- Support for authenticating proxies using basic, digest, NTLM, Kerberos or
   negotiate authentication schemes.
-* Support for traffic monitoring proxies: Fiddler-like proxies used for access
+- Support for traffic monitoring proxies: Fiddler-like proxies used for access
   control and monitoring.
 
 The `net` module API has been specifically designed to mimic, as closely as
@@ -30,22 +30,22 @@ For instance, the following example quickly shows how the `net` API might be
 used:
 
 ```javascript
-const {app} = require('electron')
-app.on('ready', () => {
-  const {net} = require('electron')
-  const request = net.request('https://github.com')
-  request.on('response', (response) => {
-    console.log(`STATUS: ${response.statusCode}`)
-    console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
-    response.on('data', (chunk) => {
-      console.log(`BODY: ${chunk}`)
-    })
-    response.on('end', () => {
-      console.log('No more data in response.')
-    })
-  })
-  request.end()
-})
+const { app } = require("electron");
+app.on("ready", () => {
+  const { net } = require("electron");
+  const request = net.request("https://github.com");
+  request.on("response", (response) => {
+    console.log(`STATUS: ${response.statusCode}`);
+    console.log(`HEADERS: ${JSON.stringify(response.headers)}`);
+    response.on("data", (chunk) => {
+      console.log(`BODY: ${chunk}`);
+    });
+    response.on("end", () => {
+      console.log("No more data in response.");
+    });
+  });
+  request.end();
+});
 ```
 
 By the way, it is almost identical to how you would normally use the
@@ -61,7 +61,7 @@ The `net` module has the following methods:
 
 ### `net.request(options)`
 
-* `options` (Object | String) - The `ClientRequest` constructor options.
+- `options` (Object | String) - The `ClientRequest` constructor options.
 
 Returns [`ClientRequest`](./client-request.md)
 

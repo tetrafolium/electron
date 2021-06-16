@@ -10,13 +10,13 @@ you want to show Notifications in the main process please check out the
 [Notification](../api/notification.md) module.
 
 ```javascript
-let myNotification = new Notification('Title', {
-  body: 'Lorem Ipsum Dolor Sit Amet'
-})
+let myNotification = new Notification("Title", {
+  body: "Lorem Ipsum Dolor Sit Amet",
+});
 
 myNotification.onclick = () => {
-  console.log('Notification clicked')
-}
+  console.log("Notification clicked");
+};
 ```
 
 While code and user experience across operating systems are similar, there
@@ -24,12 +24,12 @@ are subtle differences.
 
 ## Windows
 
-* On Windows 10, notifications "just work".
-* On Windows 8.1 and Windows 8, a shortcut to your app, with an [Application User
-Model ID][app-user-model-id], must be installed to the Start screen. Note,
-however, that it does not need to be pinned to the Start screen.
-* On Windows 7, notifications work via a custom implementation which visually
- resembles the native one on newer systems.
+- On Windows 10, notifications "just work".
+- On Windows 8.1 and Windows 8, a shortcut to your app, with an [Application User
+  Model ID][app-user-model-id], must be installed to the Start screen. Note,
+  however, that it does not need to be pinned to the Start screen.
+- On Windows 7, notifications work via a custom implementation which visually
+  resembles the native one on newer systems.
 
 Furthermore, in Windows 8, the maximum length for the notification body is 250
 characters, with the Windows team recommending that notifications should be kept

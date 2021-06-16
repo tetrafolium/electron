@@ -1,5 +1,5 @@
 # MemoryUsageDetails Object
 
-* `count` Number
-* `size` Number
-* `liveSize` Number
+- `count` Number
+- `size` Number
+- `liveSize` Number

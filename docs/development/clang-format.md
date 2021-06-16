@@ -18,7 +18,7 @@ The workflow to format your changed code:
 1. Make codes changes in Electron repository.
 2. Run `git add your_changed_file.cc`.
 3. Run `git-clang-format`, and you will probably see modifications in
-  `your_changed_file.cc`, these modifications are generated from `clang-format`.
+   `your_changed_file.cc`, these modifications are generated from `clang-format`.
 4. Run `git add your_changed_file.cc`, and commit your change.
 5. Now the branch is ready to be opened as a pull request.
 
@@ -30,6 +30,6 @@ run `git-clang-format HEAD~1`. See `git-clang-format -h` for more details.
 You can also integrate `clang-format` directly into your favorite editors.
 For further guidance on setting up editor integration, see these pages:
 
-  * [Atom](https://atom.io/packages/clang-format)
-  * [Vim & Emacs](http://clang.llvm.org/docs/ClangFormat.html#vim-integration)
-  * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format)
+- [Atom](https://atom.io/packages/clang-format)
+- [Vim & Emacs](http://clang.llvm.org/docs/ClangFormat.html#vim-integration)
+- [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format)

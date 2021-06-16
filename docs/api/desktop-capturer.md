@@ -10,40 +10,44 @@ title is `Electron`:
 
 ```javascript
 // In the renderer process.
-const {desktopCapturer} = require('electron')
+const { desktopCapturer } = require("electron");
 
-desktopCapturer.getSources({types: ['window', 'screen']}, (error, sources) => {
-  if (error) throw error
-  for (let i = 0; i < sources.length; ++i) {
-    if (sources[i].name === 'Electron') {
-      navigator.mediaDevices.getUserMedia({
-        audio: false,
-        video: {
-          mandatory: {
-            chromeMediaSource: 'desktop',
-            chromeMediaSourceId: sources[i].id,
-            minWidth: 1280,
-            maxWidth: 1280,
-            minHeight: 720,
-            maxHeight: 720
-          }
-        }
-      })
-      .then((stream) => handleStream(stream))
-      .catch((e) => handleError(e))
-      return
+desktopCapturer.getSources(
+  { types: ["window", "screen"] },
+  (error, sources) => {
+    if (error) throw error;
+    for (let i = 0; i < sources.length; ++i) {
+      if (sources[i].name === "Electron") {
+        navigator.mediaDevices
+          .getUserMedia({
+            audio: false,
+            video: {
+              mandatory: {
+                chromeMediaSource: "desktop",
+                chromeMediaSourceId: sources[i].id,
+                minWidth: 1280,
+                maxWidth: 1280,
+                minHeight: 720,
+                maxHeight: 720,
+              },
+            },
+          })
+          .then((stream) => handleStream(stream))
+          .catch((e) => handleError(e));
+        return;
+      }
     }
   }
-})
+);
 
-function handleStream (stream) {
-  const video = document.querySelector('video')
-  video.srcObject = stream
-  video.onloadedmetadata = (e) => video.play()
+function handleStream(stream) {
+  const video = document.querySelector("video");
+  video.srcObject = stream;
+  video.onloadedmetadata = (e) => video.play();
 }
 
-function handleError (e) {
-  console.log(e)
+function handleError(e) {
+  console.log(e);
 }
 ```
 
@@ -59,15 +63,15 @@ for both `audio` and `video`, but should not include a `chromeMediaSourceId` con
 const constraints = {
   audio: {
     mandatory: {
-      chromeMediaSource: 'desktop'
-    }
+      chromeMediaSource: "desktop",
+    },
   },
   video: {
     mandatory: {
-      chromeMediaSource: 'desktop'
-    }
-  }
-}
+      chromeMediaSource: "desktop",
+    },
+  },
+};
 ```
 
 ## Methods
@@ -76,14 +80,14 @@ The `desktopCapturer` module has the following methods:
 
 ### `desktopCapturer.getSources(options, callback)`
 
-* `options` Object
-  * `types` String[] - An array of Strings that lists the types of desktop sources
+- `options` Object
+  - `types` String[] - An array of Strings that lists the types of desktop sources
     to be captured, available types are `screen` and `window`.
-  * `thumbnailSize` [Size](structures/size.md) (optional) - The size that the media source thumbnail
+  - `thumbnailSize` [Size](structures/size.md) (optional) - The size that the media source thumbnail
     should be scaled to. Default is `150` x `150`.
-* `callback` Function
-  * `error` Error
-  * `sources` [DesktopCapturerSource[]](structures/desktop-capturer-source.md)
+- `callback` Function
+  - `error` Error
+  - `sources` [DesktopCapturerSource[]](structures/desktop-capturer-source.md)
 
 Starts gathering information about all available desktop media sources,
 and calls `callback(error, sources)` when finished.
@@ -92,4 +96,4 @@ and calls `callback(error, sources)` when finished.
 objects, each `DesktopCapturerSource` represents a screen or an individual window that can be
 captured.
 
-[`navigator.mediaDevices.getUserMedia`]: https://developer.mozilla.org/en/docs/Web/API/MediaDevices/getUserMedia
+[`navigator.mediadevices.getusermedia`]: https://developer.mozilla.org/en/docs/Web/API/MediaDevices/getUserMedia

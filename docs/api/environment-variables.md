@@ -33,7 +33,7 @@ Google API key in the environment. Place the following code in your main process
 file, before opening any browser windows that will make geocoding requests:
 
 ```javascript
-process.env.GOOGLE_API_KEY = 'YOUR_KEY_HERE'
+process.env.GOOGLE_API_KEY = "YOUR_KEY_HERE";
 ```
 
 For instructions on how to acquire a Google API key, visit [this page](https://www.chromium.org/developers/how-tos/api-keys).
@@ -62,7 +62,6 @@ Don't use the global menu bar on Linux.
 
 The following environment variables are intended primarily for development and
 debugging purposes.
-
 
 ### `ELECTRON_ENABLE_LOGGING`
 

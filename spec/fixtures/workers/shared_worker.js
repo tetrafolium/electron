@@ -1,7 +1,7 @@
 this.onconnect = function (event) {
-  var port = event.ports[0]
-  port.start()
+  var port = event.ports[0];
+  port.start();
   port.onmessage = function (event) {
-    port.postMessage(event.data)
-  }
-}
+    port.postMessage(event.data);
+  };
+};

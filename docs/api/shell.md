@@ -9,9 +9,9 @@ The `shell` module provides functions related to desktop integration.
 An example of opening a URL in the user's default browser:
 
 ```javascript
-const {shell} = require('electron')
+const { shell } = require("electron");
 
-shell.openExternal('https://github.com')
+shell.openExternal("https://github.com");
 ```
 
 ## Methods
@@ -20,7 +20,7 @@ The `shell` module has the following methods:
 
 ### `shell.showItemInFolder(fullPath)`
 
-* `fullPath` String
+- `fullPath` String
 
 Returns `Boolean` - Whether the item was successfully shown.
 
@@ -28,7 +28,7 @@ Show the given file in a file manager. If possible, select the file.
 
 ### `shell.openItem(fullPath)`
 
-* `fullPath` String
+- `fullPath` String
 
 Returns `Boolean` - Whether the item was successfully opened.
 
@@ -36,12 +36,12 @@ Open the given file in the desktop's default manner.
 
 ### `shell.openExternal(url[, options, callback])`
 
-* `url` String - max 2081 characters on windows, or the function returns false.
-* `options` Object (optional) _macOS_
-  * `activate` Boolean - `true` to bring the opened application to the
+- `url` String - max 2081 characters on windows, or the function returns false.
+- `options` Object (optional) _macOS_
+  - `activate` Boolean - `true` to bring the opened application to the
     foreground. The default is `true`.
-* `callback` Function (optional) _macOS_ - If specified will perform the open asynchronously.
-  * `error` Error
+- `callback` Function (optional) _macOS_ - If specified will perform the open asynchronously.
+  - `error` Error
 
 Returns `Boolean` - Whether an application was available to open the URL.
 If callback is specified, always returns true.
@@ -51,7 +51,7 @@ example, mailto: URLs in the user's default mail agent).
 
 ### `shell.moveItemToTrash(fullPath)`
 
-* `fullPath` String
+- `fullPath` String
 
 Returns `Boolean` - Whether the item was successfully moved to the trash.
 
@@ -63,13 +63,13 @@ Play the beep sound.
 
 ### `shell.writeShortcutLink(shortcutPath[, operation], options)` _Windows_
 
-* `shortcutPath` String
-* `operation` String (optional) - Default is `create`, can be one of following:
-  * `create` - Creates a new shortcut, overwriting if necessary.
-  * `update` - Updates specified properties only on an existing shortcut.
-  * `replace` - Overwrites an existing shortcut, fails if the shortcut doesn't
+- `shortcutPath` String
+- `operation` String (optional) - Default is `create`, can be one of following:
+  - `create` - Creates a new shortcut, overwriting if necessary.
+  - `update` - Updates specified properties only on an existing shortcut.
+  - `replace` - Overwrites an existing shortcut, fails if the shortcut doesn't
     exist.
-* `options` [ShortcutDetails](structures/shortcut-details.md)
+- `options` [ShortcutDetails](structures/shortcut-details.md)
 
 Returns `Boolean` - Whether the shortcut was created successfully.
 
@@ -77,7 +77,7 @@ Creates or updates a shortcut link at `shortcutPath`.
 
 ### `shell.readShortcutLink(shortcutPath)` _Windows_
 
-* `shortcutPath` String
+- `shortcutPath` String
 
 Returns [`ShortcutDetails`](structures/shortcut-details.md)
 

@@ -49,31 +49,31 @@ Electron
 
 ## `/chromium_src`
 
-The files in `/chromium_src` tend to be pieces of Chromium that aren't part of 
-the content layer. For example to implement Pepper API, we need some wiring 
-similar to what official Chrome does. We could have built the relevant 
-sources as a part of [libcc](../glossary.md#libchromiumcontent) but most 
-often we don't require all the features (some tend to be proprietary, 
-analytics stuff) so we just took parts of the code. These could have easily 
-been patches in libcc, but at the time when these were written the goal of 
-libcc was to maintain very minimal patches and chromium_src changes tend to be 
-big ones. Also, note that these patches can never be upstreamed unlike other 
+The files in `/chromium_src` tend to be pieces of Chromium that aren't part of
+the content layer. For example to implement Pepper API, we need some wiring
+similar to what official Chrome does. We could have built the relevant
+sources as a part of [libcc](../glossary.md#libchromiumcontent) but most
+often we don't require all the features (some tend to be proprietary,
+analytics stuff) so we just took parts of the code. These could have easily
+been patches in libcc, but at the time when these were written the goal of
+libcc was to maintain very minimal patches and chromium_src changes tend to be
+big ones. Also, note that these patches can never be upstreamed unlike other
 libcc patches we maintain now.
 
 ## Structure of Other Directories
 
-* **script** - Scripts used for development purpose like building, packaging,
+- **script** - Scripts used for development purpose like building, packaging,
   testing, etc.
-* **tools** - Helper scripts used by gyp files, unlike `script`, scripts put
+- **tools** - Helper scripts used by gyp files, unlike `script`, scripts put
   here should never be invoked by users directly.
-* **vendor** - Source code of third party dependencies, we didn't use
+- **vendor** - Source code of third party dependencies, we didn't use
   `third_party` as name because it would confuse it with the same directory in
   Chromium's source code tree.
-* **node_modules** - Third party node modules used for building.
-* **out** - Temporary output directory of `ninja`.
-* **dist** - Temporary directory created by `script/create-dist.py` script
+- **node_modules** - Third party node modules used for building.
+- **out** - Temporary output directory of `ninja`.
+- **dist** - Temporary directory created by `script/create-dist.py` script
   when creating a distribution.
-* **external_binaries** - Downloaded binaries of third-party frameworks which
+- **external_binaries** - Downloaded binaries of third-party frameworks which
   do not support building with `gyp`.
 
 ## Keeping Git Submodules Up to Date

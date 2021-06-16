@@ -9,7 +9,7 @@ with breakpoints inside Electron's source code.
 
 ## Requirements
 
-* **A debug build of Electron**: The easiest way is usually building it
+- **A debug build of Electron**: The easiest way is usually building it
   yourself, using the tools and prerequisites listed in the
   [build instructions for Windows](build-instructions-windows.md). While you can
   easily attach to and debug Electron as you can download it directly, you will
@@ -18,14 +18,14 @@ with breakpoints inside Electron's source code.
   variables and the execution path can seem strange because of inlining,
   tail calls, and other compiler optimizations.
 
-* **Visual Studio with C++ Tools**: The free community editions of Visual
+- **Visual Studio with C++ Tools**: The free community editions of Visual
   Studio 2013 and Visual Studio 2015 both work. Once installed,
   [configure Visual Studio to use GitHub's Electron Symbol server](setting-up-symbol-server.md).
   It will enable Visual Studio to gain a better understanding of what happens
   inside Electron, making it easier to present variables in a human-readable
   format.
 
-* **ProcMon**: The [free SysInternals tool][sys-internals] allows you to inspect
+- **ProcMon**: The [free SysInternals tool][sys-internals] allows you to inspect
   a processes parameters, file handles, and registry operations.
 
 ## Attaching to and Debugging Electron

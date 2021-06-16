@@ -20,32 +20,39 @@ $ npm install --save-dev spectron
 
 ```javascript
 // A simple test to verify a visible window is opened with a title
-var Application = require('spectron').Application
-var assert = require('assert')
+var Application = require("spectron").Application;
+var assert = require("assert");
 
 var app = new Application({
-  path: '/Applications/MyApp.app/Contents/MacOS/MyApp'
-})
+  path: "/Applications/MyApp.app/Contents/MacOS/MyApp",
+});
 
-app.start().then(function () {
-  // Check if the window is visible
-  return app.browserWindow.isVisible()
-}).then(function (isVisible) {
-  // Verify the window is visible
-  assert.equal(isVisible, true)
-}).then(function () {
-  // Get the window's title
-  return app.client.getTitle()
-}).then(function (title) {
-  // Verify the window's title
-  assert.equal(title, 'My App')
-}).catch(function (error) {
-  // Log any failures
-  console.error('Test failed', error.message)
-}).then(function () {
-  // Stop the application
-  return app.stop()
-})
+app
+  .start()
+  .then(function () {
+    // Check if the window is visible
+    return app.browserWindow.isVisible();
+  })
+  .then(function (isVisible) {
+    // Verify the window is visible
+    assert.equal(isVisible, true);
+  })
+  .then(function () {
+    // Get the window's title
+    return app.client.getTitle();
+  })
+  .then(function (title) {
+    // Verify the window's title
+    assert.equal(title, "My App");
+  })
+  .catch(function (error) {
+    // Log any failures
+    console.error("Test failed", error.message);
+  })
+  .then(function () {
+    // Stop the application
+    return app.stop();
+  });
 ```
 
 ## Setting up with WebDriverJs
@@ -79,30 +86,30 @@ upstream, except that you have to manually specify how to connect chrome driver
 and where to find Electron's binary:
 
 ```javascript
-const webdriver = require('selenium-webdriver')
+const webdriver = require("selenium-webdriver");
 
 const driver = new webdriver.Builder()
   // The "9515" is the port opened by chrome driver.
-  .usingServer('http://localhost:9515')
+  .usingServer("http://localhost:9515")
   .withCapabilities({
     chromeOptions: {
       // Here is the path to your Electron binary.
-      binary: '/Path-to-Your-App.app/Contents/MacOS/Electron'
-    }
+      binary: "/Path-to-Your-App.app/Contents/MacOS/Electron",
+    },
   })
-  .forBrowser('electron')
-  .build()
+  .forBrowser("electron")
+  .build();
 
-driver.get('http://www.google.com')
-driver.findElement(webdriver.By.name('q')).sendKeys('webdriver')
-driver.findElement(webdriver.By.name('btnG')).click()
+driver.get("http://www.google.com");
+driver.findElement(webdriver.By.name("q")).sendKeys("webdriver");
+driver.findElement(webdriver.By.name("btnG")).click();
 driver.wait(() => {
   return driver.getTitle().then((title) => {
-    return title === 'webdriver - Google Search'
-  })
-}, 1000)
+    return title === "webdriver - Google Search";
+  });
+}, 1000);
 
-driver.quit()
+driver.quit();
 ```
 
 ## Setting up with WebdriverIO
@@ -132,30 +139,33 @@ $ npm install webdriverio
 ### 3. Connect to chrome driver
 
 ```javascript
-const webdriverio = require('webdriverio')
+const webdriverio = require("webdriverio");
 const options = {
-  host: 'localhost', // Use localhost as chrome driver server
-  port: 9515,        // "9515" is the port opened by chrome driver.
+  host: "localhost", // Use localhost as chrome driver server
+  port: 9515, // "9515" is the port opened by chrome driver.
   desiredCapabilities: {
-    browserName: 'chrome',
+    browserName: "chrome",
     chromeOptions: {
-      binary: '/Path-to-Your-App/electron', // Path to your Electron binary.
-      args: [/* cli arguments */]           // Optional, perhaps 'app=' + /path/to/your/app/
-    }
-  }
-}
+      binary: "/Path-to-Your-App/electron", // Path to your Electron binary.
+      args: [
+        /* cli arguments */
+      ], // Optional, perhaps 'app=' + /path/to/your/app/
+    },
+  },
+};
 
-let client = webdriverio.remote(options)
+let client = webdriverio.remote(options);
 
 client
   .init()
-  .url('http://google.com')
-  .setValue('#q', 'webdriverio')
-  .click('#btnG')
-  .getTitle().then((title) => {
-    console.log('Title was: ' + title)
+  .url("http://google.com")
+  .setValue("#q", "webdriverio")
+  .click("#btnG")
+  .getTitle()
+  .then((title) => {
+    console.log("Title was: " + title);
   })
-  .end()
+  .end();
 ```
 
 ## Workflow

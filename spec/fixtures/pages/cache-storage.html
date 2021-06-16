@@ -1,7 +1,7 @@
 <script>
-  const ipcRenderer = require('electron').ipcRenderer;
-  caches.open('foo').then(
-    () => ipcRenderer.send('success'),
-    err => ipcRenderer.send('failure', err)
-  )
+  const ipcRenderer = require("electron").ipcRenderer;
+  caches.open("foo").then(
+    () => ipcRenderer.send("success"),
+    (err) => ipcRenderer.send("failure", err)
+  );
 </script>
