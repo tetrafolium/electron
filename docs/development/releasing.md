@@ -6,52 +6,66 @@ This document describes the process for releasing a new version of Electron.
 
 - **If releasing beta,** run the scripts below from `master`.
 - **If releasing a stable version,** run the scripts below from `1-7-x` or
-`1-6-x`, depending on which version you are releasing for.
+  `1-6-x`, depending on which version you are releasing for.
 
 ## Find out what version change is needed
+
 Run `npm run prepare-release -- --notesOnly` to view auto generated release
-notes.  The notes generated should help you determine if this is a major, minor,
+notes. The notes generated should help you determine if this is a major, minor,
 patch, or beta version change. Read the
 [Version Change Rules](../tutorial/electron-versioning.md#semver) for more information.
 
 ## Run the prepare-release script
+
 The prepare release script will do the following:
+
 1. Check if a release is already in process and if so it will halt.
 2. Create a release branch.
-3. Bump the version number in several files.  See [this bump commit] for an example.
+3. Bump the version number in several files. See [this bump commit] for an example.
 4. Create a draft release on GitHub with auto-generated release notes.
 5. Push the release branch.
 6. Call the APIs to run the release builds.
 
 Once you have determined which type of version change is needed, run the
 `prepare-release` script with arguments according to your need:
+
 - `[major|minor|patch|beta]` to increment one of the version numbers, or
 - `--stable` to indicate this is a stable version
 
 For example:
 
 ### Major version change
+
 ```sh
 npm run prepare-release -- major
 ```
+
 ### Minor version change
+
 ```sh
 npm run prepare-release -- minor
 ```
+
 ### Patch version change
+
 ```sh
 npm run prepare-release -- patch
 ```
+
 ### Beta version change
+
 ```sh
 npm run prepare-release -- beta
 ```
+
 ### Promote beta to stable
+
 ```sh
 npm run prepare-release -- --stable
 ```
 
 ## Wait for builds :hourglass_flowing_sand:
+
 The `prepare-release` script will trigger the builds via API calls.
 To monitor the build progress, see the following pages:
 
@@ -66,6 +80,7 @@ Writing release notes is a good way to keep yourself busy while the builds are r
 For prior art, see existing releases on [the releases page].
 
 Tips:
+
 - Each listed item should reference a PR on electron/electron, not an issue, nor a PR from another repo like libcc.
 - No need to use link markup when referencing PRs. Strings like `#123` will automatically be converted to links on github.com.
 - To see the version of Chromium, V8, and Node in every version of Electron, visit [atom.io/download/electron/index.json](https://atom.io/download/electron/index.json).
@@ -119,6 +134,7 @@ For a `minor` release, e.g. `1.8.0`, use this format:
 ```
 
 ### Major releases
+
 ```sh
 ## Upgrades
 
@@ -147,7 +163,9 @@ For a `minor` release, e.g. `1.8.0`, use this format:
 ```
 
 ### Beta releases
+
 Use the same formats as the ones suggested above, but add the following note at the beginning of the changelog:
+
 ```sh
 **Note:** This is a beta release and most likely will have have some instability and/or regressions.
 
@@ -155,7 +173,6 @@ Please file new issues for any bugs you find in it.
 
 This release is published to [npm](https://www.npmjs.com/package/electron) under the `beta` tag and can be installed via `npm install electron@beta`.
 ```
-
 
 ## Edit the release draft
 
@@ -165,9 +182,10 @@ This release is published to [npm](https://www.npmjs.com/package/electron) under
 1. Click 'Save draft'. **Do not click 'Publish release'!**
 1. Wait for all builds to pass before proceeding.
 1. You can run `npm run release --validateRelease` to verify that all of the
-required files have been created for the release.
+   required files have been created for the release.
 
 ## Merge temporary branch
+
 Once the release builds have finished, merge the `release` branch back into
 the source release branch using the `merge-release` script.
 If the branch cannot be successfully merged back this script will automatically
@@ -176,11 +194,13 @@ builds again, which means you will need to wait for the release builds to run
 again before proceeding.
 
 ### Merging back into master
+
 ```sh
 npm run merge-release -- master
 ```
 
 ### Merging back into old release branch
+
 ```sh
 npm run merge-release -- 1-7-x
 ```
@@ -188,15 +208,16 @@ npm run merge-release -- 1-7-x
 ## Publish the release
 
 Once the merge has finished successfully, run the `release` script
-via `npm run release` to finish the release process.  This script will do the
+via `npm run release` to finish the release process. This script will do the
 following:
+
 1. Build the project to validate that the correct version number is being released.
 2. Download the binaries and generate the node headers and the .lib linker used
-on Windows by node-gyp to build native modules.
+   on Windows by node-gyp to build native modules.
 3. Create and upload the SHASUMS files stored on S3 for the node files.
 4. Create and upload the SHASUMS256.txt file stored on the GitHub release.
 5. Validate that all of the required files are present on GitHub and S3 and have
-the correct checksums as specified in the SHASUMS files.
+   the correct checksums as specified in the SHASUMS files.
 6. Publish the release on GitHub
 7. Delete the `release` branch.
 

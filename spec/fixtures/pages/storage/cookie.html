@@ -1,5 +1,5 @@
 <script>
-  const {ipcRenderer} = require('electron')
-  document.cookie = "test=123"
-  ipcRenderer.send('cookie-response', document.cookie)
+  const { ipcRenderer } = require("electron");
+  document.cookie = "test=123";
+  ipcRenderer.send("cookie-response", document.cookie);
 </script>

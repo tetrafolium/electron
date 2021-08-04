@@ -8,12 +8,12 @@ be found in the `.gyp` and `.gypi` files.
 
 Following `gyp` files contain the main rules for building Electron:
 
-* `electron.gyp` defines how Electron itself is built.
-* `common.gypi` adjusts the build configurations of Node to make it build
+- `electron.gyp` defines how Electron itself is built.
+- `common.gypi` adjusts the build configurations of Node to make it build
   together with Chromium.
-* `brightray/brightray.gyp` defines how `brightray` is built and
+- `brightray/brightray.gyp` defines how `brightray` is built and
   includes the default configurations for linking with Chromium.
-* `brightray/brightray.gypi` includes general build configurations about
+- `brightray/brightray.gypi` includes general build configurations about
   building.
 
 ## Component Build
@@ -99,9 +99,9 @@ you're currently working on using Mocha's
 `.only` to any `describe` or `it` function call:
 
 ```js
-describe.only('some feature', function () {
+describe.only("some feature", function () {
   // ... only tests in this block will be run
-})
+});
 ```
 
 Alternatively, you can use mocha's `grep` option to only run tests matching the

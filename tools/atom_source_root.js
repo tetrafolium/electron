@@ -1,3 +1,3 @@
-var path = require('path')
+var path = require("path");
 
-console.log(path.resolve(path.dirname(__dirname)))
+console.log(path.resolve(path.dirname(__dirname)));

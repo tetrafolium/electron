@@ -20,12 +20,12 @@ the global scope when node integration is turned off:
 
 ```javascript
 // preload.js
-const _setImmediate = setImmediate
-const _clearImmediate = clearImmediate
-process.once('loaded', () => {
-  global.setImmediate = _setImmediate
-  global.clearImmediate = _clearImmediate
-})
+const _setImmediate = setImmediate;
+const _clearImmediate = clearImmediate;
+process.once("loaded", () => {
+  global.setImmediate = _setImmediate;
+  global.clearImmediate = _clearImmediate;
+});
 ```
 
 ## Properties
@@ -64,14 +64,15 @@ property is used instead of the `--throw-deprecation` command line flag.
 ### `process.traceDeprecation`
 
 A `Boolean` that controls whether or not deprecations printed to `stderr` include
- their stack trace. Setting this to `true` will print stack traces for deprecations.
- This property is instead of the `--trace-deprecation` command line flag.
+their stack trace. Setting this to `true` will print stack traces for deprecations.
+This property is instead of the `--trace-deprecation` command line flag.
 
 ### `process.traceProcessWarnings`
+
 A `Boolean` that controls whether or not process warnings printed to `stderr` include
- their stack trace. Setting this to `true` will print stack traces for process warnings
- (including deprecations). This property is instead of the `--trace-warnings` command
- line flag.
+their stack trace. Setting this to `true` will print stack traces for process warnings
+(including deprecations). This property is instead of the `--trace-warnings` command
+line flag.
 
 ### `process.type`
 
@@ -110,13 +111,13 @@ Returns [`IOCounters`](structures/io-counters.md)
 
 Returns `Object`:
 
-* `workingSetSize` Integer - The amount of memory currently pinned to actual physical
+- `workingSetSize` Integer - The amount of memory currently pinned to actual physical
   RAM.
-* `peakWorkingSetSize` Integer - The maximum amount of memory that has ever been pinned
+- `peakWorkingSetSize` Integer - The maximum amount of memory that has ever been pinned
   to actual physical RAM.
-* `privateBytes` Integer - The amount of memory not shared by other processes, such as
+- `privateBytes` Integer - The amount of memory not shared by other processes, such as
   JS heap or HTML content.
-* `sharedBytes` Integer - The amount of memory shared between processes, typically
+- `sharedBytes` Integer - The amount of memory shared between processes, typically
   memory consumed by the Electron code itself.
 
 Returns an object giving memory usage statistics about the current process. Note
@@ -126,13 +127,13 @@ that all statistics are reported in Kilobytes.
 
 Returns `Object`:
 
-* `total` Integer - The total amount of physical memory in Kilobytes available to the
+- `total` Integer - The total amount of physical memory in Kilobytes available to the
   system.
-* `free` Integer - The total amount of memory not being used by applications or disk
+- `free` Integer - The total amount of memory not being used by applications or disk
   cache.
-* `swapTotal` Integer _Windows_ _Linux_ - The total amount of swap memory in Kilobytes available to the
+- `swapTotal` Integer _Windows_ _Linux_ - The total amount of swap memory in Kilobytes available to the
   system.
-* `swapFree` Integer _Windows_ _Linux_ - The free amount of swap memory in Kilobytes available to the
+- `swapFree` Integer _Windows_ _Linux_ - The free amount of swap memory in Kilobytes available to the
   system.
 
 Returns an object giving memory usage statistics about the entire system. Note
@@ -144,7 +145,7 @@ Causes the main thread of the current process hang.
 
 ### `process.setFdLimit(maxDescriptors)` _macOS_ _Linux_
 
-* `maxDescriptors` Integer
+- `maxDescriptors` Integer
 
 Sets the file descriptor soft limit to `maxDescriptors` or the OS hard
 limit, whichever is lower for the current process.

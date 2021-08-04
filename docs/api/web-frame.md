@@ -7,9 +7,9 @@ Process: [Renderer](../glossary.md#renderer-process)
 An example of zooming current page to 200%.
 
 ```javascript
-const {webFrame} = require('electron')
+const { webFrame } = require("electron");
 
-webFrame.setZoomFactor(2)
+webFrame.setZoomFactor(2);
 ```
 
 ## Methods
@@ -18,7 +18,7 @@ The `webFrame` module has the following methods:
 
 ### `webFrame.setZoomFactor(factor)`
 
-* `factor` Number - Zoom factor.
+- `factor` Number - Zoom factor.
 
 Changes the zoom factor to the specified factor. Zoom factor is
 zoom percent divided by 100, so 300% = 3.0.
@@ -29,7 +29,7 @@ Returns `Number` - The current zoom factor.
 
 ### `webFrame.setZoomLevel(level)`
 
-* `level` Number - Zoom level.
+- `level` Number - Zoom level.
 
 Changes the zoom level to the specified level. The original size is 0 and each
 increment above or below represents zooming 20% larger or smaller to default
@@ -41,33 +41,33 @@ Returns `Number` - The current zoom level.
 
 ### `webFrame.setZoomLevelLimits(minimumLevel, maximumLevel)`
 
-* `minimumLevel` Number
-* `maximumLevel` Number
+- `minimumLevel` Number
+- `maximumLevel` Number
 
 **Deprecated:** Call `setVisualZoomLevelLimits` instead to set the visual zoom
 level limits. This method will be removed in Electron 2.0.
 
 ### `webFrame.setVisualZoomLevelLimits(minimumLevel, maximumLevel)`
 
-* `minimumLevel` Number
-* `maximumLevel` Number
+- `minimumLevel` Number
+- `maximumLevel` Number
 
 Sets the maximum and minimum pinch-to-zoom level.
 
 ### `webFrame.setLayoutZoomLevelLimits(minimumLevel, maximumLevel)`
 
-* `minimumLevel` Number
-* `maximumLevel` Number
+- `minimumLevel` Number
+- `maximumLevel` Number
 
 Sets the maximum and minimum layout-based (i.e. non-visual) zoom level.
 
 ### `webFrame.setSpellCheckProvider(language, autoCorrectWord, provider)`
 
-* `language` String
-* `autoCorrectWord` Boolean
-* `provider` Object
-  * `spellCheck` Function - Returns `Boolean`.
-    * `text` String
+- `language` String
+- `autoCorrectWord` Boolean
+- `provider` Object
+  - `spellCheck` Function - Returns `Boolean`.
+    - `text` String
 
 Sets a provider for spell checking in input fields and text areas.
 
@@ -77,17 +77,17 @@ whether the word passed is correctly spelled.
 An example of using [node-spellchecker][spellchecker] as provider:
 
 ```javascript
-const {webFrame} = require('electron')
-webFrame.setSpellCheckProvider('en-US', true, {
-  spellCheck (text) {
-    return !(require('spellchecker').isMisspelled(text))
-  }
-})
+const { webFrame } = require("electron");
+webFrame.setSpellCheckProvider("en-US", true, {
+  spellCheck(text) {
+    return !require("spellchecker").isMisspelled(text);
+  },
+});
 ```
 
 ### `webFrame.registerURLSchemeAsSecure(scheme)`
 
-* `scheme` String
+- `scheme` String
 
 Registers the `scheme` as secure scheme.
 
@@ -97,20 +97,20 @@ attackers.
 
 ### `webFrame.registerURLSchemeAsBypassingCSP(scheme)`
 
-* `scheme` String
+- `scheme` String
 
 Resources will be loaded from this `scheme` regardless of the current page's
 Content Security Policy.
 
 ### `webFrame.registerURLSchemeAsPrivileged(scheme[, options])`
 
-* `scheme` String
-* `options` Object (optional)
-  * `secure` Boolean (optional) - Default true.
-  * `bypassCSP` Boolean (optional) - Default true.
-  * `allowServiceWorkers` Boolean (optional) - Default true.
-  * `supportFetchAPI` Boolean (optional) - Default true.
-  * `corsEnabled` Boolean (optional) - Default true.
+- `scheme` String
+- `options` Object (optional)
+  - `secure` Boolean (optional) - Default true.
+  - `bypassCSP` Boolean (optional) - Default true.
+  - `allowServiceWorkers` Boolean (optional) - Default true.
+  - `supportFetchAPI` Boolean (optional) - Default true.
+  - `corsEnabled` Boolean (optional) - Default true.
 
 Registers the `scheme` as secure, bypasses content security policy for resources,
 allows registering ServiceWorker and supports fetch API.
@@ -119,22 +119,22 @@ Specify an option with the value of `false` to omit it from the registration.
 An example of registering a privileged scheme, without bypassing Content Security Policy:
 
 ```javascript
-const {webFrame} = require('electron')
-webFrame.registerURLSchemeAsPrivileged('foo', { bypassCSP: false })
+const { webFrame } = require("electron");
+webFrame.registerURLSchemeAsPrivileged("foo", { bypassCSP: false });
 ```
 
 ### `webFrame.insertText(text)`
 
-* `text` String
+- `text` String
 
 Inserts `text` to the focused element.
 
 ### `webFrame.executeJavaScript(code[, userGesture, callback])`
 
-* `code` String
-* `userGesture` Boolean (optional) - Default is `false`.
-* `callback` Function (optional) - Called after script has been executed.
-  * `result` Any
+- `code` String
+- `userGesture` Boolean (optional) - Default is `false`.
+- `callback` Function (optional) - Called after script has been executed.
+  - `result` Any
 
 Returns `Promise` - A promise that resolves with the result of the executed code
 or is rejected if the result of the code is a rejected promise.
@@ -147,32 +147,32 @@ this limitation.
 
 ### `webFrame.executeJavaScriptInIsolatedWorld(worldId, scripts[, userGesture, callback])`
 
-* `worldId` Integer
-* `scripts` [WebSource[]](structures/web-source.md)
-* `userGesture` Boolean (optional) - Default is `false`.
-* `callback` Function (optional) - Called after script has been executed.
-  * `result` Any
+- `worldId` Integer
+- `scripts` [WebSource[]](structures/web-source.md)
+- `userGesture` Boolean (optional) - Default is `false`.
+- `callback` Function (optional) - Called after script has been executed.
+  - `result` Any
 
 Work like `executeJavaScript` but evaluates `scripts` in isolated context.
 
 ### `webFrame.setIsolatedWorldContentSecurityPolicy(worldId, csp)`
 
-* `worldId` Integer
-* `csp` String
+- `worldId` Integer
+- `csp` String
 
 Set the content security policy of the isolated world.
 
 ### `webFrame.setIsolatedWorldHumanReadableName(worldId, name)`
 
-* `worldId` Integer
-* `name` String
+- `worldId` Integer
+- `name` String
 
 Set the name of the isolated world. Useful in devtools.
 
 ### `webFrame.setIsolatedWorldSecurityOrigin(worldId, securityOrigin)`
 
-* `worldId` Integer
-* `securityOrigin` String
+- `worldId` Integer
+- `securityOrigin` String
 
 Set the security origin of the isolated world.
 
@@ -180,18 +180,18 @@ Set the security origin of the isolated world.
 
 Returns `Object`:
 
-* `images` [MemoryUsageDetails](structures/memory-usage-details.md)
-* `cssStyleSheets` [MemoryUsageDetails](structures/memory-usage-details.md)
-* `xslStyleSheets` [MemoryUsageDetails](structures/memory-usage-details.md)
-* `fonts` [MemoryUsageDetails](structures/memory-usage-details.md)
-* `other` [MemoryUsageDetails](structures/memory-usage-details.md)
+- `images` [MemoryUsageDetails](structures/memory-usage-details.md)
+- `cssStyleSheets` [MemoryUsageDetails](structures/memory-usage-details.md)
+- `xslStyleSheets` [MemoryUsageDetails](structures/memory-usage-details.md)
+- `fonts` [MemoryUsageDetails](structures/memory-usage-details.md)
+- `other` [MemoryUsageDetails](structures/memory-usage-details.md)
 
 Returns an object describing usage information of Blink's internal memory
 caches.
 
 ```javascript
-const {webFrame} = require('electron')
-console.log(webFrame.getResourceUsage())
+const { webFrame } = require("electron");
+console.log(webFrame.getResourceUsage());
 ```
 
 This will generate:

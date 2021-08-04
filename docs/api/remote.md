@@ -16,9 +16,9 @@ similar to Java's [RMI][rmi]. An example of creating a browser window from a
 renderer process:
 
 ```javascript
-const {BrowserWindow} = require('electron').remote
-let win = new BrowserWindow({width: 800, height: 600})
-win.loadURL('https://github.com')
+const { BrowserWindow } = require("electron").remote;
+let win = new BrowserWindow({ width: 800, height: 600 });
+win.loadURL("https://github.com");
 ```
 
 **Note:** For the reverse (access the renderer process from the main process),
@@ -75,21 +75,21 @@ For instance you can't use a function from the renderer process in an
 ```javascript
 // main process mapNumbers.js
 exports.withRendererCallback = (mapper) => {
-  return [1, 2, 3].map(mapper)
-}
+  return [1, 2, 3].map(mapper);
+};
 
 exports.withLocalCallback = () => {
-  return [1, 2, 3].map(x => x + 1)
-}
+  return [1, 2, 3].map((x) => x + 1);
+};
 ```
 
 ```javascript
 // renderer process
-const mapNumbers = require('electron').remote.require('./mapNumbers')
-const withRendererCb = mapNumbers.withRendererCallback(x => x + 1)
-const withLocalCb = mapNumbers.withLocalCallback()
+const mapNumbers = require("electron").remote.require("./mapNumbers");
+const withRendererCb = mapNumbers.withRendererCallback((x) => x + 1);
+const withLocalCb = mapNumbers.withLocalCallback();
 
-console.log(withRendererCb, withLocalCb)
+console.log(withRendererCb, withLocalCb);
 // [undefined, undefined, undefined], [2, 3, 4]
 ```
 
@@ -104,9 +104,11 @@ For example, the following code seems innocent at first glance. It installs a
 callback for the `close` event on a remote object:
 
 ```javascript
-require('electron').remote.getCurrentWindow().on('close', () => {
-  // window was closed...
-})
+require("electron")
+  .remote.getCurrentWindow()
+  .on("close", () => {
+    // window was closed...
+  });
 ```
 
 But remember the callback is referenced by the main process until you
@@ -128,8 +130,8 @@ The built-in modules in the main process are added as getters in the `remote`
 module, so you can use them directly like the `electron` module.
 
 ```javascript
-const app = require('electron').remote.app
-console.log(app)
+const app = require("electron").remote.app;
+console.log(app);
 ```
 
 ## Methods
@@ -138,7 +140,7 @@ The `remote` module has the following methods:
 
 ### `remote.require(module)`
 
-* `module` String
+- `module` String
 
 Returns `any` - The object returned by `require(module)` in the main process.
 Modules specified by their relative path will resolve relative to the entrypoint
@@ -158,18 +160,20 @@ project/
 
 ```js
 // main process: main/index.js
-const {app} = require('electron')
-app.on('ready', () => { /* ... */ })
+const { app } = require("electron");
+app.on("ready", () => {
+  /* ... */
+});
 ```
 
 ```js
 // some relative module: main/foo.js
-module.exports = 'bar'
+module.exports = "bar";
 ```
 
 ```js
 // renderer process: renderer/index.js
-const foo = require('electron').remote.require('./foo') // bar
+const foo = require("electron").remote.require("./foo"); // bar
 ```
 
 ### `remote.getCurrentWindow()`
@@ -183,7 +187,7 @@ Returns [`WebContents`](web-contents.md) - The web contents of this web page.
 
 ### `remote.getGlobal(name)`
 
-* `name` String
+- `name` String
 
 Returns `any` - The global variable of `name` (e.g. `global[name]`) in the main
 process.

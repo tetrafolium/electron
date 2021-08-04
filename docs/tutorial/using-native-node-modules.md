@@ -72,9 +72,9 @@ where to download the headers. The `--arch=x64` says the module is built for
 If you installed a native module and found it was not working, you need to check
 following things:
 
-* The architecture of the module has to match Electron's architecture (ia32 or x64).
-* After you upgrade Electron, you usually need to rebuild the modules.
-* When in doubt, run `electron-rebuild` first.
+- The architecture of the module has to match Electron's architecture (ia32 or x64).
+- After you upgrade Electron, you usually need to rebuild the modules.
+- When in doubt, run `electron-rebuild` first.
 
 ## Modules that rely on `prebuild`
 

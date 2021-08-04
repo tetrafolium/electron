@@ -30,9 +30,9 @@ applications.
 To compile any existing Electron app, ensure that you have the following
 requirements:
 
-* Windows 10 with Anniversary Update (released August 2nd, 2016)
-* The Windows 10 SDK, [downloadable here][windows-sdk]
-* At least Node 4 (to check, run `node -v`)
+- Windows 10 with Anniversary Update (released August 2nd, 2016)
+- The Windows 10 SDK, [downloadable here][windows-sdk]
+- At least Node 4 (to check, run `node -v`)
 
 Then, go and install the `electron-windows-store` CLI:
 
@@ -117,6 +117,7 @@ Another important limitation is that the compiled AppX package still contains a
 win32 executable - and will therefore not run on Xbox, HoloLens, or Phones.
 
 ## Optional: Add UWP Features using a BackgroundTask
+
 You can pair your Electron app up with an invisible UWP background task that
 gets to make full use of Windows 10 features - like push notifications,
 Cortana integration, or live tiles.
@@ -140,13 +141,13 @@ this once. Download and Desktop App Converter from [here][app-converter].
 You will receive two files: `DesktopAppConverter.zip` and `BaseImage-14316.wim`.
 
 1. Unzip `DesktopAppConverter.zip`. From an elevated PowerShell (opened with
-  "run as Administrator", ensure that your systems execution policy allows us to
-  run everything we intend to run by calling `Set-ExecutionPolicy bypass`.
+   "run as Administrator", ensure that your systems execution policy allows us to
+   run everything we intend to run by calling `Set-ExecutionPolicy bypass`.
 2. Then, run the installation of the Desktop App Converter, passing in the
-  location of the Windows base Image (downloaded as `BaseImage-14316.wim`), by
-  calling `.\DesktopAppConverter.ps1 -Setup -BaseImage .\BaseImage-14316.wim`.
+   location of the Windows base Image (downloaded as `BaseImage-14316.wim`), by
+   calling `.\DesktopAppConverter.ps1 -Setup -BaseImage .\BaseImage-14316.wim`.
 3. If running the above command prompts you for a reboot, please restart your
-  machine and run the above command again after a successful restart.
+   machine and run the above command again after a successful restart.
 
 Once installation succeeded, you can move on to compiling your Electron app.
 

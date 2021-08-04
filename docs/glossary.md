@@ -170,13 +170,13 @@ embedded content.
 
 [addons]: https://nodejs.org/api/addons.html
 [asar]: https://github.com/electron/asar
-[autoUpdater]: api/auto-updater.md
-[Chromium Content module]: https://www.chromium.org/developers/content-module
+[autoupdater]: api/auto-updater.md
+[chromium content module]: https://www.chromium.org/developers/content-module
 [electron-builder]: https://github.com/electron-userland/electron-builder
 [libchromiumcontent]: #libchromiumcontent
-[Mac App Store Submission Guide]: tutorial/mac-app-store-submission-guide.md
+[mac app store submission guide]: tutorial/mac-app-store-submission-guide.md
 [main]: #main-process
 [renderer]: #renderer-process
 [userland]: #userland
-[Using Native Node Modules]: tutorial/using-native-node-modules.md
-[V8]: #v8
+[using native node modules]: tutorial/using-native-node-modules.md
+[v8]: #v8
