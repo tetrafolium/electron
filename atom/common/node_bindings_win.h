@@ -12,13 +12,13 @@ namespace atom {
 
 class NodeBindingsWin : public NodeBindings {
 public:
-    explicit NodeBindingsWin(BrowserEnvironment browser_env);
-    virtual ~NodeBindingsWin();
+explicit NodeBindingsWin(BrowserEnvironment browser_env);
+virtual ~NodeBindingsWin();
 
 private:
-    void PollEvents() override;
+void PollEvents() override;
 
-    DISALLOW_COPY_AND_ASSIGN(NodeBindingsWin);
+DISALLOW_COPY_AND_ASSIGN(NodeBindingsWin);
 };
 
 }  // namespace atom

@@ -8,17 +8,17 @@
 namespace brightray {
 
 std::string GetApplicationName() {
-    auto module = GetModuleHandle(nullptr);
-    std::unique_ptr<FileVersionInfo> info(
-        FileVersionInfo::CreateFileVersionInfoForModule(module));
-    return base::UTF16ToUTF8(info->product_name());
+	auto module = GetModuleHandle(nullptr);
+	std::unique_ptr<FileVersionInfo> info(
+		FileVersionInfo::CreateFileVersionInfoForModule(module));
+	return base::UTF16ToUTF8(info->product_name());
 }
 
 std::string GetApplicationVersion() {
-    auto module = GetModuleHandle(nullptr);
-    std::unique_ptr<FileVersionInfo> info(
-        FileVersionInfo::CreateFileVersionInfoForModule(module));
-    return base::UTF16ToUTF8(info->product_version());
+	auto module = GetModuleHandle(nullptr);
+	std::unique_ptr<FileVersionInfo> info(
+		FileVersionInfo::CreateFileVersionInfoForModule(module));
+	return base::UTF16ToUTF8(info->product_version());
 }
 
 }  // namespace brightray

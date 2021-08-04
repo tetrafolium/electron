@@ -23,22 +23,22 @@ class NativeWindow;
 
 class WebDialogHelper {
 public:
-    WebDialogHelper(NativeWindow* window, bool offscreen);
-    ~WebDialogHelper();
+WebDialogHelper(NativeWindow* window, bool offscreen);
+~WebDialogHelper();
 
-    void RunFileChooser(content::RenderFrameHost* render_frame_host,
-                        const content::FileChooserParams& params);
-    void EnumerateDirectory(content::WebContents* web_contents,
-                            int request_id,
-                            const base::FilePath& path);
+void RunFileChooser(content::RenderFrameHost* render_frame_host,
+                    const content::FileChooserParams& params);
+void EnumerateDirectory(content::WebContents* web_contents,
+                        int request_id,
+                        const base::FilePath& path);
 
 private:
-    NativeWindow* window_;
-    bool offscreen_;
+NativeWindow* window_;
+bool offscreen_;
 
-    base::WeakPtrFactory<WebDialogHelper> weak_factory_;
+base::WeakPtrFactory<WebDialogHelper> weak_factory_;
 
-    DISALLOW_COPY_AND_ASSIGN(WebDialogHelper);
+DISALLOW_COPY_AND_ASSIGN(WebDialogHelper);
 };
 
 }  // namespace atom

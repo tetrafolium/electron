@@ -13,15 +13,15 @@ int g_suppress_level = 0;
 }  // namespace
 
 bool IsUnresponsiveEventSuppressed() {
-    return g_suppress_level > 0;
+	return g_suppress_level > 0;
 }
 
 UnresponsiveSuppressor::UnresponsiveSuppressor() {
-    g_suppress_level++;
+	g_suppress_level++;
 }
 
 UnresponsiveSuppressor::~UnresponsiveSuppressor() {
-    g_suppress_level--;
+	g_suppress_level--;
 }
 
 }  // namespace atom

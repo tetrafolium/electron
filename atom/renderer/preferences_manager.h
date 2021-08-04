@@ -14,22 +14,22 @@ namespace atom {
 
 class PreferencesManager : public content::RenderThreadObserver {
 public:
-    PreferencesManager();
-    ~PreferencesManager() override;
+PreferencesManager();
+~PreferencesManager() override;
 
-    const base::ListValue* preferences() const {
-        return preferences_.get();
-    }
+const base::ListValue* preferences() const {
+	return preferences_.get();
+}
 
 private:
-    // content::RenderThreadObserver:
-    bool OnControlMessageReceived(const IPC::Message& message) override;
+// content::RenderThreadObserver:
+bool OnControlMessageReceived(const IPC::Message& message) override;
 
-    void OnUpdatePreferences(const base::ListValue& preferences);
+void OnUpdatePreferences(const base::ListValue& preferences);
 
-    std::unique_ptr<base::ListValue> preferences_;
+std::unique_ptr<base::ListValue> preferences_;
 
-    DISALLOW_COPY_AND_ASSIGN(PreferencesManager);
+DISALLOW_COPY_AND_ASSIGN(PreferencesManager);
 };
 
 }  // namespace atom

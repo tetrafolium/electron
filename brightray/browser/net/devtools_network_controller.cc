@@ -15,64 +15,64 @@ using content::BrowserThread;
 namespace brightray {
 
 DevToolsNetworkController::DevToolsNetworkController()
-    : appcache_interceptor_(new DevToolsNetworkInterceptor) {
+	: appcache_interceptor_(new DevToolsNetworkInterceptor) {
 }
 
 DevToolsNetworkController::~DevToolsNetworkController() {
 }
 
 void DevToolsNetworkController::SetNetworkState(
-    const std::string& client_id,
-    std::unique_ptr<DevToolsNetworkConditions> conditions) {
-    DCHECK_CURRENTLY_ON(BrowserThread::IO);
+	const std::string& client_id,
+	std::unique_ptr<DevToolsNetworkConditions> conditions) {
+	DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
-    auto it = interceptors_.find(client_id);
-    if (it == interceptors_.end()) {
-        if (!conditions)
-            return;
-        std::unique_ptr<DevToolsNetworkInterceptor> new_interceptor(
-            new DevToolsNetworkInterceptor);
-        new_interceptor->UpdateConditions(std::move(conditions));
-        interceptors_[client_id] = std::move(new_interceptor);
-    } else {
-        if (!conditions) {
-            std::unique_ptr<DevToolsNetworkConditions> online_conditions(
-                new DevToolsNetworkConditions(false));
-            it->second->UpdateConditions(std::move(online_conditions));
-            interceptors_.erase(client_id);
-        } else {
-            it->second->UpdateConditions(std::move(conditions));
-        }
-    }
+	auto it = interceptors_.find(client_id);
+	if (it == interceptors_.end()) {
+		if (!conditions)
+			return;
+		std::unique_ptr<DevToolsNetworkInterceptor> new_interceptor(
+			new DevToolsNetworkInterceptor);
+		new_interceptor->UpdateConditions(std::move(conditions));
+		interceptors_[client_id] = std::move(new_interceptor);
+	} else {
+		if (!conditions) {
+			std::unique_ptr<DevToolsNetworkConditions> online_conditions(
+				new DevToolsNetworkConditions(false));
+			it->second->UpdateConditions(std::move(online_conditions));
+			interceptors_.erase(client_id);
+		} else {
+			it->second->UpdateConditions(std::move(conditions));
+		}
+	}
 
-    bool has_offline_interceptors = false;
-    for (const auto& interceptor : interceptors_) {
-        if (interceptor.second->IsOffline()) {
-            has_offline_interceptors = true;
-            break;
-        }
-    }
+	bool has_offline_interceptors = false;
+	for (const auto& interceptor : interceptors_) {
+		if (interceptor.second->IsOffline()) {
+			has_offline_interceptors = true;
+			break;
+		}
+	}
 
-    bool is_appcache_offline = appcache_interceptor_->IsOffline();
-    if (is_appcache_offline != has_offline_interceptors) {
-        std::unique_ptr<DevToolsNetworkConditions> appcache_conditions(
-            new DevToolsNetworkConditions(has_offline_interceptors));
-        appcache_interceptor_->UpdateConditions(std::move(appcache_conditions));
-    }
+	bool is_appcache_offline = appcache_interceptor_->IsOffline();
+	if (is_appcache_offline != has_offline_interceptors) {
+		std::unique_ptr<DevToolsNetworkConditions> appcache_conditions(
+			new DevToolsNetworkConditions(has_offline_interceptors));
+		appcache_interceptor_->UpdateConditions(std::move(appcache_conditions));
+	}
 }
 
 DevToolsNetworkInterceptor*
 DevToolsNetworkController::GetInterceptor(const std::string& client_id) {
-    DCHECK_CURRENTLY_ON(BrowserThread::IO);
+	DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
-    if (interceptors_.empty() || client_id.empty())
-        return nullptr;
+	if (interceptors_.empty() || client_id.empty())
+		return nullptr;
 
-    auto it = interceptors_.find(client_id);
-    if (it == interceptors_.end())
-        return nullptr;
+	auto it = interceptors_.find(client_id);
+	if (it == interceptors_.end())
+		return nullptr;
 
-    return it->second.get();
+	return it->second.get();
 }
 
 }  // namespace brightray

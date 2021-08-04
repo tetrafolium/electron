@@ -11,39 +11,39 @@ namespace brightray {
 
 // static
 NotificationPresenter* NotificationPresenter::Create() {
-    return new NotificationPresenterMac;
+	return new NotificationPresenterMac;
 }
 
 CocoaNotification* NotificationPresenterMac::GetNotification(
-    NSUserNotification* ns_notification) {
-    for (Notification* notification : notifications()) {
-        auto native_notification = static_cast<CocoaNotification*>(notification);
-        if ([native_notification->notification().identifier
-                isEqual:ns_notification.identifier])
-            return native_notification;
-    }
+	NSUserNotification* ns_notification) {
+	for (Notification* notification : notifications()) {
+		auto native_notification = static_cast<CocoaNotification*>(notification);
+		if ([native_notification->notification().identifier
+		     isEqual:ns_notification.identifier])
+			return native_notification;
+	}
 
-    if (getenv("ELECTRON_DEBUG_NOTIFICATIONS")) {
-        LOG(INFO) << "Could not find notification for " << [ns_notification.identifier UTF8String];
-    }
+	if (getenv("ELECTRON_DEBUG_NOTIFICATIONS")) {
+		LOG(INFO) << "Could not find notification for " << [ns_notification.identifier UTF8String];
+	}
 
-    return nullptr;
+	return nullptr;
 }
 
 NotificationPresenterMac::NotificationPresenterMac()
-    : notification_center_delegate_(
-          [[NotificationCenterDelegate alloc] initWithPresenter:this]) {
-    NSUserNotificationCenter.defaultUserNotificationCenter.delegate =
-        notification_center_delegate_;
+	: notification_center_delegate_(
+		[[NotificationCenterDelegate alloc] initWithPresenter:this]) {
+	NSUserNotificationCenter.defaultUserNotificationCenter.delegate =
+		notification_center_delegate_;
 }
 
 NotificationPresenterMac::~NotificationPresenterMac() {
-    NSUserNotificationCenter.defaultUserNotificationCenter.delegate = nil;
+	NSUserNotificationCenter.defaultUserNotificationCenter.delegate = nil;
 }
 
 Notification* NotificationPresenterMac::CreateNotificationObject(
-    NotificationDelegate* delegate) {
-    return new CocoaNotification(delegate, this);
+	NotificationDelegate* delegate) {
+	return new CocoaNotification(delegate, this);
 }
 
 }  // namespace brightray

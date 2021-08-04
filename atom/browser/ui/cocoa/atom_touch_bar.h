@@ -18,11 +18,11 @@
 #include "native_mate/persistent_dictionary.h"
 
 @interface AtomTouchBar : NSObject<NSScrubberDelegate, NSScrubberDataSource, NSScrubberFlowLayoutDelegate> {
-@protected
-    std::vector<mate::PersistentDictionary> ordered_settings_;
-    std::map<std::string, mate::PersistentDictionary> settings_;
-    id<NSTouchBarDelegate> delegate_;
-    atom::NativeWindow* window_;
+	@protected
+	std::vector<mate::PersistentDictionary> ordered_settings_;
+	std::map<std::string, mate::PersistentDictionary> settings_;
+	id<NSTouchBarDelegate> delegate_;
+	atom::NativeWindow* window_;
 }
 
 - (id)initWithDelegate:(id<NSTouchBarDelegate>)delegate window:(atom::NativeWindow*)window settings:(const std::vector<mate::PersistentDictionary>&)settings;

@@ -26,29 +26,29 @@ namespace api {
 
 // A self-destroyed class for handling save page request.
 class SavePageHandler : public content::DownloadManager::Observer,
-    public content::DownloadItem::Observer {
+	public content::DownloadItem::Observer {
 public:
-    using SavePageCallback = base::Callback<void(v8::Local<v8::Value>)>;
+using SavePageCallback = base::Callback<void (v8::Local<v8::Value>)>;
 
-    SavePageHandler(content::WebContents* web_contents,
-                    const SavePageCallback& callback);
-    ~SavePageHandler();
+SavePageHandler(content::WebContents* web_contents,
+                const SavePageCallback& callback);
+~SavePageHandler();
 
-    bool Handle(const base::FilePath& full_path,
-                const content::SavePageType& save_type);
+bool Handle(const base::FilePath& full_path,
+            const content::SavePageType& save_type);
 
 private:
-    void Destroy(content::DownloadItem* item);
+void Destroy(content::DownloadItem* item);
 
-    // content::DownloadManager::Observer:
-    void OnDownloadCreated(content::DownloadManager* manager,
-                           content::DownloadItem* item) override;
+// content::DownloadManager::Observer:
+void OnDownloadCreated(content::DownloadManager* manager,
+                       content::DownloadItem* item) override;
 
-    // content::DownloadItem::Observer:
-    void OnDownloadUpdated(content::DownloadItem* item) override;
+// content::DownloadItem::Observer:
+void OnDownloadUpdated(content::DownloadItem* item) override;
 
-    content::WebContents* web_contents_;  // weak
-    SavePageCallback callback_;
+content::WebContents* web_contents_;      // weak
+SavePageCallback callback_;
 };
 
 }  // namespace api

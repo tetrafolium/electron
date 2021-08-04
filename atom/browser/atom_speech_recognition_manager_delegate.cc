@@ -23,7 +23,7 @@ void AtomSpeechRecognitionManagerDelegate::OnAudioStart(int session_id) {
 }
 
 void AtomSpeechRecognitionManagerDelegate::OnEnvironmentEstimationComplete(
-    int session_id) {
+	int session_id) {
 }
 
 void AtomSpeechRecognitionManagerDelegate::OnSoundStart(int session_id) {
@@ -39,31 +39,31 @@ void AtomSpeechRecognitionManagerDelegate::OnRecognitionEnd(int session_id) {
 }
 
 void AtomSpeechRecognitionManagerDelegate::OnRecognitionResults(
-    int session_id, const content::SpeechRecognitionResults& result) {
+	int session_id, const content::SpeechRecognitionResults& result) {
 }
 
 void AtomSpeechRecognitionManagerDelegate::OnRecognitionError(
-    int session_id, const content::SpeechRecognitionError& error) {
+	int session_id, const content::SpeechRecognitionError& error) {
 }
 
 void AtomSpeechRecognitionManagerDelegate::OnAudioLevelsChange(
-    int session_id, float volume, float noise_volume) {
+	int session_id, float volume, float noise_volume) {
 }
 
 void AtomSpeechRecognitionManagerDelegate::CheckRecognitionIsAllowed(
-    int session_id,
-    base::OnceCallback<void(bool ask_user, bool is_allowed)> callback) {
-    std::move(callback).Run(true, true);
+	int session_id,
+	base::OnceCallback<void(bool ask_user, bool is_allowed)> callback) {
+	std::move(callback).Run(true, true);
 }
 
 content::SpeechRecognitionEventListener*
 AtomSpeechRecognitionManagerDelegate::GetEventListener() {
-    return this;
+	return this;
 }
 
 bool AtomSpeechRecognitionManagerDelegate::FilterProfanities(
-    int render_process_id) {
-    return false;
+	int render_process_id) {
+	return false;
 }
 
 }  // namespace atom

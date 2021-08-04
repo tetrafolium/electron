@@ -15,49 +15,50 @@ namespace atom {
 namespace api {
 
 template<typename K>
-class KeyWeakMap : public mate::Wrappable<KeyWeakMap<K>> {
+class KeyWeakMap : public mate::Wrappable<KeyWeakMap<K> > {
 public:
-    static mate::Handle<KeyWeakMap<K>> Create(v8::Isolate* isolate) {
-        return mate::CreateHandle(isolate, new KeyWeakMap<K>(isolate));
-    }
+static mate::Handle<KeyWeakMap<K> > Create(v8::Isolate* isolate) {
+	return mate::CreateHandle(isolate, new KeyWeakMap<K>(isolate));
+}
 
-    static void BuildPrototype(v8::Isolate* isolate,
-                               v8::Local<v8::FunctionTemplate> prototype) {
-        prototype->SetClassName(mate::StringToV8(isolate, "KeyWeakMap"));
-        mate::ObjectTemplateBuilder(isolate, prototype->PrototypeTemplate())
-        .SetMethod("set", &KeyWeakMap<K>::Set)
-        .SetMethod("get", &KeyWeakMap<K>::Get)
-        .SetMethod("has", &KeyWeakMap<K>::Has)
-        .SetMethod("remove", &KeyWeakMap<K>::Remove);
-    }
+static void BuildPrototype(v8::Isolate* isolate,
+                           v8::Local<v8::FunctionTemplate> prototype) {
+	prototype->SetClassName(mate::StringToV8(isolate, "KeyWeakMap"));
+	mate::ObjectTemplateBuilder(isolate, prototype->PrototypeTemplate())
+	.SetMethod("set", &KeyWeakMap<K>::Set)
+	.SetMethod("get", &KeyWeakMap<K>::Get)
+	.SetMethod("has", &KeyWeakMap<K>::Has)
+	.SetMethod("remove", &KeyWeakMap<K>::Remove);
+}
 
 protected:
-    explicit KeyWeakMap(v8::Isolate* isolate) {
-        mate::Wrappable<KeyWeakMap<K>>::Init(isolate);
-    }
-    ~KeyWeakMap() override {}
+explicit KeyWeakMap(v8::Isolate* isolate) {
+	mate::Wrappable<KeyWeakMap<K> >::Init(isolate);
+}
+~KeyWeakMap() override {
+}
 
 private:
-    // API for KeyWeakMap.
-    void Set(v8::Isolate* isolate, const K& key, v8::Local<v8::Object> object) {
-        key_weak_map_.Set(isolate, key, object);
-    }
+// API for KeyWeakMap.
+void Set(v8::Isolate* isolate, const K& key, v8::Local<v8::Object> object) {
+	key_weak_map_.Set(isolate, key, object);
+}
 
-    v8::Local<v8::Object> Get(v8::Isolate* isolate, const K& key) {
-        return key_weak_map_.Get(isolate, key).ToLocalChecked();
-    }
+v8::Local<v8::Object> Get(v8::Isolate* isolate, const K& key) {
+	return key_weak_map_.Get(isolate, key).ToLocalChecked();
+}
 
-    bool Has(const K& key) {
-        return key_weak_map_.Has(key);
-    }
+bool Has(const K& key) {
+	return key_weak_map_.Has(key);
+}
 
-    void Remove(const K& key) {
-        key_weak_map_.Remove(key);
-    }
+void Remove(const K& key) {
+	key_weak_map_.Remove(key);
+}
 
-    atom::KeyWeakMap<K> key_weak_map_;
+atom::KeyWeakMap<K> key_weak_map_;
 
-    DISALLOW_COPY_AND_ASSIGN(KeyWeakMap);
+DISALLOW_COPY_AND_ASSIGN(KeyWeakMap);
 };
 
 }  // namespace api

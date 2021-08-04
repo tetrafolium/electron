@@ -27,30 +27,30 @@ struct SerializedFontDescription;
 
 class PepperFlashFontFileHost : public ppapi::host::ResourceHost {
 public:
-    PepperFlashFontFileHost(
-        content::RendererPpapiHost* host,
-        PP_Instance instance,
-        PP_Resource resource,
-        const ppapi::proxy::SerializedFontDescription& description,
-        PP_PrivateFontCharset charset);
-    ~PepperFlashFontFileHost() override;
+PepperFlashFontFileHost(
+	content::RendererPpapiHost* host,
+	PP_Instance instance,
+	PP_Resource resource,
+	const ppapi::proxy::SerializedFontDescription& description,
+	PP_PrivateFontCharset charset);
+~PepperFlashFontFileHost() override;
 
-    int32_t OnResourceMessageReceived(
-        const IPC::Message& msg,
-        ppapi::host::HostMessageContext* context) override;
+int32_t OnResourceMessageReceived(
+	const IPC::Message& msg,
+	ppapi::host::HostMessageContext* context) override;
 
 private:
-    int32_t OnGetFontTable(ppapi::host::HostMessageContext* context,
-                           uint32_t table);
-    bool GetFontData(uint32_t table, void* buffer, size_t* length);
+int32_t OnGetFontTable(ppapi::host::HostMessageContext* context,
+                       uint32_t table);
+bool GetFontData(uint32_t table, void* buffer, size_t* length);
 
 #if defined(OS_LINUX) || defined(OS_OPENBSD)
-    base::ScopedFD fd_;
+base::ScopedFD fd_;
 #elif defined(OS_WIN)
-    sk_sp<SkTypeface> typeface_;
+sk_sp<SkTypeface> typeface_;
 #endif
 
-    DISALLOW_COPY_AND_ASSIGN(PepperFlashFontFileHost);
+DISALLOW_COPY_AND_ASSIGN(PepperFlashFontFileHost);
 };
 
 #endif  // CHROME_RENDERER_PEPPER_PEPPER_FLASH_FONT_FILE_HOST_H_

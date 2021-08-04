@@ -13,7 +13,7 @@ namespace atom {
 
 AtomContentUtilityClient::AtomContentUtilityClient() {
 #if defined(OS_WIN)
-    handlers_.push_back(base::MakeUnique<printing::PrintingHandlerWin>());
+	handlers_.push_back(base::MakeUnique<printing::PrintingHandlerWin>());
 #endif
 }
 
@@ -21,15 +21,15 @@ AtomContentUtilityClient::~AtomContentUtilityClient() {
 }
 
 bool AtomContentUtilityClient::OnMessageReceived(
-    const IPC::Message& message) {
+	const IPC::Message& message) {
 #if defined(OS_WIN)
-    for (const auto& handler : handlers_) {
-        if (handler->OnMessageReceived(message))
-            return true;
-    }
+	for (const auto& handler : handlers_) {
+		if (handler->OnMessageReceived(message))
+			return true;
+	}
 #endif
 
-    return false;
+	return false;
 }
 
 }  // namespace atom

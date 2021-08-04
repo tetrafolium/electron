@@ -15,118 +15,118 @@
 namespace atom {
 
 MenuDelegate::MenuDelegate(MenuBar* menu_bar)
-    : menu_bar_(menu_bar),
-      id_(-1) {
+	: menu_bar_(menu_bar),
+	id_(-1) {
 }
 
 MenuDelegate::~MenuDelegate() {
 }
 
 void MenuDelegate::RunMenu(AtomMenuModel* model, views::MenuButton* button) {
-    gfx::Point screen_loc;
-    views::View::ConvertPointToScreen(button, &screen_loc);
-    // Subtract 1 from the height to make the popup flush with the button border.
-    gfx::Rect bounds(screen_loc.x(), screen_loc.y(), button->width(),
-                     button->height() - 1);
+	gfx::Point screen_loc;
+	views::View::ConvertPointToScreen(button, &screen_loc);
+	// Subtract 1 from the height to make the popup flush with the button border.
+	gfx::Rect bounds(screen_loc.x(), screen_loc.y(), button->width(),
+	                 button->height() - 1);
 
-    id_ = button->tag();
-    adapter_.reset(new MenuModelAdapter(model));
+	id_ = button->tag();
+	adapter_.reset(new MenuModelAdapter(model));
 
-    views::MenuItemView* item = new views::MenuItemView(this);
-    static_cast<MenuModelAdapter*>(adapter_.get())->BuildMenu(item);
+	views::MenuItemView* item = new views::MenuItemView(this);
+	static_cast<MenuModelAdapter*>(adapter_.get())->BuildMenu(item);
 
-    menu_runner_.reset(new views::MenuRunner(
-                           item,
-                           views::MenuRunner::CONTEXT_MENU | views::MenuRunner::HAS_MNEMONICS));
-    menu_runner_->RunMenuAt(
-        button->GetWidget()->GetTopLevelWidget(),
-        button,
-        bounds,
-        views::MENU_ANCHOR_TOPRIGHT,
-        ui::MENU_SOURCE_MOUSE);
+	menu_runner_.reset(new views::MenuRunner(
+				   item,
+				   views::MenuRunner::CONTEXT_MENU | views::MenuRunner::HAS_MNEMONICS));
+	menu_runner_->RunMenuAt(
+		button->GetWidget()->GetTopLevelWidget(),
+		button,
+		bounds,
+		views::MENU_ANCHOR_TOPRIGHT,
+		ui::MENU_SOURCE_MOUSE);
 }
 
 void MenuDelegate::ExecuteCommand(int id) {
-    adapter_->ExecuteCommand(id);
+	adapter_->ExecuteCommand(id);
 }
 
 void MenuDelegate::ExecuteCommand(int id, int mouse_event_flags) {
-    adapter_->ExecuteCommand(id, mouse_event_flags);
+	adapter_->ExecuteCommand(id, mouse_event_flags);
 }
 
 bool MenuDelegate::IsTriggerableEvent(views::MenuItemView* source,
                                       const ui::Event& e) {
-    return adapter_->IsTriggerableEvent(source, e);
+	return adapter_->IsTriggerableEvent(source, e);
 }
 
 bool MenuDelegate::GetAccelerator(int id, ui::Accelerator* accelerator) const {
-    return adapter_->GetAccelerator(id, accelerator);
+	return adapter_->GetAccelerator(id, accelerator);
 }
 
 base::string16 MenuDelegate::GetLabel(int id) const {
-    return adapter_->GetLabel(id);
+	return adapter_->GetLabel(id);
 }
 
 const gfx::FontList* MenuDelegate::GetLabelFontList(int id) const {
-    return adapter_->GetLabelFontList(id);
+	return adapter_->GetLabelFontList(id);
 }
 
 bool MenuDelegate::IsCommandEnabled(int id) const {
-    return adapter_->IsCommandEnabled(id);
+	return adapter_->IsCommandEnabled(id);
 }
 
 bool MenuDelegate::IsCommandVisible(int id) const {
-    return adapter_->IsCommandVisible(id);
+	return adapter_->IsCommandVisible(id);
 }
 
 bool MenuDelegate::IsItemChecked(int id) const {
-    return adapter_->IsItemChecked(id);
+	return adapter_->IsItemChecked(id);
 }
 
 void MenuDelegate::SelectionChanged(views::MenuItemView* menu) {
-    adapter_->SelectionChanged(menu);
+	adapter_->SelectionChanged(menu);
 }
 
 void MenuDelegate::WillShowMenu(views::MenuItemView* menu) {
-    adapter_->WillShowMenu(menu);
+	adapter_->WillShowMenu(menu);
 }
 
 void MenuDelegate::WillHideMenu(views::MenuItemView* menu) {
-    adapter_->WillHideMenu(menu);
+	adapter_->WillHideMenu(menu);
 }
 
 void MenuDelegate::OnMenuClosed(views::MenuItemView* menu) {
-    // Only switch to new menu when current menu is closed.
-    if (button_to_open_)
-        button_to_open_->Activate(nullptr);
-    delete this;
+	// Only switch to new menu when current menu is closed.
+	if (button_to_open_)
+		button_to_open_->Activate(nullptr);
+	delete this;
 }
 
 views::MenuItemView* MenuDelegate::GetSiblingMenu(
-    views::MenuItemView* menu,
-    const gfx::Point& screen_point,
-    views::MenuAnchorPosition* anchor,
-    bool* has_mnemonics,
-    views::MenuButton**) {
-    // TODO(zcbenz): We should follow Chromium's logics on implementing the
-    // sibling menu switches, this code is almost a hack.
-    views::MenuButton* button;
-    AtomMenuModel* model;
-    if (menu_bar_->GetMenuButtonFromScreenPoint(screen_point, &model, &button) &&
-            button->tag() != id_) {
-        bool switch_in_progress = !!button_to_open_;
-        // Always update target to open.
-        button_to_open_ = button;
-        // Switching menu asyncnously to avoid crash.
-        if (!switch_in_progress) {
-            content::BrowserThread::PostTask(
-                content::BrowserThread::UI, FROM_HERE,
-                base::Bind(&views::MenuRunner::Cancel,
-                           base::Unretained(menu_runner_.get())));
-        }
-    }
+	views::MenuItemView* menu,
+	const gfx::Point& screen_point,
+	views::MenuAnchorPosition* anchor,
+	bool* has_mnemonics,
+	views::MenuButton**) {
+	// TODO(zcbenz): We should follow Chromium's logics on implementing the
+	// sibling menu switches, this code is almost a hack.
+	views::MenuButton* button;
+	AtomMenuModel* model;
+	if (menu_bar_->GetMenuButtonFromScreenPoint(screen_point, &model, &button) &&
+	    button->tag() != id_) {
+		bool switch_in_progress = !!button_to_open_;
+		// Always update target to open.
+		button_to_open_ = button;
+		// Switching menu asyncnously to avoid crash.
+		if (!switch_in_progress) {
+			content::BrowserThread::PostTask(
+				content::BrowserThread::UI, FROM_HERE,
+				base::Bind(&views::MenuRunner::Cancel,
+				           base::Unretained(menu_runner_.get())));
+		}
+	}
 
-    return nullptr;
+	return nullptr;
 }
 
 }  // namespace atom

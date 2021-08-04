@@ -16,20 +16,20 @@ namespace asar {
 
 class AsarProtocolHandler : public net::URLRequestJobFactory::ProtocolHandler {
 public:
-    explicit AsarProtocolHandler(
-        const scoped_refptr<base::TaskRunner>& file_task_runner);
-    virtual ~AsarProtocolHandler();
+explicit AsarProtocolHandler(
+	const scoped_refptr<base::TaskRunner>& file_task_runner);
+virtual ~AsarProtocolHandler();
 
-    // net::URLRequestJobFactory::ProtocolHandler:
-    net::URLRequestJob* MaybeCreateJob(
-        net::URLRequest* request,
-        net::NetworkDelegate* network_delegate) const override;
-    bool IsSafeRedirectTarget(const GURL& location) const override;
+// net::URLRequestJobFactory::ProtocolHandler:
+net::URLRequestJob* MaybeCreateJob(
+	net::URLRequest* request,
+	net::NetworkDelegate* network_delegate) const override;
+bool IsSafeRedirectTarget(const GURL& location) const override;
 
 private:
-    const scoped_refptr<base::TaskRunner> file_task_runner_;
+const scoped_refptr<base::TaskRunner> file_task_runner_;
 
-    DISALLOW_COPY_AND_ASSIGN(AsarProtocolHandler);
+DISALLOW_COPY_AND_ASSIGN(AsarProtocolHandler);
 };
 
 }  // namespace asar

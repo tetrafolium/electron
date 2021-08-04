@@ -21,55 +21,55 @@ namespace atom {
 namespace api {
 
 RenderView* GetCurrentRenderView() {
-    WebLocalFrame* frame = WebLocalFrame::FrameForCurrentContext();
-    if (!frame)
-        return nullptr;
+	WebLocalFrame* frame = WebLocalFrame::FrameForCurrentContext();
+	if (!frame)
+		return nullptr;
 
-    WebView* view = frame->View();
-    if (!view)
-        return nullptr;  // can happen during closing.
+	WebView* view = frame->View();
+	if (!view)
+		return nullptr; // can happen during closing.
 
-    return RenderView::FromWebView(view);
+	return RenderView::FromWebView(view);
 }
 
 void Send(mate::Arguments* args,
           const base::string16& channel,
           const base::ListValue& arguments) {
-    RenderView* render_view = GetCurrentRenderView();
-    if (render_view == nullptr)
-        return;
+	RenderView* render_view = GetCurrentRenderView();
+	if (render_view == nullptr)
+		return;
 
-    bool success = render_view->Send(new AtomViewHostMsg_Message(
-                                         render_view->GetRoutingID(), channel, arguments));
+	bool success = render_view->Send(new AtomViewHostMsg_Message(
+						 render_view->GetRoutingID(), channel, arguments));
 
-    if (!success)
-        args->ThrowError("Unable to send AtomViewHostMsg_Message");
+	if (!success)
+		args->ThrowError("Unable to send AtomViewHostMsg_Message");
 }
 
 base::string16 SendSync(mate::Arguments* args,
                         const base::string16& channel,
                         const base::ListValue& arguments) {
-    base::string16 json;
+	base::string16 json;
 
-    RenderView* render_view = GetCurrentRenderView();
-    if (render_view == nullptr)
-        return json;
+	RenderView* render_view = GetCurrentRenderView();
+	if (render_view == nullptr)
+		return json;
 
-    IPC::SyncMessage* message = new AtomViewHostMsg_Message_Sync(
-        render_view->GetRoutingID(), channel, arguments, &json);
-    bool success = render_view->Send(message);
+	IPC::SyncMessage* message = new AtomViewHostMsg_Message_Sync(
+		render_view->GetRoutingID(), channel, arguments, &json);
+	bool success = render_view->Send(message);
 
-    if (!success)
-        args->ThrowError("Unable to send AtomViewHostMsg_Message_Sync");
+	if (!success)
+		args->ThrowError("Unable to send AtomViewHostMsg_Message_Sync");
 
-    return json;
+	return json;
 }
 
 void Initialize(v8::Local<v8::Object> exports, v8::Local<v8::Value> unused,
                 v8::Local<v8::Context> context, void* priv) {
-    mate::Dictionary dict(context->GetIsolate(), exports);
-    dict.SetMethod("send", &Send);
-    dict.SetMethod("sendSync", &SendSync);
+	mate::Dictionary dict(context->GetIsolate(), exports);
+	dict.SetMethod("send", &Send);
+	dict.SetMethod("sendSync", &SendSync);
 }
 
 }  // namespace api

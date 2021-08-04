@@ -24,85 +24,85 @@
 namespace atom {
 
 int NodeMain(int argc, char *argv[]) {
-    base::CommandLine::Init(argc, argv);
+	base::CommandLine::Init(argc, argv);
 
-    int exit_code = 1;
-    {
-        // Feed gin::PerIsolateData with a task runner.
-        argv = uv_setup_args(argc, argv);
-        uv_loop_t* loop = uv_default_loop();
-        scoped_refptr<UvTaskRunner> uv_task_runner(new UvTaskRunner(loop));
-        base::ThreadTaskRunnerHandle handle(uv_task_runner);
+	int exit_code = 1;
+	{
+		// Feed gin::PerIsolateData with a task runner.
+		argv = uv_setup_args(argc, argv);
+		uv_loop_t* loop = uv_default_loop();
+		scoped_refptr<UvTaskRunner> uv_task_runner(new UvTaskRunner(loop));
+		base::ThreadTaskRunnerHandle handle(uv_task_runner);
 
-        // Initialize feature list.
-        std::unique_ptr<base::FeatureList> feature_list(new base::FeatureList);
-        feature_list->InitializeFromCommandLine("", "");
-        base::FeatureList::SetInstance(std::move(feature_list));
+		// Initialize feature list.
+		std::unique_ptr<base::FeatureList> feature_list(new base::FeatureList);
+		feature_list->InitializeFromCommandLine("", "");
+		base::FeatureList::SetInstance(std::move(feature_list));
 
-        gin::V8Initializer::LoadV8Snapshot();
-        gin::V8Initializer::LoadV8Natives();
+		gin::V8Initializer::LoadV8Snapshot();
+		gin::V8Initializer::LoadV8Natives();
 
-        // V8 requires a task scheduler apparently
-        base::TaskScheduler::CreateAndStartWithDefaultParams("Electron");
+		// V8 requires a task scheduler apparently
+		base::TaskScheduler::CreateAndStartWithDefaultParams("Electron");
 
-        JavascriptEnvironment gin_env;
+		JavascriptEnvironment gin_env;
 
-        int exec_argc;
-        const char** exec_argv;
-        node::Init(&argc, const_cast<const char**>(argv), &exec_argc, &exec_argv);
+		int exec_argc;
+		const char** exec_argv;
+		node::Init(&argc, const_cast<const char**>(argv), &exec_argc, &exec_argv);
 
-        node::IsolateData isolate_data(gin_env.isolate(), loop);
-        node::Environment* env = node::CreateEnvironment(
-                                     &isolate_data, gin_env.context(), argc, argv,
-                                     exec_argc, exec_argv);
+		node::IsolateData isolate_data(gin_env.isolate(), loop);
+		node::Environment* env = node::CreateEnvironment(
+			&isolate_data, gin_env.context(), argc, argv,
+			exec_argc, exec_argv);
 
-        // Enable support for v8 inspector.
-        NodeDebugger node_debugger(env);
-        node_debugger.Start(gin_env.platform());
+		// Enable support for v8 inspector.
+		NodeDebugger node_debugger(env);
+		node_debugger.Start(gin_env.platform());
 
-        mate::Dictionary process(gin_env.isolate(), env->process_object());
+		mate::Dictionary process(gin_env.isolate(), env->process_object());
 #if defined(OS_WIN)
-        process.SetMethod("log", &AtomBindings::Log);
+		process.SetMethod("log", &AtomBindings::Log);
 #endif
-        process.SetMethod("crash", &AtomBindings::Crash);
+		process.SetMethod("crash", &AtomBindings::Crash);
 
-        // Setup process.crashReporter.start in child node processes
-        auto reporter = mate::Dictionary::CreateEmpty(gin_env.isolate());
-        reporter.SetMethod("start", &crash_reporter::CrashReporter::StartInstance);
-        process.Set("crashReporter", reporter);
+		// Setup process.crashReporter.start in child node processes
+		auto reporter = mate::Dictionary::CreateEmpty(gin_env.isolate());
+		reporter.SetMethod("start", &crash_reporter::CrashReporter::StartInstance);
+		process.Set("crashReporter", reporter);
 
-        node::LoadEnvironment(env);
+		node::LoadEnvironment(env);
 
-        bool more;
-        do {
-            more = uv_run(env->event_loop(), UV_RUN_ONCE);
-            if (more == false) {
-                node::EmitBeforeExit(env);
+		bool more;
+		do {
+			more = uv_run(env->event_loop(), UV_RUN_ONCE);
+			if (more == false) {
+				node::EmitBeforeExit(env);
 
-                // Emit `beforeExit` if the loop became alive either after emitting
-                // event, or after running some callbacks.
-                more = uv_loop_alive(env->event_loop());
-                if (uv_run(env->event_loop(), UV_RUN_NOWAIT) != 0)
-                    more = true;
-            }
-        } while (more == true);
+				// Emit `beforeExit` if the loop became alive either after emitting
+				// event, or after running some callbacks.
+				more = uv_loop_alive(env->event_loop());
+				if (uv_run(env->event_loop(), UV_RUN_NOWAIT) != 0)
+					more = true;
+			}
+		} while (more == true);
 
-        exit_code = node::EmitExit(env);
-        node::RunAtExit(env);
+		exit_code = node::EmitExit(env);
+		node::RunAtExit(env);
 
-        node::FreeEnvironment(env);
-    }
+		node::FreeEnvironment(env);
+	}
 
-    // According to "src/gin/shell/gin_main.cc":
-    //
-    // gin::IsolateHolder waits for tasks running in TaskScheduler in its
-    // destructor and thus must be destroyed before TaskScheduler starts skipping
-    // CONTINUE_ON_SHUTDOWN tasks.
-    base::TaskScheduler::GetInstance()->Shutdown();
+	// According to "src/gin/shell/gin_main.cc":
+	//
+	// gin::IsolateHolder waits for tasks running in TaskScheduler in its
+	// destructor and thus must be destroyed before TaskScheduler starts skipping
+	// CONTINUE_ON_SHUTDOWN tasks.
+	base::TaskScheduler::GetInstance()->Shutdown();
 
-    v8::V8::Dispose();
+	v8::V8::Dispose();
 
-    return exit_code;
+	return exit_code;
 }
 
 }  // namespace atom

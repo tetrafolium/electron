@@ -13,23 +13,23 @@ class RendererPpapiHost;
 
 class PepperFlashFullscreenHost : public ppapi::host::ResourceHost {
 public:
-    PepperFlashFullscreenHost(content::RendererPpapiHost* host,
-                              PP_Instance instance,
-                              PP_Resource resource);
-    ~PepperFlashFullscreenHost() override;
+PepperFlashFullscreenHost(content::RendererPpapiHost* host,
+                          PP_Instance instance,
+                          PP_Resource resource);
+~PepperFlashFullscreenHost() override;
 
-    int32_t OnResourceMessageReceived(
-        const IPC::Message& msg,
-        ppapi::host::HostMessageContext* context) override;
+int32_t OnResourceMessageReceived(
+	const IPC::Message& msg,
+	ppapi::host::HostMessageContext* context) override;
 
 private:
-    int32_t OnSetFullscreen(ppapi::host::HostMessageContext* context,
-                            bool fullscreen);
+int32_t OnSetFullscreen(ppapi::host::HostMessageContext* context,
+                        bool fullscreen);
 
-    // Non-owning pointer.
-    content::RendererPpapiHost* renderer_ppapi_host_;
+// Non-owning pointer.
+content::RendererPpapiHost* renderer_ppapi_host_;
 
-    DISALLOW_COPY_AND_ASSIGN(PepperFlashFullscreenHost);
+DISALLOW_COPY_AND_ASSIGN(PepperFlashFullscreenHost);
 };
 
 #endif  // CHROME_RENDERER_PEPPER_PEPPER_FLASH_FULLSCREEN_HOST_H_

@@ -25,40 +25,40 @@ namespace crash_reporter {
 
 class CrashReporterLinux : public CrashReporter {
 public:
-    static CrashReporterLinux* GetInstance();
+static CrashReporterLinux* GetInstance();
 
-    void InitBreakpad(const std::string& product_name,
-                      const std::string& version,
-                      const std::string& company_name,
-                      const std::string& submit_url,
-                      const base::FilePath& crashes_dir,
-                      bool upload_to_server,
-                      bool skip_system_crash_handler) override;
-    void SetUploadToServer(bool upload_to_server) override;
-    void SetUploadParameters() override;
-    bool GetUploadToServer() override;
+void InitBreakpad(const std::string& product_name,
+                  const std::string& version,
+                  const std::string& company_name,
+                  const std::string& submit_url,
+                  const base::FilePath& crashes_dir,
+                  bool upload_to_server,
+                  bool skip_system_crash_handler) override;
+void SetUploadToServer(bool upload_to_server) override;
+void SetUploadParameters() override;
+bool GetUploadToServer() override;
 
 private:
-    friend struct base::DefaultSingletonTraits<CrashReporterLinux>;
+friend struct base::DefaultSingletonTraits<CrashReporterLinux>;
 
-    CrashReporterLinux();
-    virtual ~CrashReporterLinux();
+CrashReporterLinux();
+virtual ~CrashReporterLinux();
 
-    void EnableCrashDumping(const base::FilePath& crashes_dir);
+void EnableCrashDumping(const base::FilePath& crashes_dir);
 
-    static bool CrashDone(const google_breakpad::MinidumpDescriptor& minidump,
-                          void* context,
-                          const bool succeeded);
+static bool CrashDone(const google_breakpad::MinidumpDescriptor& minidump,
+                      void* context,
+                      const bool succeeded);
 
-    std::unique_ptr<google_breakpad::ExceptionHandler> breakpad_;
-    std::unique_ptr<CrashKeyStorage> crash_keys_;
+std::unique_ptr<google_breakpad::ExceptionHandler> breakpad_;
+std::unique_ptr<CrashKeyStorage> crash_keys_;
 
-    uint64_t process_start_time_;
-    pid_t pid_;
-    std::string upload_url_;
-    bool upload_to_server_;
+uint64_t process_start_time_;
+pid_t pid_;
+std::string upload_url_;
+bool upload_to_server_;
 
-    DISALLOW_COPY_AND_ASSIGN(CrashReporterLinux);
+DISALLOW_COPY_AND_ASSIGN(CrashReporterLinux);
 };
 }  // namespace crash_reporter
 

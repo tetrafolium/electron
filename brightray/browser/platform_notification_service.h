@@ -16,46 +16,46 @@ namespace brightray {
 class BrowserClient;
 
 class PlatformNotificationService
-    : public content::PlatformNotificationService {
+	: public content::PlatformNotificationService {
 public:
-    explicit PlatformNotificationService(BrowserClient* browser_client);
-    ~PlatformNotificationService() override;
+explicit PlatformNotificationService(BrowserClient* browser_client);
+~PlatformNotificationService() override;
 
 protected:
-    // content::PlatformNotificationService:
-    blink::mojom::PermissionStatus CheckPermissionOnUIThread(
-        content::BrowserContext* browser_context,
-        const GURL& origin,
-        int render_process_id) override;
-    blink::mojom::PermissionStatus CheckPermissionOnIOThread(
-        content::ResourceContext* resource_context,
-        const GURL& origin,
-        int render_process_id) override;
-    void DisplayNotification(
-        content::BrowserContext* browser_context,
-        const std::string& notification_id,
-        const GURL& origin,
-        const content::PlatformNotificationData& notification_data,
-        const content::NotificationResources& notification_resources,
-        base::Closure* cancel_callback) override;
-    void DisplayPersistentNotification(
-        content::BrowserContext* browser_context,
-        const std::string& notification_id,
-        const GURL& service_worker_scope,
-        const GURL& origin,
-        const content::PlatformNotificationData& notification_data,
-        const content::NotificationResources& notification_resources) override;
-    void ClosePersistentNotification(content::BrowserContext* browser_context,
-                                     const std::string& notification_id) override;
-    void GetDisplayedNotifications(
-        content::BrowserContext* browser_context,
-        const DisplayedNotificationsCallback& callback) override;
+// content::PlatformNotificationService:
+blink::mojom::PermissionStatus CheckPermissionOnUIThread(
+	content::BrowserContext* browser_context,
+	const GURL& origin,
+	int render_process_id) override;
+blink::mojom::PermissionStatus CheckPermissionOnIOThread(
+	content::ResourceContext* resource_context,
+	const GURL& origin,
+	int render_process_id) override;
+void DisplayNotification(
+	content::BrowserContext* browser_context,
+	const std::string& notification_id,
+	const GURL& origin,
+	const content::PlatformNotificationData& notification_data,
+	const content::NotificationResources& notification_resources,
+	base::Closure* cancel_callback) override;
+void DisplayPersistentNotification(
+	content::BrowserContext* browser_context,
+	const std::string& notification_id,
+	const GURL& service_worker_scope,
+	const GURL& origin,
+	const content::PlatformNotificationData& notification_data,
+	const content::NotificationResources& notification_resources) override;
+void ClosePersistentNotification(content::BrowserContext* browser_context,
+                                 const std::string& notification_id) override;
+void GetDisplayedNotifications(
+	content::BrowserContext* browser_context,
+	const DisplayedNotificationsCallback& callback) override;
 
 private:
-    BrowserClient* browser_client_;
-    int render_process_id_;
+BrowserClient* browser_client_;
+int render_process_id_;
 
-    DISALLOW_COPY_AND_ASSIGN(PlatformNotificationService);
+DISALLOW_COPY_AND_ASSIGN(PlatformNotificationService);
 };
 
 }  // namespace brightray

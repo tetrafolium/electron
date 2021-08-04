@@ -20,44 +20,44 @@ class MenuBar;
 
 class MenuDelegate : public views::MenuDelegate {
 public:
-    explicit MenuDelegate(MenuBar* menu_bar);
-    virtual ~MenuDelegate();
+explicit MenuDelegate(MenuBar* menu_bar);
+virtual ~MenuDelegate();
 
-    void RunMenu(AtomMenuModel* model, views::MenuButton* button);
+void RunMenu(AtomMenuModel* model, views::MenuButton* button);
 
 protected:
-    // views::MenuDelegate:
-    void ExecuteCommand(int id) override;
-    void ExecuteCommand(int id, int mouse_event_flags) override;
-    bool IsTriggerableEvent(views::MenuItemView* source,
-                            const ui::Event& e) override;
-    bool GetAccelerator(int id, ui::Accelerator* accelerator) const override;
-    base::string16 GetLabel(int id) const override;
-    const gfx::FontList* GetLabelFontList(int id) const override;
-    bool IsCommandEnabled(int id) const override;
-    bool IsCommandVisible(int id) const override;
-    bool IsItemChecked(int id) const override;
-    void SelectionChanged(views::MenuItemView* menu) override;
-    void WillShowMenu(views::MenuItemView* menu) override;
-    void WillHideMenu(views::MenuItemView* menu) override;
-    void OnMenuClosed(views::MenuItemView* menu) override;
-    views::MenuItemView* GetSiblingMenu(
-        views::MenuItemView* menu,
-        const gfx::Point& screen_point,
-        views::MenuAnchorPosition* anchor,
-        bool* has_mnemonics,
-        views::MenuButton** button) override;
+// views::MenuDelegate:
+void ExecuteCommand(int id) override;
+void ExecuteCommand(int id, int mouse_event_flags) override;
+bool IsTriggerableEvent(views::MenuItemView* source,
+                        const ui::Event& e) override;
+bool GetAccelerator(int id, ui::Accelerator* accelerator) const override;
+base::string16 GetLabel(int id) const override;
+const gfx::FontList* GetLabelFontList(int id) const override;
+bool IsCommandEnabled(int id) const override;
+bool IsCommandVisible(int id) const override;
+bool IsItemChecked(int id) const override;
+void SelectionChanged(views::MenuItemView* menu) override;
+void WillShowMenu(views::MenuItemView* menu) override;
+void WillHideMenu(views::MenuItemView* menu) override;
+void OnMenuClosed(views::MenuItemView* menu) override;
+views::MenuItemView* GetSiblingMenu(
+	views::MenuItemView* menu,
+	const gfx::Point& screen_point,
+	views::MenuAnchorPosition* anchor,
+	bool* has_mnemonics,
+	views::MenuButton** button) override;
 
 private:
-    MenuBar* menu_bar_;
-    int id_;
-    std::unique_ptr<views::MenuDelegate> adapter_;
-    std::unique_ptr<views::MenuRunner> menu_runner_;
+MenuBar* menu_bar_;
+int id_;
+std::unique_ptr<views::MenuDelegate> adapter_;
+std::unique_ptr<views::MenuRunner> menu_runner_;
 
-    // The menu button to switch to.
-    views::MenuButton* button_to_open_ = nullptr;
+// The menu button to switch to.
+views::MenuButton* button_to_open_ = nullptr;
 
-    DISALLOW_COPY_AND_ASSIGN(MenuDelegate);
+DISALLOW_COPY_AND_ASSIGN(MenuDelegate);
 };
 
 }  // namespace atom

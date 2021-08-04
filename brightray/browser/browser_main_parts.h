@@ -30,37 +30,37 @@ namespace brightray {
 
 class BrowserMainParts : public content::BrowserMainParts {
 public:
-    BrowserMainParts();
-    ~BrowserMainParts();
+BrowserMainParts();
+~BrowserMainParts();
 
 protected:
-    // content::BrowserMainParts:
-    void PreEarlyInitialization() override;
-    void ToolkitInitialized() override;
-    void PreMainMessageLoopStart() override;
-    void PreMainMessageLoopRun() override;
-    void PostMainMessageLoopStart() override;
-    void PostMainMessageLoopRun() override;
-    int PreCreateThreads() override;
-    void PostDestroyThreads() override;
+// content::BrowserMainParts:
+void PreEarlyInitialization() override;
+void ToolkitInitialized() override;
+void PreMainMessageLoopStart() override;
+void PreMainMessageLoopRun() override;
+void PostMainMessageLoopStart() override;
+void PostMainMessageLoopRun() override;
+int PreCreateThreads() override;
+void PostDestroyThreads() override;
 
 private:
 #if defined(OS_MACOSX)
-    void InitializeMainNib();
-    void OverrideAppLogsPath();
+void InitializeMainNib();
+void OverrideAppLogsPath();
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-    std::unique_ptr<ViewsDelegate> views_delegate_;
+std::unique_ptr<ViewsDelegate> views_delegate_;
 #endif
 
 #if defined(USE_AURA)
-    std::unique_ptr<wm::WMState> wm_state_;
+std::unique_ptr<wm::WMState> wm_state_;
 #endif
 
-    std::unique_ptr<views::LayoutProvider> layout_provider_;
+std::unique_ptr<views::LayoutProvider> layout_provider_;
 
-    DISALLOW_COPY_AND_ASSIGN(BrowserMainParts);
+DISALLOW_COPY_AND_ASSIGN(BrowserMainParts);
 };
 
 }  // namespace brightray

@@ -13,42 +13,42 @@ namespace atom {
 
 // Applies the permission requested for WebContents.
 class WebContentsPermissionHelper
-    : public content::WebContentsUserData<WebContentsPermissionHelper> {
+	: public content::WebContentsUserData<WebContentsPermissionHelper> {
 public:
-    ~WebContentsPermissionHelper() override;
+~WebContentsPermissionHelper() override;
 
-    enum class PermissionType {
-        POINTER_LOCK = static_cast<int>(content::PermissionType::NUM) + 1,
-        FULLSCREEN,
-        OPEN_EXTERNAL,
-    };
+enum class PermissionType {
+	POINTER_LOCK = static_cast<int>(content::PermissionType::NUM) + 1,
+	FULLSCREEN,
+	OPEN_EXTERNAL,
+};
 
-    void RequestFullscreenPermission(
-        const base::Callback<void(bool)>& callback);
-    void RequestMediaAccessPermission(
-        const content::MediaStreamRequest& request,
-        const content::MediaResponseCallback& callback);
-    void RequestWebNotificationPermission(
-        const base::Callback<void(bool)>& callback);
-    void RequestPointerLockPermission(bool user_gesture);
-    void RequestOpenExternalPermission(
-        const base::Callback<void(bool)>& callback,
-        bool user_gesture,
-        const GURL& url);
+void RequestFullscreenPermission(
+	const base::Callback<void(bool)>& callback);
+void RequestMediaAccessPermission(
+	const content::MediaStreamRequest& request,
+	const content::MediaResponseCallback& callback);
+void RequestWebNotificationPermission(
+	const base::Callback<void(bool)>& callback);
+void RequestPointerLockPermission(bool user_gesture);
+void RequestOpenExternalPermission(
+	const base::Callback<void(bool)>& callback,
+	bool user_gesture,
+	const GURL& url);
 
 private:
-    explicit WebContentsPermissionHelper(content::WebContents* web_contents);
-    friend class content::WebContentsUserData<WebContentsPermissionHelper>;
+explicit WebContentsPermissionHelper(content::WebContents* web_contents);
+friend class content::WebContentsUserData<WebContentsPermissionHelper>;
 
-    void RequestPermission(
-        content::PermissionType permission,
-        const base::Callback<void(bool)>& callback,
-        bool user_gesture = false,
-        const base::DictionaryValue* details = nullptr);
+void RequestPermission(
+	content::PermissionType permission,
+	const base::Callback<void(bool)>& callback,
+	bool user_gesture = false,
+	const base::DictionaryValue* details = nullptr);
 
-    content::WebContents* web_contents_;
+content::WebContents* web_contents_;
 
-    DISALLOW_COPY_AND_ASSIGN(WebContentsPermissionHelper);
+DISALLOW_COPY_AND_ASSIGN(WebContentsPermissionHelper);
 };
 
 }  // namespace atom

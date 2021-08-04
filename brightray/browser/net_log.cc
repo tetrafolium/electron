@@ -20,16 +20,16 @@ namespace brightray {
 namespace {
 
 std::unique_ptr<base::DictionaryValue> GetConstants() {
-    std::unique_ptr<base::DictionaryValue> constants = net::GetNetConstants();
+	std::unique_ptr<base::DictionaryValue> constants = net::GetNetConstants();
 
-    // Adding client information to constants dictionary.
-    auto client_info = base::MakeUnique<base::DictionaryValue>();
-    client_info->SetString(
-        "command_line",
-        base::CommandLine::ForCurrentProcess()->GetCommandLineString());
+	// Adding client information to constants dictionary.
+	auto client_info = base::MakeUnique<base::DictionaryValue>();
+	client_info->SetString(
+		"command_line",
+		base::CommandLine::ForCurrentProcess()->GetCommandLineString());
 
-    constants->Set("clientInfo", std::move(client_info));
-    return constants;
+	constants->Set("clientInfo", std::move(client_info));
+	return constants;
 }
 
 }  // namespace
@@ -38,26 +38,26 @@ NetLog::NetLog() {
 }
 
 NetLog::~NetLog() {
-    if (file_net_log_observer_) {
-        file_net_log_observer_->StopObserving(nullptr, base::Closure());
-        file_net_log_observer_.reset();
-    }
+	if (file_net_log_observer_) {
+		file_net_log_observer_->StopObserving(nullptr, base::Closure());
+		file_net_log_observer_.reset();
+	}
 }
 
 void NetLog::StartLogging() {
-    auto command_line = base::CommandLine::ForCurrentProcess();
-    if (!command_line->HasSwitch(switches::kLogNetLog))
-        return;
+	auto command_line = base::CommandLine::ForCurrentProcess();
+	if (!command_line->HasSwitch(switches::kLogNetLog))
+		return;
 
-    base::FilePath log_path =
-        command_line->GetSwitchValuePath(switches::kLogNetLog);
-    std::unique_ptr<base::Value> constants(GetConstants());
-    net::NetLogCaptureMode capture_mode =
-        net::NetLogCaptureMode::IncludeCookiesAndCredentials();
+	base::FilePath log_path =
+		command_line->GetSwitchValuePath(switches::kLogNetLog);
+	std::unique_ptr<base::Value> constants(GetConstants());
+	net::NetLogCaptureMode capture_mode =
+		net::NetLogCaptureMode::IncludeCookiesAndCredentials();
 
-    file_net_log_observer_ =
-        net::FileNetLogObserver::CreateUnbounded(log_path, std::move(constants));
-    file_net_log_observer_->StartObserving(this, capture_mode);
+	file_net_log_observer_ =
+		net::FileNetLogObserver::CreateUnbounded(log_path, std::move(constants));
+	file_net_log_observer_->StartObserving(this, capture_mode);
 }
 
 }  // namespace brightray

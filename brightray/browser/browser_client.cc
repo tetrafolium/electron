@@ -22,70 +22,70 @@ BrowserClient* g_browser_client;
 }  // namespace
 
 BrowserClient* BrowserClient::Get() {
-    return g_browser_client;
+	return g_browser_client;
 }
 
 BrowserClient::BrowserClient()
-    : browser_main_parts_(nullptr) {
-    DCHECK(!g_browser_client);
-    g_browser_client = this;
+	: browser_main_parts_(nullptr) {
+	DCHECK(!g_browser_client);
+	g_browser_client = this;
 }
 
 BrowserClient::~BrowserClient() {
 }
 
 NotificationPresenter* BrowserClient::GetNotificationPresenter() {
-    if (!notification_presenter_) {
-        // Create a new presenter if on OS X, Linux, or Windows 7+
-        notification_presenter_.reset(NotificationPresenter::Create());
-    }
-    return notification_presenter_.get();
+	if (!notification_presenter_) {
+		// Create a new presenter if on OS X, Linux, or Windows 7+
+		notification_presenter_.reset(NotificationPresenter::Create());
+	}
+	return notification_presenter_.get();
 }
 
 BrowserMainParts* BrowserClient::OverrideCreateBrowserMainParts(
-    const content::MainFunctionParams&) {
-    return new BrowserMainParts;
+	const content::MainFunctionParams&) {
+	return new BrowserMainParts;
 }
 
 content::BrowserMainParts* BrowserClient::CreateBrowserMainParts(
-    const content::MainFunctionParams& parameters) {
-    DCHECK(!browser_main_parts_);
-    browser_main_parts_ = OverrideCreateBrowserMainParts(parameters);
-    return browser_main_parts_;
+	const content::MainFunctionParams& parameters) {
+	DCHECK(!browser_main_parts_);
+	browser_main_parts_ = OverrideCreateBrowserMainParts(parameters);
+	return browser_main_parts_;
 }
 
 content::MediaObserver* BrowserClient::GetMediaObserver() {
-    return MediaCaptureDevicesDispatcher::GetInstance();
+	return MediaCaptureDevicesDispatcher::GetInstance();
 }
 
 content::PlatformNotificationService*
 BrowserClient::GetPlatformNotificationService() {
-    if (!notification_service_)
-        notification_service_.reset(new PlatformNotificationService(this));
-    return notification_service_.get();
+	if (!notification_service_)
+		notification_service_.reset(new PlatformNotificationService(this));
+	return notification_service_.get();
 }
 
 void BrowserClient::GetAdditionalAllowedSchemesForFileSystem(
-    std::vector<std::string>* additional_schemes) {
-    additional_schemes->push_back(content::kChromeDevToolsScheme);
-    additional_schemes->push_back(content::kChromeUIScheme);
+	std::vector<std::string>* additional_schemes) {
+	additional_schemes->push_back(content::kChromeDevToolsScheme);
+	additional_schemes->push_back(content::kChromeUIScheme);
 }
 
 net::NetLog* BrowserClient::GetNetLog() {
-    return &net_log_;
+	return &net_log_;
 }
 
 base::FilePath BrowserClient::GetDefaultDownloadDirectory() {
-    // ~/Downloads
-    base::FilePath path;
-    if (PathService::Get(base::DIR_HOME, &path))
-        path = path.Append(FILE_PATH_LITERAL("Downloads"));
+	// ~/Downloads
+	base::FilePath path;
+	if (PathService::Get(base::DIR_HOME, &path))
+		path = path.Append(FILE_PATH_LITERAL("Downloads"));
 
-    return path;
+	return path;
 }
 
 content::DevToolsManagerDelegate* BrowserClient::GetDevToolsManagerDelegate() {
-    return new DevToolsManagerDelegate;
+	return new DevToolsManagerDelegate;
 }
 
 }  // namespace brightray

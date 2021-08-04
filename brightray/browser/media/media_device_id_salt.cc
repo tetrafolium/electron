@@ -19,35 +19,35 @@ const char kMediaDeviceIdSalt[] = "brightray.media.device_id_salt";
 }  // namespace
 
 MediaDeviceIDSalt::MediaDeviceIDSalt(PrefService* pref_service) {
-    DCHECK_CURRENTLY_ON(BrowserThread::UI);
+	DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
-    media_device_id_salt_.Init(kMediaDeviceIdSalt, pref_service);
-    if (media_device_id_salt_.GetValue().empty()) {
-        media_device_id_salt_.SetValue(
-            content::BrowserContext::CreateRandomMediaDeviceIDSalt());
-    }
+	media_device_id_salt_.Init(kMediaDeviceIdSalt, pref_service);
+	if (media_device_id_salt_.GetValue().empty()) {
+		media_device_id_salt_.SetValue(
+			content::BrowserContext::CreateRandomMediaDeviceIDSalt());
+	}
 }
 
 MediaDeviceIDSalt::~MediaDeviceIDSalt() {
-    DCHECK_CURRENTLY_ON(BrowserThread::UI);
-    media_device_id_salt_.Destroy();
+	DCHECK_CURRENTLY_ON(BrowserThread::UI);
+	media_device_id_salt_.Destroy();
 }
 
 std::string MediaDeviceIDSalt::GetSalt() {
-    DCHECK_CURRENTLY_ON(BrowserThread::UI);
-    return media_device_id_salt_.GetValue();
+	DCHECK_CURRENTLY_ON(BrowserThread::UI);
+	return media_device_id_salt_.GetValue();
 }
 
 // static
 void MediaDeviceIDSalt::RegisterPrefs(PrefRegistrySimple* registry) {
-    registry->RegisterStringPref(kMediaDeviceIdSalt, std::string());
+	registry->RegisterStringPref(kMediaDeviceIdSalt, std::string());
 }
 
 // static
 void MediaDeviceIDSalt::Reset(PrefService* pref_service) {
-    pref_service->SetString(
-        kMediaDeviceIdSalt,
-        content::BrowserContext::CreateRandomMediaDeviceIDSalt());
+	pref_service->SetString(
+		kMediaDeviceIdSalt,
+		content::BrowserContext::CreateRandomMediaDeviceIDSalt());
 }
 
 }  // namespace brightray

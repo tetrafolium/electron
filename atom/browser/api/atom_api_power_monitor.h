@@ -15,24 +15,24 @@ namespace atom {
 namespace api {
 
 class PowerMonitor : public mate::TrackableObject<PowerMonitor>,
-    public PowerObserver {
+	public PowerObserver {
 public:
-    static v8::Local<v8::Value> Create(v8::Isolate* isolate);
+static v8::Local<v8::Value> Create(v8::Isolate* isolate);
 
-    static void BuildPrototype(v8::Isolate* isolate,
-                               v8::Local<v8::FunctionTemplate> prototype);
+static void BuildPrototype(v8::Isolate* isolate,
+                           v8::Local<v8::FunctionTemplate> prototype);
 
 protected:
-    explicit PowerMonitor(v8::Isolate* isolate);
-    ~PowerMonitor() override;
+explicit PowerMonitor(v8::Isolate* isolate);
+~PowerMonitor() override;
 
-    // base::PowerObserver implementations:
-    void OnPowerStateChange(bool on_battery_power) override;
-    void OnSuspend() override;
-    void OnResume() override;
+// base::PowerObserver implementations:
+void OnPowerStateChange(bool on_battery_power) override;
+void OnSuspend() override;
+void OnResume() override;
 
 private:
-    DISALLOW_COPY_AND_ASSIGN(PowerMonitor);
+DISALLOW_COPY_AND_ASSIGN(PowerMonitor);
 };
 
 }  // namespace api

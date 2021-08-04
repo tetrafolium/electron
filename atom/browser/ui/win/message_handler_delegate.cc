@@ -7,8 +7,8 @@
 namespace atom {
 
 bool MessageHandlerDelegate::PreHandleMSG(
-    UINT message, WPARAM w_param, LPARAM l_param, LRESULT* result) {
-    return false;
+	UINT message, WPARAM w_param, LPARAM l_param, LRESULT* result) {
+	return false;
 }
 
 }  // namespace atom

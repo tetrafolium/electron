@@ -16,30 +16,30 @@ class NotificationDelegate;
 
 class NotificationPresenter {
 public:
-    static NotificationPresenter* Create();
+static NotificationPresenter* Create();
 
-    virtual ~NotificationPresenter();
+virtual ~NotificationPresenter();
 
-    base::WeakPtr<Notification> CreateNotification(
-        NotificationDelegate* delegate);
+base::WeakPtr<Notification> CreateNotification(
+	NotificationDelegate* delegate);
 
-    std::set<Notification*> notifications() const {
-        return notifications_;
-    }
+std::set<Notification*> notifications() const {
+	return notifications_;
+}
 
 protected:
-    NotificationPresenter();
-    virtual Notification* CreateNotificationObject(
-        NotificationDelegate* delegate) = 0;
+NotificationPresenter();
+virtual Notification* CreateNotificationObject(
+	NotificationDelegate* delegate) = 0;
 
 private:
-    friend class Notification;
+friend class Notification;
 
-    void RemoveNotification(Notification* notification);
+void RemoveNotification(Notification* notification);
 
-    std::set<Notification*> notifications_;
+std::set<Notification*> notifications_;
 
-    DISALLOW_COPY_AND_ASSIGN(NotificationPresenter);
+DISALLOW_COPY_AND_ASSIGN(NotificationPresenter);
 };
 
 }  // namespace brightray

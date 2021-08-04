@@ -19,83 +19,83 @@ namespace accelerator_util {
 
 bool StringToAccelerator(const std::string& shortcut,
                          ui::Accelerator* accelerator) {
-    if (!base::IsStringASCII(shortcut)) {
-        LOG(ERROR) << "The accelerator string can only contain ASCII characters";
-        return false;
-    }
+	if (!base::IsStringASCII(shortcut)) {
+		LOG(ERROR) << "The accelerator string can only contain ASCII characters";
+		return false;
+	}
 
-    std::vector<std::string> tokens = base::SplitString(
-                                          shortcut, "+", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+	std::vector<std::string> tokens = base::SplitString(
+		shortcut, "+", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
-    // Now, parse it into an accelerator.
-    int modifiers = ui::EF_NONE;
-    ui::KeyboardCode key = ui::VKEY_UNKNOWN;
-    for (const auto& token : tokens) {
-        bool shifted = false;
-        ui::KeyboardCode code = atom::KeyboardCodeFromStr(token, &shifted);
-        if (shifted)
-            modifiers |= ui::EF_SHIFT_DOWN;
-        switch (code) {
-        // The token can be a modifier.
-        case ui::VKEY_SHIFT:
-            modifiers |= ui::EF_SHIFT_DOWN;
-            break;
-        case ui::VKEY_CONTROL:
-            modifiers |= ui::EF_CONTROL_DOWN;
-            break;
-        case ui::VKEY_MENU:
-            modifiers |= ui::EF_ALT_DOWN;
-            break;
-        case ui::VKEY_COMMAND:
-            modifiers |= ui::EF_COMMAND_DOWN;
-            break;
-        case ui::VKEY_ALTGR:
-            modifiers |= ui::EF_ALTGR_DOWN;
-            break;
-        // Or it is a normal key.
-        default:
-            key = code;
-        }
-    }
+	// Now, parse it into an accelerator.
+	int modifiers = ui::EF_NONE;
+	ui::KeyboardCode key = ui::VKEY_UNKNOWN;
+	for (const auto& token : tokens) {
+		bool shifted = false;
+		ui::KeyboardCode code = atom::KeyboardCodeFromStr(token, &shifted);
+		if (shifted)
+			modifiers |= ui::EF_SHIFT_DOWN;
+		switch (code) {
+		// The token can be a modifier.
+		case ui::VKEY_SHIFT:
+			modifiers |= ui::EF_SHIFT_DOWN;
+			break;
+		case ui::VKEY_CONTROL:
+			modifiers |= ui::EF_CONTROL_DOWN;
+			break;
+		case ui::VKEY_MENU:
+			modifiers |= ui::EF_ALT_DOWN;
+			break;
+		case ui::VKEY_COMMAND:
+			modifiers |= ui::EF_COMMAND_DOWN;
+			break;
+		case ui::VKEY_ALTGR:
+			modifiers |= ui::EF_ALTGR_DOWN;
+			break;
+		// Or it is a normal key.
+		default:
+			key = code;
+		}
+	}
 
-    if (key == ui::VKEY_UNKNOWN) {
-        LOG(WARNING) << shortcut << " doesn't contain a valid key";
-        return false;
-    }
+	if (key == ui::VKEY_UNKNOWN) {
+		LOG(WARNING) << shortcut << " doesn't contain a valid key";
+		return false;
+	}
 
-    *accelerator = ui::Accelerator(key, modifiers);
-    SetPlatformAccelerator(accelerator);
-    return true;
+	*accelerator = ui::Accelerator(key, modifiers);
+	SetPlatformAccelerator(accelerator);
+	return true;
 }
 
 void GenerateAcceleratorTable(AcceleratorTable* table,
                               atom::AtomMenuModel* model) {
-    int count = model->GetItemCount();
-    for (int i = 0; i < count; ++i) {
-        atom::AtomMenuModel::ItemType type = model->GetTypeAt(i);
-        if (type == atom::AtomMenuModel::TYPE_SUBMENU) {
-            auto submodel = model->GetSubmenuModelAt(i);
-            GenerateAcceleratorTable(table, submodel);
-        } else {
-            ui::Accelerator accelerator;
-            if (model->GetAcceleratorAtWithParams(i, true, &accelerator)) {
-                MenuItem item = { i, model };
-                (*table)[accelerator] = item;
-            }
-        }
-    }
+	int count = model->GetItemCount();
+	for (int i = 0; i < count; ++i) {
+		atom::AtomMenuModel::ItemType type = model->GetTypeAt(i);
+		if (type == atom::AtomMenuModel::TYPE_SUBMENU) {
+			auto submodel = model->GetSubmenuModelAt(i);
+			GenerateAcceleratorTable(table, submodel);
+		} else {
+			ui::Accelerator accelerator;
+			if (model->GetAcceleratorAtWithParams(i, true, &accelerator)) {
+				MenuItem item = { i, model };
+				(*table)[accelerator] = item;
+			}
+		}
+	}
 }
 
 bool TriggerAcceleratorTableCommand(AcceleratorTable* table,
                                     const ui::Accelerator& accelerator) {
-    if (base::ContainsKey(*table, accelerator)) {
-        const accelerator_util::MenuItem& item = (*table)[accelerator];
-        if (item.model->IsEnabledAt(item.position)) {
-            item.model->ActivatedAt(item.position);
-            return true;
-        }
-    }
-    return false;
+	if (base::ContainsKey(*table, accelerator)) {
+		const accelerator_util::MenuItem& item = (*table)[accelerator];
+		if (item.model->IsEnabledAt(item.position)) {
+			item.model->ActivatedAt(item.position);
+			return true;
+		}
+	}
+	return false;
 }
 
 }  // namespace accelerator_util

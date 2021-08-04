@@ -100,7 +100,7 @@ NSBundle* OuterAppBundle();
 // the user data directory to connect to a UNIX-domain socket therein.
 // Returns false if there was a problem fetching the app data directory.
 bool GetUserDataDirectoryForBrowserBundle(NSBundle* bundle,
-        base::FilePath* result);
+                                          base::FilePath* result);
 
 #endif  // OS_MACOSX && !OS_IOS
 

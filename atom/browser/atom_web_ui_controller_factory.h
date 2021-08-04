@@ -13,26 +13,26 @@ namespace atom {
 
 class AtomWebUIControllerFactory : public content::WebUIControllerFactory {
 public:
-    static AtomWebUIControllerFactory* GetInstance();
+static AtomWebUIControllerFactory* GetInstance();
 
-    AtomWebUIControllerFactory();
-    virtual ~AtomWebUIControllerFactory();
+AtomWebUIControllerFactory();
+virtual ~AtomWebUIControllerFactory();
 
-    // content::WebUIControllerFactory:
-    content::WebUI::TypeID GetWebUIType(content::BrowserContext* browser_context,
-                                        const GURL& url) const override;
-    bool UseWebUIForURL(content::BrowserContext* browser_context,
-                        const GURL& url) const override;
-    bool UseWebUIBindingsForURL(content::BrowserContext* browser_context,
-                                const GURL& url) const override;
-    content::WebUIController* CreateWebUIControllerForURL(
-        content::WebUI* web_ui,
-        const GURL& url) const override;
+// content::WebUIControllerFactory:
+content::WebUI::TypeID GetWebUIType(content::BrowserContext* browser_context,
+                                    const GURL& url) const override;
+bool UseWebUIForURL(content::BrowserContext* browser_context,
+                    const GURL& url) const override;
+bool UseWebUIBindingsForURL(content::BrowserContext* browser_context,
+                            const GURL& url) const override;
+content::WebUIController* CreateWebUIControllerForURL(
+	content::WebUI* web_ui,
+	const GURL& url) const override;
 
 private:
-    friend struct base::DefaultSingletonTraits<AtomWebUIControllerFactory>;
+friend struct base::DefaultSingletonTraits<AtomWebUIControllerFactory>;
 
-    DISALLOW_COPY_AND_ASSIGN(AtomWebUIControllerFactory);
+DISALLOW_COPY_AND_ASSIGN(AtomWebUIControllerFactory);
 };
 
 }  // namespace atom

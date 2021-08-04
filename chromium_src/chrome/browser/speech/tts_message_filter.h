@@ -15,50 +15,50 @@ class BrowserContext;
 }
 
 class TtsMessageFilter
-    : public content::BrowserMessageFilter,
-      public UtteranceEventDelegate,
-      public VoicesChangedDelegate {
+	: public content::BrowserMessageFilter,
+	public UtteranceEventDelegate,
+	public VoicesChangedDelegate {
 public:
-    explicit TtsMessageFilter(int render_process_id,
-                              content::BrowserContext* browser_context);
+explicit TtsMessageFilter(int render_process_id,
+                          content::BrowserContext* browser_context);
 
-    // content::BrowserMessageFilter implementation.
-    void OverrideThreadForMessage(
-        const IPC::Message& message,
-        content::BrowserThread::ID* thread) override;
-    bool OnMessageReceived(const IPC::Message& message) override;
-    void OnChannelClosing() override;
-    void OnDestruct() const override;
+// content::BrowserMessageFilter implementation.
+void OverrideThreadForMessage(
+	const IPC::Message& message,
+	content::BrowserThread::ID* thread) override;
+bool OnMessageReceived(const IPC::Message& message) override;
+void OnChannelClosing() override;
+void OnDestruct() const override;
 
-    // UtteranceEventDelegate implementation.
-    void OnTtsEvent(Utterance* utterance,
-                    TtsEventType event_type,
-                    int char_index,
-                    const std::string& error_message) override;
+// UtteranceEventDelegate implementation.
+void OnTtsEvent(Utterance* utterance,
+                TtsEventType event_type,
+                int char_index,
+                const std::string& error_message) override;
 
-    // VoicesChangedDelegate implementation.
-    void OnVoicesChanged() override;
+// VoicesChangedDelegate implementation.
+void OnVoicesChanged() override;
 
 private:
-    friend class content::BrowserThread;
-    friend class base::DeleteHelper<TtsMessageFilter>;
+friend class content::BrowserThread;
+friend class base::DeleteHelper<TtsMessageFilter>;
 
-    virtual ~TtsMessageFilter();
+virtual ~TtsMessageFilter();
 
-    void OnInitializeVoiceList();
-    void OnSpeak(const TtsUtteranceRequest& utterance);
-    void OnPause();
-    void OnResume();
-    void OnCancel();
+void OnInitializeVoiceList();
+void OnSpeak(const TtsUtteranceRequest& utterance);
+void OnPause();
+void OnResume();
+void OnCancel();
 
-    void OnChannelClosingInUIThread();
+void OnChannelClosingInUIThread();
 
-    int render_process_id_;
-    content::BrowserContext* browser_context_;
+int render_process_id_;
+content::BrowserContext* browser_context_;
 
-    base::WeakPtrFactory<TtsMessageFilter> weak_ptr_factory_;
+base::WeakPtrFactory<TtsMessageFilter> weak_ptr_factory_;
 
-    DISALLOW_COPY_AND_ASSIGN(TtsMessageFilter);
+DISALLOW_COPY_AND_ASSIGN(TtsMessageFilter);
 };
 
 #endif  // CHROME_BROWSER_SPEECH_TTS_MESSAGE_FILTER_H_
