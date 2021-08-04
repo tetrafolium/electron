@@ -16,7 +16,6 @@ from lib.config import BASE_URL, PLATFORM, enable_verbose_mode, \
 from lib.util import scoped_cwd, rm_rf, get_electron_version, make_zip, \
     execute, electron_gyp
 
-
 ELECTRON_VERSION = get_electron_version()
 
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -29,8 +28,7 @@ PROJECT_NAME = electron_gyp()['project_name%']
 PRODUCT_NAME = electron_gyp()['product_name%']
 
 TARGET_BINARIES = {
-    'darwin': [
-    ],
+    'darwin': [],
     'win32': [
         '{0}.exe'.format(PROJECT_NAME),  # 'electron.exe'
         'content_shell.pak',
@@ -160,9 +158,9 @@ def copy_vcruntime_binaries():
 
 
 def copy_ucrt_binaries():
-    with _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
-                         r"SOFTWARE\Microsoft\Windows Kits\Installed Roots"
-                         ) as key:
+    with _winreg.OpenKey(
+            _winreg.HKEY_LOCAL_MACHINE,
+            r"SOFTWARE\Microsoft\Windows Kits\Installed Roots") as key:
         ucrt_dir = _winreg.QueryValueEx(key, "KitsRoot10")[0]
 
     arch = get_target_arch()
@@ -191,8 +189,10 @@ def create_api_json_schema():
     env = os.environ.copy()
     env['PATH'] = os.path.pathsep.join([node_bin_dir, env['PATH']])
     outfile = os.path.relpath(os.path.join(DIST_DIR, 'electron-api.json'))
-    execute(['electron-docs-linter', 'docs', '--outfile={0}'.format(outfile),
-             '--version={}'.format(ELECTRON_VERSION.replace('v', ''))],
+    execute([
+        'electron-docs-linter', 'docs', '--outfile={0}'.format(outfile),
+        '--version={}'.format(ELECTRON_VERSION.replace('v', ''))
+    ],
             env=env)
 
 
@@ -202,8 +202,11 @@ def create_typescript_definitions():
     env['PATH'] = os.path.pathsep.join([node_bin_dir, env['PATH']])
     infile = os.path.relpath(os.path.join(DIST_DIR, 'electron-api.json'))
     outfile = os.path.relpath(os.path.join(DIST_DIR, 'electron.d.ts'))
-    execute(['electron-typescript-definitions', '--in={0}'.format(infile),
-             '--out={0}'.format(outfile)], env=env)
+    execute([
+        'electron-typescript-definitions', '--in={0}'.format(infile),
+        '--out={0}'.format(outfile)
+    ],
+            env=env)
 
 
 def strip_binaries():
@@ -234,16 +237,16 @@ def create_symbols():
     if get_target_arch() == 'mips64el':
         return
 
-    destination = os.path.join(
-        DIST_DIR, '{0}.breakpad.syms'.format(PROJECT_NAME))
+    destination = os.path.join(DIST_DIR,
+                               '{0}.breakpad.syms'.format(PROJECT_NAME))
     dump_symbols = os.path.join(SOURCE_ROOT, 'script', 'dump-symbols.py')
     execute([sys.executable, dump_symbols, destination])
 
     if PLATFORM == 'darwin':
         dsyms = glob.glob(os.path.join(OUT_DIR, '*.dSYM'))
         for dsym in dsyms:
-            shutil.copytree(dsym, os.path.join(
-                DIST_DIR, os.path.basename(dsym)))
+            shutil.copytree(dsym, os.path.join(DIST_DIR,
+                                               os.path.basename(dsym)))
     elif PLATFORM == 'win32':
         pdbs = glob.glob(os.path.join(OUT_DIR, '*.pdb'))
         for pdb in pdbs:
@@ -255,8 +258,9 @@ def create_dist_zip():
     zip_file = os.path.join(SOURCE_ROOT, 'dist', dist_name)
 
     with scoped_cwd(DIST_DIR):
-        files = TARGET_BINARIES[PLATFORM] + TARGET_BINARIES_EXT + ['LICENSE',
-                                                                   'LICENSES.chromium.html', 'version']
+        files = TARGET_BINARIES[PLATFORM] + TARGET_BINARIES_EXT + [
+            'LICENSE', 'LICENSES.chromium.html', 'version'
+        ]
         dirs = TARGET_DIRECTORIES[PLATFORM]
         make_zip(zip_file, files, dirs)
 
@@ -292,8 +296,8 @@ def create_ffmpeg_zip():
         strip_binary(os.path.join(DIST_DIR, ffmpeg_name))
 
     with scoped_cwd(DIST_DIR):
-        make_zip(zip_file, [ffmpeg_name, 'LICENSE',
-                            'LICENSES.chromium.html'], [])
+        make_zip(zip_file, [ffmpeg_name, 'LICENSE', 'LICENSES.chromium.html'],
+                 [])
 
 
 def create_symbols_zip():
@@ -326,7 +330,8 @@ def parse_args():
     parser.add_argument('--no_api_docs',
                         action='store_true',
                         help='Skip generating the Electron API Documentation!')
-    parser.add_argument('-v', '--verbose',
+    parser.add_argument('-v',
+                        '--verbose',
                         action='store_true',
                         help='Prints the output of the subprocesses')
     return parser.parse_args()

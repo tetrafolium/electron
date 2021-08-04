@@ -8,7 +8,6 @@ import tarfile
 
 from lib.util import safe_mkdir, scoped_cwd
 
-
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 DIST_DIR = os.path.join(SOURCE_ROOT, 'dist')
 NODE_DIR = os.path.join(SOURCE_ROOT, 'vendor', 'node')
@@ -19,13 +18,8 @@ HEADERS_SUFFIX = [
     '.gypi',
 ]
 HEADERS_DIRS = [
-    'src',
-    'deps/http_parser',
-    'deps/zlib',
-    'deps/uv',
-    'deps/npm',
-    'deps/mdb_v8',
-    'deps/v8/include'
+    'src', 'deps/http_parser', 'deps/zlib', 'deps/uv', 'deps/npm',
+    'deps/mdb_v8', 'deps/v8/include'
 ]
 HEADERS_FILES = [
     'common.gypi',
@@ -57,9 +51,13 @@ def main():
 
 def parse_args():
     parser = argparse.ArgumentParser(description='create node header tarballs')
-    parser.add_argument('-v', '--version', help='Specify the version',
+    parser.add_argument('-v',
+                        '--version',
+                        help='Specify the version',
                         required=True)
-    parser.add_argument('-d', '--directory', help='Specify the output directory',
+    parser.add_argument('-d',
+                        '--directory',
+                        help='Specify the output directory',
                         default=DIST_DIR,
                         required=False)
     return parser.parse_args()

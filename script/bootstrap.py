@@ -13,7 +13,6 @@ from lib.config import BASE_URL, PLATFORM, MIPS64EL_SYSROOT_URL, \
 from lib.util import execute, execute_stdout, get_electron_version, \
     scoped_cwd, download, update_node_modules
 
-
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 VENDOR_DIR = os.path.join(SOURCE_ROOT, 'vendor')
 DOWNLOAD_DIR = os.path.join(VENDOR_DIR, 'download')
@@ -45,8 +44,8 @@ def main():
     if args.build_release_libcc or args.build_debug_libcc:
         build_libchromiumcontent(args.verbose, args.target_arch, defines,
                                  args.build_debug_libcc, args.update_libcc)
-        dist_dir = os.path.join(
-            VENDOR_DIR, 'libchromiumcontent', 'dist', 'main')
+        dist_dir = os.path.join(VENDOR_DIR, 'libchromiumcontent', 'dist',
+                                'main')
         libcc_source_path = os.path.join(dist_dir, 'src')
         libcc_shared_library_path = os.path.join(dist_dir, 'shared_library')
         libcc_static_library_path = os.path.join(dist_dir, 'static_library')
@@ -72,46 +71,65 @@ def main():
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Bootstrap this project')
-    parser.add_argument('-u', '--url',
+    parser.add_argument('-u',
+                        '--url',
                         help='The base URL from which to download '
                         'libchromiumcontent (i.e., the URL you passed to '
                         'libchromiumcontent\'s script/upload script',
                         default=BASE_URL,
                         required=False)
-    parser.add_argument('-v', '--verbose',
+    parser.add_argument('-v',
+                        '--verbose',
                         action='store_true',
                         help='Prints the output of the subprocesses')
-    parser.add_argument('-d', '--dev', action='store_true',
+    parser.add_argument('-d',
+                        '--dev',
+                        action='store_true',
                         help='Do not download static_library build')
-    parser.add_argument('-y', '--yes', '--assume-yes',
+    parser.add_argument('-y',
+                        '--yes',
+                        '--assume-yes',
                         action='store_true',
                         help='Run non-interactively by assuming "yes" to all '
-                             'prompts.')
-    parser.add_argument('--msvs', action='store_true',
+                        'prompts.')
+    parser.add_argument('--msvs',
+                        action='store_true',
                         help='Generate Visual Studio project')
-    parser.add_argument('--target_arch', default=get_target_arch(),
+    parser.add_argument('--target_arch',
+                        default=get_target_arch(),
                         help='Manually specify the arch to build for')
-    parser.add_argument('--clang_dir', default='',
+    parser.add_argument('--clang_dir',
+                        default='',
                         help='Path to clang binaries')
-    parser.add_argument('--disable_clang', action='store_true',
+    parser.add_argument('--disable_clang',
+                        action='store_true',
                         help='Use compilers other than clang for building')
     build_libcc = parser.add_mutually_exclusive_group()
-    build_libcc.add_argument('--build_release_libcc', action='store_true',
-                             help='Build release version of libchromiumcontent')
-    build_libcc.add_argument('--build_debug_libcc', action='store_true',
+    build_libcc.add_argument(
+        '--build_release_libcc',
+        action='store_true',
+        help='Build release version of libchromiumcontent')
+    build_libcc.add_argument('--build_debug_libcc',
+                             action='store_true',
                              help='Build debug version of libchromiumcontent')
-    parser.add_argument('--update_libcc', default=False,
-                        action='store_true', help=('force gclient invocation to '
-                                                   'update libchromiumcontent'))
-    parser.add_argument('--libcc_source_path', required=False,
+    parser.add_argument('--update_libcc',
+                        default=False,
+                        action='store_true',
+                        help=('force gclient invocation to '
+                              'update libchromiumcontent'))
+    parser.add_argument('--libcc_source_path',
+                        required=False,
                         help='The source path of libchromiumcontent. '
-                             'NOTE: All options of libchromiumcontent are '
-                             'required OR let electron choose it')
-    parser.add_argument('--libcc_shared_library_path', required=False,
+                        'NOTE: All options of libchromiumcontent are '
+                        'required OR let electron choose it')
+    parser.add_argument('--libcc_shared_library_path',
+                        required=False,
                         help='The shared library path of libchromiumcontent.')
-    parser.add_argument('--libcc_static_library_path', required=False,
+    parser.add_argument('--libcc_static_library_path',
+                        required=False,
                         help='The static library path of libchromiumcontent.')
-    parser.add_argument('--defines', default='',
+    parser.add_argument('--defines',
+                        default='',
                         help='The build variables passed to gyp')
     return parser.parse_args()
 
@@ -145,21 +163,24 @@ def setup_python_libs():
             execute_stdout([sys.executable, 'setup.py', 'build'])
 
 
-def setup_libchromiumcontent(is_dev, target_arch, url,
-                             libcc_source_path,
+def setup_libchromiumcontent(is_dev, target_arch, url, libcc_source_path,
                              libcc_shared_library_path,
                              libcc_static_library_path):
     target_dir = os.path.join(DOWNLOAD_DIR, 'libchromiumcontent')
     script = os.path.join(VENDOR_DIR, 'libchromiumcontent', 'script',
                           'download')
-    args = ['-f', '-c', get_libchromiumcontent_commit(), '--target_arch',
-            target_arch, url, target_dir]
-    if (libcc_source_path != None and
-        libcc_shared_library_path != None and
-            libcc_static_library_path != None):
-        args += ['--libcc_source_path', libcc_source_path,
-                 '--libcc_shared_library_path', libcc_shared_library_path,
-                 '--libcc_static_library_path', libcc_static_library_path]
+    args = [
+        '-f', '-c',
+        get_libchromiumcontent_commit(), '--target_arch', target_arch, url,
+        target_dir
+    ]
+    if (libcc_source_path != None and libcc_shared_library_path != None
+            and libcc_static_library_path != None):
+        args += [
+            '--libcc_source_path', libcc_source_path,
+            '--libcc_shared_library_path', libcc_shared_library_path,
+            '--libcc_static_library_path', libcc_static_library_path
+        ]
         mkdir_p(target_dir)
     else:
         mkdir_p(DOWNLOAD_DIR)
@@ -177,8 +198,10 @@ def update_win32_python():
 
 def build_libchromiumcontent(verbose, target_arch, defines, debug,
                              force_update):
-    args = [sys.executable,
-            os.path.join(SOURCE_ROOT, 'script', 'build-libchromiumcontent.py')]
+    args = [
+        sys.executable,
+        os.path.join(SOURCE_ROOT, 'script', 'build-libchromiumcontent.py')
+    ]
     if debug:
         args += ['-d']
     if force_update:
@@ -199,16 +222,18 @@ def download_sysroot(target_arch):
         target_arch = 'i386'
     if target_arch == 'x64':
         target_arch = 'amd64'
-    execute_stdout([sys.executable,
-                    os.path.join(SOURCE_ROOT, 'script', 'install-sysroot.py'),
-                    '--arch', target_arch],
+    execute_stdout([
+        sys.executable,
+        os.path.join(SOURCE_ROOT, 'script', 'install-sysroot.py'), '--arch',
+        target_arch
+    ],
                    cwd=VENDOR_DIR)
 
 
 def download_mips64el_toolchain():
     # Download sysroot image.
-    if not os.path.exists(os.path.join(VENDOR_DIR,
-                                       'debian_jessie_mips64-sysroot')):
+    if not os.path.exists(
+            os.path.join(VENDOR_DIR, 'debian_jessie_mips64-sysroot')):
         tar_name = 'debian_jessie_mips64-sysroot.tar.bz2'
         download(tar_name, MIPS64EL_SYSROOT_URL,
                  os.path.join(SOURCE_ROOT, tar_name))
@@ -225,8 +250,8 @@ def download_mips64el_toolchain():
 
 def create_chrome_version_h():
     version_file = os.path.join(VENDOR_DIR, 'libchromiumcontent', 'VERSION')
-    target_file = os.path.join(
-        SOURCE_ROOT, 'atom', 'common', 'chrome_version.h')
+    target_file = os.path.join(SOURCE_ROOT, 'atom', 'common',
+                               'chrome_version.h')
     template_file = os.path.join(SOURCE_ROOT, 'script', 'chrome_version.h.in')
 
     with open(version_file, 'r') as f:
@@ -240,7 +265,8 @@ def create_chrome_version_h():
     should_write = True
     if os.path.isfile(target_file):
         with open(target_file, 'r') as f:
-            should_write = f.read().replace('r', '') != content.replace('r', '')
+            should_write = f.read().replace('r', '') != content.replace(
+                'r', '')
     if should_write:
         with open(target_file, 'w') as f:
             f.write(content)
@@ -270,8 +296,8 @@ def get_libchromiumcontent_commit():
         return commit
 
     # Extract full SHA-1 of libcc submodule commit
-    output = execute(['git', 'submodule', 'status',
-                      'vendor/libchromiumcontent'])
+    output = execute(
+        ['git', 'submodule', 'status', 'vendor/libchromiumcontent'])
     commit = re.split('^(?:\s*)([a-f0-9]{40})(?:\s+)', output)[1]
     return commit
 

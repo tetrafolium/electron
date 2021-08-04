@@ -8,7 +8,6 @@ import tempfile
 from lib.config import s3_config
 from lib.util import download, rm_rf, s3put
 
-
 DIST_URL = 'https://atom.io/download/electron/'
 
 
@@ -31,7 +30,9 @@ def main():
 
 def parse_args():
     parser = argparse.ArgumentParser(description='upload sumsha file')
-    parser.add_argument('-v', '--version', help='Specify the version',
+    parser.add_argument('-v',
+                        '--version',
+                        help='Specify the version',
                         required=True)
     return parser.parse_args()
 
@@ -51,8 +52,7 @@ def get_files_list(version):
 def download_files(url, files):
     directory = tempfile.mkdtemp(prefix='electron-tmp')
     return directory, [
-        download(f, url + f, os.path.join(directory, f))
-        for f in files
+        download(f, url + f, os.path.join(directory, f)) for f in files
     ]
 
 

@@ -9,7 +9,6 @@ import sys
 from lib.config import enable_verbose_mode
 from lib.util import electron_gyp, execute_stdout, rm_rf
 
-
 if sys.platform == 'linux2':
     # On Linux we use python-dbusmock to create a fake system bus and test
     # powerMonitor interaction with org.freedesktop.login1 service. The
@@ -22,7 +21,6 @@ if sys.platform == 'linux2':
         # If not available, the powerMonitor tests will be skipped since
         # DBUS_SYSTEM_BUS_ADDRESS will not be set
         pass
-
 
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -48,9 +46,8 @@ def main():
                                 '{0}.app'.format(PRODUCT_NAME), 'Contents',
                                 'MacOS', PRODUCT_NAME)
         resources_path = os.path.join(SOURCE_ROOT, 'out', config,
-                                      '{0}.app'.format(
-                                          PRODUCT_NAME), 'Contents',
-                                      'Resources')
+                                      '{0}.app'.format(PRODUCT_NAME),
+                                      'Contents', 'Resources')
     elif sys.platform == 'win32':
         electron = os.path.join(SOURCE_ROOT, 'out', config,
                                 '{0}.exe'.format(PROJECT_NAME))
@@ -95,18 +92,22 @@ def parse_args():
                         help='Run tests in CI mode',
                         action='store_true',
                         required=False)
-    parser.add_argument('-g', '--grep',
+    parser.add_argument('-g',
+                        '--grep',
                         help='Only run tests matching <pattern>',
                         metavar='pattern',
                         required=False)
-    parser.add_argument('-i', '--invert',
+    parser.add_argument('-i',
+                        '--invert',
                         help='Inverts --grep matches',
                         action='store_true',
                         required=False)
-    parser.add_argument('-v', '--verbose',
+    parser.add_argument('-v',
+                        '--verbose',
                         action='store_true',
                         help='Prints the output of the subprocesses')
-    parser.add_argument('-c', '--configuration',
+    parser.add_argument('-c',
+                        '--configuration',
                         help='Build configuration to run tests against',
                         default='D',
                         required=False)
@@ -115,8 +116,8 @@ def parse_args():
 
 def install_instrumented_asar_file(resources_path):
     asar_path = os.path.join(resources_path, '{0}.asar'.format(PROJECT_NAME))
-    uninstrumented_path = os.path.join(resources_path,
-                                       '{0}-original.asar'.format(PROJECT_NAME))
+    uninstrumented_path = os.path.join(
+        resources_path, '{0}-original.asar'.format(PROJECT_NAME))
     instrumented_path = os.path.join(SOURCE_ROOT, 'out', 'coverage',
                                      '{0}.asar'.format(PROJECT_NAME))
     shutil.move(asar_path, uninstrumented_path)
@@ -125,15 +126,15 @@ def install_instrumented_asar_file(resources_path):
 
 def restore_uninstrumented_asar_file(resources_path):
     asar_path = os.path.join(resources_path, '{0}.asar'.format(PROJECT_NAME))
-    uninstrumented_path = os.path.join(resources_path,
-                                       '{0}-original.asar'.format(PROJECT_NAME))
+    uninstrumented_path = os.path.join(
+        resources_path, '{0}-original.asar'.format(PROJECT_NAME))
     os.remove(asar_path)
     shutil.move(uninstrumented_path, asar_path)
 
 
 def rebuild_native_modules(verbose, configuration):
-    script_path = os.path.join(
-        SOURCE_ROOT, 'script', 'rebuild-test-modules.py')
+    script_path = os.path.join(SOURCE_ROOT, 'script',
+                               'rebuild-test-modules.py')
     args = ['--configuration', configuration]
     if verbose:
         args += ['--verbose']

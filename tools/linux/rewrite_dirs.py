@@ -2,22 +2,16 @@
 # Copyright (c) 2011 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
-
 """Rewrites paths in -I, -L and other option to be relative to a sysroot."""
 
 import sys
 import os
 import optparse
 
-REWRITE_PREFIX = ['-I',
-                  '-idirafter',
-                  '-imacros',
-                  '-imultilib',
-                  '-include',
-                  '-iprefix',
-                  '-iquote',
-                  '-isystem',
-                  '-L']
+REWRITE_PREFIX = [
+    '-I', '-idirafter', '-imacros', '-imultilib', '-include', '-iprefix',
+    '-iquote', '-isystem', '-L'
+]
 
 
 def RewritePath(path, opts):
@@ -47,8 +41,8 @@ def RewriteLine(line, opts):
                 try:
                     args[i] = RewritePath(args[i], opts)
                 except IndexError:
-                    sys.stderr.write(
-                        'Missing argument following %s\n' % prefix)
+                    sys.stderr.write('Missing argument following %s\n' %
+                                     prefix)
                     break
             elif args[i].startswith(prefix):
                 args[i] = prefix + RewritePath(args[i][len(prefix):], opts)
@@ -59,10 +53,14 @@ def RewriteLine(line, opts):
 
 def main(argv):
     parser = optparse.OptionParser()
-    parser.add_option('-s', '--sysroot', default='/',
+    parser.add_option('-s',
+                      '--sysroot',
+                      default='/',
                       help='sysroot to prepend')
-    parser.add_option('-p', '--strip-prefix',
-                      default='', help='prefix to strip')
+    parser.add_option('-p',
+                      '--strip-prefix',
+                      default='',
+                      help='prefix to strip')
     opts, args = parser.parse_args(argv[1:])
 
     for line in sys.stdin.readlines():

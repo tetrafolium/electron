@@ -16,7 +16,6 @@ from lib.util import electron_gyp, execute, get_electron_version, \
     parse_version, scoped_cwd, s3put
 from lib.github import GitHub
 
-
 ELECTRON_REPO = 'electron/electron'
 ELECTRON_VERSION = get_electron_version()
 
@@ -60,8 +59,8 @@ def main():
         assert tag_exists == args.overwrite, \
             'You have to pass --overwrite to overwrite a published release'
         if not args.overwrite:
-            release = create_or_get_release_draft(github, releases, args.version,
-                                                  tag_exists)
+            release = create_or_get_release_draft(github, releases,
+                                                  args.version, tag_exists)
 
     # Upload Electron with GitHub Releases API.
     upload_electron(github, release, os.path.join(DIST_DIR, DIST_NAME),
@@ -70,9 +69,11 @@ def main():
         upload_electron(github, release, os.path.join(DIST_DIR, SYMBOLS_NAME),
                         args.upload_to_s3)
     if PLATFORM == 'darwin':
+        upload_electron(github, release,
+                        os.path.join(DIST_DIR, 'electron-api.json'),
+                        args.upload_to_s3)
         upload_electron(github, release, os.path.join(DIST_DIR,
-                                                      'electron-api.json'), args.upload_to_s3)
-        upload_electron(github, release, os.path.join(DIST_DIR, 'electron.d.ts'),
+                                                      'electron.d.ts'),
                         args.upload_to_s3)
         upload_electron(github, release, os.path.join(DIST_DIR, DSYM_NAME),
                         args.upload_to_s3)
@@ -105,15 +106,20 @@ def main():
 
 def parse_args():
     parser = argparse.ArgumentParser(description='upload distribution file')
-    parser.add_argument('-v', '--version', help='Specify the version',
+    parser.add_argument('-v',
+                        '--version',
+                        help='Specify the version',
                         default=ELECTRON_VERSION)
-    parser.add_argument('-o', '--overwrite',
+    parser.add_argument('-o',
+                        '--overwrite',
                         help='Overwrite a published release',
                         action='store_true')
-    parser.add_argument('-p', '--publish-release',
+    parser.add_argument('-p',
+                        '--publish-release',
                         help='Publish the release',
                         action='store_true')
-    parser.add_argument('-s', '--upload_to_s3',
+    parser.add_argument('-s',
+                        '--upload_to_s3',
                         help='Upload assets to s3 bucket',
                         dest='upload_to_s3',
                         action='store_true',
@@ -147,8 +153,8 @@ def get_electron_build_version():
 def dist_newer_than_head():
     with scoped_cwd(SOURCE_ROOT):
         try:
-            head_time = subprocess.check_output(['git', 'log', '--pretty=format:%at',
-                                                 '-n', '1']).strip()
+            head_time = subprocess.check_output(
+                ['git', 'log', '--pretty=format:%at', '-n', '1']).strip()
             dist_time = os.path.getmtime(os.path.join(DIST_DIR, DIST_NAME))
         except OSError as e:
             if e.errno != errno.ENOENT:
@@ -198,8 +204,11 @@ def create_release_draft(github, tag):
         sys.stderr.write('Quit due to empty release note.\n')
         sys.exit(0)
 
-    data = dict(tag_name=tag, name=name, body=body,
-                draft=True, prerelease=True)
+    data = dict(tag_name=tag,
+                name=name,
+                body=body,
+                draft=True,
+                prerelease=True)
     r = github.repos(ELECTRON_REPO).releases.post(data=data)
     return r
 

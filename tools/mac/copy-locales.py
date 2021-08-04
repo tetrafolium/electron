@@ -14,7 +14,9 @@ def main(argv):
     parser = optparse.OptionParser()
     usage = 'usage: %s [options ...] src dest locale_list'
     parser.set_usage(usage.replace('%s', '%prog'))
-    parser.add_option('-d', dest='dash_to_underscore', action="store_true",
+    parser.add_option('-d',
+                      dest='dash_to_underscore',
+                      action="store_true",
                       default=False,
                       help='map "en-US" to "en" and "-" to "_" in locales')
 

@@ -7,7 +7,6 @@ import sys
 
 from lib.util import electron_gyp, rm_rf
 
-
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 FFMPEG_LIBCC_PATH = os.path.join(SOURCE_ROOT, 'vendor', 'download',
                                  'libchromiumcontent', 'ffmpeg')
@@ -29,10 +28,9 @@ def main():
     if sys.platform == 'darwin':
         electron = os.path.join(app_path, 'Contents', 'MacOS', PRODUCT_NAME)
         ffmpeg_name = 'libffmpeg.dylib'
-        ffmpeg_app_path = os.path.join(app_path, 'Contents', 'Frameworks',
-                                       '{0} Framework.framework'.format(
-                                           PROJECT_NAME),
-                                       'Libraries')
+        ffmpeg_app_path = os.path.join(
+            app_path, 'Contents', 'Frameworks',
+            '{0} Framework.framework'.format(PROJECT_NAME), 'Libraries')
     elif sys.platform == 'win32':
         electron = os.path.join(app_path, '{0}.exe'.format(PROJECT_NAME))
         ffmpeg_app_path = app_path
@@ -47,8 +45,8 @@ def main():
 
     returncode = 0
     try:
-        test_path = os.path.join(
-            'spec', 'fixtures', 'no-proprietary-codecs.js')
+        test_path = os.path.join('spec', 'fixtures',
+                                 'no-proprietary-codecs.js')
         subprocess.check_call([electron, test_path] + sys.argv[1:])
     except subprocess.CalledProcessError as e:
         returncode = e.returncode
@@ -61,8 +59,8 @@ def main():
 # Create copy of app to install ffmpeg library without proprietary codecs into
 def create_app_copy(config):
     initial_app_path = os.path.join(SOURCE_ROOT, 'out', config)
-    app_path = os.path.join(
-        SOURCE_ROOT, 'out', config + '-no-proprietary-codecs')
+    app_path = os.path.join(SOURCE_ROOT, 'out',
+                            config + '-no-proprietary-codecs')
 
     if sys.platform == 'darwin':
         app_name = '{0}.app'.format(PRODUCT_NAME)

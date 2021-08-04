@@ -9,7 +9,6 @@ import sys
 from lib.config import PLATFORM, get_target_arch, s3_config
 from lib.util import safe_mkdir, scoped_cwd, s3put
 
-
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 DIST_DIR = os.path.join(SOURCE_ROOT, 'dist')
 OUT_DIR = os.path.join(SOURCE_ROOT, 'out', 'R')
@@ -25,17 +24,21 @@ def main():
 
 def parse_args():
     parser = argparse.ArgumentParser(description='upload sumsha file')
-    parser.add_argument('-v', '--version', help='Specify the version',
+    parser.add_argument('-v',
+                        '--version',
+                        help='Specify the version',
                         required=True)
     return parser.parse_args()
 
 
 def upload_node(bucket, access_key, secret_key, version):
     with scoped_cwd(DIST_DIR):
-        s3put(bucket, access_key, secret_key, DIST_DIR,
-              'atom-shell/dist/{0}'.format(version), glob.glob('node-*.tar.gz'))
-        s3put(bucket, access_key, secret_key, DIST_DIR,
-              'atom-shell/dist/{0}'.format(version), glob.glob('iojs-*.tar.gz'))
+        s3put(bucket, access_key, secret_key,
+              DIST_DIR, 'atom-shell/dist/{0}'.format(version),
+              glob.glob('node-*.tar.gz'))
+        s3put(bucket, access_key, secret_key,
+              DIST_DIR, 'atom-shell/dist/{0}'.format(version),
+              glob.glob('iojs-*.tar.gz'))
 
     if PLATFORM == 'win32':
         if get_target_arch() == 'ia32':
