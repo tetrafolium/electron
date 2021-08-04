@@ -269,7 +269,7 @@ bool UnlinkPath(const base::FilePath& path) {
 // Create a symlink. Returns true on success.
 bool SymlinkPath(const base::FilePath& target, const base::FilePath& path) {
   if (!base::CreateSymbolicLink(target, path)) {
-    // Double check the value in case symlink suceeded but we got an incorrect
+    // Double check the value in case symlink succeeded but we got an incorrect
     // failure due to NFS packet loss & retry.
     int saved_errno = errno;
     if (ReadLink(path) != target) {

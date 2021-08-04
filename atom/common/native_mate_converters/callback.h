@@ -106,10 +106,10 @@ struct V8FunctionInvoker<ReturnType(ArgTypes...)> {
   }
 };
 
-// Helper to pass a C++ funtion to JavaScript.
-using Translater = base::Callback<void(Arguments* args)>;
+// Helper to pass a C++ function to JavaScript.
+using Translator = base::Callback<void(Arguments* args)>;
 v8::Local<v8::Value> CreateFunctionFromTranslater(v8::Isolate* isolate,
-                                                  const Translater& translater);
+                                                  const Translator& translator);
 v8::Local<v8::Value> BindFunctionWith(v8::Isolate* isolate,
                                       v8::Local<v8::Context> context,
                                       v8::Local<v8::Function> func,
@@ -138,9 +138,9 @@ struct Converter<base::Callback<Sig>> {
                                    const base::Callback<Sig>& val) {
     // We don't use CreateFunctionTemplate here because it creates a new
     // FunctionTemplate everytime, which is cached by V8 and causes leaks.
-    internal::Translater translater =
+    internal::Translator translator =
         base::Bind(&internal::NativeFunctionInvoker<Sig>::Go, val);
-    return internal::CreateFunctionFromTranslater(isolate, translater);
+    return internal::CreateFunctionFromTranslater(isolate, translator);
   }
   static bool FromV8(v8::Isolate* isolate,
                      v8::Local<v8::Value> val,

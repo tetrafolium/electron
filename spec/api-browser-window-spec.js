@@ -2640,18 +2640,18 @@ let postData
     URIError
   ])
 
-    it('doesnt throw when no calback is provided', () => {
+    it('doesnt throw when no callback is provided', () => {
       const result = ipcRenderer.sendSync('executeJavaScript', code, false)
       assert.equal(result, 'success')
     })
-    it('returns result when calback is provided', (done) => {
+    it('returns result when callback is provided', (done) => {
       ipcRenderer.send('executeJavaScript', code, true)
       ipcRenderer.once('executeJavaScript-response', function (event, result) {
   assert.equal(result, expected)
   done()
       })
     })
-    it('returns result if the code returns an asyncronous promise', (done) => {
+    it('returns result if the code returns an asynchronous promise', (done) => {
       ipcRenderer.send('executeJavaScript', asyncCode, true)
       ipcRenderer.once('executeJavaScript-response', (event, result) => {
         assert.equal(result, expected)
@@ -2672,7 +2672,7 @@ let postData
         done()
       })
     })
-    it('resolves the returned promise with the result if the code returns an asyncronous promise', (done) => {
+    it('resolves the returned promise with the result if the code returns an asynchronous promise', (done) => {
       ipcRenderer.send('executeJavaScript', asyncCode, true)
       ipcRenderer.once('executeJavaScript-promise-response', (event, result) => {
         assert.equal(result, expected)
