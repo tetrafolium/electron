@@ -109,7 +109,7 @@ inspecode:
     #### prospector
     ####    Killed
     prospector:       ### for Python
-      thresholds: {num-issues: 796}
+      thresholds: {num-issues: 795}
 
     pycodestyle:      ### for Python
       options:
@@ -124,7 +124,7 @@ inspecode:
       options:
         --disable:
         - W0311     # (bad-indentation)
-      thresholds: {num-issues: 348}
+      thresholds: {num-issues: 347}
 
     pytest:
       thresholds: {num-issues: 0}   # found no input files
