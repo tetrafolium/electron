@@ -10,10 +10,10 @@
 PrintingUIWebContentsObserver::PrintingUIWebContentsObserver(
     content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents) {
-  DCHECK(content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
+    DCHECK(content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
 }
 
 gfx::NativeView PrintingUIWebContentsObserver::GetParentView() {
-  DCHECK(content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
-  return web_contents() ? web_contents()->GetNativeView() : NULL;
+    DCHECK(content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
+    return web_contents() ? web_contents()->GetNativeView() : NULL;
 }

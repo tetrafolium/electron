@@ -17,11 +17,11 @@ namespace atom {
 namespace {
 
 std::string GetExtFromURL(const GURL& url) {
-  std::string spec = url.spec();
-  size_t index = spec.find_last_of('.');
-  if (index == std::string::npos || index == spec.size())
-    return std::string();
-  return spec.substr(index + 1, spec.size() - index - 1);
+    std::string spec = url.spec();
+    size_t index = spec.find_last_of('.');
+    if (index == std::string::npos || index == spec.size())
+        return std::string();
+    return spec.substr(index + 1, spec.size() - index - 1);
 }
 
 }  // namespace
@@ -33,57 +33,57 @@ URLRequestBufferJob::URLRequestBufferJob(
 }
 
 void URLRequestBufferJob::StartAsync(std::unique_ptr<base::Value> options) {
-  const base::Value* binary = nullptr;
-  if (options->IsType(base::Value::Type::DICTIONARY)) {
-    base::DictionaryValue* dict =
-        static_cast<base::DictionaryValue*>(options.get());
-    dict->GetString("mimeType", &mime_type_);
-    dict->GetString("charset", &charset_);
-    dict->GetBinary("data", &binary);
-  } else if (options->IsType(base::Value::Type::BINARY)) {
-    binary = options.get();
-  }
+    const base::Value* binary = nullptr;
+    if (options->IsType(base::Value::Type::DICTIONARY)) {
+        base::DictionaryValue* dict =
+            static_cast<base::DictionaryValue*>(options.get());
+        dict->GetString("mimeType", &mime_type_);
+        dict->GetString("charset", &charset_);
+        dict->GetBinary("data", &binary);
+    } else if (options->IsType(base::Value::Type::BINARY)) {
+        binary = options.get();
+    }
 
-  if (mime_type_.empty()) {
-    std::string ext = GetExtFromURL(request()->url());
+    if (mime_type_.empty()) {
+        std::string ext = GetExtFromURL(request()->url());
 #if defined(OS_WIN)
-    net::GetWellKnownMimeTypeFromExtension(base::UTF8ToUTF16(ext), &mime_type_);
+        net::GetWellKnownMimeTypeFromExtension(base::UTF8ToUTF16(ext), &mime_type_);
 #else
-    net::GetWellKnownMimeTypeFromExtension(ext, &mime_type_);
+        net::GetWellKnownMimeTypeFromExtension(ext, &mime_type_);
 #endif
-  }
+    }
 
-  if (!binary) {
-    NotifyStartError(net::URLRequestStatus(
-          net::URLRequestStatus::FAILED, net::ERR_NOT_IMPLEMENTED));
-    return;
-  }
+    if (!binary) {
+        NotifyStartError(net::URLRequestStatus(
+                             net::URLRequestStatus::FAILED, net::ERR_NOT_IMPLEMENTED));
+        return;
+    }
 
-  data_ = new base::RefCountedBytes(
-      reinterpret_cast<const unsigned char*>(binary->GetBlob().data()),
-      binary->GetBlob().size());
-  status_code_ = net::HTTP_OK;
-  net::URLRequestSimpleJob::Start();
+    data_ = new base::RefCountedBytes(
+        reinterpret_cast<const unsigned char*>(binary->GetBlob().data()),
+        binary->GetBlob().size());
+    status_code_ = net::HTTP_OK;
+    net::URLRequestSimpleJob::Start();
 }
 
 void URLRequestBufferJob::GetResponseInfo(net::HttpResponseInfo* info) {
-  std::string status("HTTP/1.1 200 OK");
-  status.append(base::IntToString(status_code_));
-  status.append(" ");
-  status.append(net::GetHttpReasonPhrase(status_code_));
-  status.append("\0\0", 2);
-  auto* headers = new net::HttpResponseHeaders(status);
+    std::string status("HTTP/1.1 200 OK");
+    status.append(base::IntToString(status_code_));
+    status.append(" ");
+    status.append(net::GetHttpReasonPhrase(status_code_));
+    status.append("\0\0", 2);
+    auto* headers = new net::HttpResponseHeaders(status);
 
-  headers->AddHeader(kCORSHeader);
+    headers->AddHeader(kCORSHeader);
 
-  if (!mime_type_.empty()) {
-    std::string content_type_header(net::HttpRequestHeaders::kContentType);
-    content_type_header.append(": ");
-    content_type_header.append(mime_type_);
-    headers->AddHeader(content_type_header);
-  }
+    if (!mime_type_.empty()) {
+        std::string content_type_header(net::HttpRequestHeaders::kContentType);
+        content_type_header.append(": ");
+        content_type_header.append(mime_type_);
+        headers->AddHeader(content_type_header);
+    }
 
-  info->headers = headers;
+    info->headers = headers;
 }
 
 int URLRequestBufferJob::GetRefCountedData(
@@ -91,10 +91,10 @@ int URLRequestBufferJob::GetRefCountedData(
     std::string* charset,
     scoped_refptr<base::RefCountedMemory>* data,
     const net::CompletionCallback& callback) const {
-  *mime_type = mime_type_;
-  *charset = charset_;
-  *data = data_;
-  return net::OK;
+    *mime_type = mime_type_;
+    *charset = charset_;
+    *data = data_;
+    return net::OK;
 }
 
 }  // namespace atom

@@ -16,29 +16,29 @@ class Size;
 namespace atom {
 
 class GuestViewContainer : public content::BrowserPluginDelegate {
- public:
-  typedef base::Callback<void(const gfx::Size&)> ResizeCallback;
+public:
+    typedef base::Callback<void(const gfx::Size&)> ResizeCallback;
 
-  explicit GuestViewContainer(content::RenderFrame* render_frame);
-  ~GuestViewContainer() override;
+    explicit GuestViewContainer(content::RenderFrame* render_frame);
+    ~GuestViewContainer() override;
 
-  static GuestViewContainer* FromID(int element_instance_id);
+    static GuestViewContainer* FromID(int element_instance_id);
 
-  void RegisterElementResizeCallback(const ResizeCallback& callback);
+    void RegisterElementResizeCallback(const ResizeCallback& callback);
 
-  // content::BrowserPluginDelegate:
-  void SetElementInstanceID(int element_instance_id) final;
-  void DidResizeElement(const gfx::Size& new_size) final;
-  base::WeakPtr<BrowserPluginDelegate> GetWeakPtr() final;
+    // content::BrowserPluginDelegate:
+    void SetElementInstanceID(int element_instance_id) final;
+    void DidResizeElement(const gfx::Size& new_size) final;
+    base::WeakPtr<BrowserPluginDelegate> GetWeakPtr() final;
 
- private:
-  int element_instance_id_;
+private:
+    int element_instance_id_;
 
-  ResizeCallback element_resize_callback_;
+    ResizeCallback element_resize_callback_;
 
-  base::WeakPtrFactory<GuestViewContainer> weak_ptr_factory_;
+    base::WeakPtrFactory<GuestViewContainer> weak_ptr_factory_;
 
-  DISALLOW_COPY_AND_ASSIGN(GuestViewContainer);
+    DISALLOW_COPY_AND_ASSIGN(GuestViewContainer);
 };
 
 }  // namespace atom

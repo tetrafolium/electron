@@ -21,36 +21,36 @@ using content::BrowserThread;
 namespace {
 
 struct Role {
-  SEL selector;
-  const char* role;
+    SEL selector;
+    const char* role;
 };
 Role kRolesMap[] = {
-  { @selector(orderFrontStandardAboutPanel:), "about" },
-  { @selector(hide:), "hide" },
-  { @selector(hideOtherApplications:), "hideothers" },
-  { @selector(unhideAllApplications:), "unhide" },
-  { @selector(arrangeInFront:), "front" },
-  { @selector(undo:), "undo" },
-  { @selector(redo:), "redo" },
-  { @selector(cut:), "cut" },
-  { @selector(copy:), "copy" },
-  { @selector(paste:), "paste" },
-  { @selector(delete:), "delete" },
-  { @selector(pasteAndMatchStyle:), "pasteandmatchstyle" },
-  { @selector(selectAll:), "selectall" },
-  { @selector(startSpeaking:), "startspeaking" },
-  { @selector(stopSpeaking:), "stopspeaking" },
-  { @selector(performMiniaturize:), "minimize" },
-  { @selector(performClose:), "close" },
-  { @selector(performZoom:), "zoom" },
-  { @selector(terminate:), "quit" },
-  { @selector(toggleFullScreen:), "togglefullscreen" },
-  { @selector(toggleTabBar:), "toggletabbar" },
-  { @selector(selectNextTab:), "selectnexttab" },
-  { @selector(selectPreviousTab:), "selectprevioustab" },
-  { @selector(mergeAllWindows:), "mergeallwindows" },
-  { @selector(moveTabToNewWindow:), "movetabtonewwindow" },
-  { @selector(clearRecentDocuments:), "clearrecentdocuments" },
+    { @selector(orderFrontStandardAboutPanel:), "about" },
+    { @selector(hide:), "hide" },
+    { @selector(hideOtherApplications:), "hideothers" },
+    { @selector(unhideAllApplications:), "unhide" },
+    { @selector(arrangeInFront:), "front" },
+    { @selector(undo:), "undo" },
+    { @selector(redo:), "redo" },
+    { @selector(cut:), "cut" },
+    { @selector(copy:), "copy" },
+    { @selector(paste:), "paste" },
+    { @selector(delete:), "delete" },
+    { @selector(pasteAndMatchStyle:), "pasteandmatchstyle" },
+    { @selector(selectAll:), "selectall" },
+    { @selector(startSpeaking:), "startspeaking" },
+    { @selector(stopSpeaking:), "stopspeaking" },
+    { @selector(performMiniaturize:), "minimize" },
+    { @selector(performClose:), "close" },
+    { @selector(performZoom:), "zoom" },
+    { @selector(terminate:), "quit" },
+    { @selector(toggleFullScreen:), "togglefullscreen" },
+    { @selector(toggleTabBar:), "toggletabbar" },
+    { @selector(selectNextTab:), "selectnexttab" },
+    { @selector(selectPreviousTab:), "selectprevioustab" },
+    { @selector(mergeAllWindows:), "mergeallwindows" },
+    { @selector(moveTabToNewWindow:), "movetabtonewwindow" },
+    { @selector(clearRecentDocuments:), "clearrecentdocuments" },
 };
 
 }  // namespace
@@ -66,280 +66,280 @@ static base::scoped_nsobject<NSMenu> recentDocumentsMenuSwap_;
 @synthesize model = model_;
 
 - (id)initWithModel:(atom::AtomMenuModel*)model useDefaultAccelerator:(BOOL)use {
-  if ((self = [super init])) {
-    model_ = model;
-    isMenuOpen_ = NO;
-    useDefaultAccelerator_ = use;
-    [self menu];
-  }
-  return self;
+    if ((self = [super init])) {
+        model_ = model;
+        isMenuOpen_ = NO;
+        useDefaultAccelerator_ = use;
+        [self menu];
+    }
+    return self;
 }
 
 - (void)dealloc {
-  [menu_ setDelegate:nil];
+    [menu_ setDelegate:nil];
 
-  // Close the menu if it is still open. This could happen if a tab gets closed
-  // while its context menu is still open.
-  [self cancel];
+    // Close the menu if it is still open. This could happen if a tab gets closed
+    // while its context menu is still open.
+    [self cancel];
 
-  model_ = nil;
+    model_ = nil;
 
-  [super dealloc];
+    [super dealloc];
 }
 
 - (void)setCloseCallback:(const base::Callback<void()>&)callback {
-  closeCallback = callback;
+    closeCallback = callback;
 }
 
 - (void)populateWithModel:(atom::AtomMenuModel*)model {
-  if (!menu_)
-    return;
+    if (!menu_)
+        return;
 
-  if (!recentDocumentsMenuItem_) {
-    // Locate & retain the recent documents menu item
-    recentDocumentsMenuItem_.reset([[[[[NSApp mainMenu]
-        itemWithTitle:@"Electron"] submenu]
-        itemWithTitle:@"Open Recent"]
-        retain]);
-  }
+    if (!recentDocumentsMenuItem_) {
+        // Locate & retain the recent documents menu item
+        recentDocumentsMenuItem_.reset([[[[[NSApp mainMenu]
+                                           itemWithTitle:@"Electron"] submenu]
+                                         itemWithTitle:@"Open Recent"]
+                                        retain]);
+    }
 
-  model_ = model;
-  [menu_ removeAllItems];
+    model_ = model;
+    [menu_ removeAllItems];
 
-  const int count = model->GetItemCount();
-  for (int index = 0; index < count; index++) {
-    if (model->GetTypeAt(index) == atom::AtomMenuModel::TYPE_SEPARATOR)
-      [self addSeparatorToMenu:menu_ atIndex:index];
-    else
-      [self addItemToMenu:menu_ atIndex:index fromModel:model];
-  }
+    const int count = model->GetItemCount();
+    for (int index = 0; index < count; index++) {
+        if (model->GetTypeAt(index) == atom::AtomMenuModel::TYPE_SEPARATOR)
+            [self addSeparatorToMenu:menu_ atIndex:index];
+        else
+            [self addItemToMenu:menu_ atIndex:index fromModel:model];
+    }
 }
 
 - (void)cancel {
-  if (isMenuOpen_) {
-    [menu_ cancelTracking];
-    model_->MenuWillClose();
-    isMenuOpen_ = NO;
-  }
+    if (isMenuOpen_) {
+        [menu_ cancelTracking];
+        model_->MenuWillClose();
+        isMenuOpen_ = NO;
+    }
 }
 
 // Creates a NSMenu from the given model. If the model has submenus, this can
 // be invoked recursively.
 - (NSMenu*)menuFromModel:(atom::AtomMenuModel*)model {
-  NSMenu* menu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+    NSMenu* menu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
 
-  const int count = model->GetItemCount();
-  for (int index = 0; index < count; index++) {
-    if (model->GetTypeAt(index) == atom::AtomMenuModel::TYPE_SEPARATOR)
-      [self addSeparatorToMenu:menu atIndex:index];
-    else
-      [self addItemToMenu:menu atIndex:index fromModel:model];
-  }
+    const int count = model->GetItemCount();
+    for (int index = 0; index < count; index++) {
+        if (model->GetTypeAt(index) == atom::AtomMenuModel::TYPE_SEPARATOR)
+            [self addSeparatorToMenu:menu atIndex:index];
+        else
+            [self addItemToMenu:menu atIndex:index fromModel:model];
+    }
 
-  return menu;
+    return menu;
 }
 
 // Adds a separator item at the given index. As the separator doesn't need
 // anything from the model, this method doesn't need the model index as the
 // other method below does.
 - (void)addSeparatorToMenu:(NSMenu*)menu
-                   atIndex:(int)index {
-  NSMenuItem* separator = [NSMenuItem separatorItem];
-  [menu insertItem:separator atIndex:index];
+    atIndex:(int)index {
+    NSMenuItem* separator = [NSMenuItem separatorItem];
+    [menu insertItem:separator atIndex:index];
 }
 
 // Empties the source menu items to the destination.
 - (void)moveMenuItems:(NSMenu*)source
-                   to:(NSMenu*)destination {
-  const long count = [source numberOfItems];
-  for (long index = 0; index < count; index++) {
-    NSMenuItem* removedItem = [[[source itemAtIndex:0] retain] autorelease];
-    [source removeItemAtIndex:0];
-    [destination addItem:removedItem];
-  }
+    to:(NSMenu*)destination {
+    const long count = [source numberOfItems];
+    for (long index = 0; index < count; index++) {
+        NSMenuItem* removedItem = [[[source itemAtIndex:0] retain] autorelease];
+        [source removeItemAtIndex:0];
+        [destination addItem:removedItem];
+    }
 }
 
 // Replaces the item's submenu instance with the singleton recent documents
 // menu. Previously replaced menu items will be recovered.
 - (void)replaceSubmenuShowingRecentDocuments:(NSMenuItem*)item {
-  NSMenu* recentDocumentsMenu = [[[recentDocumentsMenuItem_ submenu]
-      retain] autorelease];
+    NSMenu* recentDocumentsMenu = [[[recentDocumentsMenuItem_ submenu]
+                                    retain] autorelease];
 
-  // Remove menu items in recent documents back to swap menu
-  [self moveMenuItems:recentDocumentsMenu
-                   to:recentDocumentsMenuSwap_];
-  // Swap back the submenu
-  [recentDocumentsMenuItem_ setSubmenu:recentDocumentsMenuSwap_];
+    // Remove menu items in recent documents back to swap menu
+    [self moveMenuItems:recentDocumentsMenu
+          to:recentDocumentsMenuSwap_];
+    // Swap back the submenu
+    [recentDocumentsMenuItem_ setSubmenu:recentDocumentsMenuSwap_];
 
-  // Retain the item's submenu for a future recovery
-  recentDocumentsMenuSwap_.reset([[item submenu] retain]);
+    // Retain the item's submenu for a future recovery
+    recentDocumentsMenuSwap_.reset([[item submenu] retain]);
 
-  // Repopulate with items from the submenu to be replaced
-  [self moveMenuItems:recentDocumentsMenuSwap_
-                   to:recentDocumentsMenu];
-  // Update the submenu's title
-  [recentDocumentsMenu setTitle:[recentDocumentsMenuSwap_ title]];
-  // Replace submenu
-  [item setSubmenu:recentDocumentsMenu];
+    // Repopulate with items from the submenu to be replaced
+    [self moveMenuItems:recentDocumentsMenuSwap_
+          to:recentDocumentsMenu];
+    // Update the submenu's title
+    [recentDocumentsMenu setTitle:[recentDocumentsMenuSwap_ title]];
+    // Replace submenu
+    [item setSubmenu:recentDocumentsMenu];
 
-  // Remember the new menu item that carries the recent documents menu
-  recentDocumentsMenuItem_.reset([item retain]);
+    // Remember the new menu item that carries the recent documents menu
+    recentDocumentsMenuItem_.reset([item retain]);
 }
 
 // Adds an item or a hierarchical menu to the item at the |index|,
 // associated with the entry in the model identified by |modelIndex|.
 - (void)addItemToMenu:(NSMenu*)menu
-              atIndex:(NSInteger)index
-            fromModel:(atom::AtomMenuModel*)model {
-  base::string16 label16 = model->GetLabelAt(index);
-  NSString* label = l10n_util::FixUpWindowsStyleLabel(label16);
+    atIndex:(NSInteger)index
+    fromModel:(atom::AtomMenuModel*)model {
+    base::string16 label16 = model->GetLabelAt(index);
+    NSString* label = l10n_util::FixUpWindowsStyleLabel(label16);
 
-  base::scoped_nsobject<NSMenuItem> item(
-      [[NSMenuItem alloc] initWithTitle:label
-                                 action:@selector(itemSelected:)
-                          keyEquivalent:@""]);
+    base::scoped_nsobject<NSMenuItem> item(
+        [[NSMenuItem alloc] initWithTitle:label
+                            action:@selector(itemSelected:)
+                            keyEquivalent:@""]);
 
-  // If the menu item has an icon, set it.
-  gfx::Image icon;
-  if (model->GetIconAt(index, &icon) && !icon.IsEmpty())
-    [item setImage:icon.ToNSImage()];
+    // If the menu item has an icon, set it.
+    gfx::Image icon;
+    if (model->GetIconAt(index, &icon) && !icon.IsEmpty())
+        [item setImage:icon.ToNSImage()];
 
-  base::string16 role = model->GetRoleAt(index);
-  atom::AtomMenuModel::ItemType type = model->GetTypeAt(index);
-  if (type == atom::AtomMenuModel::TYPE_SUBMENU) {
-    // Recursively build a submenu from the sub-model at this index.
-    [item setTarget:nil];
-    [item setAction:nil];
-    atom::AtomMenuModel* submenuModel = static_cast<atom::AtomMenuModel*>(
-        model->GetSubmenuModelAt(index));
-    NSMenu* submenu = [self menuFromModel:submenuModel];
-    [submenu setTitle:[item title]];
-    [item setSubmenu:submenu];
+    base::string16 role = model->GetRoleAt(index);
+    atom::AtomMenuModel::ItemType type = model->GetTypeAt(index);
+    if (type == atom::AtomMenuModel::TYPE_SUBMENU) {
+        // Recursively build a submenu from the sub-model at this index.
+        [item setTarget:nil];
+        [item setAction:nil];
+        atom::AtomMenuModel* submenuModel = static_cast<atom::AtomMenuModel*>(
+                                                model->GetSubmenuModelAt(index));
+        NSMenu* submenu = [self menuFromModel:submenuModel];
+        [submenu setTitle:[item title]];
+        [item setSubmenu:submenu];
 
-    // Set submenu's role.
-    if (role == base::ASCIIToUTF16("window") && [submenu numberOfItems])
-      [NSApp setWindowsMenu:submenu];
-    else if (role == base::ASCIIToUTF16("help"))
-      [NSApp setHelpMenu:submenu];
-    else if (role == base::ASCIIToUTF16("services"))
-      [NSApp setServicesMenu:submenu];
-    else if (role == base::ASCIIToUTF16("recentdocuments"))
-      [self replaceSubmenuShowingRecentDocuments:item];
-  } else {
-    // The MenuModel works on indexes so we can't just set the command id as the
-    // tag like we do in other menus. Also set the represented object to be
-    // the model so hierarchical menus check the correct index in the correct
-    // model. Setting the target to |self| allows this class to participate
-    // in validation of the menu items.
-    [item setTag:index];
-    NSValue* modelObject = [NSValue valueWithPointer:model];
-    [item setRepresentedObject:modelObject];  // Retains |modelObject|.
-    ui::Accelerator accelerator;
-    if (model->GetAcceleratorAtWithParams(
-            index, useDefaultAccelerator_, &accelerator)) {
-      const ui::PlatformAcceleratorCocoa* platformAccelerator =
-          static_cast<const ui::PlatformAcceleratorCocoa*>(
-              accelerator.platform_accelerator());
-      if (platformAccelerator) {
-        [item setKeyEquivalent:platformAccelerator->characters()];
-        [item setKeyEquivalentModifierMask:
-            platformAccelerator->modifier_mask()];
-      }
-    }
-
-    // Set menu item's role.
-    [item setTarget:self];
-    if (!role.empty()) {
-      for (const Role& pair : kRolesMap) {
-        if (role == base::ASCIIToUTF16(pair.role)) {
-          [item setTarget:nil];
-          [item setAction:pair.selector];
-          break;
+        // Set submenu's role.
+        if (role == base::ASCIIToUTF16("window") && [submenu numberOfItems])
+            [NSApp setWindowsMenu:submenu];
+        else if (role == base::ASCIIToUTF16("help"))
+            [NSApp setHelpMenu:submenu];
+        else if (role == base::ASCIIToUTF16("services"))
+            [NSApp setServicesMenu:submenu];
+        else if (role == base::ASCIIToUTF16("recentdocuments"))
+            [self replaceSubmenuShowingRecentDocuments:item];
+    } else {
+        // The MenuModel works on indexes so we can't just set the command id as the
+        // tag like we do in other menus. Also set the represented object to be
+        // the model so hierarchical menus check the correct index in the correct
+        // model. Setting the target to |self| allows this class to participate
+        // in validation of the menu items.
+        [item setTag:index];
+        NSValue* modelObject = [NSValue valueWithPointer:model];
+        [item setRepresentedObject:modelObject];  // Retains |modelObject|.
+        ui::Accelerator accelerator;
+        if (model->GetAcceleratorAtWithParams(
+                    index, useDefaultAccelerator_, &accelerator)) {
+            const ui::PlatformAcceleratorCocoa* platformAccelerator =
+                static_cast<const ui::PlatformAcceleratorCocoa*>(
+                    accelerator.platform_accelerator());
+            if (platformAccelerator) {
+                [item setKeyEquivalent:platformAccelerator->characters()];
+                [item setKeyEquivalentModifierMask:
+                      platformAccelerator->modifier_mask()];
+            }
         }
-      }
+
+        // Set menu item's role.
+        [item setTarget:self];
+        if (!role.empty()) {
+            for (const Role& pair : kRolesMap) {
+                if (role == base::ASCIIToUTF16(pair.role)) {
+                    [item setTarget:nil];
+                    [item setAction:pair.selector];
+                    break;
+                }
+            }
+        }
     }
-  }
-  [menu insertItem:item atIndex:index];
+    [menu insertItem:item atIndex:index];
 }
 
 // Called before the menu is to be displayed to update the state (enabled,
 // radio, etc) of each item in the menu. Also will update the title if
 // the item is marked as "dynamic".
 - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)item {
-  SEL action = [item action];
-  if (action != @selector(itemSelected:))
-    return NO;
+    SEL action = [item action];
+    if (action != @selector(itemSelected:))
+        return NO;
 
-  NSInteger modelIndex = [item tag];
-  atom::AtomMenuModel* model =
-      static_cast<atom::AtomMenuModel*>(
-          [[(id)item representedObject] pointerValue]);
-  DCHECK(model);
-  if (model) {
-    BOOL checked = model->IsItemCheckedAt(modelIndex);
-    DCHECK([(id)item isKindOfClass:[NSMenuItem class]]);
-    [(id)item setState:(checked ? NSOnState : NSOffState)];
-    [(id)item setHidden:(!model->IsVisibleAt(modelIndex))];
-    if (model->IsItemDynamicAt(modelIndex)) {
-      // Update the label and the icon.
-      NSString* label =
-          l10n_util::FixUpWindowsStyleLabel(model->GetLabelAt(modelIndex));
-      [(id)item setTitle:label];
+    NSInteger modelIndex = [item tag];
+    atom::AtomMenuModel* model =
+        static_cast<atom::AtomMenuModel*>(
+            [[(id)item representedObject] pointerValue]);
+    DCHECK(model);
+    if (model) {
+        BOOL checked = model->IsItemCheckedAt(modelIndex);
+        DCHECK([(id)item isKindOfClass:[NSMenuItem class]]);
+        [(id)item setState:(checked ? NSOnState : NSOffState)];
+        [(id)item setHidden:(!model->IsVisibleAt(modelIndex))];
+        if (model->IsItemDynamicAt(modelIndex)) {
+            // Update the label and the icon.
+            NSString* label =
+                l10n_util::FixUpWindowsStyleLabel(model->GetLabelAt(modelIndex));
+            [(id)item setTitle:label];
 
-      gfx::Image icon;
-      model->GetIconAt(modelIndex, &icon);
-      [(id)item setImage:icon.IsEmpty() ? nil : icon.ToNSImage()];
+            gfx::Image icon;
+            model->GetIconAt(modelIndex, &icon);
+            [(id)item setImage:icon.IsEmpty() ? nil : icon.ToNSImage()];
+        }
+        return model->IsEnabledAt(modelIndex);
     }
-    return model->IsEnabledAt(modelIndex);
-  }
-  return NO;
+    return NO;
 }
 
 // Called when the user chooses a particular menu item. |sender| is the menu
 // item chosen.
 - (void)itemSelected:(id)sender {
-  NSInteger modelIndex = [sender tag];
-  atom::AtomMenuModel* model =
-      static_cast<atom::AtomMenuModel*>(
-          [[sender representedObject] pointerValue]);
-  DCHECK(model);
-  if (model) {
-    NSEvent* event = [NSApp currentEvent];
-    model->ActivatedAt(modelIndex,
-                       ui::EventFlagsFromModifiers([event modifierFlags]));
-  }
+    NSInteger modelIndex = [sender tag];
+    atom::AtomMenuModel* model =
+        static_cast<atom::AtomMenuModel*>(
+            [[sender representedObject] pointerValue]);
+    DCHECK(model);
+    if (model) {
+        NSEvent* event = [NSApp currentEvent];
+        model->ActivatedAt(modelIndex,
+                           ui::EventFlagsFromModifiers([event modifierFlags]));
+    }
 }
 
 - (NSMenu*)menu {
-  if (menu_)
-    return menu_.get();
+    if (menu_)
+        return menu_.get();
 
-  menu_.reset([[NSMenu alloc] initWithTitle:@""]);
-  [menu_ setDelegate:self];
-  if (model_)
-    [self populateWithModel:model_];
-  return menu_.get();
+    menu_.reset([[NSMenu alloc] initWithTitle:@""]);
+    [menu_ setDelegate:self];
+    if (model_)
+        [self populateWithModel:model_];
+    return menu_.get();
 }
 
 - (BOOL)isMenuOpen {
-  return isMenuOpen_;
+    return isMenuOpen_;
 }
 
 - (void)menuWillOpen:(NSMenu*)menu {
-  isMenuOpen_ = YES;
-  model_->MenuWillShow();
+    isMenuOpen_ = YES;
+    model_->MenuWillShow();
 }
 
 - (void)menuDidClose:(NSMenu*)menu {
-  if (isMenuOpen_) {
-    isMenuOpen_ = NO;
-    model_->MenuWillClose();
+    if (isMenuOpen_) {
+        isMenuOpen_ = NO;
+        model_->MenuWillClose();
 
-    // Post async task so that itemSelected runs before the close callback
-    // deletes the controller from the map which deallocates it
-    if (!closeCallback.is_null())
-      BrowserThread::PostTask(BrowserThread::UI, FROM_HERE, closeCallback);
-  }
+        // Post async task so that itemSelected runs before the close callback
+        // deletes the controller from the map which deallocates it
+        if (!closeCallback.is_null())
+            BrowserThread::PostTask(BrowserThread::UI, FROM_HERE, closeCallback);
+    }
 }
 
 @end

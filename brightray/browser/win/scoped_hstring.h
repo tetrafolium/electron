@@ -13,29 +13,33 @@
 #include "base/macros.h"
 
 class ScopedHString {
- public:
-  // Copy from |source|.
-  explicit ScopedHString(const wchar_t* source);
-  explicit ScopedHString(const std::wstring& source);
-  // Create empty string.
-  ScopedHString();
-  ~ScopedHString();
+public:
+    // Copy from |source|.
+    explicit ScopedHString(const wchar_t* source);
+    explicit ScopedHString(const std::wstring& source);
+    // Create empty string.
+    ScopedHString();
+    ~ScopedHString();
 
-  // Sets to |source|.
-  void Reset();
-  void Reset(const wchar_t* source);
-  void Reset(const std::wstring& source);
+    // Sets to |source|.
+    void Reset();
+    void Reset(const wchar_t* source);
+    void Reset(const std::wstring& source);
 
-  // Returns string.
-  operator HSTRING() const { return str_; }
+    // Returns string.
+    operator HSTRING() const {
+        return str_;
+    }
 
-  // Whether there is a string created.
-  bool success() const { return str_; }
+    // Whether there is a string created.
+    bool success() const {
+        return str_;
+    }
 
- private:
-  HSTRING str_;
+private:
+    HSTRING str_;
 
-  DISALLOW_COPY_AND_ASSIGN(ScopedHString);
+    DISALLOW_COPY_AND_ASSIGN(ScopedHString);
 };
 
 #endif  // BRIGHTRAY_BROWSER_WIN_SCOPED_HSTRING_H_

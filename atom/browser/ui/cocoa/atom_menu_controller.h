@@ -23,12 +23,12 @@ class AtomMenuModel;
 // that particular item. It is important that the model outlives this object
 // as it only maintains weak references.
 @interface AtomMenuController : NSObject<NSMenuDelegate> {
- @protected
-  atom::AtomMenuModel* model_;  // weak
-  base::scoped_nsobject<NSMenu> menu_;
-  BOOL isMenuOpen_;
-  BOOL useDefaultAccelerator_;
-  base::Callback<void()> closeCallback;
+@protected
+    atom::AtomMenuModel* model_;  // weak
+    base::scoped_nsobject<NSMenu> menu_;
+    BOOL isMenuOpen_;
+    BOOL useDefaultAccelerator_;
+    base::Callback<void()> closeCallback;
 }
 
 @property(nonatomic, assign) atom::AtomMenuModel* model;

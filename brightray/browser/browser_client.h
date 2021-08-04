@@ -18,51 +18,53 @@ class NotificationPresenter;
 class PlatformNotificationService;
 
 class BrowserClient : public content::ContentBrowserClient {
- public:
-  static BrowserClient* Get();
+public:
+    static BrowserClient* Get();
 
-  BrowserClient();
-  ~BrowserClient();
+    BrowserClient();
+    ~BrowserClient();
 
-  BrowserMainParts* browser_main_parts() { return browser_main_parts_; }
+    BrowserMainParts* browser_main_parts() {
+        return browser_main_parts_;
+    }
 
-  NotificationPresenter* GetNotificationPresenter();
+    NotificationPresenter* GetNotificationPresenter();
 
-  // Subclasses should override this to enable or disable WebNotification.
-  virtual void WebNotificationAllowed(
-      int render_process_id,
-      const base::Callback<void(bool, bool)>& callback) {
-    callback.Run(false, true);
-  }
+    // Subclasses should override this to enable or disable WebNotification.
+    virtual void WebNotificationAllowed(
+        int render_process_id,
+        const base::Callback<void(bool, bool)>& callback) {
+        callback.Run(false, true);
+    }
 
-  // Subclasses that override this (e.g., to provide their own protocol
-  // handlers) should call this implementation after doing their own work.
-  content::BrowserMainParts* CreateBrowserMainParts(
-      const content::MainFunctionParams&) override;
-  content::MediaObserver* GetMediaObserver() override;
-  content::PlatformNotificationService* GetPlatformNotificationService()
-      override;
-  void GetAdditionalAllowedSchemesForFileSystem(
-      std::vector<std::string>* additional_schemes) override;
-  net::NetLog* GetNetLog() override;
-  base::FilePath GetDefaultDownloadDirectory() override;
-  content::DevToolsManagerDelegate* GetDevToolsManagerDelegate() override;
+    // Subclasses that override this (e.g., to provide their own protocol
+    // handlers) should call this implementation after doing their own work.
+    content::BrowserMainParts* CreateBrowserMainParts(
+        const content::MainFunctionParams&) override;
+    content::MediaObserver* GetMediaObserver() override;
+    content::PlatformNotificationService* GetPlatformNotificationService()
+    override;
+    void GetAdditionalAllowedSchemesForFileSystem(
+        std::vector<std::string>* additional_schemes) override;
+    net::NetLog* GetNetLog() override;
+    base::FilePath GetDefaultDownloadDirectory() override;
+    content::DevToolsManagerDelegate* GetDevToolsManagerDelegate() override;
 
- protected:
-  // Subclasses should override this to provide their own BrowserMainParts
-  // implementation. The lifetime of the returned instance is managed by the
-  // caller.
-  virtual BrowserMainParts* OverrideCreateBrowserMainParts(
-      const content::MainFunctionParams&);
+protected:
+    // Subclasses should override this to provide their own BrowserMainParts
+    // implementation. The lifetime of the returned instance is managed by the
+    // caller.
+    virtual BrowserMainParts* OverrideCreateBrowserMainParts(
+        const content::MainFunctionParams&);
 
- private:
-  BrowserMainParts* browser_main_parts_;
-  NetLog net_log_;
+private:
+    BrowserMainParts* browser_main_parts_;
+    NetLog net_log_;
 
-  std::unique_ptr<PlatformNotificationService> notification_service_;
-  std::unique_ptr<NotificationPresenter> notification_presenter_;
+    std::unique_ptr<PlatformNotificationService> notification_service_;
+    std::unique_ptr<NotificationPresenter> notification_presenter_;
 
-  DISALLOW_COPY_AND_ASSIGN(BrowserClient);
+    DISALLOW_COPY_AND_ASSIGN(BrowserClient);
 };
 
 }  // namespace brightray

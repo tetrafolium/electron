@@ -20,67 +20,67 @@ namespace atom {
 namespace api {
 
 GlobalShortcut::GlobalShortcut(v8::Isolate* isolate) {
-  Init(isolate);
+    Init(isolate);
 }
 
 GlobalShortcut::~GlobalShortcut() {
-  UnregisterAll();
+    UnregisterAll();
 }
 
 void GlobalShortcut::OnKeyPressed(const ui::Accelerator& accelerator) {
-  if (accelerator_callback_map_.find(accelerator) ==
-      accelerator_callback_map_.end()) {
-    // This should never occur, because if it does, GlobalGlobalShortcutListener
-    // notifes us with wrong accelerator.
-    NOTREACHED();
-    return;
-  }
-  accelerator_callback_map_[accelerator].Run();
+    if (accelerator_callback_map_.find(accelerator) ==
+            accelerator_callback_map_.end()) {
+        // This should never occur, because if it does, GlobalGlobalShortcutListener
+        // notifes us with wrong accelerator.
+        NOTREACHED();
+        return;
+    }
+    accelerator_callback_map_[accelerator].Run();
 }
 
 bool GlobalShortcut::Register(const ui::Accelerator& accelerator,
                               const base::Closure& callback) {
-  if (!GlobalShortcutListener::GetInstance()->RegisterAccelerator(
-      accelerator, this)) {
-    return false;
-  }
+    if (!GlobalShortcutListener::GetInstance()->RegisterAccelerator(
+                accelerator, this)) {
+        return false;
+    }
 
-  accelerator_callback_map_[accelerator] = callback;
-  return true;
+    accelerator_callback_map_[accelerator] = callback;
+    return true;
 }
 
 void GlobalShortcut::Unregister(const ui::Accelerator& accelerator) {
-  if (!ContainsKey(accelerator_callback_map_, accelerator))
-    return;
+    if (!ContainsKey(accelerator_callback_map_, accelerator))
+        return;
 
-  accelerator_callback_map_.erase(accelerator);
-  GlobalShortcutListener::GetInstance()->UnregisterAccelerator(
-      accelerator, this);
+    accelerator_callback_map_.erase(accelerator);
+    GlobalShortcutListener::GetInstance()->UnregisterAccelerator(
+        accelerator, this);
 }
 
 bool GlobalShortcut::IsRegistered(const ui::Accelerator& accelerator) {
-  return ContainsKey(accelerator_callback_map_, accelerator);
+    return ContainsKey(accelerator_callback_map_, accelerator);
 }
 
 void GlobalShortcut::UnregisterAll() {
-  accelerator_callback_map_.clear();
-  GlobalShortcutListener::GetInstance()->UnregisterAccelerators(this);
+    accelerator_callback_map_.clear();
+    GlobalShortcutListener::GetInstance()->UnregisterAccelerators(this);
 }
 
 // static
 mate::Handle<GlobalShortcut> GlobalShortcut::Create(v8::Isolate* isolate) {
-  return mate::CreateHandle(isolate, new GlobalShortcut(isolate));
+    return mate::CreateHandle(isolate, new GlobalShortcut(isolate));
 }
 
 // static
 void GlobalShortcut::BuildPrototype(
     v8::Isolate* isolate, v8::Local<v8::FunctionTemplate> prototype) {
-  prototype->SetClassName(mate::StringToV8(isolate, "GlobalShortcut"));
-  mate::ObjectTemplateBuilder(isolate, prototype->PrototypeTemplate())
-      .SetMethod("register", &GlobalShortcut::Register)
-      .SetMethod("isRegistered", &GlobalShortcut::IsRegistered)
-      .SetMethod("unregister", &GlobalShortcut::Unregister)
-      .SetMethod("unregisterAll", &GlobalShortcut::UnregisterAll);
+    prototype->SetClassName(mate::StringToV8(isolate, "GlobalShortcut"));
+    mate::ObjectTemplateBuilder(isolate, prototype->PrototypeTemplate())
+    .SetMethod("register", &GlobalShortcut::Register)
+    .SetMethod("isRegistered", &GlobalShortcut::IsRegistered)
+    .SetMethod("unregister", &GlobalShortcut::Unregister)
+    .SetMethod("unregisterAll", &GlobalShortcut::UnregisterAll);
 }
 
 }  // namespace api
@@ -91,9 +91,9 @@ namespace {
 
 void Initialize(v8::Local<v8::Object> exports, v8::Local<v8::Value> unused,
                 v8::Local<v8::Context> context, void* priv) {
-  v8::Isolate* isolate = context->GetIsolate();
-  mate::Dictionary dict(isolate, exports);
-  dict.Set("globalShortcut", atom::api::GlobalShortcut::Create(isolate));
+    v8::Isolate* isolate = context->GetIsolate();
+    mate::Dictionary dict(isolate, exports);
+    dict.Set("globalShortcut", atom::api::GlobalShortcut::Create(isolate));
 }
 
 }  // namespace

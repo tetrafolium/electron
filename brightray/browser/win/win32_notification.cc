@@ -44,8 +44,8 @@ void Win32Notification::Show(const NotificationOptions& options) {
         this->notification_ref_.Set(options.title, options.msg, image);
     } else {
         this->notification_ref_ = presenter->AddNotification(options.title,
-                                                             options.msg,
-                                                             image);
+                                  options.msg,
+                                  image);
     }
 
     this->tag_ = options.tag;

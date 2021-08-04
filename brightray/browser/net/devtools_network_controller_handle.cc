@@ -14,47 +14,47 @@ using content::BrowserThread;
 namespace brightray {
 
 DevToolsNetworkControllerHandle::DevToolsNetworkControllerHandle() {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+    DCHECK_CURRENTLY_ON(BrowserThread::UI);
 }
 
 DevToolsNetworkControllerHandle::~DevToolsNetworkControllerHandle() {
-  BrowserThread::DeleteSoon(BrowserThread::IO,
-                            FROM_HERE,
-                            controller_.release());
+    BrowserThread::DeleteSoon(BrowserThread::IO,
+                              FROM_HERE,
+                              controller_.release());
 }
 
 void DevToolsNetworkControllerHandle::SetNetworkState(
     const std::string& client_id,
     std::unique_ptr<DevToolsNetworkConditions> conditions) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+    DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
-  BrowserThread::PostTask(
-      BrowserThread::IO, FROM_HERE,
-      base::Bind(&DevToolsNetworkControllerHandle::SetNetworkStateOnIO,
-                 base::Unretained(this), client_id, base::Passed(&conditions)));
+    BrowserThread::PostTask(
+        BrowserThread::IO, FROM_HERE,
+        base::Bind(&DevToolsNetworkControllerHandle::SetNetworkStateOnIO,
+                   base::Unretained(this), client_id, base::Passed(&conditions)));
 }
 
 DevToolsNetworkController* DevToolsNetworkControllerHandle::GetController() {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+    DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
-  LazyInitialize();
-  return controller_.get();
+    LazyInitialize();
+    return controller_.get();
 }
 
 void DevToolsNetworkControllerHandle::LazyInitialize() {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+    DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
-  if (!controller_)
-    controller_.reset(new DevToolsNetworkController);
+    if (!controller_)
+        controller_.reset(new DevToolsNetworkController);
 }
 
 void DevToolsNetworkControllerHandle::SetNetworkStateOnIO(
     const std::string& client_id,
     std::unique_ptr<DevToolsNetworkConditions> conditions) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+    DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
-  LazyInitialize();
-  controller_->SetNetworkState(client_id, std::move(conditions));
+    LazyInitialize();
+    controller_->SetNetworkState(client_id, std::move(conditions));
 }
 
 }  // namespace brightray

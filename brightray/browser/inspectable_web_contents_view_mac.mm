@@ -10,7 +10,7 @@
 namespace brightray {
 
 InspectableWebContentsView* CreateInspectableContentsView(InspectableWebContentsImpl* inspectable_web_contents) {
-  return new InspectableWebContentsViewMac(inspectable_web_contents);
+    return new InspectableWebContentsViewMac(inspectable_web_contents);
 }
 
 InspectableWebContentsViewMac::InspectableWebContentsViewMac(InspectableWebContentsImpl* inspectable_web_contents)
@@ -19,41 +19,41 @@ InspectableWebContentsViewMac::InspectableWebContentsViewMac(InspectableWebConte
 }
 
 InspectableWebContentsViewMac::~InspectableWebContentsViewMac() {
-  [view_ removeObservers];
-  CloseDevTools();
+    [view_ removeObservers];
+    CloseDevTools();
 }
 
 gfx::NativeView InspectableWebContentsViewMac::GetNativeView() const {
-  return view_.get();
+    return view_.get();
 }
 
 void InspectableWebContentsViewMac::ShowDevTools() {
-  [view_ setDevToolsVisible:YES];
+    [view_ setDevToolsVisible:YES];
 }
 
 void InspectableWebContentsViewMac::CloseDevTools() {
-  [view_ setDevToolsVisible:NO];
+    [view_ setDevToolsVisible:NO];
 }
 
 bool InspectableWebContentsViewMac::IsDevToolsViewShowing() {
-  return [view_ isDevToolsVisible];
+    return [view_ isDevToolsVisible];
 }
 
 bool InspectableWebContentsViewMac::IsDevToolsViewFocused() {
-  return [view_ isDevToolsFocused];
+    return [view_ isDevToolsFocused];
 }
 
 void InspectableWebContentsViewMac::SetIsDocked(bool docked) {
-  [view_ setIsDocked:docked];
+    [view_ setIsDocked:docked];
 }
 
 void InspectableWebContentsViewMac::SetContentsResizingStrategy(
-      const DevToolsContentsResizingStrategy& strategy) {
-  [view_ setContentsResizingStrategy:strategy];
+    const DevToolsContentsResizingStrategy& strategy) {
+    [view_ setContentsResizingStrategy:strategy];
 }
 
 void InspectableWebContentsViewMac::SetTitle(const base::string16& title) {
-  [view_ setTitle:base::SysUTF16ToNSString(title)];
+    [view_ setTitle:base::SysUTF16ToNSString(title)];
 }
 
 }  // namespace brightray

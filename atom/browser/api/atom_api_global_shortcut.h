@@ -19,32 +19,32 @@ namespace atom {
 namespace api {
 
 class GlobalShortcut : public extensions::GlobalShortcutListener::Observer,
-                       public mate::TrackableObject<GlobalShortcut> {
- public:
-  static mate::Handle<GlobalShortcut> Create(v8::Isolate* isolate);
+    public mate::TrackableObject<GlobalShortcut> {
+public:
+    static mate::Handle<GlobalShortcut> Create(v8::Isolate* isolate);
 
-  static void BuildPrototype(v8::Isolate* isolate,
-                             v8::Local<v8::FunctionTemplate> prototype);
+    static void BuildPrototype(v8::Isolate* isolate,
+                               v8::Local<v8::FunctionTemplate> prototype);
 
- protected:
-  explicit GlobalShortcut(v8::Isolate* isolate);
-  ~GlobalShortcut() override;
+protected:
+    explicit GlobalShortcut(v8::Isolate* isolate);
+    ~GlobalShortcut() override;
 
- private:
-  typedef std::map<ui::Accelerator, base::Closure> AcceleratorCallbackMap;
+private:
+    typedef std::map<ui::Accelerator, base::Closure> AcceleratorCallbackMap;
 
-  bool Register(const ui::Accelerator& accelerator,
-                const base::Closure& callback);
-  bool IsRegistered(const ui::Accelerator& accelerator);
-  void Unregister(const ui::Accelerator& accelerator);
-  void UnregisterAll();
+    bool Register(const ui::Accelerator& accelerator,
+                  const base::Closure& callback);
+    bool IsRegistered(const ui::Accelerator& accelerator);
+    void Unregister(const ui::Accelerator& accelerator);
+    void UnregisterAll();
 
-  // GlobalShortcutListener::Observer implementation.
-  void OnKeyPressed(const ui::Accelerator& accelerator) override;
+    // GlobalShortcutListener::Observer implementation.
+    void OnKeyPressed(const ui::Accelerator& accelerator) override;
 
-  AcceleratorCallbackMap accelerator_callback_map_;
+    AcceleratorCallbackMap accelerator_callback_map_;
 
-  DISALLOW_COPY_AND_ASSIGN(GlobalShortcut);
+    DISALLOW_COPY_AND_ASSIGN(GlobalShortcut);
 };
 
 }  // namespace api

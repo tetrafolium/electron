@@ -8,8 +8,8 @@
 #import "ui/base/cocoa/underlay_opengl_hosting_window.h"
 
 @interface EventDispatchingWindow : UnderlayOpenGLHostingWindow {
- @private
-  BOOL redispatchingEvent_;
+@private
+    BOOL redispatchingEvent_;
 }
 
 - (void)redispatchKeyEvent:(NSEvent*)event;

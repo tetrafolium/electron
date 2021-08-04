@@ -17,30 +17,30 @@ namespace brightray {
 class DevToolsNetworkConditions;
 
 class DevToolsNetworkProtocolHandler {
- public:
-  DevToolsNetworkProtocolHandler();
-  ~DevToolsNetworkProtocolHandler();
+public:
+    DevToolsNetworkProtocolHandler();
+    ~DevToolsNetworkProtocolHandler();
 
-  base::DictionaryValue* HandleCommand(
-      content::DevToolsAgentHost* agent_host,
-      base::DictionaryValue* command);
-  void DevToolsAgentStateChanged(content::DevToolsAgentHost* agent_host,
-                                 bool attached);
+    base::DictionaryValue* HandleCommand(
+        content::DevToolsAgentHost* agent_host,
+        base::DictionaryValue* command);
+    void DevToolsAgentStateChanged(content::DevToolsAgentHost* agent_host,
+                                   bool attached);
 
- private:
-  std::unique_ptr<base::DictionaryValue> CanEmulateNetworkConditions(
-      content::DevToolsAgentHost* agent_host,
-      int command_id,
-      const base::DictionaryValue* params);
-  std::unique_ptr<base::DictionaryValue> EmulateNetworkConditions(
-      content::DevToolsAgentHost* agent_host,
-      int command_id,
-      const base::DictionaryValue* params);
-  void UpdateNetworkState(
-      content::DevToolsAgentHost* agent_host,
-      std::unique_ptr<DevToolsNetworkConditions> conditions);
+private:
+    std::unique_ptr<base::DictionaryValue> CanEmulateNetworkConditions(
+        content::DevToolsAgentHost* agent_host,
+        int command_id,
+        const base::DictionaryValue* params);
+    std::unique_ptr<base::DictionaryValue> EmulateNetworkConditions(
+        content::DevToolsAgentHost* agent_host,
+        int command_id,
+        const base::DictionaryValue* params);
+    void UpdateNetworkState(
+        content::DevToolsAgentHost* agent_host,
+        std::unique_ptr<DevToolsNetworkConditions> conditions);
 
-  DISALLOW_COPY_AND_ASSIGN(DevToolsNetworkProtocolHandler);
+    DISALLOW_COPY_AND_ASSIGN(DevToolsNetworkProtocolHandler);
 };
 
 }  // namespace brightray

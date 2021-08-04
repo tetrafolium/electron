@@ -12,25 +12,29 @@
 // This class knows how to resize both DevTools and inspected WebContents
 // inside a browser window hierarchy.
 class DevToolsContentsResizingStrategy {
- public:
-  DevToolsContentsResizingStrategy();
-  explicit DevToolsContentsResizingStrategy(
-      const gfx::Rect& bounds);
+public:
+    DevToolsContentsResizingStrategy();
+    explicit DevToolsContentsResizingStrategy(
+        const gfx::Rect& bounds);
 
-  void CopyFrom(const DevToolsContentsResizingStrategy& strategy);
-  bool Equals(const DevToolsContentsResizingStrategy& strategy);
+    void CopyFrom(const DevToolsContentsResizingStrategy& strategy);
+    bool Equals(const DevToolsContentsResizingStrategy& strategy);
 
-  const gfx::Rect& bounds() const { return bounds_; }
-  bool hide_inspected_contents() const { return hide_inspected_contents_; }
+    const gfx::Rect& bounds() const {
+        return bounds_;
+    }
+    bool hide_inspected_contents() const {
+        return hide_inspected_contents_;
+    }
 
- private:
-  // Contents bounds. When non-empty, used instead of insets.
-  gfx::Rect bounds_;
+private:
+    // Contents bounds. When non-empty, used instead of insets.
+    gfx::Rect bounds_;
 
-  // Determines whether inspected contents is visible.
-  bool hide_inspected_contents_;
+    // Determines whether inspected contents is visible.
+    bool hide_inspected_contents_;
 
-  DISALLOW_COPY_AND_ASSIGN(DevToolsContentsResizingStrategy);
+    DISALLOW_COPY_AND_ASSIGN(DevToolsContentsResizingStrategy);
 };
 
 // Applies contents resizing strategy, producing bounds for devtools and

@@ -15,29 +15,29 @@ namespace atom {
 typedef base::Callback<void(const gfx::Rect&, const SkBitmap&)> OnPaintCallback;
 
 class OffScreenOutputDevice : public cc::SoftwareOutputDevice {
- public:
-  OffScreenOutputDevice(bool transparent, const OnPaintCallback& callback);
-  ~OffScreenOutputDevice();
+public:
+    OffScreenOutputDevice(bool transparent, const OnPaintCallback& callback);
+    ~OffScreenOutputDevice();
 
-  // cc::SoftwareOutputDevice:
-  void Resize(const gfx::Size& pixel_size, float scale_factor) override;
-  SkCanvas* BeginPaint(const gfx::Rect& damage_rect) override;
-  void EndPaint() override;
+    // cc::SoftwareOutputDevice:
+    void Resize(const gfx::Size& pixel_size, float scale_factor) override;
+    SkCanvas* BeginPaint(const gfx::Rect& damage_rect) override;
+    void EndPaint() override;
 
-  void SetActive(bool active, bool paint);
-  void OnPaint(const gfx::Rect& damage_rect);
+    void SetActive(bool active, bool paint);
+    void OnPaint(const gfx::Rect& damage_rect);
 
- private:
-  const bool transparent_;
-  OnPaintCallback callback_;
+private:
+    const bool transparent_;
+    OnPaintCallback callback_;
 
-  bool active_;
+    bool active_;
 
-  std::unique_ptr<SkCanvas> canvas_;
-  std::unique_ptr<SkBitmap> bitmap_;
-  gfx::Rect pending_damage_rect_;
+    std::unique_ptr<SkCanvas> canvas_;
+    std::unique_ptr<SkBitmap> bitmap_;
+    gfx::Rect pending_damage_rect_;
 
-  DISALLOW_COPY_AND_ASSIGN(OffScreenOutputDevice);
+    DISALLOW_COPY_AND_ASSIGN(OffScreenOutputDevice);
 };
 
 }  // namespace atom

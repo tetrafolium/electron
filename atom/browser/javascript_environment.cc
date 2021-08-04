@@ -30,40 +30,40 @@ JavascriptEnvironment::JavascriptEnvironment()
 }
 
 void JavascriptEnvironment::OnMessageLoopCreated() {
-  isolate_holder_.AddRunMicrotasksObserver();
+    isolate_holder_.AddRunMicrotasksObserver();
 }
 
 void JavascriptEnvironment::OnMessageLoopDestroying() {
-  isolate_holder_.RemoveRunMicrotasksObserver();
+    isolate_holder_.RemoveRunMicrotasksObserver();
 }
 
 bool JavascriptEnvironment::Initialize() {
-  auto cmd = base::CommandLine::ForCurrentProcess();
+    auto cmd = base::CommandLine::ForCurrentProcess();
 
-  // --js-flags.
-  std::string js_flags = cmd->GetSwitchValueASCII(switches::kJavaScriptFlags);
-  if (!js_flags.empty())
-    v8::V8::SetFlagsFromString(js_flags.c_str(), js_flags.size());
+    // --js-flags.
+    std::string js_flags = cmd->GetSwitchValueASCII(switches::kJavaScriptFlags);
+    if (!js_flags.empty())
+        v8::V8::SetFlagsFromString(js_flags.c_str(), js_flags.size());
 
-  // The V8Platform of gin relies on Chromium's task schedule, which has not
-  // been started at this point, so we have to rely on Node's V8Platform.
-  platform_ = node::CreatePlatform(
-      base::RecommendedMaxNumberOfThreadsInPool(3, 8, 0.1, 0),
-      uv_default_loop(), nullptr);
-  v8::V8::InitializePlatform(platform_);
+    // The V8Platform of gin relies on Chromium's task schedule, which has not
+    // been started at this point, so we have to rely on Node's V8Platform.
+    platform_ = node::CreatePlatform(
+                    base::RecommendedMaxNumberOfThreadsInPool(3, 8, 0.1, 0),
+                    uv_default_loop(), nullptr);
+    v8::V8::InitializePlatform(platform_);
 
-  gin::IsolateHolder::Initialize(gin::IsolateHolder::kNonStrictMode,
-                                 gin::IsolateHolder::kStableV8Extras,
-                                 gin::ArrayBufferAllocator::SharedInstance(),
-                                 false);
-  return true;
+    gin::IsolateHolder::Initialize(gin::IsolateHolder::kNonStrictMode,
+                                   gin::IsolateHolder::kStableV8Extras,
+                                   gin::ArrayBufferAllocator::SharedInstance(),
+                                   false);
+    return true;
 }
 
 NodeEnvironment::NodeEnvironment(node::Environment* env) : env_(env) {
 }
 
 NodeEnvironment::~NodeEnvironment() {
-  node::FreeEnvironment(env_);
+    node::FreeEnvironment(env_);
 }
 
 }  // namespace atom

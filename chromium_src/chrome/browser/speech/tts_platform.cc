@@ -8,21 +8,21 @@
 
 bool TtsPlatformImpl::LoadBuiltInTtsExtension(
     content::BrowserContext* browser_context) {
-  return false;
+    return false;
 }
 
 std::string TtsPlatformImpl::error() {
-  return error_;
+    return error_;
 }
 
 void TtsPlatformImpl::clear_error() {
-  error_ = std::string();
+    error_ = std::string();
 }
 
 void TtsPlatformImpl::set_error(const std::string& error) {
-  error_ = error;
+    error_ = error;
 }
 
 void TtsPlatformImpl::WillSpeakUtteranceWithVoice(const Utterance* utterance,
-                                                  const VoiceData& voice_data) {
+        const VoiceData& voice_data) {
 }

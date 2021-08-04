@@ -15,13 +15,13 @@ void RemoteCallbackFreer::BindTo(v8::Isolate* isolate,
                                  v8::Local<v8::Object> target,
                                  int object_id,
                                  content::WebContents* web_contents) {
-  new RemoteCallbackFreer(isolate, target, object_id, web_contents);
+    new RemoteCallbackFreer(isolate, target, object_id, web_contents);
 }
 
 RemoteCallbackFreer::RemoteCallbackFreer(v8::Isolate* isolate,
-                                         v8::Local<v8::Object> target,
-                                         int object_id,
-                                         content::WebContents* web_contents)
+        v8::Local<v8::Object> target,
+        int object_id,
+        content::WebContents* web_contents)
     : ObjectLifeMonitor(isolate, target),
       content::WebContentsObserver(web_contents),
       object_id_(object_id) {
@@ -31,17 +31,17 @@ RemoteCallbackFreer::~RemoteCallbackFreer() {
 }
 
 void RemoteCallbackFreer::RunDestructor() {
-  base::string16 channel =
-      base::ASCIIToUTF16("ELECTRON_RENDERER_RELEASE_CALLBACK");
-  base::ListValue args;
-  args.AppendInteger(object_id_);
-  Send(new AtomViewMsg_Message(routing_id(), false, channel, args));
+    base::string16 channel =
+        base::ASCIIToUTF16("ELECTRON_RENDERER_RELEASE_CALLBACK");
+    base::ListValue args;
+    args.AppendInteger(object_id_);
+    Send(new AtomViewMsg_Message(routing_id(), false, channel, args));
 
-  Observe(nullptr);
+    Observe(nullptr);
 }
 
 void RemoteCallbackFreer::RenderViewDeleted(content::RenderViewHost*) {
-  delete this;
+    delete this;
 }
 
 }  // namespace atom

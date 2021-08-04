@@ -14,21 +14,21 @@
 namespace atom {
 
 class AtomContentClient : public brightray::ContentClient {
- public:
-  AtomContentClient();
-  virtual ~AtomContentClient();
+public:
+    AtomContentClient();
+    virtual ~AtomContentClient();
 
- protected:
-  // content::ContentClient:
-  std::string GetProduct() const override;
-  std::string GetUserAgent() const override;
-  base::string16 GetLocalizedString(int message_id) const override;
-  void AddAdditionalSchemes(Schemes* schemes) override;
-  void AddPepperPlugins(
-      std::vector<content::PepperPluginInfo>* plugins) override;
+protected:
+    // content::ContentClient:
+    std::string GetProduct() const override;
+    std::string GetUserAgent() const override;
+    base::string16 GetLocalizedString(int message_id) const override;
+    void AddAdditionalSchemes(Schemes* schemes) override;
+    void AddPepperPlugins(
+        std::vector<content::PepperPluginInfo>* plugins) override;
 
- private:
-  DISALLOW_COPY_AND_ASSIGN(AtomContentClient);
+private:
+    DISALLOW_COPY_AND_ASSIGN(AtomContentClient);
 };
 
 }  // namespace atom

@@ -32,8 +32,8 @@ struct ScreenMetrics {
         typedef HRESULT WINAPI GetDpiForMonitor_t(HMONITOR, int, UINT*, UINT*);
 
         auto GetDpiForMonitor = reinterpret_cast<GetDpiForMonitor_t*>(
-            GetProcAddress(GetModuleHandle(TEXT("shcore")),
-                           "GetDpiForMonitor"));
+                                    GetProcAddress(GetModuleHandle(TEXT("shcore")),
+                                            "GetDpiForMonitor"));
 
         if (GetDpiForMonitor) {
             auto monitor = MonitorFromPoint({}, MONITOR_DEFAULTTOPRIMARY);
@@ -47,8 +47,12 @@ struct ScreenMetrics {
         ReleaseDC(NULL, hdc);
     }
 
-    template<class T> T X(T value) const { return ScaleForDpi(value, dpi_x); }
-    template<class T> T Y(T value) const { return ScaleForDpi(value, dpi_y); }
+    template<class T> T X(T value) const {
+        return ScaleForDpi(value, dpi_x);
+    }
+    template<class T> T Y(T value) const {
+        return ScaleForDpi(value, dpi_y);
+    }
 };
 
 }   // namespace brightray

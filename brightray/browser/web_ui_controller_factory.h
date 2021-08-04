@@ -18,26 +18,26 @@ namespace brightray {
 class BrowserContext;
 
 class WebUIControllerFactory : public content::WebUIControllerFactory {
- public:
-  static WebUIControllerFactory* GetInstance();
+public:
+    static WebUIControllerFactory* GetInstance();
 
-  WebUIControllerFactory();
-  virtual ~WebUIControllerFactory();
+    WebUIControllerFactory();
+    virtual ~WebUIControllerFactory();
 
-  content::WebUI::TypeID GetWebUIType(
-      content::BrowserContext* browser_context, const GURL& url) const override;
-  bool UseWebUIForURL(content::BrowserContext* browser_context,
-                      const GURL& url) const override;
-  bool UseWebUIBindingsForURL(content::BrowserContext* browser_context,
-                              const GURL& url) const override;
-  content::WebUIController* CreateWebUIControllerForURL(
-      content::WebUI* web_ui,
-      const GURL& url) const override;
+    content::WebUI::TypeID GetWebUIType(
+        content::BrowserContext* browser_context, const GURL& url) const override;
+    bool UseWebUIForURL(content::BrowserContext* browser_context,
+                        const GURL& url) const override;
+    bool UseWebUIBindingsForURL(content::BrowserContext* browser_context,
+                                const GURL& url) const override;
+    content::WebUIController* CreateWebUIControllerForURL(
+        content::WebUI* web_ui,
+        const GURL& url) const override;
 
- private:
-  friend struct base::DefaultSingletonTraits<WebUIControllerFactory>;
+private:
+    friend struct base::DefaultSingletonTraits<WebUIControllerFactory>;
 
-  DISALLOW_COPY_AND_ASSIGN(WebUIControllerFactory);
+    DISALLOW_COPY_AND_ASSIGN(WebUIControllerFactory);
 };
 
 }  // namespace brightray

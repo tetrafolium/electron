@@ -17,42 +17,42 @@
 // static
 IconLoader::IconGroup IconLoader::GroupForFilepath(
     const base::FilePath& file_path) {
-  return file_path.Extension();
+    return file_path.Extension();
 }
 
 // static
 content::BrowserThread::ID IconLoader::ReadIconThreadID() {
-  return content::BrowserThread::FILE;
+    return content::BrowserThread::FILE;
 }
 
 void IconLoader::ReadIcon() {
-  NSString* group = base::SysUTF8ToNSString(group_);
-  NSWorkspace* workspace = [NSWorkspace sharedWorkspace];
-  NSImage* icon = [workspace iconForFileType:group];
+    NSString* group = base::SysUTF8ToNSString(group_);
+    NSWorkspace* workspace = [NSWorkspace sharedWorkspace];
+    NSImage* icon = [workspace iconForFileType:group];
 
-  if (icon_size_ == ALL) {
-    // The NSImage already has all sizes.
-    image_.reset(new gfx::Image([icon retain]));
-  } else {
-    NSSize size = NSZeroSize;
-    switch (icon_size_) {
-      case IconLoader::SMALL:
-        size = NSMakeSize(16, 16);
-        break;
-      case IconLoader::NORMAL:
-        size = NSMakeSize(32, 32);
-        break;
-      default:
-        NOTREACHED();
+    if (icon_size_ == ALL) {
+        // The NSImage already has all sizes.
+        image_.reset(new gfx::Image([icon retain]));
+    } else {
+        NSSize size = NSZeroSize;
+        switch (icon_size_) {
+        case IconLoader::SMALL:
+            size = NSMakeSize(16, 16);
+            break;
+        case IconLoader::NORMAL:
+            size = NSMakeSize(32, 32);
+            break;
+        default:
+            NOTREACHED();
+        }
+        gfx::ImageSkia image_skia(gfx::ImageSkiaFromResizedNSImage(icon, size));
+        if (!image_skia.isNull()) {
+            image_skia.MakeThreadSafe();
+            image_.reset(new gfx::Image(image_skia));
+        }
     }
-    gfx::ImageSkia image_skia(gfx::ImageSkiaFromResizedNSImage(icon, size));
-    if (!image_skia.isNull()) {
-      image_skia.MakeThreadSafe();
-      image_.reset(new gfx::Image(image_skia));
-    }
-  }
 
-  target_task_runner_->PostTask(
-      FROM_HERE, base::Bind(callback_, base::Passed(&image_), group_));
-  delete this;
+    target_task_runner_->PostTask(
+        FROM_HERE, base::Bind(callback_, base::Passed(&image_), group_));
+    delete this;
 }

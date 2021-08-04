@@ -13,22 +13,22 @@ class RendererPpapiHost;
 }
 
 class ChromeRendererPepperHostFactory : public ppapi::host::HostFactory {
- public:
-  explicit ChromeRendererPepperHostFactory(content::RendererPpapiHost* host);
-  ~ChromeRendererPepperHostFactory() override;
+public:
+    explicit ChromeRendererPepperHostFactory(content::RendererPpapiHost* host);
+    ~ChromeRendererPepperHostFactory() override;
 
-  // HostFactory.
-  std::unique_ptr<ppapi::host::ResourceHost> CreateResourceHost(
-      ppapi::host::PpapiHost* host,
-      PP_Resource resource,
-      PP_Instance instance,
-      const IPC::Message& message) override;
+    // HostFactory.
+    std::unique_ptr<ppapi::host::ResourceHost> CreateResourceHost(
+        ppapi::host::PpapiHost* host,
+        PP_Resource resource,
+        PP_Instance instance,
+        const IPC::Message& message) override;
 
- private:
-  // Not owned by this object.
-  content::RendererPpapiHost* host_;
+private:
+    // Not owned by this object.
+    content::RendererPpapiHost* host_;
 
-  DISALLOW_COPY_AND_ASSIGN(ChromeRendererPepperHostFactory);
+    DISALLOW_COPY_AND_ASSIGN(ChromeRendererPepperHostFactory);
 };
 
 #endif  // CHROME_RENDERER_PEPPER_CHROME_RENDERER_PEPPER_HOST_FACTORY_H_

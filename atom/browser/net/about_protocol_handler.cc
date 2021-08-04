@@ -15,11 +15,11 @@ AboutProtocolHandler::~AboutProtocolHandler() {}
 net::URLRequestJob* AboutProtocolHandler::MaybeCreateJob(
     net::URLRequest* request,
     net::NetworkDelegate* network_delegate) const {
-  return new URLRequestAboutJob(request, network_delegate);
+    return new URLRequestAboutJob(request, network_delegate);
 }
 
 bool AboutProtocolHandler::IsSafeRedirectTarget(const GURL& location) const {
-  return false;
+    return false;
 }
 
 }  // namespace atom

@@ -11,13 +11,13 @@ namespace mate {
 
 template<>
 struct Converter<atom::BluetoothChooser::DeviceInfo> {
-  static v8::Local<v8::Value> ToV8(
-      v8::Isolate* isolate, const atom::BluetoothChooser::DeviceInfo& val) {
-    mate::Dictionary dict = mate::Dictionary::CreateEmpty(isolate);
-    dict.Set("deviceName", val.device_name);
-    dict.Set("deviceId", val.device_id);
-    return mate::ConvertToV8(isolate, dict);
-  }
+    static v8::Local<v8::Value> ToV8(
+        v8::Isolate* isolate, const atom::BluetoothChooser::DeviceInfo& val) {
+        mate::Dictionary dict = mate::Dictionary::CreateEmpty(isolate);
+        dict.Set("deviceName", val.device_name);
+        dict.Set("deviceId", val.device_id);
+        return mate::ConvertToV8(isolate, dict);
+    }
 };
 
 }  // namespace mate
@@ -31,11 +31,11 @@ const int kMaxScanRetries = 5;
 void OnDeviceChosen(
     const content::BluetoothChooser::EventHandler& handler,
     const std::string& device_id) {
-  if (device_id.empty()) {
-    handler.Run(content::BluetoothChooser::Event::CANCELLED, device_id);
-  } else {
-    handler.Run(content::BluetoothChooser::Event::SELECTED, device_id);
-  }
+    if (device_id.empty()) {
+        handler.Run(content::BluetoothChooser::Event::CANCELLED, device_id);
+    } else {
+        handler.Run(content::BluetoothChooser::Event::SELECTED, device_id);
+    }
 }
 
 }  // namespace
@@ -52,60 +52,60 @@ BluetoothChooser::~BluetoothChooser() {
 }
 
 void BluetoothChooser::SetAdapterPresence(AdapterPresence presence) {
-  switch (presence) {
+    switch (presence) {
     case AdapterPresence::ABSENT:
     case AdapterPresence::POWERED_OFF:
-      event_handler_.Run(Event::CANCELLED, "");
-      break;
+        event_handler_.Run(Event::CANCELLED, "");
+        break;
     case AdapterPresence::POWERED_ON:
-      break;
-  }
+        break;
+    }
 }
 
 void BluetoothChooser::ShowDiscoveryState(DiscoveryState state) {
-  switch (state) {
+    switch (state) {
     case DiscoveryState::FAILED_TO_START:
-      event_handler_.Run(Event::CANCELLED, "");
-      break;
+        event_handler_.Run(Event::CANCELLED, "");
+        break;
     case DiscoveryState::IDLE:
-      if (device_list_.empty()) {
-        auto event = ++num_retries_ > kMaxScanRetries ? Event::CANCELLED
-                                                      : Event::RESCAN;
-        event_handler_.Run(event, "");
-      } else {
-        bool prevent_default =
-            api_web_contents_->Emit("select-bluetooth-device",
-                                    device_list_,
-                                    base::Bind(&OnDeviceChosen,
-                                               event_handler_));
-        if (!prevent_default) {
-          auto device_id = device_list_[0].device_id;
-          event_handler_.Run(Event::SELECTED, device_id);
+        if (device_list_.empty()) {
+            auto event = ++num_retries_ > kMaxScanRetries ? Event::CANCELLED
+                         : Event::RESCAN;
+            event_handler_.Run(event, "");
+        } else {
+            bool prevent_default =
+                api_web_contents_->Emit("select-bluetooth-device",
+                                        device_list_,
+                                        base::Bind(&OnDeviceChosen,
+                                                   event_handler_));
+            if (!prevent_default) {
+                auto device_id = device_list_[0].device_id;
+                event_handler_.Run(Event::SELECTED, device_id);
+            }
         }
-      }
-      break;
+        break;
     case DiscoveryState::DISCOVERING:
-      break;
-  }
+        break;
+    }
 }
 
 void BluetoothChooser::AddOrUpdateDevice(const std::string& device_id,
-                                         bool should_update_name,
-                                         const base::string16& device_name,
-                                         bool is_gatt_connected,
-                                         bool is_paired,
-                                         int signal_strength_level) {
-  DeviceInfo info = {device_id, device_name};
-  device_list_.push_back(info);
+        bool should_update_name,
+        const base::string16& device_name,
+        bool is_gatt_connected,
+        bool is_paired,
+        int signal_strength_level) {
+    DeviceInfo info = {device_id, device_name};
+    device_list_.push_back(info);
 }
 
 void BluetoothChooser::RemoveDevice(const std::string& device_id) {
-  for (auto it = device_list_.begin(); it != device_list_.end(); ++it) {
-    if (it->device_id == device_id) {
-      device_list_.erase(it);
-      return;
+    for (auto it = device_list_.begin(); it != device_list_.end(); ++it) {
+        if (it->device_id == device_id) {
+            device_list_.erase(it);
+            return;
+        }
     }
-  }
 }
 
 }  // namespace atom

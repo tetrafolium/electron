@@ -20,34 +20,34 @@
 // com.canonical.AppMenu.Registrar and to register/unregister the mapping
 // between a XID and the DbusmenuServer instance we are offering.
 class GlobalMenuBarRegistrarX11 {
- public:
-  static GlobalMenuBarRegistrarX11* GetInstance();
+public:
+    static GlobalMenuBarRegistrarX11* GetInstance();
 
-  void OnWindowMapped(unsigned long xid);
-  void OnWindowUnmapped(unsigned long xid);
+    void OnWindowMapped(unsigned long xid);
+    void OnWindowUnmapped(unsigned long xid);
 
- private:
-  friend struct base::DefaultSingletonTraits<GlobalMenuBarRegistrarX11>;
+private:
+    friend struct base::DefaultSingletonTraits<GlobalMenuBarRegistrarX11>;
 
-  GlobalMenuBarRegistrarX11();
-  ~GlobalMenuBarRegistrarX11();
+    GlobalMenuBarRegistrarX11();
+    ~GlobalMenuBarRegistrarX11();
 
-  // Sends the actual message.
-  void RegisterXID(unsigned long xid);
-  void UnregisterXID(unsigned long xid);
+    // Sends the actual message.
+    void RegisterXID(unsigned long xid);
+    void UnregisterXID(unsigned long xid);
 
-  CHROMEG_CALLBACK_1(GlobalMenuBarRegistrarX11, void, OnProxyCreated,
-                     GObject*, GAsyncResult*);
-  CHROMEG_CALLBACK_1(GlobalMenuBarRegistrarX11, void, OnNameOwnerChanged,
-                     GObject*, GParamSpec*);
+    CHROMEG_CALLBACK_1(GlobalMenuBarRegistrarX11, void, OnProxyCreated,
+                       GObject*, GAsyncResult*);
+    CHROMEG_CALLBACK_1(GlobalMenuBarRegistrarX11, void, OnNameOwnerChanged,
+                       GObject*, GParamSpec*);
 
-  GDBusProxy* registrar_proxy_;
+    GDBusProxy* registrar_proxy_;
 
-  // Window XIDs which want to be registered, but haven't yet been because
-  // we're waiting for the proxy to become available.
-  std::set<unsigned long> live_xids_;
+    // Window XIDs which want to be registered, but haven't yet been because
+    // we're waiting for the proxy to become available.
+    std::set<unsigned long> live_xids_;
 
-  DISALLOW_COPY_AND_ASSIGN(GlobalMenuBarRegistrarX11);
+    DISALLOW_COPY_AND_ASSIGN(GlobalMenuBarRegistrarX11);
 };
 
 #endif  // CHROME_BROWSER_UI_VIEWS_FRAME_GLOBAL_MENU_BAR_REGISTRAR_X11_H_
