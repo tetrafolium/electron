@@ -28,102 +28,102 @@ namespace asar {
 
 // Createa a request job according to the file path.
 net::URLRequestJob* CreateJobFromPath(
-	const base::FilePath& full_path,
-	net::URLRequest* request,
-	net::NetworkDelegate* network_delegate,
-	const scoped_refptr<base::TaskRunner> file_task_runner);
+    const base::FilePath& full_path,
+    net::URLRequest* request,
+    net::NetworkDelegate* network_delegate,
+    const scoped_refptr<base::TaskRunner> file_task_runner);
 
 class URLRequestAsarJob : public net::URLRequestJob {
-public:
-URLRequestAsarJob(net::URLRequest* request,
-                  net::NetworkDelegate* network_delegate);
+ public:
+  URLRequestAsarJob(net::URLRequest* request,
+                    net::NetworkDelegate* network_delegate);
 
-void Initialize(const scoped_refptr<base::TaskRunner> file_task_runner,
-                const base::FilePath& file_path);
+  void Initialize(const scoped_refptr<base::TaskRunner> file_task_runner,
+                  const base::FilePath& file_path);
 
-protected:
-virtual ~URLRequestAsarJob();
+ protected:
+  virtual ~URLRequestAsarJob();
 
-void InitializeAsarJob(const scoped_refptr<base::TaskRunner> file_task_runner,
-                       std::shared_ptr<Archive> archive,
-                       const base::FilePath& file_path,
-                       const Archive::FileInfo& file_info);
-void InitializeFileJob(const scoped_refptr<base::TaskRunner> file_task_runner,
-                       const base::FilePath& file_path);
+  void InitializeAsarJob(const scoped_refptr<base::TaskRunner> file_task_runner,
+                         std::shared_ptr<Archive> archive,
+                         const base::FilePath& file_path,
+                         const Archive::FileInfo& file_info);
+  void InitializeFileJob(const scoped_refptr<base::TaskRunner> file_task_runner,
+                         const base::FilePath& file_path);
 
-// net::URLRequestJob:
-void Start() override;
-void Kill() override;
-int ReadRawData(net::IOBuffer* buf, int buf_size) override;
-bool IsRedirectResponse(GURL* location, int* http_status_code) override;
-std::unique_ptr<net::SourceStream> SetUpSourceStream() override;
-bool GetMimeType(std::string* mime_type) const override;
-void SetExtraRequestHeaders(const net::HttpRequestHeaders& headers) override;
-int GetResponseCode() const override;
-void GetResponseInfo(net::HttpResponseInfo* info) override;
+  // net::URLRequestJob:
+  void Start() override;
+  void Kill() override;
+  int ReadRawData(net::IOBuffer* buf, int buf_size) override;
+  bool IsRedirectResponse(GURL* location, int* http_status_code) override;
+  std::unique_ptr<net::SourceStream> SetUpSourceStream() override;
+  bool GetMimeType(std::string* mime_type) const override;
+  void SetExtraRequestHeaders(const net::HttpRequestHeaders& headers) override;
+  int GetResponseCode() const override;
+  void GetResponseInfo(net::HttpResponseInfo* info) override;
 
-private:
-// Meta information about the file. It's used as a member in the
-// URLRequestFileJob and also passed between threads because disk access is
-// necessary to obtain it.
-struct FileMetaInfo {
-	FileMetaInfo();
+ private:
+  // Meta information about the file. It's used as a member in the
+  // URLRequestFileJob and also passed between threads because disk access is
+  // necessary to obtain it.
+  struct FileMetaInfo {
+    FileMetaInfo();
 
-	// Size of the file.
-	int64_t file_size;
-	// Mime type associated with the file.
-	std::string mime_type;
-	// Result returned from GetMimeTypeFromFile(), i.e. flag showing whether
-	// obtaining of the mime type was successful.
-	bool mime_type_result;
-	// Flag showing whether the file exists.
-	bool file_exists;
-	// Flag showing whether the file name actually refers to a directory.
-	bool is_directory;
-};
+    // Size of the file.
+    int64_t file_size;
+    // Mime type associated with the file.
+    std::string mime_type;
+    // Result returned from GetMimeTypeFromFile(), i.e. flag showing whether
+    // obtaining of the mime type was successful.
+    bool mime_type_result;
+    // Flag showing whether the file exists.
+    bool file_exists;
+    // Flag showing whether the file name actually refers to a directory.
+    bool is_directory;
+  };
 
-// Fetches file info on a background thread.
-static void FetchMetaInfo(const base::FilePath& file_path,
-                          FileMetaInfo* meta_info);
+  // Fetches file info on a background thread.
+  static void FetchMetaInfo(const base::FilePath& file_path,
+                            FileMetaInfo* meta_info);
 
-// Callback after fetching file info on a background thread.
-void DidFetchMetaInfo(const FileMetaInfo* meta_info);
+  // Callback after fetching file info on a background thread.
+  void DidFetchMetaInfo(const FileMetaInfo* meta_info);
 
-// Callback after opening file on a background thread.
-void DidOpen(int result);
+  // Callback after opening file on a background thread.
+  void DidOpen(int result);
 
-// Callback after seeking to the beginning of |byte_range_| in the file
-// on a background thread.
-void DidSeek(int64_t result);
+  // Callback after seeking to the beginning of |byte_range_| in the file
+  // on a background thread.
+  void DidSeek(int64_t result);
 
-// Callback after data is asynchronously read from the file into |buf|.
-void DidRead(scoped_refptr<net::IOBuffer> buf, int result);
+  // Callback after data is asynchronously read from the file into |buf|.
+  void DidRead(scoped_refptr<net::IOBuffer> buf, int result);
 
-// The type of this job.
-enum JobType {
-	TYPE_ERROR,
-	TYPE_ASAR,
-	TYPE_FILE,
-};
-JobType type_;
+  // The type of this job.
+  enum JobType {
+    TYPE_ERROR,
+    TYPE_ASAR,
+    TYPE_FILE,
+  };
+  JobType type_;
 
-std::shared_ptr<Archive> archive_;
-base::FilePath file_path_;
-Archive::FileInfo file_info_;
+  std::shared_ptr<Archive> archive_;
+  base::FilePath file_path_;
+  Archive::FileInfo file_info_;
 
-std::unique_ptr<net::FileStream> stream_;
-FileMetaInfo meta_info_;
-scoped_refptr<base::TaskRunner> file_task_runner_;
+  std::unique_ptr<net::FileStream> stream_;
+  FileMetaInfo meta_info_;
+  scoped_refptr<base::TaskRunner> file_task_runner_;
 
-net::HttpByteRange byte_range_;
-int64_t remaining_bytes_;
-int64_t seek_offset_;
+  net::HttpByteRange byte_range_;
+  int64_t remaining_bytes_;
+  int64_t seek_offset_;
 
-net::Error range_parse_result_;
+  net::Error range_parse_result_;
 
-base::WeakPtrFactory<URLRequestAsarJob> weak_ptr_factory_;
+  base::WeakPtrFactory<URLRequestAsarJob> weak_ptr_factory_;
 
-DISALLOW_COPY_AND_ASSIGN(URLRequestAsarJob);
+  DISALLOW_COPY_AND_ASSIGN(URLRequestAsarJob);
 };
 
 }  // namespace asar

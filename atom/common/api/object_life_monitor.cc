@@ -12,31 +12,30 @@ namespace atom {
 
 ObjectLifeMonitor::ObjectLifeMonitor(v8::Isolate* isolate,
                                      v8::Local<v8::Object> target)
-	: target_(isolate, target),
-	weak_ptr_factory_(this) {
-	target_.SetWeak(this, OnObjectGC, v8::WeakCallbackType::kParameter);
+    : target_(isolate, target), weak_ptr_factory_(this) {
+  target_.SetWeak(this, OnObjectGC, v8::WeakCallbackType::kParameter);
 }
 
 ObjectLifeMonitor::~ObjectLifeMonitor() {
-	if (target_.IsEmpty())
-		return;
-	target_.ClearWeak();
-	target_.Reset();
+  if (target_.IsEmpty())
+    return;
+  target_.ClearWeak();
+  target_.Reset();
 }
 
 // static
 void ObjectLifeMonitor::OnObjectGC(
-	const v8::WeakCallbackInfo<ObjectLifeMonitor>& data) {
-	ObjectLifeMonitor* self = data.GetParameter();
-	self->target_.Reset();
-	self->RunDestructor();
-	data.SetSecondPassCallback(Free);
+    const v8::WeakCallbackInfo<ObjectLifeMonitor>& data) {
+  ObjectLifeMonitor* self = data.GetParameter();
+  self->target_.Reset();
+  self->RunDestructor();
+  data.SetSecondPassCallback(Free);
 }
 
 // static
 void ObjectLifeMonitor::Free(
-	const v8::WeakCallbackInfo<ObjectLifeMonitor>& data) {
-	delete data.GetParameter();
+    const v8::WeakCallbackInfo<ObjectLifeMonitor>& data) {
+  delete data.GetParameter();
 }
 
 }  // namespace atom

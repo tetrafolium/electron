@@ -10,10 +10,10 @@
 namespace atom {
 
 struct DraggableRegion {
-	bool draggable;
-	gfx::Rect bounds;
+  bool draggable;
+  gfx::Rect bounds;
 
-	DraggableRegion();
+  DraggableRegion();
 };
 
 }  // namespace atom

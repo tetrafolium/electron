@@ -18,25 +18,25 @@
 namespace brightray {
 
 enum {
-	PATH_START = 11000,
+  PATH_START = 11000,
 
-	DIR_USER_DATA = PATH_START, // Directory where user data can be written.
-	DIR_USER_CACHE, // Directory where user cache can be written.
-	DIR_APP_LOGS, // Directory where app logs live
+  DIR_USER_DATA = PATH_START,  // Directory where user data can be written.
+  DIR_USER_CACHE,              // Directory where user cache can be written.
+  DIR_APP_LOGS,                // Directory where app logs live
 
 #if defined(OS_LINUX)
-	DIR_APP_DATA, // Application Data directory under the user profile.
+  DIR_APP_DATA,  // Application Data directory under the user profile.
 #else
-	DIR_APP_DATA = base::DIR_APP_DATA,
+  DIR_APP_DATA = base::DIR_APP_DATA,
 #endif
 
 #if defined(OS_POSIX)
-	DIR_CACHE = base::DIR_CACHE, // Directory where to put cache data.
+  DIR_CACHE = base::DIR_CACHE,  // Directory where to put cache data.
 #else
-	DIR_CACHE = base::DIR_APP_DATA,
+  DIR_CACHE = base::DIR_APP_DATA,
 #endif
 
-	PATH_END
+  PATH_END
 };
 
 }  // namespace brightray

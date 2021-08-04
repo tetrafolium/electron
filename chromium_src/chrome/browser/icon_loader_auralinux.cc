@@ -11,41 +11,41 @@
 
 // static
 IconLoader::IconGroup IconLoader::GroupForFilepath(
-	const base::FilePath& file_path) {
-	return base::nix::GetFileMimeType(file_path);
+    const base::FilePath& file_path) {
+  return base::nix::GetFileMimeType(file_path);
 }
 
 // static
 content::BrowserThread::ID IconLoader::ReadIconThreadID() {
-	// ReadIcon() calls into views::LinuxUI and GTK2 code, so it must be on the UI
-	// thread.
-	return content::BrowserThread::UI;
+  // ReadIcon() calls into views::LinuxUI and GTK2 code, so it must be on the UI
+  // thread.
+  return content::BrowserThread::UI;
 }
 
 void IconLoader::ReadIcon() {
-	int size_pixels = 0;
-	switch (icon_size_) {
-	case IconLoader::SMALL:
-		size_pixels = 16;
-		break;
-	case IconLoader::NORMAL:
-		size_pixels = 32;
-		break;
-	case IconLoader::LARGE:
-		size_pixels = 48;
-		break;
-	default:
-		NOTREACHED();
-	}
+  int size_pixels = 0;
+  switch (icon_size_) {
+    case IconLoader::SMALL:
+      size_pixels = 16;
+      break;
+    case IconLoader::NORMAL:
+      size_pixels = 32;
+      break;
+    case IconLoader::LARGE:
+      size_pixels = 48;
+      break;
+    default:
+      NOTREACHED();
+  }
 
-	views::LinuxUI* ui = views::LinuxUI::instance();
-	if (ui) {
-		gfx::Image image = ui->GetIconForContentType(group_, size_pixels);
-		if (!image.IsEmpty())
-			image_.reset(new gfx::Image(image));
-	}
+  views::LinuxUI* ui = views::LinuxUI::instance();
+  if (ui) {
+    gfx::Image image = ui->GetIconForContentType(group_, size_pixels);
+    if (!image.IsEmpty())
+      image_.reset(new gfx::Image(image));
+  }
 
-	target_task_runner_->PostTask(
-		FROM_HERE, base::Bind(callback_, base::Passed(&image_), group_));
-	delete this;
+  target_task_runner_->PostTask(
+      FROM_HERE, base::Bind(callback_, base::Passed(&image_), group_));
+  delete this;
 }

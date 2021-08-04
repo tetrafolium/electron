@@ -14,64 +14,65 @@
 #pragma clang assume_nonnull begin
 
 @class NSTouchBar, NSTouchBarItem;
-@class NSScrubber, NSScrubberItemView, NSScrubberArrangedView, NSScrubberTextItemView, NSScrubberImageItemView, NSScrubberSelectionStyle;
-@protocol NSTouchBarDelegate, NSScrubberDelegate, NSScrubberDataSource, NSScrubberFlowLayoutDelegate, NSScrubberFlowLayout;
+@class NSScrubber, NSScrubberItemView, NSScrubberArrangedView,
+    NSScrubberTextItemView, NSScrubberImageItemView, NSScrubberSelectionStyle;
+@protocol NSTouchBarDelegate
+, NSScrubberDelegate, NSScrubberDataSource, NSScrubberFlowLayoutDelegate,
+    NSScrubberFlowLayout;
 
 typedef float NSTouchBarItemPriority;
 static const NSTouchBarItemPriority NSTouchBarItemPriorityHigh = 1000;
 static const NSTouchBarItemPriority NSTouchBarItemPriorityNormal = 0;
 static const NSTouchBarItemPriority NSTouchBarItemPriorityLow = -1000;
 
-enum NSScrubberMode {
-	NSScrubberModeFixed = 0,
-	NSScrubberModeFree
-};
+enum NSScrubberMode { NSScrubberModeFixed = 0, NSScrubberModeFree };
 
 typedef NSString* NSTouchBarItemIdentifier;
 typedef NSString* NSTouchBarCustomizationIdentifier;
 
 static const NSTouchBarItemIdentifier NSTouchBarItemIdentifierFixedSpaceSmall =
-	@"NSTouchBarItemIdentifierFixedSpaceSmall";
+    @"NSTouchBarItemIdentifierFixedSpaceSmall";
 
 static const NSTouchBarItemIdentifier NSTouchBarItemIdentifierFixedSpaceLarge =
-	@"NSTouchBarItemIdentifierFixedSpaceLarge";
+    @"NSTouchBarItemIdentifierFixedSpaceLarge";
 
 static const NSTouchBarItemIdentifier NSTouchBarItemIdentifierFlexibleSpace =
-	@"NSTouchBarItemIdentifierFlexibleSpace";
+    @"NSTouchBarItemIdentifierFlexibleSpace";
 
 static const NSTouchBarItemIdentifier NSTouchBarItemIdentifierOtherItemsProxy =
-	@"NSTouchBarItemIdentifierOtherItemsProxy";
+    @"NSTouchBarItemIdentifierOtherItemsProxy";
 
-@interface NSTouchBar : NSObject<NSCoding>
+@interface NSTouchBar : NSObject <NSCoding>
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder*)aDecoder
-        NS_DESIGNATED_INITIALIZER;
+    NS_DESIGNATED_INITIALIZER;
 
 @property(copy, nullable)
-NSTouchBarCustomizationIdentifier customizationIdentifier;
+    NSTouchBarCustomizationIdentifier customizationIdentifier;
 @property(copy) NSArray* customizationAllowedItemIdentifiers;
 @property(copy) NSArray* customizationRequiredItemIdentifiers;
 @property(copy) NSArray* defaultItemIdentifiers;
 @property(copy, readonly) NSArray* itemIdentifiers;
 @property(copy, nullable) NSTouchBarItemIdentifier principalItemIdentifier;
-@property(copy, nullable) NSTouchBarItemIdentifier escapeKeyReplacementItemIdentifier;
+@property(copy, nullable)
+    NSTouchBarItemIdentifier escapeKeyReplacementItemIdentifier;
 @property(copy) NSSet* templateItems;
 @property(nullable, weak) id<NSTouchBarDelegate> delegate;
 
 - (nullable __kindof NSTouchBarItem*)itemForIdentifier:
-        (NSTouchBarItemIdentifier)identifier;
+    (NSTouchBarItemIdentifier)identifier;
 
 @property(readonly, getter=isVisible) BOOL visible;
 
 @end
 
-@interface NSTouchBarItem : NSObject<NSCoding>
+@interface NSTouchBarItem : NSObject <NSCoding>
 
 - (instancetype)initWithIdentifier:(NSTouchBarItemIdentifier)identifier
-        NS_DESIGNATED_INITIALIZER;
+    NS_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder*)coder
-        NS_DESIGNATED_INITIALIZER;
+    NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
 
 @property(readonly, copy) NSTouchBarItemIdentifier identifier;
@@ -86,8 +87,8 @@ NSTouchBarCustomizationIdentifier customizationIdentifier;
 @interface NSGroupTouchBarItem : NSTouchBarItem
 
 + (NSGroupTouchBarItem*)groupItemWithIdentifier:
-        (NSTouchBarItemIdentifier)identifier
-        items:(NSArray*)items;
+                            (NSTouchBarItemIdentifier)identifier
+                                          items:(NSArray*)items;
 
 @property(strong) NSTouchBar* groupTouchBar;
 @property(readwrite, copy, null_resettable) NSString* customizationLabel;
@@ -98,7 +99,7 @@ NSTouchBarCustomizationIdentifier customizationIdentifier;
 
 @property(readwrite, strong) __kindof NSView* view;
 @property(readwrite, strong, nullable)
-__kindof NSViewController* viewController;
+    __kindof NSViewController* viewController;
 @property(readwrite, copy, null_resettable) NSString* customizationLabel;
 
 @end
@@ -141,10 +142,10 @@ __kindof NSViewController* viewController;
 @property(strong, nullable) NSScrubberSelectionStyle* selectionOverlayStyle;
 
 - (void)registerClass:(Class)itemViewClass
-        forItemIdentifier:(NSString*)itemIdentifier;
+    forItemIdentifier:(NSString*)itemIdentifier;
 
 - (__kindof NSScrubberItemView*)makeItemWithIdentifier:(NSString*)itemIdentifier
-        owner:(id)owner;
+                                                 owner:(id)owner;
 - (void)reloadData;
 
 @end
@@ -152,10 +153,12 @@ __kindof NSViewController* viewController;
 @interface NSScrubberFlowLayout : NSObject
 @end
 
-@interface NSScrubberSelectionStyle : NSObject<NSCoding>
+@interface NSScrubberSelectionStyle : NSObject <NSCoding>
 
-@property(class, strong, readonly) NSScrubberSelectionStyle* outlineOverlayStyle;
-@property(class, strong, readonly) NSScrubberSelectionStyle* roundedBackgroundStyle;
+@property(class, strong, readonly)
+    NSScrubberSelectionStyle* outlineOverlayStyle;
+@property(class, strong, readonly)
+    NSScrubberSelectionStyle* roundedBackgroundStyle;
 
 @end
 
@@ -189,8 +192,8 @@ __kindof NSViewController* viewController;
 
 @property(copy) NSColor* bezelColor;
 + (instancetype)buttonWithTitle:(NSString*)title
-        target:(id)target
-        action:(SEL)action;
+                         target:(id)target
+                         action:(SEL)action;
 
 @end
 
@@ -203,38 +206,42 @@ __kindof NSViewController* viewController;
 @interface NSSegmentedControl (TouchBarSDK)
 
 + (instancetype)segmentedControlWithLabels:(NSArray*)labels
-        trackingMode:(NSSegmentSwitchTracking)trackingMode
-        target:(id)target
-        action:(SEL)action;
+                              trackingMode:(NSSegmentSwitchTracking)trackingMode
+                                    target:(id)target
+                                    action:(SEL)action;
 
 @end
 
-@protocol NSTouchBarDelegate<NSObject>
+@protocol NSTouchBarDelegate <NSObject>
 
 @optional
 - (nullable NSTouchBarItem*)touchBar:(NSTouchBar*)touchBar
-        makeItemForIdentifier:(NSTouchBarItemIdentifier)identifier;
+               makeItemForIdentifier:(NSTouchBarItemIdentifier)identifier;
 
 @end
 
-@protocol NSScrubberDelegate<NSObject>
+@protocol NSScrubberDelegate <NSObject>
 
-- (void)scrubber:(NSScrubber*)scrubber didHighlightItemAtIndex:(NSInteger)highlightedIndex;
-- (void)scrubber:(NSScrubber*)scrubber didSelectItemAtIndex:(NSInteger)selectedIndex;
+- (void)scrubber:(NSScrubber*)scrubber
+    didHighlightItemAtIndex:(NSInteger)highlightedIndex;
+- (void)scrubber:(NSScrubber*)scrubber
+    didSelectItemAtIndex:(NSInteger)selectedIndex;
 
 @end
 
-@protocol NSScrubberDataSource<NSObject>
+@protocol NSScrubberDataSource <NSObject>
 
 - (NSInteger)numberOfItemsForScrubber:(NSScrubber*)scrubber;
 - (__kindof NSScrubberItemView*)scrubber:(NSScrubber*)scrubber
-        viewForItemAtIndex:(NSInteger)index;
+                      viewForItemAtIndex:(NSInteger)index;
 
 @end
 
-@protocol NSScrubberFlowLayoutDelegate<NSObject>
+@protocol NSScrubberFlowLayoutDelegate <NSObject>
 
-- (NSSize)scrubber:(NSScrubber *)scrubber layout:(NSScrubberFlowLayout *)layout sizeForItemAtIndex:(NSInteger)itemIndex;
+- (NSSize)scrubber:(NSScrubber*)scrubber
+                layout:(NSScrubberFlowLayout*)layout
+    sizeForItemAtIndex:(NSInteger)itemIndex;
 
 @end
 

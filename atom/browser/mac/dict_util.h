@@ -23,7 +23,7 @@ std::unique_ptr<base::ListValue> NSArrayToListValue(NSArray* arr);
 NSDictionary* DictionaryValueToNSDictionary(const base::DictionaryValue& value);
 
 std::unique_ptr<base::DictionaryValue> NSDictionaryToDictionaryValue(
-	NSDictionary* dict);
+    NSDictionary* dict);
 
 }  // namespace atom
 

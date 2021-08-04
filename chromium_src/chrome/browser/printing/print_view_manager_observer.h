@@ -10,13 +10,12 @@ namespace printing {
 // An interface the PrintViewManager uses to notify an observer when the print
 // dialog is shown. Register the observer via PrintViewManager::set_observer.
 class PrintViewManagerObserver {
-public:
-// Notifies the observer that the print dialog was shown.
-virtual void OnPrintDialogShown() = 0;
+ public:
+  // Notifies the observer that the print dialog was shown.
+  virtual void OnPrintDialogShown() = 0;
 
-protected:
-virtual ~PrintViewManagerObserver() {
-}
+ protected:
+  virtual ~PrintViewManagerObserver() {}
 };
 
 }  // namespace printing

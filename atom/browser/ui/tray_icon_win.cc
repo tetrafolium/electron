@@ -9,8 +9,8 @@ namespace atom {
 
 // static
 TrayIcon* TrayIcon::Create() {
-	static NotifyIconHost host;
-	return host.CreateNotifyIcon();
+  static NotifyIconHost host;
+  return host.CreateNotifyIcon();
 }
 
 }  // namespace atom

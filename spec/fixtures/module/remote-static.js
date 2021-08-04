@@ -8,7 +8,7 @@ class Foo {
   }
 }
 
-Foo.bar = "baz";
+Foo.bar = 'baz';
 
 module.exports = {
   Foo: Foo,

@@ -16,25 +16,24 @@ class StatusIconLinux;
 
 namespace atom {
 
-class TrayIconGtk : public TrayIcon,
-	public views::StatusIconLinux::Delegate {
-public:
-TrayIconGtk();
-virtual ~TrayIconGtk();
+class TrayIconGtk : public TrayIcon, public views::StatusIconLinux::Delegate {
+ public:
+  TrayIconGtk();
+  virtual ~TrayIconGtk();
 
-// TrayIcon:
-void SetImage(const gfx::Image& image) override;
-void SetToolTip(const std::string& tool_tip) override;
-void SetContextMenu(AtomMenuModel* menu_model) override;
+  // TrayIcon:
+  void SetImage(const gfx::Image& image) override;
+  void SetToolTip(const std::string& tool_tip) override;
+  void SetContextMenu(AtomMenuModel* menu_model) override;
 
-private:
-// views::StatusIconLinux::Delegate:
-void OnClick() override;
-bool HasClickAction() override;
+ private:
+  // views::StatusIconLinux::Delegate:
+  void OnClick() override;
+  bool HasClickAction() override;
 
-std::unique_ptr<views::StatusIconLinux> icon_;
+  std::unique_ptr<views::StatusIconLinux> icon_;
 
-DISALLOW_COPY_AND_ASSIGN(TrayIconGtk);
+  DISALLOW_COPY_AND_ASSIGN(TrayIconGtk);
 };
 
 }  // namespace atom

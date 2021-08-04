@@ -11,15 +11,15 @@
 namespace brightray {
 
 class NotificationPresenterLinux : public NotificationPresenter {
-public:
-NotificationPresenterLinux();
-~NotificationPresenterLinux();
+ public:
+  NotificationPresenterLinux();
+  ~NotificationPresenterLinux();
 
-private:
-Notification* CreateNotificationObject(
-	NotificationDelegate* delegate) override;
+ private:
+  Notification* CreateNotificationObject(
+      NotificationDelegate* delegate) override;
 
-DISALLOW_COPY_AND_ASSIGN(NotificationPresenterLinux);
+  DISALLOW_COPY_AND_ASSIGN(NotificationPresenterLinux);
 };
 
 }  // namespace brightray

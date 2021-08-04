@@ -16,32 +16,29 @@ namespace atom {
 // Post all tasks to the current message loop's task runner if available,
 // otherwise delay the work until message loop is ready.
 class BridgeTaskRunner : public base::SingleThreadTaskRunner {
-public:
-BridgeTaskRunner() {
-}
-~BridgeTaskRunner() override {
-}
+ public:
+  BridgeTaskRunner() {}
+  ~BridgeTaskRunner() override {}
 
-// Called when message loop is ready.
-void MessageLoopIsReady();
+  // Called when message loop is ready.
+  void MessageLoopIsReady();
 
-// base::SingleThreadTaskRunner:
-bool PostDelayedTask(const tracked_objects::Location& from_here,
-                     base::OnceClosure task,
-                     base::TimeDelta delay) override;
-bool RunsTasksInCurrentSequence() const override;
-bool PostNonNestableDelayedTask(
-	const tracked_objects::Location& from_here,
-	base::OnceClosure task,
-	base::TimeDelta delay) override;
+  // base::SingleThreadTaskRunner:
+  bool PostDelayedTask(const tracked_objects::Location& from_here,
+                       base::OnceClosure task,
+                       base::TimeDelta delay) override;
+  bool RunsTasksInCurrentSequence() const override;
+  bool PostNonNestableDelayedTask(const tracked_objects::Location& from_here,
+                                  base::OnceClosure task,
+                                  base::TimeDelta delay) override;
 
-private:
-using TaskPair = std::tuple<
-	tracked_objects::Location, base::OnceClosure, base::TimeDelta>;
-std::vector<TaskPair> tasks_;
-std::vector<TaskPair> non_nestable_tasks_;
+ private:
+  using TaskPair =
+      std::tuple<tracked_objects::Location, base::OnceClosure, base::TimeDelta>;
+  std::vector<TaskPair> tasks_;
+  std::vector<TaskPair> non_nestable_tasks_;
 
-DISALLOW_COPY_AND_ASSIGN(BridgeTaskRunner);
+  DISALLOW_COPY_AND_ASSIGN(BridgeTaskRunner);
 };
 
 }  // namespace atom

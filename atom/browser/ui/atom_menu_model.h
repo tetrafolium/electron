@@ -13,65 +13,58 @@
 namespace atom {
 
 class AtomMenuModel : public ui::SimpleMenuModel {
-public:
-class Delegate : public ui::SimpleMenuModel::Delegate {
-public:
-virtual ~Delegate() {
-}
+ public:
+  class Delegate : public ui::SimpleMenuModel::Delegate {
+   public:
+    virtual ~Delegate() {}
 
-virtual bool GetAcceleratorForCommandIdWithParams(
-	int command_id,
-	bool use_default_accelerator,
-	ui::Accelerator* accelerator) const = 0;
+    virtual bool GetAcceleratorForCommandIdWithParams(
+        int command_id,
+        bool use_default_accelerator,
+        ui::Accelerator* accelerator) const = 0;
 
-private:
-// ui::SimpleMenuModel::Delegate:
-bool GetAcceleratorForCommandId(int command_id,
-                                ui::Accelerator* accelerator) const {
-	return GetAcceleratorForCommandIdWithParams(
-		command_id, false, accelerator);
-}
-};
+   private:
+    // ui::SimpleMenuModel::Delegate:
+    bool GetAcceleratorForCommandId(int command_id,
+                                    ui::Accelerator* accelerator) const {
+      return GetAcceleratorForCommandIdWithParams(command_id, false,
+                                                  accelerator);
+    }
+  };
 
-class Observer {
-public:
-virtual ~Observer() {
-}
+  class Observer {
+   public:
+    virtual ~Observer() {}
 
-// Notifies the menu has been closed.
-virtual void MenuWillClose() {
-}
-};
+    // Notifies the menu has been closed.
+    virtual void MenuWillClose() {}
+  };
 
-explicit AtomMenuModel(Delegate* delegate);
-virtual ~AtomMenuModel();
+  explicit AtomMenuModel(Delegate* delegate);
+  virtual ~AtomMenuModel();
 
-void AddObserver(Observer* obs) {
-	observers_.AddObserver(obs);
-}
-void RemoveObserver(Observer* obs) {
-	observers_.RemoveObserver(obs);
-}
+  void AddObserver(Observer* obs) { observers_.AddObserver(obs); }
+  void RemoveObserver(Observer* obs) { observers_.RemoveObserver(obs); }
 
-void SetRole(int index, const base::string16& role);
-base::string16 GetRoleAt(int index);
-bool GetAcceleratorAtWithParams(int index,
-                                bool use_default_accelerator,
-                                ui::Accelerator* accelerator) const;
+  void SetRole(int index, const base::string16& role);
+  base::string16 GetRoleAt(int index);
+  bool GetAcceleratorAtWithParams(int index,
+                                  bool use_default_accelerator,
+                                  ui::Accelerator* accelerator) const;
 
-// ui::SimpleMenuModel:
-void MenuWillClose() override;
+  // ui::SimpleMenuModel:
+  void MenuWillClose() override;
 
-using SimpleMenuModel::GetSubmenuModelAt;
-AtomMenuModel* GetSubmenuModelAt(int index);
+  using SimpleMenuModel::GetSubmenuModelAt;
+  AtomMenuModel* GetSubmenuModelAt(int index);
 
-private:
-Delegate* delegate_;      // weak ref.
+ private:
+  Delegate* delegate_;  // weak ref.
 
-std::map<int, base::string16> roles_;      // command id -> role
-base::ObserverList<Observer> observers_;
+  std::map<int, base::string16> roles_;  // command id -> role
+  base::ObserverList<Observer> observers_;
 
-DISALLOW_COPY_AND_ASSIGN(AtomMenuModel);
+  DISALLOW_COPY_AND_ASSIGN(AtomMenuModel);
 };
 
 }  // namespace atom

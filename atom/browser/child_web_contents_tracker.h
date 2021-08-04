@@ -12,12 +12,12 @@ namespace atom {
 // ChildWebContentsTracker tracks child WebContents
 // created by native `window.open()`
 class ChildWebContentsTracker : public content::WebContentsObserver {
-public:
-explicit ChildWebContentsTracker(content::WebContents* web_contents);
-static bool IsChildWebContents(content::WebContents* web_contents);
+ public:
+  explicit ChildWebContentsTracker(content::WebContents* web_contents);
+  static bool IsChildWebContents(content::WebContents* web_contents);
 
-protected:
-void WebContentsDestroyed() override;
+ protected:
+  void WebContentsDestroyed() override;
 };
 
 }  // namespace atom

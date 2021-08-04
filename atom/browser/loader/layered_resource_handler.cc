@@ -7,22 +7,20 @@
 namespace atom {
 
 LayeredResourceHandler::LayeredResourceHandler(
-	net::URLRequest* request,
-	std::unique_ptr<content::ResourceHandler> next_handler,
-	Delegate* delegate)
-	: content::LayeredResourceHandler(request, std::move(next_handler)),
-	delegate_(delegate) {
-}
+    net::URLRequest* request,
+    std::unique_ptr<content::ResourceHandler> next_handler,
+    Delegate* delegate)
+    : content::LayeredResourceHandler(request, std::move(next_handler)),
+      delegate_(delegate) {}
 
-LayeredResourceHandler::~LayeredResourceHandler() {
-}
+LayeredResourceHandler::~LayeredResourceHandler() {}
 
 void LayeredResourceHandler::OnResponseStarted(
-	content::ResourceResponse* response,
-	std::unique_ptr<content::ResourceController> controller) {
-	if (delegate_)
-		delegate_->OnResponseStarted(response);
-	next_handler_->OnResponseStarted(response, std::move(controller));
+    content::ResourceResponse* response,
+    std::unique_ptr<content::ResourceController> controller) {
+  if (delegate_)
+    delegate_->OnResponseStarted(response);
+  next_handler_->OnResponseStarted(response, std::move(controller));
 }
 
 }  // namespace atom

@@ -10,29 +10,29 @@
 namespace atom {
 
 class RemoteCallbackFreer : public ObjectLifeMonitor,
-	public content::WebContentsObserver {
-public:
-static void BindTo(v8::Isolate* isolate,
-                   v8::Local<v8::Object> target,
-                   int object_id,
-                   content::WebContents* web_conents);
+                            public content::WebContentsObserver {
+ public:
+  static void BindTo(v8::Isolate* isolate,
+                     v8::Local<v8::Object> target,
+                     int object_id,
+                     content::WebContents* web_conents);
 
-protected:
-RemoteCallbackFreer(v8::Isolate* isolate,
-                    v8::Local<v8::Object> target,
-                    int object_id,
-                    content::WebContents* web_conents);
-~RemoteCallbackFreer() override;
+ protected:
+  RemoteCallbackFreer(v8::Isolate* isolate,
+                      v8::Local<v8::Object> target,
+                      int object_id,
+                      content::WebContents* web_conents);
+  ~RemoteCallbackFreer() override;
 
-void RunDestructor() override;
+  void RunDestructor() override;
 
-// content::WebContentsObserver:
-void RenderViewDeleted(content::RenderViewHost*) override;
+  // content::WebContentsObserver:
+  void RenderViewDeleted(content::RenderViewHost*) override;
 
-private:
-int object_id_;
+ private:
+  int object_id_;
 
-DISALLOW_COPY_AND_ASSIGN(RemoteCallbackFreer);
+  DISALLOW_COPY_AND_ASSIGN(RemoteCallbackFreer);
 };
 
 }  // namespace atom

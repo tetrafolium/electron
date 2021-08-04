@@ -53,7 +53,7 @@ describe('node feature', () => {
 
       it('works in browser process', (done) => {
         const fork = remote.require('child_process').fork
-        const child = fork(path.join(fixtures, 'module', 'ping.js'))
+      const child = fork(path.join(fixtures, 'module', 'ping.js'))
         child.on('message', (msg) => {
           assert.equal(msg, 'message')
           done()
@@ -81,20 +81,18 @@ describe('node feature', () => {
 
       it('pipes stdio', (done) => {
         const child = ChildProcess.fork(path.join(fixtures, 'module', 'process-stdout.js'), {silent: true})
-        let data = ''
-        child.stdout.on('data', (chunk) => {
-          data += String(chunk)
-        })
+      let data = ''
+      child.stdout.on('data', (chunk) => {data += String(chunk)})
         child.on('close', (code) => {
           assert.equal(code, 0)
-          assert.equal(data, 'pipes stdio')
+        assert.equal(data, 'pipes stdio')
           done()
         })
       })
 
       it('works when sending a message to a process forked with the --eval argument', (done) => {
-        const source = "process.on('message', (message) => { process.send(message) })"
-        const forked = ChildProcess.fork('--eval', [source])
+        const source = 'process.on(\'message\', (message) => { process.send(message) })'
+      const forked = ChildProcess.fork('--eval', [source])
         forked.once('message', (message) => {
           assert.equal(message, 'hello')
           done()
@@ -107,7 +105,8 @@ describe('node feature', () => {
       let child
 
       afterEach(() => {
-        if (child != null) { child.kill()
+      if (child != null) {
+        child.kill()
       })
 
       it('supports spawning Electron as a node process via the ELECTRON_RUN_AS_NODE env var', (done) => {
@@ -117,10 +116,8 @@ describe('node feature', () => {
           }
         })
 
-        let output = ''
-        child.stdout.on('data', (data) => {
-          output += data
-        })
+      let output = ''
+      child.stdout.on('data', (data) => {output += data})
         child.stdout.on('close', () => {
           assert.deepEqual(JSON.parse(output), {
             processLog: process.platform === 'win32' ? 'function' : 'undefined',
@@ -145,14 +142,13 @@ describe('node feature', () => {
     describe('error thrown in renderer process node context', () => {
       it('gets emitted as a process uncaughtException event', (done) => {
         const error = new Error('boo!')
-        const listeners = process.listeners('uncaughtException')
-        process.removeAllListeners('uncaughtException')
+    const listeners = process.listeners('uncaughtException')
+    process.removeAllListeners('uncaughtException')
         process.on('uncaughtException', (thrown) => {
           assert.strictEqual(thrown, error)
-          process.removeAllListeners('uncaughtException')
-          listeners.forEach((listener) => {
-            process.on('uncaughtException', listener)
-          })
+        process.removeAllListeners('uncaughtException')
+        listeners.forEach(
+            (listener) => {process.on('uncaughtException', listener)})
           done()
         })
         fs.readFile(__filename, () => {
@@ -175,19 +171,19 @@ describe('node feature', () => {
       })
     })
 
-    describe('setTimeout called under Chromium event loop in browser process', () => {
-      it('can be scheduled in time', (done) => {
-        remote.getGlobal('setTimeout')(done, 0)
-      })
-    })
+        describe(
+            'setTimeout called under Chromium event loop in browser process',
+            () => {
+                it('can be scheduled in time',
+                   (done) => {remote.getGlobal('setTimeout')(done, 0)})})
 
     describe('setInterval called under Chromium event loop in browser process', () => {
       it('can be scheduled in time', (done) => {
         let clear
-        let interval
+    let interval
         clear = () => {
-          remote.getGlobal('clearInterval')(interval)
-          done()
+      remote.getGlobal('clearInterval')(interval)
+      done()
         }
         interval = remote.getGlobal('setInterval')(clear, 10)
       })
@@ -195,11 +191,12 @@ describe('node feature', () => {
   })
 
   describe('inspector', () => {
-    let child
+      let child
 
-    afterEach(() => {
-      if (child != null) { child.kill()
-    })
+      afterEach(() => {
+        if (child != null) {
+          child.kill()
+        })
 
     it('supports starting the v8 inspector with --inspect/--inspect-brk', (done) => {
       child = ChildProcess.spawn(process.execPath, ['--inspect-brk', path.join(__dirname, 'fixtures', 'module', 'run-as-node.js')], {
@@ -208,15 +205,16 @@ describe('node feature', () => {
         }
       })
 
-      let output = ''
-      child.stderr.on('data', (data) => {
-        output += data
-        if (output.trim().startsWith('Debugger listening on ws://')) { done()
+    let output = ''
+    child.stderr.on('data', (data) => {
+      output += data
+      if (output.trim().startsWith('Debugger listening on ws://')) {
+        done()
       })
 
-      child.stdout.on('data', (data) => {
-        done(new Error(`Unexpected output: ${data.toString()}`))
-      })
+      child.stdout.on(
+          'data',
+          (data) => {done(new Error(`Unexpected output: ${data.toString()}`))})
     })
 
     it('supports js binding', (done) => {
@@ -228,12 +226,12 @@ describe('node feature', () => {
       })
 
       child.on('message', ({cmd, debuggerEnabled, secondSessionOpened, success}) => {
-        if (cmd === 'assert') {
-          assert.equal(debuggerEnabled, true)
-          assert.equal(secondSessionOpened, false)
-          assert.equal(success, true)
-          done()
-        }
+          if (cmd === 'assert') {
+            assert.equal(debuggerEnabled, true)
+            assert.equal(secondSessionOpened, false)
+            assert.equal(success, true)
+            done()
+          }
       })
     })
   })
@@ -270,18 +268,18 @@ describe('node feature', () => {
 
   describe('net.connect', () => {
     before(function () {
-      if (process.platform !== 'darwin') {
-        this.skip()
-      }
+          if (process.platform !== 'darwin') {
+            this.skip()
+          }
     })
 
     it('emit error when connect to a socket path without listeners', (done) => {
       const socketPath = path.join(os.tmpdir(), 'atom-shell-test.sock')
-      const script = path.join(fixtures, 'module', 'create_socket.js')
-      const child = ChildProcess.fork(script, [socketPath])
+    const script = path.join(fixtures, 'module', 'create_socket.js')
+    const child = ChildProcess.fork(script, [socketPath])
       child.on('exit', (code) => {
         assert.equal(code, 0)
-        const client = require('net').connect(socketPath)
+      const client = require('net').connect(socketPath)
         client.on('error', (error) => {
           assert.equal(error.code, 'ECONNREFUSED')
           done()
@@ -293,24 +291,24 @@ describe('node feature', () => {
   describe('Buffer', () => {
     it('can be created from WebKit external string', () => {
       const p = document.createElement('p')
-      p.innerText = '闲云潭影日悠悠，物换星移几度秋'
-      const b = Buffer.from(p.innerText)
-      assert.equal(b.toString(), '闲云潭影日悠悠，物换星移几度秋')
+  p.innerText = '闲云潭影日悠悠，物换星移几度秋'
+  const b = Buffer.from(p.innerText)
+  assert.equal(b.toString(), '闲云潭影日悠悠，物换星移几度秋')
       assert.equal(Buffer.byteLength(p.innerText), 45)
     })
 
     it('correctly parses external one-byte UTF8 string', () => {
       const p = document.createElement('p')
-      p.innerText = 'Jøhänñéß'
-      const b = Buffer.from(p.innerText)
-      assert.equal(b.toString(), 'Jøhänñéß')
+    p.innerText = 'Jøhänñéß'
+    const b = Buffer.from(p.innerText)
+    assert.equal(b.toString(), 'Jøhänñéß')
       assert.equal(Buffer.byteLength(p.innerText), 13)
     })
 
     it('does not crash when creating large Buffers', () => {
       let buffer = Buffer.from(new Array(4096).join(' '))
-      assert.equal(buffer.length, 4095)
-      buffer = Buffer.from(new Array(4097).join(' '))
+    assert.equal(buffer.length, 4095)
+    buffer = Buffer.from(new Array(4097).join(' '))
       assert.equal(buffer.length, 4096)
     })
   })
@@ -323,30 +321,27 @@ describe('node feature', () => {
       })
     })
 
-    it('does not throw an exception when calling write()', () => {
-      assert.doesNotThrow(() => {
-        process.stdout.write('test')
-      })
-    })
+  it('does not throw an exception when calling write()',
+     () => {assert.doesNotThrow(() => {process.stdout.write('test')})})
 
-    it('should have isTTY defined on Mac and Linux', function () {
-      if (isCI || process.platform === 'win32') {
-        // FIXME(alexeykuzmin): Skip the test.
-        // this.skip()
-        return
-      }
+  it('should have isTTY defined on Mac and Linux', function() {
+    if (isCI || process.platform === 'win32') {
+      // FIXME(alexeykuzmin): Skip the test.
+      // this.skip()
+      return
+    }
 
-      assert.equal(typeof process.stdout.isTTY, 'boolean')
-    })
+    assert.equal(typeof process.stdout.isTTY, 'boolean')
+  })
 
     it('should have isTTY undefined on Windows', function () {
-      if (isCI || process.platform !== 'win32') {
-        // FIXME(alexeykuzmin): Skip the test.
-        // this.skip()
-        return
-      }
+          if (isCI || process.platform !== 'win32') {
+            // FIXME(alexeykuzmin): Skip the test.
+            // this.skip()
+            return
+          }
 
-      assert.equal(process.stdout.isTTY, undefined)
+          assert.equal(process.stdout.isTTY, undefined)
     })
   })
 
@@ -362,26 +357,23 @@ describe('node feature', () => {
     })
   })
 
-  describe('process.version', () => {
-    it('should not have -pre', () => {
-      assert(!process.version.endsWith('-pre'))
-    })
-  })
+    describe(
+        'process.version',
+        () => {
+            it('should not have -pre',
+               () => {assert(!process.version.endsWith('-pre'))})})
 
-  describe('vm.createContext', () => {
-    it('should not crash', () => {
-      require('vm').runInNewContext('')
-    })
-  })
+    describe(
+        'vm.createContext',
+        () => {
+            it('should not crash', () => {require('vm').runInNewContext('')})})
 
-  it('includes the electron version in process.versions', () => {
-    assert(/^\d+\.\d+\.\d+(\S*)?$/.test(process.versions.electron))
-  })
+    it('includes the electron version in process.versions',
+       () => {assert(/^\d+\.\d+\.\d+(\S*)?$/.test(process.versions.electron))})
 
-  it('includes the chrome version in process.versions', () => {
-    assert(/^\d+\.\d+\.\d+\.\d+$/.test(process.versions.chrome))
-  })
-});
+    it('includes the chrome version in process.versions',
+       () => {assert(/^\d+\.\d+\.\d+\.\d+$/.test(process.versions.chrome))})
+      });
         }
       } 
         }

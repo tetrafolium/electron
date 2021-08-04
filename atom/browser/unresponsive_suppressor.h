@@ -12,12 +12,12 @@ namespace atom {
 bool IsUnresponsiveEventSuppressed();
 
 class UnresponsiveSuppressor {
-public:
-UnresponsiveSuppressor();
-~UnresponsiveSuppressor();
+ public:
+  UnresponsiveSuppressor();
+  ~UnresponsiveSuppressor();
 
-private:
-DISALLOW_COPY_AND_ASSIGN(UnresponsiveSuppressor);
+ private:
+  DISALLOW_COPY_AND_ASSIGN(UnresponsiveSuppressor);
 };
 
 }  // namespace atom

@@ -17,58 +17,57 @@
 namespace atom {
 
 class AtomURLRequestJobFactory : public net::URLRequestJobFactory {
-public:
-AtomURLRequestJobFactory();
-virtual ~AtomURLRequestJobFactory();
+ public:
+  AtomURLRequestJobFactory();
+  virtual ~AtomURLRequestJobFactory();
 
-// Sets the ProtocolHandler for a scheme. Returns true on success, false on
-// failure (a ProtocolHandler already exists for |scheme|). On success,
-// URLRequestJobFactory takes ownership of |protocol_handler|.
-bool SetProtocolHandler(const std::string& scheme,
-                        std::unique_ptr<ProtocolHandler> protocol_handler);
+  // Sets the ProtocolHandler for a scheme. Returns true on success, false on
+  // failure (a ProtocolHandler already exists for |scheme|). On success,
+  // URLRequestJobFactory takes ownership of |protocol_handler|.
+  bool SetProtocolHandler(const std::string& scheme,
+                          std::unique_ptr<ProtocolHandler> protocol_handler);
 
-// Intercepts the ProtocolHandler for a scheme.
-bool InterceptProtocol(
-	const std::string& scheme,
-	std::unique_ptr<ProtocolHandler> protocol_handler);
-bool UninterceptProtocol(const std::string& scheme);
+  // Intercepts the ProtocolHandler for a scheme.
+  bool InterceptProtocol(const std::string& scheme,
+                         std::unique_ptr<ProtocolHandler> protocol_handler);
+  bool UninterceptProtocol(const std::string& scheme);
 
-// Returns the protocol handler registered with scheme.
-ProtocolHandler* GetProtocolHandler(const std::string& scheme) const;
+  // Returns the protocol handler registered with scheme.
+  ProtocolHandler* GetProtocolHandler(const std::string& scheme) const;
 
-// Whether the protocol handler is registered by the job factory.
-bool HasProtocolHandler(const std::string& scheme) const;
+  // Whether the protocol handler is registered by the job factory.
+  bool HasProtocolHandler(const std::string& scheme) const;
 
-// Clear all protocol handlers.
-void Clear();
+  // Clear all protocol handlers.
+  void Clear();
 
-// URLRequestJobFactory implementation
-net::URLRequestJob* MaybeCreateJobWithProtocolHandler(
-	const std::string& scheme,
-	net::URLRequest* request,
-	net::NetworkDelegate* network_delegate) const override;
-net::URLRequestJob* MaybeInterceptRedirect(
-	net::URLRequest* request,
-	net::NetworkDelegate* network_delegate,
-	const GURL& location) const override;
-net::URLRequestJob* MaybeInterceptResponse(
-	net::URLRequest* request,
-	net::NetworkDelegate* network_delegate) const override;
-bool IsHandledProtocol(const std::string& scheme) const override;
-bool IsSafeRedirectTarget(const GURL& location) const override;
+  // URLRequestJobFactory implementation
+  net::URLRequestJob* MaybeCreateJobWithProtocolHandler(
+      const std::string& scheme,
+      net::URLRequest* request,
+      net::NetworkDelegate* network_delegate) const override;
+  net::URLRequestJob* MaybeInterceptRedirect(
+      net::URLRequest* request,
+      net::NetworkDelegate* network_delegate,
+      const GURL& location) const override;
+  net::URLRequestJob* MaybeInterceptResponse(
+      net::URLRequest* request,
+      net::NetworkDelegate* network_delegate) const override;
+  bool IsHandledProtocol(const std::string& scheme) const override;
+  bool IsSafeRedirectTarget(const GURL& location) const override;
 
-private:
-using ProtocolHandlerMap = std::map<std::string, ProtocolHandler*>;
+ private:
+  using ProtocolHandlerMap = std::map<std::string, ProtocolHandler*>;
 
-ProtocolHandlerMap protocol_handler_map_;
+  ProtocolHandlerMap protocol_handler_map_;
 
-// Map that stores the original protocols of schemes.
-using OriginalProtocolsMap = std::unordered_map<
-	std::string, std::unique_ptr<ProtocolHandler> >;
-// Can only be accessed in IO thread.
-OriginalProtocolsMap original_protocols_;
+  // Map that stores the original protocols of schemes.
+  using OriginalProtocolsMap =
+      std::unordered_map<std::string, std::unique_ptr<ProtocolHandler>>;
+  // Can only be accessed in IO thread.
+  OriginalProtocolsMap original_protocols_;
 
-DISALLOW_COPY_AND_ASSIGN(AtomURLRequestJobFactory);
+  DISALLOW_COPY_AND_ASSIGN(AtomURLRequestJobFactory);
 };
 
 }  // namespace atom

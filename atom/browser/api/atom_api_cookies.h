@@ -28,43 +28,44 @@ class AtomBrowserContext;
 namespace api {
 
 class Cookies : public mate::TrackableObject<Cookies>,
-	public AtomCookieDelegate::Observer {
-public:
-enum Error {
-	SUCCESS,
-	FAILED,
-};
+                public AtomCookieDelegate::Observer {
+ public:
+  enum Error {
+    SUCCESS,
+    FAILED,
+  };
 
-using GetCallback = base::Callback<void (Error, const net::CookieList&)>;
-using SetCallback = base::Callback<void (Error)>;
+  using GetCallback = base::Callback<void(Error, const net::CookieList&)>;
+  using SetCallback = base::Callback<void(Error)>;
 
-static mate::Handle<Cookies> Create(v8::Isolate* isolate,
-                                    AtomBrowserContext* browser_context);
+  static mate::Handle<Cookies> Create(v8::Isolate* isolate,
+                                      AtomBrowserContext* browser_context);
 
-// mate::TrackableObject:
-static void BuildPrototype(v8::Isolate* isolate,
-                           v8::Local<v8::FunctionTemplate> prototype);
+  // mate::TrackableObject:
+  static void BuildPrototype(v8::Isolate* isolate,
+                             v8::Local<v8::FunctionTemplate> prototype);
 
-protected:
-Cookies(v8::Isolate* isolate, AtomBrowserContext* browser_context);
-~Cookies() override;
+ protected:
+  Cookies(v8::Isolate* isolate, AtomBrowserContext* browser_context);
+  ~Cookies() override;
 
-void Get(const base::DictionaryValue& filter, const GetCallback& callback);
-void Remove(const GURL& url, const std::string& name,
-            const base::Closure& callback);
-void Set(const base::DictionaryValue& details, const SetCallback& callback);
-void FlushStore(const base::Closure& callback);
+  void Get(const base::DictionaryValue& filter, const GetCallback& callback);
+  void Remove(const GURL& url,
+              const std::string& name,
+              const base::Closure& callback);
+  void Set(const base::DictionaryValue& details, const SetCallback& callback);
+  void FlushStore(const base::Closure& callback);
 
-// AtomCookieDelegate::Observer:
-void OnCookieChanged(const net::CanonicalCookie& cookie,
-                     bool removed,
-                     net::CookieStore::ChangeCause cause) override;
+  // AtomCookieDelegate::Observer:
+  void OnCookieChanged(const net::CanonicalCookie& cookie,
+                       bool removed,
+                       net::CookieStore::ChangeCause cause) override;
 
-private:
-net::URLRequestContextGetter* request_context_getter_;
-scoped_refptr<AtomCookieDelegate> cookie_delegate_;
+ private:
+  net::URLRequestContextGetter* request_context_getter_;
+  scoped_refptr<AtomCookieDelegate> cookie_delegate_;
 
-DISALLOW_COPY_AND_ASSIGN(Cookies);
+  DISALLOW_COPY_AND_ASSIGN(Cookies);
 };
 
 }  // namespace api

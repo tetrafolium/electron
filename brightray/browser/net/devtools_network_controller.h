@@ -19,24 +19,24 @@ class DevToolsNetworkInterceptor;
 class DevToolsNetworkTransaction;
 
 class DevToolsNetworkController {
-public:
-DevToolsNetworkController();
-virtual ~DevToolsNetworkController();
+ public:
+  DevToolsNetworkController();
+  virtual ~DevToolsNetworkController();
 
-void SetNetworkState(const std::string& client_id,
-                     std::unique_ptr<DevToolsNetworkConditions> conditions);
+  void SetNetworkState(const std::string& client_id,
+                       std::unique_ptr<DevToolsNetworkConditions> conditions);
 
-DevToolsNetworkInterceptor* GetInterceptor(const std::string& client_id);
+  DevToolsNetworkInterceptor* GetInterceptor(const std::string& client_id);
 
-private:
-using InterceptorMap =
-	std::unordered_map<std::string,
-	                   std::unique_ptr<DevToolsNetworkInterceptor> >;
+ private:
+  using InterceptorMap =
+      std::unordered_map<std::string,
+                         std::unique_ptr<DevToolsNetworkInterceptor>>;
 
-std::unique_ptr<DevToolsNetworkInterceptor> appcache_interceptor_;
-InterceptorMap interceptors_;
+  std::unique_ptr<DevToolsNetworkInterceptor> appcache_interceptor_;
+  InterceptorMap interceptors_;
 
-DISALLOW_COPY_AND_ASSIGN(DevToolsNetworkController);
+  DISALLOW_COPY_AND_ASSIGN(DevToolsNetworkController);
 };
 
 }  // namespace brightray

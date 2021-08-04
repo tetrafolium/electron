@@ -21,11 +21,11 @@
 // |additional_param_values| contain the name-value pairs, if any, specified
 // for the *first* non-disabled plugin found that is registered for |mime_type|.
 IPC_SYNC_MESSAGE_CONTROL1_3(
-	ChromeViewHostMsg_IsInternalPluginAvailableForMimeType,
-	std::string /* mime_type */,
-	bool /* is_available */,
-	std::vector<base::string16> /* additional_param_names */,
-	std::vector<base::string16> /* additional_param_values */)
+    ChromeViewHostMsg_IsInternalPluginAvailableForMimeType,
+    std::string /* mime_type */,
+    bool /* is_available */,
+    std::vector<base::string16> /* additional_param_names */,
+    std::vector<base::string16> /* additional_param_values */)
 #endif
 
 // Browser -> Renderer messages.

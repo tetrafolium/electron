@@ -12,54 +12,53 @@
 namespace atom {
 
 ContentSettingsObserver::ContentSettingsObserver(
-	content::RenderFrame* render_frame)
-	: content::RenderFrameObserver(render_frame) {
-	render_frame->GetWebFrame()->SetContentSettingsClient(this);
+    content::RenderFrame* render_frame)
+    : content::RenderFrameObserver(render_frame) {
+  render_frame->GetWebFrame()->SetContentSettingsClient(this);
 }
 
-ContentSettingsObserver::~ContentSettingsObserver() {
-}
+ContentSettingsObserver::~ContentSettingsObserver() {}
 
 bool ContentSettingsObserver::AllowDatabase(
-	const blink::WebString& name,
-	const blink::WebString& display_name,
-	unsigned estimated_size) {
-	blink::WebFrame* frame = render_frame()->GetWebFrame();
-	if (frame->GetSecurityOrigin().IsUnique() ||
-	    frame->Top()->GetSecurityOrigin().IsUnique())
-		return false;
-	auto origin = blink::WebStringToGURL(frame->GetSecurityOrigin().ToString());
-	if (!origin.IsStandard())
-		return false;
-	return true;
+    const blink::WebString& name,
+    const blink::WebString& display_name,
+    unsigned estimated_size) {
+  blink::WebFrame* frame = render_frame()->GetWebFrame();
+  if (frame->GetSecurityOrigin().IsUnique() ||
+      frame->Top()->GetSecurityOrigin().IsUnique())
+    return false;
+  auto origin = blink::WebStringToGURL(frame->GetSecurityOrigin().ToString());
+  if (!origin.IsStandard())
+    return false;
+  return true;
 }
 
 bool ContentSettingsObserver::AllowStorage(bool local) {
-	blink::WebFrame* frame = render_frame()->GetWebFrame();
-	if (frame->GetSecurityOrigin().IsUnique() ||
-	    frame->Top()->GetSecurityOrigin().IsUnique())
-		return false;
-	auto origin = blink::WebStringToGURL(frame->GetSecurityOrigin().ToString());
-	if (!origin.IsStandard())
-		return false;
-	return true;
+  blink::WebFrame* frame = render_frame()->GetWebFrame();
+  if (frame->GetSecurityOrigin().IsUnique() ||
+      frame->Top()->GetSecurityOrigin().IsUnique())
+    return false;
+  auto origin = blink::WebStringToGURL(frame->GetSecurityOrigin().ToString());
+  if (!origin.IsStandard())
+    return false;
+  return true;
 }
 
 bool ContentSettingsObserver::AllowIndexedDB(
-	const blink::WebString& name,
-	const blink::WebSecurityOrigin& security_origin) {
-	blink::WebFrame* frame = render_frame()->GetWebFrame();
-	if (frame->GetSecurityOrigin().IsUnique() ||
-	    frame->Top()->GetSecurityOrigin().IsUnique())
-		return false;
-	auto origin = blink::WebStringToGURL(frame->GetSecurityOrigin().ToString());
-	if (!origin.IsStandard())
-		return false;
-	return true;
+    const blink::WebString& name,
+    const blink::WebSecurityOrigin& security_origin) {
+  blink::WebFrame* frame = render_frame()->GetWebFrame();
+  if (frame->GetSecurityOrigin().IsUnique() ||
+      frame->Top()->GetSecurityOrigin().IsUnique())
+    return false;
+  auto origin = blink::WebStringToGURL(frame->GetSecurityOrigin().ToString());
+  if (!origin.IsStandard())
+    return false;
+  return true;
 }
 
 void ContentSettingsObserver::OnDestruct() {
-	delete this;
+  delete this;
 }
 
 }  // namespace atom

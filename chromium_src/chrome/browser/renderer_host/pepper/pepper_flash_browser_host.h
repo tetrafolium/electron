@@ -17,41 +17,41 @@ class Time;
 namespace content {
 class BrowserPpapiHost;
 class ResourceContext;
-}
+}  // namespace content
 
 class GURL;
 
 namespace chrome {
 
 class PepperFlashBrowserHost : public ppapi::host::ResourceHost {
-public:
-PepperFlashBrowserHost(content::BrowserPpapiHost* host,
-                       PP_Instance instance,
-                       PP_Resource resource);
-~PepperFlashBrowserHost() override;
+ public:
+  PepperFlashBrowserHost(content::BrowserPpapiHost* host,
+                         PP_Instance instance,
+                         PP_Resource resource);
+  ~PepperFlashBrowserHost() override;
 
-// ppapi::host::ResourceHost override.
-int32_t OnResourceMessageReceived(
-	const IPC::Message& msg,
-	ppapi::host::HostMessageContext* context) override;
+  // ppapi::host::ResourceHost override.
+  int32_t OnResourceMessageReceived(
+      const IPC::Message& msg,
+      ppapi::host::HostMessageContext* context) override;
 
-private:
-int32_t OnUpdateActivity(ppapi::host::HostMessageContext* host_context);
-int32_t OnGetLocalTimeZoneOffset(
-	ppapi::host::HostMessageContext* host_context,
-	const base::Time& t);
-int32_t OnGetLocalDataRestrictions(ppapi::host::HostMessageContext* context);
+ private:
+  int32_t OnUpdateActivity(ppapi::host::HostMessageContext* host_context);
+  int32_t OnGetLocalTimeZoneOffset(
+      ppapi::host::HostMessageContext* host_context,
+      const base::Time& t);
+  int32_t OnGetLocalDataRestrictions(ppapi::host::HostMessageContext* context);
 
-void GetLocalDataRestrictions(ppapi::host::ReplyMessageContext reply_context,
-                              const GURL& document_url,
-                              const GURL& plugin_url);
+  void GetLocalDataRestrictions(ppapi::host::ReplyMessageContext reply_context,
+                                const GURL& document_url,
+                                const GURL& plugin_url);
 
-content::BrowserPpapiHost* host_;
-int render_process_id_;
-// For fetching the Flash LSO settings.
-base::WeakPtrFactory<PepperFlashBrowserHost> weak_factory_;
+  content::BrowserPpapiHost* host_;
+  int render_process_id_;
+  // For fetching the Flash LSO settings.
+  base::WeakPtrFactory<PepperFlashBrowserHost> weak_factory_;
 
-DISALLOW_COPY_AND_ASSIGN(PepperFlashBrowserHost);
+  DISALLOW_COPY_AND_ASSIGN(PepperFlashBrowserHost);
 };
 
 }  // namespace chrome

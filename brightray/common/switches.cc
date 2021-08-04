@@ -48,7 +48,7 @@ const char kAuthServerWhitelist[] = "auth-server-whitelist";
 
 // Whitelist containing servers for which Kerberos delegation is allowed.
 const char kAuthNegotiateDelegateWhitelist[] =
-	"auth-negotiate-delegate-whitelist";
+    "auth-negotiate-delegate-whitelist";
 
 // Forces the maximum disk space to be used by the disk cache, in bytes.
 const char kDiskCacheSize[] = "disk-cache-size";

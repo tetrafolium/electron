@@ -1,14 +1,14 @@
-"use strict";
+'use strict';
 
-let value = "old";
+let value = 'old';
 
 class BaseClass {
   method() {
-    return "method";
+    return 'method';
   }
 
   get readonly() {
-    return "readonly";
+    return 'readonly';
   }
 
   get value() {

@@ -16,19 +16,19 @@ class UtilityMessageHandler;
 namespace atom {
 
 class AtomContentUtilityClient : public content::ContentUtilityClient {
-public:
-AtomContentUtilityClient();
-~AtomContentUtilityClient() override;
+ public:
+  AtomContentUtilityClient();
+  ~AtomContentUtilityClient() override;
 
-bool OnMessageReceived(const IPC::Message& message) override;
+  bool OnMessageReceived(const IPC::Message& message) override;
 
-private:
+ private:
 #if defined(OS_WIN)
-typedef std::vector<std::unique_ptr<UtilityMessageHandler> > Handlers;
-Handlers handlers_;
+  typedef std::vector<std::unique_ptr<UtilityMessageHandler>> Handlers;
+  Handlers handlers_;
 #endif
 
-DISALLOW_COPY_AND_ASSIGN(AtomContentUtilityClient);
+  DISALLOW_COPY_AND_ASSIGN(AtomContentUtilityClient);
 };
 
 }  // namespace atom

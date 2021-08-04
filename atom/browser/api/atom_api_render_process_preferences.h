@@ -14,27 +14,27 @@ namespace atom {
 namespace api {
 
 class RenderProcessPreferences
-	: public mate::Wrappable<RenderProcessPreferences> {
-public:
-static mate::Handle<RenderProcessPreferences>
-ForAllWebContents(v8::Isolate* isolate);
+    : public mate::Wrappable<RenderProcessPreferences> {
+ public:
+  static mate::Handle<RenderProcessPreferences> ForAllWebContents(
+      v8::Isolate* isolate);
 
-static void BuildPrototype(v8::Isolate* isolate,
-                           v8::Local<v8::FunctionTemplate> prototype);
+  static void BuildPrototype(v8::Isolate* isolate,
+                             v8::Local<v8::FunctionTemplate> prototype);
 
-int AddEntry(const base::DictionaryValue& entry);
-void RemoveEntry(int id);
+  int AddEntry(const base::DictionaryValue& entry);
+  void RemoveEntry(int id);
 
-protected:
-RenderProcessPreferences(
-	v8::Isolate* isolate,
-	const atom::RenderProcessPreferences::Predicate& predicate);
-~RenderProcessPreferences() override;
+ protected:
+  RenderProcessPreferences(
+      v8::Isolate* isolate,
+      const atom::RenderProcessPreferences::Predicate& predicate);
+  ~RenderProcessPreferences() override;
 
-private:
-atom::RenderProcessPreferences preferences_;
+ private:
+  atom::RenderProcessPreferences preferences_;
 
-DISALLOW_COPY_AND_ASSIGN(RenderProcessPreferences);
+  DISALLOW_COPY_AND_ASSIGN(RenderProcessPreferences);
 };
 
 }  // namespace api

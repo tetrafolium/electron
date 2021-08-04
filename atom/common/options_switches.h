@@ -69,8 +69,7 @@ extern const char kDisableBlinkFeatures[];
 extern const char kNodeIntegrationInWorker[];
 extern const char kWebviewTag[];
 
-}   // namespace options
-
+}  // namespace options
 
 // Following are actually command line switches, should be moved to other files.
 

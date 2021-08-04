@@ -22,7 +22,7 @@ class FilePath;
 
 namespace platform_util {
 
-typedef base::Callback<void (const std::string&)> OpenExternalCallback;
+typedef base::Callback<void(const std::string&)> OpenExternalCallback;
 
 // Show the given file in a file manager. If possible, select the file.
 // Must be called from the UI thread.
@@ -36,21 +36,21 @@ bool OpenItem(const base::FilePath& full_path);
 // (For example, mailto: URLs in the default mail user agent.)
 bool OpenExternal(
 #if defined(OS_WIN)
-	const base::string16& url,
+    const base::string16& url,
 #else
-	const GURL& url,
+    const GURL& url,
 #endif
-	bool activate);
+    bool activate);
 
 // The asynchronous version of OpenExternal.
 void OpenExternal(
 #if defined(OS_WIN)
-	const base::string16& url,
+    const base::string16& url,
 #else
-	const GURL& url,
+    const GURL& url,
 #endif
-	bool activate,
-	const OpenExternalCallback& callback);
+    bool activate,
+    const OpenExternalCallback& callback);
 
 // Move a file to trash.
 bool MoveItemToTrash(const base::FilePath& full_path);

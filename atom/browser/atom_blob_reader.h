@@ -21,58 +21,57 @@ namespace storage {
 class BlobDataHandle;
 class BlobReader;
 class FileSystemContext;
-}
+}  // namespace storage
 
 namespace v8 {
 template <class T>
 class Local;
 class Value;
-}
+}  // namespace v8
 
 namespace atom {
 
 // A class to keep track of the blob context. All methods,
 // except Ctor are expected to be called on IO thread.
 class AtomBlobReader {
-public:
-using CompletionCallback = base::Callback<void (v8::Local<v8::Value>)>;
+ public:
+  using CompletionCallback = base::Callback<void(v8::Local<v8::Value>)>;
 
-AtomBlobReader(content::ChromeBlobStorageContext* blob_context,
-               storage::FileSystemContext* file_system_context);
-~AtomBlobReader();
+  AtomBlobReader(content::ChromeBlobStorageContext* blob_context,
+                 storage::FileSystemContext* file_system_context);
+  ~AtomBlobReader();
 
-void StartReading(
-	const std::string& uuid,
-	const AtomBlobReader::CompletionCallback& callback);
+  void StartReading(const std::string& uuid,
+                    const AtomBlobReader::CompletionCallback& callback);
 
-private:
-// A self-destroyed helper class to read the blob data.
-// Must be accessed on IO thread.
-class BlobReadHelper {
-public:
-using CompletionCallback = base::Callback<void (char*, int)>;
+ private:
+  // A self-destroyed helper class to read the blob data.
+  // Must be accessed on IO thread.
+  class BlobReadHelper {
+   public:
+    using CompletionCallback = base::Callback<void(char*, int)>;
 
-BlobReadHelper(std::unique_ptr<storage::BlobReader> blob_reader,
-               const BlobReadHelper::CompletionCallback& callback);
-~BlobReadHelper();
+    BlobReadHelper(std::unique_ptr<storage::BlobReader> blob_reader,
+                   const BlobReadHelper::CompletionCallback& callback);
+    ~BlobReadHelper();
 
-void Read();
+    void Read();
 
-private:
-void DidCalculateSize(int result);
-void DidReadBlobData(const scoped_refptr<net::IOBuffer>& blob_data,
-                     int bytes_read);
+   private:
+    void DidCalculateSize(int result);
+    void DidReadBlobData(const scoped_refptr<net::IOBuffer>& blob_data,
+                         int bytes_read);
 
-std::unique_ptr<storage::BlobReader> blob_reader_;
-BlobReadHelper::CompletionCallback completion_callback_;
+    std::unique_ptr<storage::BlobReader> blob_reader_;
+    BlobReadHelper::CompletionCallback completion_callback_;
 
-DISALLOW_COPY_AND_ASSIGN(BlobReadHelper);
-};
+    DISALLOW_COPY_AND_ASSIGN(BlobReadHelper);
+  };
 
-scoped_refptr<content::ChromeBlobStorageContext> blob_context_;
-scoped_refptr<storage::FileSystemContext> file_system_context_;
+  scoped_refptr<content::ChromeBlobStorageContext> blob_context_;
+  scoped_refptr<storage::FileSystemContext> file_system_context_;
 
-DISALLOW_COPY_AND_ASSIGN(AtomBlobReader);
+  DISALLOW_COPY_AND_ASSIGN(AtomBlobReader);
 };
 
 }  // namespace atom

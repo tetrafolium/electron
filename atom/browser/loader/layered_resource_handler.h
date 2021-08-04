@@ -11,31 +11,29 @@ namespace atom {
 
 // Resource handler that notifies on various stages of a resource request.
 class LayeredResourceHandler : public content::LayeredResourceHandler {
-public:
-class Delegate {
-public:
-Delegate() {
-}
-virtual ~Delegate() {
-}
+ public:
+  class Delegate {
+   public:
+    Delegate() {}
+    virtual ~Delegate() {}
 
-virtual void OnResponseStarted(content::ResourceResponse* response) = 0;
-};
+    virtual void OnResponseStarted(content::ResourceResponse* response) = 0;
+  };
 
-LayeredResourceHandler(net::URLRequest* request,
-                       std::unique_ptr<content::ResourceHandler> next_handler,
-                       Delegate* delegate);
-~LayeredResourceHandler() override;
+  LayeredResourceHandler(net::URLRequest* request,
+                         std::unique_ptr<content::ResourceHandler> next_handler,
+                         Delegate* delegate);
+  ~LayeredResourceHandler() override;
 
-// content::LayeredResourceHandler:
-void OnResponseStarted(
-	content::ResourceResponse* response,
-	std::unique_ptr<content::ResourceController> controller) override;
+  // content::LayeredResourceHandler:
+  void OnResponseStarted(
+      content::ResourceResponse* response,
+      std::unique_ptr<content::ResourceController> controller) override;
 
-private:
-Delegate* delegate_;
+ private:
+  Delegate* delegate_;
 
-DISALLOW_COPY_AND_ASSIGN(LayeredResourceHandler);
+  DISALLOW_COPY_AND_ASSIGN(LayeredResourceHandler);
 };
 
 }  // namespace atom
