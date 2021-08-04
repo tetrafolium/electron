@@ -117,19 +117,21 @@ describe('webFrame module', function () {
         callback({data: content, mimeType: 'text/html'})
       }
       protocol.registerStringProtocol(standardScheme, handler, function (error) {
-        if (error) return done(error)
-      })
+        if (error) { return done(error)
+      }
+        })
 
       protocol.registerStringProtocol(corsScheme, function (request, callback) {
         callback('')
       }, function (error) {
-        if (error) return done(error)
+        if (error) { return done(error)
         ipcMain.once('response', function (event, status) {
           assert.equal(status, expected)
           done()
         })
         w.loadURL(url)
-      })
+      }
+        })
     }
   })
 

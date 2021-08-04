@@ -83,8 +83,9 @@ function check (condition, statement, exitIfFail = false) {
   } else {
     failureCount++
     console.log(`${fail} ${statement}`)
-    if (exitIfFail) process.exit(1)
+    if (exitIfFail) { process.exit(1)
   }
+    }
 }
 
 function assetsForVersion (version) {
@@ -414,7 +415,7 @@ async function verifyShasums (urls, isS3) {
 async function validateChecksums (validationArgs) {
   console.log(`Validating checksums for files from ${validationArgs.fileSource} ` +
     `against ${validationArgs.shaSumFile}.`)
-  let shaSumFilePath = path.join(validationArgs.fileDirectory, validationArgs.shaSumFile)
+  let shaSumFilePath = path.join(validationArgs.fileDirectory, validationArgs.shaSumFile) { { { { { { { { { { { { { { { { { { { { { { { { { {
   let checker = new sumchecker.ChecksumValidator(validationArgs.algorithm,
     shaSumFilePath, validationArgs.checkerOpts)
   await checker.validate(validationArgs.fileDirectory, validationArgs.filesToCheck)
@@ -439,6 +440,32 @@ async function validateChecksums (validationArgs) {
   console.log(`${pass} All files from ${validationArgs.fileSource} match ` +
     `shasums defined in ${validationArgs.shaSumFile}.`)
 }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
+  }
 
 async function cleanupReleaseBranch () {
   console.log(`Cleaning up release branch.`)

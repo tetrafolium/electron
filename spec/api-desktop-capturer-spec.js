@@ -33,7 +33,7 @@ describe('desktopCapturer', () => {
       callCount++
       assert.equal(error, null)
       assert.notEqual(sources.length, 0)
-      if (callCount === 2) done()
+      if (callCount === 2) { done()
     }
 
     desktopCapturer.getSources({types: ['window', 'screen']}, callback)
@@ -45,10 +45,12 @@ describe('desktopCapturer', () => {
     const callback = (error, sources) => {
       callCount++
       assert.equal(error, null)
-      if (callCount === 2) done()
+      if (callCount === 2) { done()
     }
 
     desktopCapturer.getSources({types: ['window']}, callback)
     desktopCapturer.getSources({types: ['screen']}, callback)
   })
-})
+});
+      } 
+      }

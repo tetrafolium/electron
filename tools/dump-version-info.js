@@ -8,11 +8,13 @@ function getDate () {
   var today = new Date()
   var year = today.getFullYear()
   var month = today.getMonth() + 1
-  if (month <= 9) month = '0' + month
+  if (month <= 9) { month = '0' + month
   var day = today.getDate()
-  if (day <= 9) day = '0' + day
+  if (day <= 9) { day = '0' + day
   return year + '-' + month + '-' + day
 }
+  }
+  }
 
 function getInfoForCurrentVersion () {
   var json = {}
@@ -55,8 +57,9 @@ function getIndexJsInServer (callback) {
 
 function findObjectByVersion (all, version) {
   for (var i in all) {
-    if (all[i].version === version) return i
+    if (all[i].version === version) { return i
   }
+    }
   return -1
 }
 

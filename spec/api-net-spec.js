@@ -555,7 +555,7 @@ describe('net module', () => {
         name: 'test',
         value: '11111'
       }, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         const urlRequest = net.request({
           method: 'GET',
           url: `${server.url}${requestUrl}`,
@@ -1626,3 +1626,4 @@ function handleUnexpectedURL (request, response) {
   response.end()
   assert.fail(`Unexpected URL: ${request.url}`)
 }
+        }

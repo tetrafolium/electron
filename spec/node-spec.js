@@ -107,7 +107,7 @@ describe('node feature', () => {
       let child
 
       afterEach(() => {
-        if (child != null) child.kill()
+        if (child != null) { child.kill()
       })
 
       it('supports spawning Electron as a node process via the ELECTRON_RUN_AS_NODE env var', (done) => {
@@ -198,7 +198,7 @@ describe('node feature', () => {
     let child
 
     afterEach(() => {
-      if (child != null) child.kill()
+      if (child != null) { child.kill()
     })
 
     it('supports starting the v8 inspector with --inspect/--inspect-brk', (done) => {
@@ -211,7 +211,7 @@ describe('node feature', () => {
       let output = ''
       child.stderr.on('data', (data) => {
         output += data
-        if (output.trim().startsWith('Debugger listening on ws://')) done()
+        if (output.trim().startsWith('Debugger listening on ws://')) { done()
       })
 
       child.stdout.on('data', (data) => {
@@ -381,4 +381,7 @@ describe('node feature', () => {
   it('includes the chrome version in process.versions', () => {
     assert(/^\d+\.\d+\.\d+\.\d+$/.test(process.versions.chrome))
   })
-})
+});
+        }
+      } 
+        }

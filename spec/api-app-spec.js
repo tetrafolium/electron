@@ -128,7 +128,7 @@ describe('app module', () => {
     let appProcess = null
 
     afterEach(() => {
-      if (appProcess != null) appProcess.kill()
+      if (appProcess != null) { appProcess.kill()
     })
 
     it('emits a process exit event with the code', (done) => {
@@ -745,7 +745,7 @@ describe('app module', () => {
     })
 
     afterEach((done) => {
-      if (appProcess != null) appProcess.kill()
+      if (appProcess != null) { appProcess.kill()
 
       server.close(() => {
         if (process.platform === 'win32') {
@@ -815,4 +815,6 @@ describe('app module', () => {
       }, /before app is ready/)
     })
   })
-})
+});
+      } 
+      }

@@ -52,7 +52,7 @@ describe('webContents module', () => {
 
   describe('getFocusedWebContents() API', () => {
     it('returns the focused web contents', (done) => {
-      if (isCi) return done()
+      if (isCi) { return done()
 
       const specWebContents = remote.getCurrentWebContents()
       assert.equal(specWebContents.getId(), webContents.getFocusedWebContents().getId())
@@ -149,18 +149,22 @@ describe('webContents module', () => {
             })
 
             const modifiers = []
-            if (opts.shift) modifiers.push('shift')
-            if (opts.control) modifiers.push('control')
-            if (opts.alt) modifiers.push('alt')
-            if (opts.meta) modifiers.push('meta')
-            if (opts.isAutoRepeat) modifiers.push('isAutoRepeat')
+            if (opts.shift) { modifiers.push('shift')
+            if (opts.control) { modifiers.push('control')
+            if (opts.alt) { modifiers.push('alt')
+            if (opts.meta) { modifiers.push('meta')
+            if (opts.isAutoRepeat) { modifiers.push('isAutoRepeat')
 
             w.webContents.sendInputEvent({
               type: opts.type,
               keyCode: opts.keyCode,
               modifiers: modifiers
             })
-          })
+          }
+            }
+            }
+            }
+            })
         }
 
         Promise.resolve().then(() => {
@@ -401,7 +405,7 @@ describe('webContents module', () => {
       let finalNavigation = false
       ipcMain.on('set-zoom', (e, host) => {
         const zoomLevel = hostZoomMap[host]
-        if (!finalNavigation) w.webContents.setZoomLevel(zoomLevel)
+        if (!finalNavigation) { w.webContents.setZoomLevel(zoomLevel)
         e.sender.send(`${host}-zoom-set`)
       })
       ipcMain.on('host1-zoom-level', (e, zoomLevel) => {
@@ -412,6 +416,9 @@ describe('webContents module', () => {
         } else {
           w.loadURL(`${zoomScheme}://host2`)
         }
+        }
+            }
+      }
       })
       ipcMain.once('host2-zoom-level', (e, zoomLevel) => {
         const expectedZoomLevel = hostZoomMap.host2
@@ -455,7 +462,7 @@ describe('webContents module', () => {
       protocol.registerStringProtocol(zoomScheme, (request, callback) => {
         callback('hello')
       }, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         w2.webContents.on('did-finish-load', () => {
           w.webContents.getZoomLevel((zoomLevel1) => {
             assert.equal(zoomLevel1, hostZoomMap.host3)
@@ -463,7 +470,7 @@ describe('webContents module', () => {
               assert.equal(zoomLevel2, 0)
               assert.notEqual(zoomLevel1, zoomLevel2)
               protocol.unregisterProtocol(zoomScheme, (error) => {
-                if (error) return done(error)
+                if (error) { return done(error)
                 w2.setClosable(true)
                 w2.close()
                 done()
@@ -664,7 +671,7 @@ describe('webContents module', () => {
 
       let gen = genNavigationEvent()
       ipcRenderer.on(responseEvent, () => {
-        if (!gen.next().value) done()
+        if (!gen.next().value) { done()
       })
       gen.next()
     })
@@ -698,4 +705,7 @@ describe('webContents module', () => {
       w.loadURL(`file://${fixtures}/pages/a.html`)
     })
   })
-})
+});
+        }
+                } 
+        }

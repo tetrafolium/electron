@@ -77,7 +77,7 @@ describe('protocol module', () => {
         }
       }
       protocol.registerStringProtocol(protocolName, doubleHandler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
 
         $.ajax({
           url: protocolName + '://fake-host',
@@ -93,7 +93,7 @@ describe('protocol module', () => {
 
     it('sends error when callback is called with nothing', (done) => {
       protocol.registerBufferProtocol(protocolName, emptyHandler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -111,7 +111,7 @@ describe('protocol module', () => {
         setImmediate(() => callback(text))
       }
       protocol.registerStringProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -138,7 +138,7 @@ describe('protocol module', () => {
     it('sends string as response', (done) => {
       const handler = (request, callback) => callback(text)
       protocol.registerStringProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -154,7 +154,7 @@ describe('protocol module', () => {
     it('sets Access-Control-Allow-Origin', (done) => {
       const handler = (request, callback) => callback(text)
       protocol.registerStringProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -176,7 +176,7 @@ describe('protocol module', () => {
         })
       }
       protocol.registerStringProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -192,7 +192,7 @@ describe('protocol module', () => {
     it('fails when sending object other than string', (done) => {
       const handler = (request, callback) => callback(new Date())
       protocol.registerBufferProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -211,7 +211,7 @@ describe('protocol module', () => {
     it('sends Buffer as response', (done) => {
       const handler = (request, callback) => callback(buffer)
       protocol.registerBufferProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -227,7 +227,7 @@ describe('protocol module', () => {
     it('sets Access-Control-Allow-Origin', (done) => {
       const handler = (request, callback) => callback(buffer)
       protocol.registerBufferProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -249,7 +249,7 @@ describe('protocol module', () => {
         })
       }
       protocol.registerBufferProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -265,7 +265,7 @@ describe('protocol module', () => {
     it('fails when sending string', (done) => {
       const handler = (request, callback) => callback(text)
       protocol.registerBufferProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -288,7 +288,7 @@ describe('protocol module', () => {
     it('sends file path as response', (done) => {
       const handler = (request, callback) => callback(filePath)
       protocol.registerFileProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -304,7 +304,7 @@ describe('protocol module', () => {
     it('sets Access-Control-Allow-Origin', (done) => {
       const handler = (request, callback) => callback(filePath)
       protocol.registerFileProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -323,7 +323,7 @@ describe('protocol module', () => {
     it('sends object as response', (done) => {
       const handler = (request, callback) => callback({ path: filePath })
       protocol.registerFileProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -339,7 +339,7 @@ describe('protocol module', () => {
     it('can send normal file', (done) => {
       const handler = (request, callback) => callback(normalPath)
       protocol.registerFileProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -356,7 +356,7 @@ describe('protocol module', () => {
       const fakeFilePath = path.join(__dirname, 'fixtures', 'asar', 'a.asar', 'not-exist')
       const handler = (request, callback) => callback(fakeFilePath)
       protocol.registerFileProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -372,7 +372,7 @@ describe('protocol module', () => {
     it('fails when sending unsupported content', (done) => {
       const handler = (request, callback) => callback(new Date())
       protocol.registerFileProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -398,7 +398,7 @@ describe('protocol module', () => {
         const url = 'http://127.0.0.1:' + port
         const handler = (request, callback) => callback({url})
         protocol.registerHttpProtocol(protocolName, handler, (error) => {
-          if (error) return done(error)
+          if (error) { return done(error)
           $.ajax({
             url: protocolName + '://fake-host',
             cache: false,
@@ -415,7 +415,7 @@ describe('protocol module', () => {
     it('fails when sending invalid url', (done) => {
       const handler = (request, callback) => callback({url: 'url'})
       protocol.registerHttpProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -431,7 +431,7 @@ describe('protocol module', () => {
     it('fails when sending unsupported content', (done) => {
       const handler = (request, callback) => callback(new Date())
       protocol.registerHttpProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -463,7 +463,7 @@ describe('protocol module', () => {
         const redirectURL = `http://127.0.0.1:${port}/serverRedirect`
         const handler = (request, callback) => callback({url: redirectURL})
         protocol.registerHttpProtocol(protocolName, handler, (error) => {
-          if (error) return done(error)
+          if (error) { return done(error)
           contents = webContents.create({})
           contents.on('did-finish-load', () => {
             assert.equal(contents.getURL(), url)
@@ -481,7 +481,7 @@ describe('protocol module', () => {
     it('sends Stream as response', (done) => {
       const handler = (request, callback) => callback(getStream())
       protocol.registerStreamProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -499,7 +499,7 @@ describe('protocol module', () => {
     it('sends object as response', (done) => {
       const handler = (request, callback) => callback({data: getStream()})
       protocol.registerStreamProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -523,7 +523,7 @@ describe('protocol module', () => {
         }
       })
       protocol.registerStreamProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -546,7 +546,7 @@ describe('protocol module', () => {
         data: null
       })
       protocol.registerStreamProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           cache: false,
@@ -572,7 +572,7 @@ describe('protocol module', () => {
         })
       }
       protocol.registerStreamProtocol(protocolName, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: protocolName + '://fake-host',
           headers: {
@@ -672,7 +672,7 @@ describe('protocol module', () => {
         }
       }
       protocol.interceptStringProtocol('http', doubleHandler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: 'http://fake-host',
           cache: false,
@@ -687,7 +687,7 @@ describe('protocol module', () => {
 
     it('sends error when callback is called with nothing', function (done) {
       protocol.interceptBufferProtocol('http', emptyHandler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: 'http://fake-host',
           cache: false,
@@ -698,14 +698,15 @@ describe('protocol module', () => {
           }
         })
       })
-    })
+    }
+        })
   })
 
   describe('protocol.interceptStringProtocol', () => {
     it('can intercept http protocol', (done) => {
       const handler = (request, callback) => callback(text)
       protocol.interceptStringProtocol('http', handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: 'http://fake-host',
           cache: false,
@@ -726,7 +727,7 @@ describe('protocol module', () => {
         })
       }
       protocol.interceptStringProtocol('http', handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: 'http://fake-host',
           cache: false,
@@ -746,7 +747,7 @@ describe('protocol module', () => {
         callback({data: uploadData})
       }
       protocol.interceptStringProtocol('http', handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: 'http://fake-host',
           cache: false,
@@ -766,7 +767,7 @@ describe('protocol module', () => {
     it('can intercept http protocol', (done) => {
       const handler = (request, callback) => callback(Buffer.from(text))
       protocol.interceptBufferProtocol('http', handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: 'http://fake-host',
           cache: false,
@@ -785,7 +786,7 @@ describe('protocol module', () => {
         callback(uploadData)
       }
       protocol.interceptBufferProtocol('http', handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: 'http://fake-host',
           cache: false,
@@ -829,7 +830,7 @@ describe('protocol module', () => {
           callback(data)
         }
         protocol.interceptHttpProtocol('http', handler, (error) => {
-          if (error) return done(error)
+          if (error) { return done(error)
           $.ajax({
             url: 'http://fake-host',
             cache: false,
@@ -858,7 +859,7 @@ describe('protocol module', () => {
         })
       }
       protocol.interceptHttpProtocol('http', handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         fetch('http://fake-host').then(() => {
           done('request succeeded but it should not')
         }).catch(() => {
@@ -873,7 +874,7 @@ describe('protocol module', () => {
     it('can intercept http protocol', (done) => {
       const handler = (request, callback) => callback(getStream())
       protocol.interceptStreamProtocol('http', handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: 'http://fake-host',
           cache: false,
@@ -893,7 +894,7 @@ describe('protocol module', () => {
         callback(getStream(3, request.uploadData[0].bytes.toString()))
       }
       protocol.interceptStreamProtocol('http', handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: 'http://fake-host',
           cache: false,
@@ -928,7 +929,7 @@ describe('protocol module', () => {
         }
       }
       protocol.interceptStreamProtocol('http', handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         $.ajax({
           url: 'http://fake-host',
           cache: false,
@@ -993,7 +994,7 @@ describe('protocol module', () => {
         }
       }
       protocol.registerFileProtocol(standardScheme, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         w.webContents.on('did-finish-load', () => {
           assert(success)
           done()
@@ -1015,7 +1016,7 @@ describe('protocol module', () => {
         }
       }
       protocol.registerStringProtocol(standardScheme, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         w.webContents.on('did-finish-load', () => {
           assert(success)
           done()
@@ -1028,7 +1029,7 @@ describe('protocol module', () => {
       const content = '<html><script>fetch("http://github.com")</script></html>'
       const handler = (request, callback) => callback({data: content, mimeType: 'text/html'})
       protocol.registerStringProtocol(standardScheme, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         w.webContents.on('crashed', () => done('WebContents crashed'))
         w.webContents.on('did-finish-load', () => done())
         w.loadURL(origin)
@@ -1039,7 +1040,7 @@ describe('protocol module', () => {
       let filePath = path.join(__dirname, 'fixtures', 'pages', 'filesystem.html')
       const handler = (request, callback) => callback({path: filePath})
       protocol.registerFileProtocol(standardScheme, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         w.loadURL(origin)
       })
       ipcMain.once('file-system-error', (event, err) => done(err))
@@ -1052,9 +1053,51 @@ describe('protocol module', () => {
       ipcMain.once('success', () => done())
       ipcMain.once('failure', (event, err) => done(err))
       protocol.registerFileProtocol(standardScheme, handler, (error) => {
-        if (error) return done(error)
+        if (error) { return done(error)
         w.loadURL(origin)
       })
     })
   })
-})
+});
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+          }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+          }
+        }
+        }
+          }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        } 
+        }

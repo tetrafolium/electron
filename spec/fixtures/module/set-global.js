@@ -1,1 +1,2 @@
-if (!window.test) window.test = 'preload'
+if (!window.test) { window.test = 'preload'; 
+}

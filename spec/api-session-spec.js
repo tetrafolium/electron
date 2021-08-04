@@ -73,7 +73,7 @@ describe('session module', () => {
         w.loadURL(`${url}:${port}`)
         w.webContents.on('did-finish-load', () => {
           w.webContents.session.cookies.get({url}, (error, list) => {
-            if (error) return done(error)
+            if (error) { return done(error)
             for (let i = 0; i < list.length; i++) {
               const cookie = list[i]
               if (cookie.name === '0') {
@@ -84,7 +84,8 @@ describe('session module', () => {
                 }
               }
             }
-            done('Can\'t find cookie')
+            }
+            done('Can\'t find cookie') { { { { { { { { { { { { { { { { { { { { { { { { { {
           })
         })
       })
@@ -109,7 +110,7 @@ describe('session module', () => {
       }, (error) => {
         if (error) return done(error)
         session.defaultSession.cookies.get({url}, (error, list) => {
-          if (error) return done(error)
+          if (error) { return done(error)
           for (let i = 0; i < list.length; i++) {
             const cookie = list[i]
             if (cookie.name === '1') {
@@ -119,6 +120,7 @@ describe('session module', () => {
                 return done(`cookie value is ${cookie.value} while expecting 1`)
               }
             }
+          }
           }
           done('Can\'t find cookie')
         })
@@ -134,10 +136,12 @@ describe('session module', () => {
         if (error) return done(error)
         session.defaultSession.cookies.remove(url, '2', () => {
           session.defaultSession.cookies.get({url}, (error, list) => {
-            if (error) return done(error)
+            if (error) { return done(error)
             for (let i = 0; i < list.length; i++) {
               const cookie = list[i]
-              if (cookie.name === '2') return done('Cookie not deleted')
+              if (cookie.name === '2') { return done('Cookie not deleted')
+            }
+              }
             }
             done()
           })
@@ -471,7 +475,7 @@ describe('session module', () => {
       const protocol = session.defaultSession.protocol
       const url = `${scheme}://host`
       before(() => {
-        if (w != null) w.destroy()
+        if (w != null) { w.destroy()
         w = new BrowserWindow({show: false})
       })
 
@@ -493,6 +497,7 @@ describe('session module', () => {
                        const {webFrame} = require('electron')
                        webFrame.registerURLSchemeAsPrivileged('${scheme}')
                        let fd = new FormData();
+        }
                        fd.append('file', new Blob(['${postData}'], {type:'application/json'}));
                        fetch('${url}', {method:'POST', body: fd });
                        </script>
@@ -760,4 +765,30 @@ describe('session module', () => {
       document.body.appendChild(webview)
     })
   })
-})
+});
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  } 
+                  }

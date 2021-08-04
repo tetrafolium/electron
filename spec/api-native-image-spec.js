@@ -51,7 +51,7 @@ describe('nativeImage module', () => {
   ]
 
   /**
-   * @param {?string} filename
+   * @param   {?string} filename
    * @returns {?string} Full path.
    */
   const getImagePathFromFilename = (filename) => {
@@ -60,8 +60,8 @@ describe('nativeImage module', () => {
   }
 
   /**
-   * @param {!Object} image
-   * @param {Object} filters
+   * @param   {!Object} image
+   * @param   {Object} filters
    * @returns {boolean}
    */
   const imageMatchesTheFilters = (image, filters = null) => {
@@ -74,7 +74,7 @@ describe('nativeImage module', () => {
   }
 
   /**
-   * @param {!Object} filters
+   * @param   {!Object} filters
    * @returns {!Array} A matching images list.
    */
   const getImages = (filters) => {
@@ -89,7 +89,7 @@ describe('nativeImage module', () => {
   }
 
   /**
-   * @param {!Object} filters
+   * @param   {!Object} filters
    * @returns {Object} A matching image if any.
    */
   const getImage = (filters) => {
